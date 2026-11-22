@@ -8151,7 +8151,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top)`
+1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])`
 
 ### within_kids_reach（Task）
 
@@ -8237,7 +8237,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top)` → 7. `navigate(destination=desk_mug)` → 8. `pick(object=desk_mug)` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `place(object=desk_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.384, 7.609])`
+1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_mug)` → 8. `pick(object=desk_mug)` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `place(object=desk_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.384, 7.609])`
 
 ### whose_book（Task）
 
@@ -8330,9 +8330,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `on_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=red_book_2)` → 9. `pick(object=red_book_2)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
-- 摆法 `on_other_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=bookcase_3/top)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
-- 摆法 `on_tall_shelf`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=large_shelf_4/shelf_1)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `on_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=red_book_2)` → 9. `pick(object=red_book_2)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `on_other_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=bookcase_3/top)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `on_tall_shelf`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=large_shelf_4/shelf_1)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
 
 ---
 

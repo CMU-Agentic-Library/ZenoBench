@@ -160051,19 +160051,19 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        1.1,
+        1.215,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
@@ -160192,7 +160192,28 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "bookcase_2/top": [
+        [
+         0.7151,
+         -0.6,
+         0.8549,
+         -0.4
+        ],
+        [
+         1.1451,
+         -0.6,
+         1.285,
+         -0.4
+        ],
+        [
+         0.9,
+         -0.5699,
+         1.1,
+         -0.43
+        ]
+       ]
+      },
       "reach": {
        "desk_1/top": [
         [
@@ -160388,19 +160409,19 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        1.1,
+        1.215,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
@@ -160491,27 +160512,6 @@
       "clusters": [
        {
         "names": [
-         "blue_shelved_1",
-         "blue_shelved_2"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.75,
-         -0.5699,
-         1.2,
-         -0.43
-        ],
-        "dx": [
-         -0.03,
-         0.08
-        ],
-        "dy": [
-         -0.03,
-         0.18
-        ]
-       },
-       {
-        "names": [
          "paperback"
         ],
         "support": "desk_1/top",
@@ -160552,6 +160552,20 @@
        }
       ],
       "static": {
+       "bookcase_2/top": [
+        [
+         0.7151,
+         -0.6,
+         0.8549,
+         -0.4
+        ],
+        [
+         1.1451,
+         -0.6,
+         1.285,
+         -0.4
+        ]
+       ],
        "large_shelf_2/shelf_2": [
         [
          -1.95,
@@ -160562,32 +160576,6 @@
        ]
       },
       "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
        "desk_1/top": [
         [
          0,
@@ -160784,19 +160772,19 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        1.1,
+        1.215,
         -0.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
@@ -160948,6 +160936,26 @@
        }
       ],
       "static": {
+       "bookcase_2/top": [
+        [
+         0.7151,
+         -0.6,
+         0.8549,
+         -0.4
+        ],
+        [
+         1.1451,
+         -0.6,
+         1.285,
+         -0.4
+        ],
+        [
+         0.9,
+         -0.5699,
+         1.1,
+         -0.43
+        ]
+       ],
        "large_shelf_2/shelf_2": [
         [
          -1.95,
@@ -161255,10 +161263,10 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "green_book_case": {
        "asset": "book_green",
@@ -161282,10 +161290,10 @@
        "asset": "book_red",
        "support": "bookcase_2/top",
        "xy": [
-        1.12,
+        1.205,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       }
      },
      "watch": [
@@ -161309,6 +161317,26 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "blue_book_case",
+         "red_book_2"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7151,
+         -0.57,
+         1.2887,
+         -0.33
+        ],
+        "dy": [
+         -0.03,
+         0.08
+        ],
+        "pick": [
+         "red_book_2"
+        ]
+       },
        {
         "names": [
          "paperback_shelf"
@@ -161366,6 +161394,14 @@
        }
       ],
       "static": {
+       "bookcase_2/top": [
+        [
+         0.88,
+         -0.5337,
+         1.12,
+         -0.3663
+        ]
+       ],
        "desk_1/top": [
         [
          -0.928,
@@ -161376,6 +161412,32 @@
        ]
       },
       "reach": {
+       "bookcase_2/top": [
+        [
+         0,
+         1,
+         1.295,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         0.705,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -0.619,
+         0.705,
+         1.295,
+         0.2
+        ]
+       ],
        "bookcase_3/top": [
         [
          0,
@@ -161787,19 +161849,19 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "green_book_case": {
        "asset": "book_green",
        "support": "bookcase_2/top",
        "xy": [
-        1.12,
+        1.2,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "paperback_shelf": {
        "asset": "paperback_book",
@@ -162308,19 +162370,19 @@
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
-        0.85,
+        0.785,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "green_book_case": {
        "asset": "book_green",
        "support": "bookcase_2/top",
        "xy": [
-        1.12,
+        1.2,
         -0.45
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "paperback_shelf": {
        "asset": "paperback_book",
@@ -162921,7 +162983,11 @@
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/top"
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.005,
+         -0.459
+        ]
        }
       }
      ],
@@ -163070,7 +163136,11 @@
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/top"
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.005,
+         -0.459
+        ]
        }
       },
       {
@@ -163315,7 +163385,7 @@
         "receptacle": "bookcase_2/top",
         "hint_xy": [
          1.0,
-         -0.55
+         -0.45
         ]
        }
       },
@@ -163397,7 +163467,7 @@
         "receptacle": "bookcase_2/top",
         "hint_xy": [
          1.0,
-         -0.55
+         -0.45
         ]
        }
       },
@@ -163492,7 +163562,7 @@
         "receptacle": "bookcase_2/top",
         "hint_xy": [
          1.0,
-         -0.55
+         -0.45
         ]
        }
       },

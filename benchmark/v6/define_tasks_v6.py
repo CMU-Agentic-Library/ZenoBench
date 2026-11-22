@@ -2187,6 +2187,10 @@ def T14(t):
     B, DESK, CASE = "book_red", "desk_1/top", "bookcase_2/top"
     KIDS_CASE = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"]        # his bookcase, any level
     t["goal"] = {"all": [["on_any", B, KIDS_CASE], ["hand_empty", "right"]]}
+    # 11-22: the inherited control route sets the book down at the bookcase top's middle too (see shelve)
+    for st in (t.get("routes", {}).get("v5_e1_book_ready") or {}).get("steps", []):
+        if st["skill"] == "place" and st["args"].get("receptacle") == CASE and "hint_xy" not in st["args"]:
+            st["args"]["hint_xy"] = [1.0, -0.45]
     SIZE = {"book_red": 0.24, "book_green": 0.22, "book_blue": 0.20, "paperback_book": 0.18}
 
     def on_desk(asset, x):
@@ -2197,6 +2201,10 @@ def T14(t):
         return {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}
 
     def shelve(x, sup=CASE, hint=None):
+        # 11-22: onto the bookcase's top at its middle -- unhinted, book_red's edge set-down failed 41 of 59 (v4-v6);
+        # hinted at (1.0, -0.45) it passed
+        if hint is None and sup == CASE:
+            hint = [1.0, -0.45]
         return [nav(x), pick(x), nav(sup), place(x, sup, hint)]
     low = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1",
            "bookcase_3/shelf_0", "large_shelf_4/shelf_0", "large_shelf_4/shelf_1", "large_shelf_4/shelf_2",
@@ -2226,7 +2234,10 @@ def T14(t):
     KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
     # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
-    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.50), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.50),
+    # 11-22 (v6_sticky_1121, muqingj v6full_1119: "no free edge spot", 2 of 2): the two standing at the top's ends,
+    # turned (14 cm wide), the middle 29 cm free for the third -- at 0.85 / 1.10 they left no room along the edge
+    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.785, -0.50, 90.0),
+               "blue_shelved_2": book("book_blue", KIDS, 1.215, -0.50, 90.0),
                "paperback_shelved_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
                "paperback_shelved_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
     whose_cases = {}
@@ -2243,18 +2254,19 @@ def T14(t):
                                   for st in shelve(n, sup, [1.0, -0.50] if sup == KIDS else [-1.86, -0.95])])
     # next_in_series: the red book back, and the other book of its set (the same red cover, among other books) to
     # the desk for tomorrow
-    others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
+    # 11-22 (no free edge spot, 2 of 2): the books on the bookcase turned and at its ends, the middle free for the red one
+    others = {"blue_book_case": book("book_blue", CASE, 0.785, -0.45, 90.0), "green_book_case": book("book_green", CASE, 1.20, -0.45, 90.0),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
     series_cases = {}
-    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.12, -0.45), None)),   # the green book's spot: in reach
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.205, -0.45), None)),   # the right end, turned: in reach
                                  ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
                                  ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
-        add = {**others, "red_book_2": book("book_red", sup, *xy)}
+        add = {**others, "red_book_2": book("book_red", sup, *xy, 90.0 if sup == CASE else 0.0)}
         if sup == CASE:
             add["green_book_case"] = book("book_green", "large_shelf_4/shelf_1", 3.60, -5.15)
         series_cases[c] = dict(
             add=add, watch=[B, "red_book_2", *others],
-            route=[look(DESK)] + shelve(B, CASE, [1.00, -0.55]) + [look(CASE)]
+            route=[look(DESK)] + shelve(B, CASE, [1.00, -0.45]) + [look(CASE)]
             + ([S("search", object="red_book_2", region=region), look(sup)] if region else [])
             + [nav("red_book_2"), pick("red_book_2"), nav(DESK), place("red_book_2", DESK, [-0.80, -6.05])])
     return {
