@@ -96956,12 +96956,6 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave/start_button"
-       }
-      },
-      {
        "skill": "press",
        "args": {
         "button": "kitchen_microwave/start_button"
@@ -97092,12 +97086,6 @@
        "skill": "close",
        "args": {
         "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave/start_button"
        }
       },
       {

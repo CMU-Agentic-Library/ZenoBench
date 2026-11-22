@@ -1416,7 +1416,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "two_portions__dining",
-   "steps": 21,
+   "steps": 20,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1426,7 +1426,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "two_portions__counter",
-   "steps": 21,
+   "steps": 20,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],

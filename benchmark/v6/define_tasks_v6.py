@@ -1389,8 +1389,9 @@ def T07(t):
     def both_at_once(region):
         return (to_stove(SOUP, region, heat=False)[1:] + [S("press", button="kitchen_stove/power_button")]
                 + to_microwave(BOWL, heat=False)
-                + [S("approach", target="kitchen_microwave/start_button"),
-                   S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
+                # 11-22: press right after closing the door, as heat does (its press parks at (4.59, 1.68) and passed);
+                # the retired approach became navigate(start_button), parked at (5.07, 1.57, 120): no IK, 2 of 2
+                + [S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
                    S("stop", appliance=MW), S("close", articulated=MW), nav(ST), S("stop", appliance=ST)])
     two_cases = {c: dict(add={SOUP: {"asset": SOUP, **copy.deepcopy(pose)},
                               BOWL: {"asset": BOWL, **copy.deepcopy(ON_ISLAND)}},
