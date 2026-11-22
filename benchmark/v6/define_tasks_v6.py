@@ -887,7 +887,10 @@ def T05(t):
     t["instruction"], t["instruction_zh"] = PENCIL_TXT
     tail_desk = [nav("desk_1/top"), place("pencil", "desk_1/top")]
     # (11-17, user: no hint where the pens are kept, no "close the doors"; an open door is still a fault)
-    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90}
+    # 11-22: lying across the shelf's front, 10 cm in -- pointing into the cabinet at (3.63, 0.36) the pencil was
+    # never picked (0 of 13: v5 runs, v6full_1119, v6_sticky_1121)
+    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.46], "yaw_deg": 0.0}
+    in6_pencil = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.50, 0.41], "yaw_deg": 0.0}
 
     def fetch(x, art):
         return [nav(x), pick(x), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]
@@ -1134,12 +1137,12 @@ def T05(t):
             rationale="find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen "
                       "is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen "
                       "taken) costs",
-            cases={"pen_in_4": dict(move={"pen": in4}, goal=pen_goal, route=pen4,
+            cases={"pen_in_4": dict(move={"pen": in4, "pencil": in6_pencil}, goal=pen_goal, route=pen4,
                                     failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/inside_shelf"]],
                                                         fid="resource_pen_in_cabinet")]),
                    # pen_in_use (11-17, replaces pen_in_6): only the pencil in the cabinets (cabinet 6)
                    "pen_in_use": dict(
-                       move={"pen": on_list("pen")}, add=copy.deepcopy(list_add),
+                       move={"pen": on_list("pen"), "pencil": in6_pencil}, add=copy.deepcopy(list_add),
                        goal={"all": [*on_desk("pencil"), *stays("pen", LIST), ["is_closed", "kitchen_cabinet_6"],
                                      ["is_closed", "kitchen_cabinet_4"], ["hand_empty", "right"]]},
                        watch=["pen", "pencil", LIST],
