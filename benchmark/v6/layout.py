@@ -64,9 +64,9 @@ ROLL_EDGE_M = 0.06
 # counts its south end and its north end, but a pick there failed (T25 s11: a cup at (-0.38, 7.04), no grasp from any
 # base pose; plates at its north end 1 of 3) and 18 cm in from the front no arm reached (T25 counter_cup).  What the
 # route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
-PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.15),
+PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.05),
              # cabinet 4's low top (0.62 m): what was picked there stood at y 0.40-0.46 (8 of 10); not deeper than 0.38
-             "kitchen_cabinet_4/top": (1.0, 0.38, 1.80, 0.60)}
+             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62)}   # y by the box: a cup centred no deeper than 0.38
 
 
 # ----------------------------------------------------------------- scene data
@@ -749,8 +749,10 @@ def apply_layout(cfg, spec, rng):
                    or sh(m)[3] > S[3] - ROLL_EDGE_M for m in rolling):
                 return False
             zone = PICK_ZONE.get(c["support"])
-            if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= (sh(m)[1] + sh(m)[3]) / 2
-                                <= zone[3] for m in members):
+            # x: the centre (a plate over the west edge sticks out); y: the whole thing (11-22 v6_sticky_1121 T13 s10: a
+            # plate centred at 9.04 reached 9.16, under the wall cabinet's north end: its slide collided)
+            if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= sh(m)[1]
+                                and sh(m)[3] <= zone[3] for m in members):
                 return False
             # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
             return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))
