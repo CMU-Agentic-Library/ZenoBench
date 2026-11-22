@@ -1158,20 +1158,24 @@ def t27():
                       goal={"all": rg + [["not on", "empty_tray", FS], H]}, route=[look(T2)] + fridge([R]))}),
         "two_leftovers": fam(
             "rice_on_table", ["goal_items_unstated", "multi_object_goal"],
-            "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the "
-            "table where someone is still eating from a bowl -- in use)",
-            "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being "
-            "eaten from at a place",
+            "where the soup is (seed: in a lunch box on the table, or on the stove -- leftovers; or a pot of it on "
+            "the table where someone is still eating from a bowl -- in use)",
+            "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot "
+            "still being eaten from at a place",
             "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating "
             "the soup, then only the rice",
             {"soup_at_seat": dict(add={**rice_east, SOUP_P: on("soup_pot", T2, 3.35, 7.40), **seat},
                                   watch=[R, SOUP_P, "eating_bowl"],
                                   goal={"all": rg + [["near_start", SOUP_P, 0.03], ["near_start", "eating_bowl", 0.03], H]},
                                   route=[look(T2)] + fridge([R])),
-             **{c: dict(add={**(rice_east if "table" in c else rice), "leftover_soup": on("soup_pot", sup, *xy)}, watch=[R, "leftover_soup"],
+             # 11-21 (user): the soup left over in a lidded steel lunch box (16 x 11 cm), not the pot -- the pot (30 cm
+             # with its handles) and the rice box never both fitted the 54 cm shelf (PHYSICS_EXCLUDED B6).  The two
+             # boxes side by side at the shelf's front; the soup box 2 cm over the stove's south edge / near the
+             # table's east edge like the rice, for the thickness pinch
+             **{c: dict(add={**(rice_east if "table" in c else rice), "leftover_soup": on("steel_lunch_box", sup, *xy)}, watch=[R, "leftover_soup"],
                      goal={"all": rg + [["on", "leftover_soup", FS], ["upright", "leftover_soup"], H]},
-                     route=[look(T2)] + ([look("kitchen_stove/top")] if "stove" in sup else []) + fridge([R, "leftover_soup"], spots=((5.90, 3.46), (5.90, 3.20))))   # the pot (30 cm with handles) does not fit beside the box: the flat box at the back, the pot in front
-             for c, sup, xy in (("soup_on_table", T2, (3.35, 6.05)), ("soup_on_stove", "kitchen_stove/top", (8.41, 1.725)))}}),
+                     route=[look(T2)] + ([look("kitchen_stove/top")] if "stove" in sup else []) + fridge([R, "leftover_soup"], spots=((5.78, 3.16), (6.03, 3.16))))
+             for c, sup, xy in (("soup_on_table", T2, (3.70, 6.05)), ("soup_on_stove", "kitchen_stove/top", (8.41, 1.55)))}}),
         "still_eating": fam(
             "rice_on_table", ["referent_clue"], "the seed's layout only",
             "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
