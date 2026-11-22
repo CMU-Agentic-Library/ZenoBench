@@ -782,7 +782,9 @@ def t25():
     t = base_task("T25_drink_for_guest", "ZB-T25", "A guest is sitting in the living room. Bring him something "
                   "to drink.", "客人在客厅坐着，给他拿点喝的。", "drink_on_island", ctl,
                   {"all": serve() + [H]}, fetch(J, TV, [7.30, 0.36]) + fetch(CUP, TV, [7.55, 0.36]), [J, CUP])
-    in_fridge = lambda n: {"asset": "juice_bottle", **P(FS, 5.90, 3.30)}  # noqa: E731
+    # 11-21 (v6_verify_1120b s13: the cold juice 18 cm in, no reachable grasp): at the door edge, like the tomatoes
+    # (y 3.12-3.14, picked 8 of 9)
+    in_fridge = lambda n: {"asset": "juice_bottle", **P(FS, 5.90, 3.16)}  # noqa: E731
     MUGS = ["mug_dining_cabinet", "mug_shelf", "mug_counter"]       # the dining room's mugs: the fallback
 
     # 11-21 (user): the stock cups stand on a top, not in a cabinet: no cup inside a cabinet was picked (taken by its
@@ -1746,7 +1748,9 @@ def t18():
             "the low wall cabinet's door is stuck and does not open (locked_articulated, to be supported in sim); "
             "the other low cabinet also holds two clean bowls",
             "the named cabinet cannot be opened: take the bowls from the other low cabinet instead",
-            {"": dict(add={B1: bowl(CAB4, 1.25, 0.42), B2: bowl(CAB4, 1.55, 0.42), **spoons}, remove=remove,
+            # 11-21 (muqingj v6full_1119: the bowl at x 1.55, by cabinet 4's right side, no reachable grasp; 1.25 and
+            # 1.40 were picked): both bowls in from the sides, 5 cm apart
+            {"": dict(add={B1: bowl(CAB4, 1.22, 0.42), B2: bowl(CAB4, 1.45, 0.42), **spoons}, remove=remove,
                       locked_articulated=[C6], goal=goal([B1, B2], (C4,)), watch=[B1, B2, S1, S2],
                       route=[nav(C6), look(C6)] + two_from(C4, B1, B2) + spoon_route)}),
     }

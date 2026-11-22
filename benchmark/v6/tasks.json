@@ -150862,7 +150862,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.25,
+        1.22,
         0.42
        ],
        "yaw_deg": 0.0
@@ -150871,7 +150871,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.55,
+        1.45,
         0.42
        ],
        "yaw_deg": 0.0
@@ -191564,7 +191564,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
@@ -191829,7 +191829,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
@@ -192085,7 +192085,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       },
@@ -192324,7 +192324,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
