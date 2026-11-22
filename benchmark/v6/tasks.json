@@ -78474,18 +78474,18 @@
       "pencil": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.63,
-        0.36
+        3.5,
+        0.41
        ],
-       "yaw_deg": 90
+       "yaw_deg": 0.0
       },
       "pen": {
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.4,
-        0.42
+        0.46
        ],
-       "yaw_deg": 90
+       "yaw_deg": 0.0
       }
      },
      "remove": [
@@ -78634,10 +78634,10 @@
       "pencil": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.63,
-        0.36
+        3.5,
+        0.41
        ],
-       "yaw_deg": 90
+       "yaw_deg": 0.0
       },
       "pen": {
        "support": null,
