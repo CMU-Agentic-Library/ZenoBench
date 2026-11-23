@@ -370,7 +370,7 @@ class SearchObjectPolicy(AtomicPolicy):
     to the furniture is in view from (viewpoints.reachable_in_view: one base_reachable field over all of them);
     a piece with none is not driven to and the failure names it.  At each piece a look per aim point (every
     support, highest first; along a long one several points, _search_aims), until the object is seen.  A
-    drive the base planner finds no path for skips that piece; one that fails after moving fails the search.  A piece counts as visited when some aim point was in the head camera
+    stand-off the whole-body base planner finds no path to is skipped; a drive that fails fails the search.  A piece counts as visited when some aim point was in the head camera
     there (walls and furniture boxes, no dynamic occluders)."""
 
     def execute(self, name, region=None):
@@ -378,6 +378,8 @@ class SearchObjectPolicy(AtomicPolicy):
         from ..evaluator import room_of
         from ..perception import project_from
         from .base_motion import standoff_poses
+        from ..run import observe
+        from ..skill_jobs.base import RigBase
         x, y, _ = rig.base_pose()
         room = region or room_of(rig.ann.rooms, (x, y))
         furniture = {}
@@ -410,20 +412,15 @@ class SearchObjectPolicy(AtomicPolicy):
             if f not in goal:
                 continue
             rig.caption = f"SEARCH {name}: {f}"
-            # 11-23 (user): a stand-off the reachability field takes but the base planner finds no path to (v6
-            # dining room: kitchen_cabinet_3's from the west, "search limit", 0 of 4) skips that piece, as one with
-            # no stand-off does; a drive that failed after the base moved, or with the load lost, still fails
-            before, held = rig.base_pose(), rig.held
-            try:
-                skills.navigate(rig, goal[f], label=f"search_{f}", raise_load=rig.held is None)
-            except SkillFailure as e:
-                after = rig.base_pose()
-                if rig.held != held or math.hypot(after[0] - before[0], after[1] - before[1]) > 0.05:
-                    raise
+            # 11-23 (user): the reachability field is the cheap test; a stand-off it takes that the whole-body base
+            # planner finds no path to (v6 dining room: kitchen_cabinet_3's from the west, "search limit", 0 of 4)
+            # is not driven to, as one with no stand-off (the drive check park_search makes, RigBase.drivable)
+            if not RigBase(rig).drivable(observe(rig), tuple(goal[f])):
                 undriven.append(f)
-                rig.log("search_skip", place=f, reason=f"no drive to the stand-off: {e}",
-                        pose=[round(v, 2) for v in after])
+                rig.log("search_skip", place=f, reason="no base path to the stand-off",
+                        pose=[round(v, 2) for v in goal[f]])
                 continue
+            skills.navigate(rig, goal[f], label=f"search_{f}", raise_load=rig.held is None)
             in_view, found = [False], [None]
 
             def check(r, p):
