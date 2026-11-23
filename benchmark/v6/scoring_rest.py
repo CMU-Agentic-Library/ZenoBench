@@ -253,16 +253,6 @@ R[("T12", "bins_capacity")] = tiers(
     zh=dict(sit="没有储物篮；两个小箱子，一个装满积木一个空着（并排或分在不同房间）；小车在地上，鸭子在书桌",
             good="两样进有空的箱子，满箱的积木没动", second="分开放了或压在满箱上，但积木都还在箱里",
             worst="玩具进了箱子，但把满箱的积木挤出来了", no="有玩具没收；箱子倒了；还拿着或掉了"))
-R[("T12", "find_all_toys")] = tiers(
-    second=lambda g, lid: plus(drop(g, "near_start"), ["not inside", "kitchen_sponge", "storage_basket"]),
-    worst=lambda g, lid: drop(g, "near_start"),
-    why=("every toy found and in the basket, the yellow sponge untouched",
-         "every toy in the basket, the sponge moved (not into the basket)",
-         "every toy in the basket, and the sponge too (taken for a toy)"),
-    not_ok="a toy not found; the basket tipped; still held or dropped",
-    zh=dict(sit="小车在客厅地上，其他玩具分散在别的房间（2-4 件）；餐桌上一块黄海绵不是玩具",
-            good="找齐全部玩具进篮子，海绵没动", second="玩具齐了，但挪了海绵（没放进篮子）",
-            worst="玩具齐了，海绵也当玩具放进了篮子", no="有玩具没找到；篮子倒了；还拿着或掉了"))
 R[("T12", "castle_stays")] = tiers(
     # the castle standing at the end (its blocks one on another) is what counts for the second tier: nudged, taken
     # apart and built again (user 11-12), or the loose blocks left beside it
@@ -339,21 +329,6 @@ R[("T14", "within_kids_reach")] = tiers(
     not_ok="the book left on the desk, on the floor or elsewhere; still held or dropped",
     zh=dict(sit="红书那一套在卧室高处；孩子明天还要自己拿", good="放到孩子够得着的书架层",
             worst="放回高处那一套里（孩子够不着）", no="书留在桌上、地上或别处；还拿着或掉了"))
-
-
-def _pile_worst(g, lid):
-    books = sorted({a[1] for a in atoms(g, "on_top_of") + atoms(g, "on_any")} | {a[2] for a in atoms(g, "on_top_of")})
-    base = [a for a in g["all"] if a[0] == "on_any"]
-    return {"all": [*base, *[x for b in books for x in _off(b, "desk_1/top")], HAND]}
-
-
-R[("T14", "stack_them_stably")] = tiers(
-    worst=_pile_worst,
-    why=("one pile on the bookcase, largest at the bottom", "",
-         "the books on the bookcase, but not one pile or not largest-first"),
-    not_ok="a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-    zh=dict(sit="书桌上两本大小不同的书；收到卧室书架上摞成一摞，大的在下", good="一摞、大的在下",
-            worst="都上了书架，但没摞成一摞或大小顺序反了", no="有书留在桌上或别处；书掉地上；还拿着或掉了"))
 
 
 def _hw_mug(g):
@@ -697,14 +672,14 @@ def _cups_second(g, lid):
 
 R[("T25", "cups_for_two")] = tiers(
     second=_cups_second, worst=_cups_worst,
-    why=("two plain cups by the guests in all (the ones there kept), none extra, the cabinet closed",
-         "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the "
-         "cups already there moved",
+    why=("two plain cups by the guests in all (the ones there kept), none extra",
+         "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there "
+         "moved",
          "more than two, or two slips at once"),
     not_ok="fewer than two cups; no juice; the juice lying; still held or dropped",
-    zh=dict(sit="两位客人；客人那已有 0-2 个杯子，矮柜里 1-2 个；其他只有餐厅的马克杯；尽量用普通杯子、不重复拿",
-            good="一共两个普通杯子（已有的不动、不多拿），柜门关好",
-            second="一共两个，但柜里有普通杯子却用了马克杯，或柜门没关，或挪了已有的杯子",
+    zh=dict(sit="两位客人；客人那已有 0-2 个杯子，小厨房台面上 1-2 个；其他只有餐厅的马克杯；尽量用普通杯子、不重复拿",
+            good="一共两个普通杯子（已有的不动、不多拿）",
+            second="一共两个，但台面上有普通杯子却用了马克杯，或挪了已有的杯子",
             worst="拿多了，或同时有两个疏忽", no="不到两个杯子；没饮料；躺着；还拿着或掉了"))
 R[("T25", "little_guest")] = tiers(
     second=lambda g, lid: drop(g, "near_start"),

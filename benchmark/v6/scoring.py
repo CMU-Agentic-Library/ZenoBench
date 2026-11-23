@@ -87,11 +87,6 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
     # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
-    ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
-                              "do not cost)",
-                              "one or more missed (stopped before every place was checked); elsewhere; still held "
-                              "or dropped"),
-    # T06 free (control): two blocks on the island, both display spots empty; one block (or both) on either does it
     ("T06", "free"): only("a block (or both) on the low wall cabinet or the TV stand, the hand empty",
                           "elsewhere (coffee table, dining table, left on the island); still held or dropped"),
 }
@@ -301,17 +296,6 @@ def _homework_ready(task: dict) -> dict:
          "why": "a pen or pencil with the red book in place of a notebook"}],
         "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
                   "elsewhere; still held or dropped"}
-
-# T05 pens_per_notebook: exactly one pen or pencil beside each of the 2-3 notebooks, the rest left where they are.
-# The right count not beside the notebooks is the second tier; too many (beside or not) the worst (user 11-11)
-SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
-     "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "near_start"]},
-     "why": "too many brought (one more, or all four), against \"no more\""}],
-    "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"}
 
 # T05 errand_combined: a pen to the study desk, the used mug from it to a kitchen counter.  The errands' order is
 # SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
@@ -844,12 +828,6 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              ("lid_elsewhere", "the pot not covered; the lid not found; someone's bowl tipped; still held"),
              ("no_lid", "the pot not covered; still held or dropped"),
              ("lid_in_use", "the soup not covered; the stew pot tipped; still held or dropped"))},
-         ("T14", "stack_them_stably"): _layout_tiers("stack_them_stably", {
-             "best": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a "
-                     "lower shelf or the bedside bookcase's top), the kid's things untouched",
-             "second": "the pile on the top after moving the kid's things (still standing)",
-             "worst": "the books on a bookcase, but not one pile or not largest-first"},
-             "a book left on the desk or elsewhere; a book on the floor; still held or dropped"),
          ("T11", "fruit_plate_for_guests"): _layout_tiers("fruit_plate_for_guests", {
              "best": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) "
                      "with the apple and the orange in front of the guests, the kid's homework untouched",
@@ -933,6 +911,331 @@ def with_ideal(task_id: str, design: str, lid: str, p: dict) -> dict:
     return p
 
 
+# 11-20 (user): the levels tell substitutes apart, not how tidily the job was done.  Slips (a door left open, a
+# thing nudged or tipped, not squared, at the edge) are not scored; a step the instruction asks for and skipped is
+# not done (no level); success is kept simple.  ``loosen`` rewrites every seed's tiers this way:
+# - dropped everywhere: is_closed, squared, never_picked, and ``upright`` of things the task does not place;
+# - ``near_start`` of other things widened to STAY_TOL (left there, not taken or used; a nudge is free), except
+#   ``strict`` ones: things moved to make room or used though in use -- that is the substitute the level scores;
+# - per design (LOOSEN): ``drop`` more atoms (pred, name glob); ``step``: an instruction step every level must do
+#   too -- its atoms (from the closest best group) are added to every level, so a level that only skipped it
+#   falls away (``unless``: a level with such an atom is a substitute route the step does not apply to);
+#   ``require``: a level without those atoms of the best is no level (too many brought); ``mention``: names every
+#   level must still place;
+# then a level that can no longer be told from a higher one is left out and the rest renumbered 1.0, 0.6, 0.3.
+# Per seed (``by_layout``, keyed by the layout's case): ``sub`` -- the ideal is there, a substitute in the scene too:
+# the best tier with those names swapped is a 0.6 level; ``demote`` -- best groups naming these things are the
+# substitute (0.6); ``wrong`` -- the wrong place (the other table, desk, bed, room, surface) scores 0.3 (user 11-20).
+STAY_TOL = 0.25
+SLIP_PREDS = {"is_closed", "squared", "never_picked"}
+_PLACING = {"on", "on_any", "inside", "inside_any", "fully_inside", "on_top_of", "count_on_at_least",
+            "count_on_at_most", "hidden", "covered", "same_arrangement", "grouped", "near_any"}
+_STRICT_ALL = {"strict": ["*"]}
+LOOSEN: dict = {
+    **{("T01", d): _STRICT_ALL for d in ("table_seats", "no_room_fallback", "reader_seat")},
+    ("T01", "which_book"): {"drop": [("near_start", "book_island"), ("near_start", "book_other")]},
+    # loose: B is free, the block from the other room is the substitute (11-20)
+    ("T02", "crowded_use_another"): {"strict": ["wooden_block_b"], "by_layout": {"loose": {"demote": ["floor_block"]}}},
+    ("T02", "tower_for_kid"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
+    ("T02", "tower_for_kid_duck"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
+    ("T02", "block_put_away"): {"drop": [("away_from_edge", "*")]},
+    ("T04", "two_guests"): {"drop": [("clear_of", "*")]},
+    ("T04", "clear_the_drinks_spot"): {"strict": ["kid_*"]},
+    ("T05", "homework_ready"): {"drop": [("near_start", "teddy_bear")]},
+    ("T06", "display_row"): {"strict": ["fam_*"], "drop": [("front_visible", "*"), ("clear_of", "*")]},
+    ("T06", "display_spot_or_tv"): {"strict": ["*"], "drop": [("away_from_edge", "*")]},
+    ("T06", "seen_from_bed"): {"strict": ["bedside_*"]},
+    ("T07", "microwave_holds_pot"): {"strict": ["handled_cooking_pot", "pot_lid"]},
+    **{("T08", d): {"step": [("on", "kitchen_sponge")]} for d in ("sponge_on_island", "wipe_and_sort")},
+    ("T08", "which_surface"): {"step": [("on", "kitchen_sponge")], "by_layout": {
+        "island": {"wrong": [[["wiped", "dining_table_2/top"], ["on", "kitchen_sponge", "kitchen_island/top"]]]},
+        "dining": {"wrong": [[["wiped", "kitchen_island/top"], ["on", "kitchen_sponge", "kitchen_island/top"]]]}}},
+    # the kid's foam cube used instead of the sponge (the sponge never taken, strict) is a substitute: no sponge to
+    # put back
+    ("T08", "far_sponge_tv"): {"step": [("on", "*sponge*")], "unless": [("near_start", "kitchen_sponge")],
+                               "strict": ["kitchen_sponge"], "drop": [("near_start", "foam_cube_toy")]},
+    ("T08", "return_sponge_home"): {"drop": [("inside", "spare_sponge")]},
+    **{("T09", d): {"step": [("stirred", "*"), ("covered", "*")]}
+       for d in ("lid_off", "lid_on_spoon_away", "tomato_in_fridge", "x6_gd_tomato_elsewhere", "pot_in_dining_room")},
+    ("T09", "pot_in_use"): {"strict": ["soup_pot"], "step": [("stirred", "*"), ("covered", "*")]},
+    ("T10", "trash_moved"): {"drop": [("near_start", "trash_fill_*")]},
+    ("T11", "fruit_plate_for_guests"): {"strict": ["kid_*"], "mention": ["apple", "lunch_orange"]},
+    ("T13", "copy_the_setting"): {"drop": [("near_start", "example_*")], "step": [("same_arrangement", "*")],
+                                  "by_layout": {"bowl_cup": {"sub": {"cup": "mug"}},
+                                                "plate_bowl_mug_left": {"sub": {"mug": "cup"}}}},
+    ("T15", "lid_elsewhere"): {"by_layout": {"dining": {"sub": {"pot_lid": "plate_counter_a"}}}},
+    ("T01", "which_table"): {"strict": ["*"], "by_layout": {
+        **{c: {"wrong": [[["on", "paperback_book", "dining_table_1/top"]]]}
+           for c in ("near_a", "near_b", "near_a_flat", "near_b_flat")},
+        **{c: {"wrong": [[["on", "paperback_book", "dining_table_2/top"]]]}
+           for c in ("far_a", "far_b", "far_a_flat", "far_b_flat")}}},
+    ("T21", "which_table"): {"by_layout": {"east": {"wrong": [[["on", "tissue", "dining_table_1/top"]]]},
+                                           "west": {"wrong": [[["on", "tissue", "dining_table_2/top"]]]}}},
+    ("T24", "where_is_he"): {"by_layout": {"study": {"wrong": [[["on_any", "snack_apple", ["desk_3/top", "bookcase_4/top"]]]]},
+                                           "bedroom": {"wrong": [[["on", "snack_apple", "desk_1/top"]]]}}},
+    ("T26", "two_bedrooms"): {"by_layout": {"room_east": {"wrong": [[["in_room", "living_car", "bedroom_0_0"]]]},
+                                            "room_south": {"wrong": [[["in_room", "living_car", "bedroom_0_1"]]]}}},
+    ("T28", "which_bed"): {"by_layout": {
+        "east": {"wrong": [[["on", "kid_cup", "cell_shelf_2/top"], ["upright", "kid_cup"]]]},
+        "south": {"wrong": [[["on_any", "kid_cup", ["bookcase_3/top", "desk_1/top"]], ["upright", "kid_cup"]]]}}},
+    ("T14", "homework_stays"): {"strict": ["homework", "hw_pencil"],
+                                "step": [("near_start", "homework"), ("near_start", "hw_pencil")]},
+    **{("T20", d): {"step": [("upright", "juice_bottle")]}
+       for d in ("bottle_on_cabinet", "m_bottle_on_tv_stand", "x6_gd_bottle_put_away")},
+    ("T22", "eat_now"): {"strict": ["homework", "hw_*"]},
+    ("T22", "tray_elsewhere"): {"drop": [("on_any", "tray_book_*")]},
+    ("T23", "dropped_in_two_rooms"): {"strict": ["kid_book_*"]},
+    ("T25", "cold_one"): {"drop": [("near_start", "guest_juice")]},
+    ("T25", "cups_for_two"): {"drop": [("near_start", "tv_cup_*")], "require": [("count_on_at_most", "*")]},
+    ("T26", "whose"): {"strict": ["kid_book_*"]},
+    ("T26", "bear_to_bed"): {"strict": ["b3_*"]},
+    ("T27", "fridge_out_of_view"): {"strict": ["stored_*"]},
+    ("T28", "where_his_cup_is"): {"drop": [("near_start", "counter_mug"), ("near_start", "cup_counter_b")]},
+    ("T28", "cup_out_of_view"): {"strict": ["b3_*"]},
+    ("T28", "already_there"): {"drop": [("near_start", "kid_cup")]},
+    ("T29", "homework_on_table"): {"strict": ["homework", "hw_*", "desk_pencil"]},
+}
+
+
+# 11-20: what the substitutes define_tasks_v6.EXTRA_SUBSTITUTES puts into a seed score (keyed by task, layout);
+# ``best_plus``: atoms the best level adds (the thing that must not be taken stays where it is)
+_ISL, _C6 = "kitchen_island/top", "kitchen_cabinet_6/top"
+_BOWLS3 = ["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"]
+_PLATES = ["plate_counter_a", "plate_counter_b"]
+_T26_ROOM = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0", "desk_3/top"] + [f"large_shelf_4/shelf_{k}" for k in range(5)] + [f"large_shelf_5/shelf_{k}" for k in range(4)]   # his room's furniture
+_T04_KID = [(0.6, [["on", "kid_cup", _C6], ["upright", "kid_cup"]])]
+LOOSEN_SEEDS: dict = {
+    ("T03", "utensils_apart__bin_free"): {"sub": [{"wide_storage_bin": "storage_basket"},
+                                                  {"wide_storage_bin": "spare_tray"}]},
+    ("T05", "no_pen_pencil_away"): {"sub": {"pencil": "spare_pen"}},
+    ("T08", "far_sponge_tv"): {"strict": ["kitchen_sponge", "spare_sponge"], "sub": {"kitchen_sponge": "spare_sponge"},
+                               "extra": [(0.3, [["wiped", _ISL], ["near_start", "kitchen_sponge", 0.05],
+                                                ["near_start", "spare_sponge", 0.05]])]},
+    ("T08", "far_sponge_spare_only"): {"strict": ["spare_sponge"],
+                                       "extra": [(0.3, [["wiped", _ISL], ["near_start", "spare_sponge", 0.05]])]},
+    ("T09", "lid_on_spoon_away"): {"sub": {"pot_lid": "lid_plate"}},
+    ("T09", "tomato_in_fridge__in_fridge"): {"sub": {"fridge_tomato": "big_tomato"}},
+    ("T09", "x6_gd_tomato_elsewhere__dining"): {"best_plus": [["near_start", "plate_tomato", 0.25]],
+                                                "sub": {"cherry_tomato_2": "plate_tomato", "_score": 0.3}},
+    ("T09", "pot_in_dining_room__pot_away"): {"sub": {"handled_cooking_pot": "spare_pot"}},
+    ("T10", "trash_moved__dining"): {"sub": {"trash_can": "bathroom_trash"}},
+    ("T10", "x6_gd_can_put_away__in_cabinet"): {"best_plus": [["near_start", "fridge_soda", 0.25]],
+                                                "extra": [(0.3, [["inside", "soda_can", "trash_can"],
+                                                                 ["inside", "fridge_soda", "trash_can"]])]},
+    ("T16", "box_in_cabinet__in_cabinet"): {"sub": {"snack_box": "spare_bowl"}},
+    ("T19", "m_can_in_dining_room"): {"best_plus": [["near_start", "seat_can", 0.25]],
+                                      "sub": {"_plus": [["inside", "seat_can", "wide_storage_bin"]], "_score": 0.3}},
+    ("T19", "x6_gd_can_put_away__in_4"): {"best_plus": [["near_start", "full_juice", 0.25]],
+                                          "sub": {"_plus": [["inside", "full_juice", "wide_storage_bin"]], "_score": 0.3}},
+    ("T20", "m_bottle_on_tv_stand"): {"sub": {"juice_bottle": "living_juice"}},
+    ("T24", "no_apples_for_him__apple_free"): {"sub": {"snack_apple": "snack_banana"}},
+    ("T25", "drink_in_fridge__juice"): {"sub": {"cold_juice": "cold_soda"}},
+    ("T26", "scattered__basket"): {"sub": {"kids_basket": "kids_toy_bin"}},
+    ("T30", "how_many__three_bowls"): {"extra": [(0.6, [["count_on_at_least", _BOWLS3 + ["spare_mug"], _ISL, 3]]),
+                                                 (0.3, [["count_on_at_least", _BOWLS3 + ["spare_mug"] + _PLATES, _ISL, 3]])]},
+    ("T30", "bowl_put_away__bowl_inside"): {"extra": [(0.6, [["count_on_at_least", ["stored_mug"], _ISL, 1]]),
+                                                      (0.3, [["count_on_at_least", _PLATES, _ISL, 1]])]},
+    **{("T30", lid): {"extra": [(0.3, [["count_on_at_least", ["soup_bowl_1", "soup_bowl_2"], _ISL, 2],
+                                       ["count_on_at_least", ["soup_bowl_1", "soup_bowl_2"] + _PLATES, _ISL, 3]])]}
+       for lid in ("how_many__two_bowls", "bowls_in_cabinet__one_inside")},
+    ("T30", "bowl_put_away__mug_inside"): {"extra": [(0.3, [["count_on_at_least", ["stored_plate"] + _PLATES, _ISL, 1]])]},
+    **{("T02", lid): {"sub": {"rubber_duck": "kitchen_sponge", "_score": 0.3}}
+       for lid in ("tower_for_kid_duck__study", "tower_for_kid_duck__counter")},
+    **{("T04", lid): {"extra": _T04_KID} for lid in ("no_cup", "no_cup_mug_away", "no_cup_mug_away__alt_dining_table_2")},
+    ("T04", "two_guests__mug"): {"extra": [(0.6, [["on", "cup_counter_b", _C6], ["upright", "cup_counter_b"],
+                                                  ["on", "kid_cup", _C6], ["upright", "kid_cup"]])]},
+    ("T11", "basket_missing"): {"extra": [(0.6, [["inside", "apple", "used_bowl"]])]},
+    ("T13", "no_cup"): {"sub": {"mug": "kid_cup"}},
+    ("T13", "copy_the_setting__no_cup"): {"sub": {"mug": "kid_cup"}},
+    # third levels (user 11-20: the more levels the better)
+    ("T13", "copy_the_setting__bowl_cup"): {"sub": [{"cup": "mug"}, {"cup": "kid_cup", "_score": 0.3}]},
+    ("T13", "copy_the_setting__plate_bowl_mug_left"): {"sub": [{"mug": "cup"}, {"mug": "kid_cup", "_score": 0.3}]},
+    ("T15", "lid_elsewhere__dining"): {"sub": [{"pot_lid": "plate_counter_a"}, {"pot_lid": "plate_counter_b"},
+                                               {"pot_lid": "cover_book", "_score": 0.3}]},
+    ("T09", "lid_on_spoon_away"): {"sub": [{"pot_lid": "lid_plate"}, {"pot_lid": "cover_book", "_score": 0.3}]},
+    ("T09", "lid_missing"): {"sub": {"lid_plate": "cover_book"}},
+    ("T08", "far_sponge_foam_cube"): {"strict": ["kitchen_sponge", "spare_sponge"],
+                                      "sub": {"kitchen_sponge": "spare_sponge"}, "shift": True},
+    ("T30", "bowls_in_cabinet__two_inside"): {"extra": [(0.3, [["count_on_at_least", _BOWLS3 + _PLATES, _ISL, 3]])]},
+    ("T26", "scattered__basket"): {"sub": {"kids_basket": "kids_toy_bin"}, "extra": [
+        (0.3, [["on_any", n, _T26_ROOM] for n in ("living_car", "living_duck", "living_block")])]},
+    ("T29", "which_table__east"): {"wrong": [[["inside", "toy_west", "toy_box"]]]},
+    ("T29", "which_table__west"): {"wrong": [[["inside", "toy_east", "toy_box"]]]},
+}
+
+
+# 11-20: the levels' words follow loosen -- what no longer scores (a door, a nudge, tidiness, a fault count) goes out
+# of the "why" text; what still does (a thing in use taken, things moved to make room, the soup's steps) stays
+WHY_FIX = [
+    (r"no fault: the glass \(two apart for two guests\) upright where it belongs, nothing disturbed, doors closed",
+     "the glass (two for two guests) upright where it belongs"),
+    (r"one fault: a mug for the glass \(iced: the kid's cup\), the other low cabinet for the spot, the kid's things "
+     r"moved, two touching, or a door left open",
+     "a mug for the glass (iced: the kid's cup), the other low cabinet for the spot, or the kid's things moved"),
+    (r"two faults or more: the kid's plastic cup \(iced: a mug\), another top, the bowl or lid left outside the "
+     r"kitchen, or several faults together",
+     "the kid's plastic cup (iced: a mug), another top, or the bowl or lid left outside the kitchen"),
+    (r"one fault: a substitute toy \(toy block or duck\) as the third level, or the base at the edge \(block A used "
+     r"as the base where it lay\); doors closed", "a substitute toy (toy block or duck) as the third level"),
+    (r"two faults \(a substitute and the base at the edge\), the dish sponge as the third level, or a cabinet door "
+     r"left open", "the dish sponge as the third level"),
+    (r"all three in one row, squared, at the front, apart, on", "all three in one row on"),
+    (r", a block askew, or the row split over two tops", ""),
+    (r"touching or at the back, crammed onto the full cabinet, the family's things moved, or several faults",
+     "crammed onto the full cabinet or the family's things moved"),
+    (r"lying on the table; or another bottle brought instead \(the one in use, one from the stock\), or the stock "
+     r"disturbed", "another bottle brought instead (the one in use, one from the stock)"),
+    (r"the soup in the empty pot, but the full pot moved off its burner \(still standing\), or not stirred or not "
+     r"covered", "the soup in the empty pot, but the full pot moved off its burner"),
+    (r"the soup in the empty pot but neither stirred nor covered; or ", ""),
+    (r"two side steps or more missed; or ", ""),
+    (r"something extra moved or brought, a door left open, the mug", "or the mug"),
+    (r"nothing anyone is using taken, nothing extra moved, doors closed, ", "nothing anyone is using taken, "),
+    (r", several faults", ""), (r"; or several faults", ""), (r", or several faults", ""),
+    (r"(?:a|the) door left open(?:; or |, or |; )", ""), (r"the (?:cabinet|fridge) left open or ", ""),
+    (r", the cabinet left open or the cups already there moved", ""), (r"the fridge open and the cereal moved; or ", ""),
+    (r"; or right places with a door left open", ""), (r"; or in the microwave with its door left open", ""),
+    (r"; or the door left open", ""), (r", or a cabinet door left open", ""),
+    (r",? (?:and )?(?:every |both |its |the )?(?:cabinet |microwave )?doors? closed", ""),
+    (r" \(the cabinet closed\)", ""), (r" \(closed\)", ""), (r", the (?:fridge|cabinet) closed", ""),
+    (r", 10 cm from its edge and its things", ""), (r", 5 cm from the edge and clear of the table's things", ""),
+    (r", the base 5 cm from the edge", ""), (r", 10 cm clear", ""), (r" and 2 cm from the edge", ""),
+    (r", or squeezed among the things on a table or at its edge", ""), (r" or at the edge", ""),
+    (r", the bowl upright", ""), (r" or tipped", ""), (r" \(still standing\)", ""),
+    # what is left of "nudged" is a thing moved more than 25 cm (STAY_TOL): moved off its place
+    (r"the castle standing at the end, but taken apart and built again, nudged, or", "the castle moved off its place, or"),
+    (r"lying on the table and the stock disturbed", "the stock moved off its place"),
+    (r" \(the kid's can still standing\)", ""), (r"nudged", "moved off its place"),
+]
+
+
+def fix_why(text: str) -> str:
+    import re
+    for a, b in WHY_FIX:
+        text = re.sub(a, b, text)
+    return text
+
+
+def _names(x) -> list:
+    return list(x) if isinstance(x, list) else [x]
+
+
+def _match(atom, pred, glob) -> bool:
+    from fnmatch import fnmatch
+    return atom[0] == pred and len(atom) > 1 and any(fnmatch(str(n), glob) for n in _names(atom[1]))
+
+
+def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
+    """The seed's tiers with slips not scored, skipped steps no level, and the levels left renumbered."""
+    import json
+    cfg = dict(LOOSEN.get((task["task_id"][:3], design), {}))
+    cfg.update(cfg.pop("by_layout", {}).get(lid.split("__")[-1], {}))
+    cfg.update(LOOSEN_SEEDS.get((task["task_id"][:3], lid), {}))
+    goal = {**task, "goal": task["variants"][lid].get("goal") or task["goal"]}
+    strict, drop = cfg.get("strict", []), cfg.get("drop", [])
+
+    def groups(g):
+        gs = g.get("any") or [[]]
+        return [list(g.get("all", [])) + list(grp) for grp in gs]
+
+    def clean(grp):
+        subjects = {n for a in grp if a[0] in _PLACING and len(a) > 1 for n in _names(a[1])} | \
+            {a[2] for a in grp if a[0] == "on_top_of"}
+        out = []
+        for a in grp:
+            if a[0] in SLIP_PREDS or any(_match(a, pr, gl) for pr, gl in drop):
+                continue
+            if a[0] == "upright" and a[1] not in subjects:
+                continue
+            if a[0] == "near_start" and not any(_match(a, "near_start", gl) for gl in strict):
+                a = ["near_start", a[1], max(float(a[2]) if len(a) > 2 else 0.0, STAY_TOL)]
+            if a not in out:
+                out.append(a)
+        return out
+
+    tiers = []
+    for t in p["tiers"]:
+        g = tier_goal(t, goal, lid)
+        if g == NA:
+            continue
+        tiers.append((t, [clean(grp) for grp in groups(g)]))
+    if not tiers:
+        return p
+    best = tiers[0][1]
+
+    def with_steps(grp):
+        if not cfg.get("step") or any(_match(a, pr, gl) for pr, gl in cfg.get("unless", []) for a in grp):
+            return grp
+        bg = max(best, key=lambda b: sum(a in grp for a in b))
+        return grp + [a for a in bg if any(_match(a, pr, gl) for pr, gl in cfg["step"]) and a not in grp]
+
+    def keeps(grp):
+        for pr, gl in cfg.get("require", []):
+            if not any(all(a in grp for a in bg if _match(a, pr, gl)) and any(_match(a, pr, gl) for a in bg)
+                       for bg in best):
+                return False
+        return all(any(len(a) > 1 and n in _names(a[1]) for a in grp) for n in cfg.get("mention", []))
+
+    seen, out = [], []
+    for t, gs in tiers:
+        kept = []
+        for grp in gs:
+            grp = with_steps(grp) if out else grp
+            key = {json.dumps(a) for a in grp}
+            if (out and not keeps(grp)) or any(k <= key for k in seen):   # needs a skipped step, or never reached
+                continue
+            if all({json.dumps(a) for a in g} != key for g in kept):
+                kept.append(grp)
+        if kept:
+            seen.extend({json.dumps(a) for a in grp} for grp in kept)
+            out.append({**t, "goal": {"all": [], "any": kept}})
+    def swap(grp, names):                           # every argument naming a swapped thing (exact names only)
+        return [[a[0], *[[names.get(n, n) if isinstance(n, str) else n for n in x] if isinstance(x, list)
+                         else names.get(x, x) if isinstance(x, str) else x for x in a[1:]]] for a in grp]
+
+    def mentions(grp, names):
+        return any(n in json.dumps(a) for a in grp for n in names)
+
+    hand = [["hand_empty", "right"]]
+    best0 = out[0]["goal"]["any"]                   # substitutes are built from the best before best_plus
+    if cfg.get("best_plus"):                        # the thing not to take stays: part of the best level
+        out[0]["goal"]["any"] = [clean(g + cfg["best_plus"]) for g in best0]
+    mid, low = [], []                               # 0.6 / 0.3 groups this seed adds
+    subs = cfg.get("sub") or []
+    for sp in ([subs] if isinstance(subs, dict) else subs):
+        names = {k: v for k, v in sp.items() if not k.startswith("_")}
+        groups = [clean(swap(g, names) + sp.get("_plus", [])) for g in best0]
+        (low if sp.get("_score") == 0.3 else mid).extend(groups)
+    for sc, atoms in cfg.get("extra", []):
+        (low if sc == 0.3 else mid).append(clean(atoms + hand))
+    low += [clean(g + hand) for g in cfg.get("wrong", [])]
+    if cfg.get("demote"):
+        mid += [g for g in out[0]["goal"]["any"] if mentions(g, cfg["demote"])]
+        out[0]["goal"]["any"] = [g for g in out[0]["goal"]["any"] if not mentions(g, cfg["demote"])]
+    reach = lambda g: not any({json.dumps(a) for a in b} <= {json.dumps(a) for a in g}  # noqa: E731
+                              for b in out[0]["goal"]["any"])
+    mid, low = [g for g in mid if reach(g)], [g for g in low if reach(g)]
+    if mid and cfg.get("shift") and len(out) == 2:  # the new substitute is better than the old second level
+        low = out.pop(1)["goal"]["any"] + low
+    if mid:                                         # a substitute though the ideal is there: the 0.6 level
+        if len(out) > 1:
+            out[1]["goal"]["any"] = mid + out[1]["goal"]["any"]
+        else:
+            out.append({"name": "second", "score": 0.6, "raw": "substitute", "goal": {"all": [], "any": mid},
+                        "why": "a substitute though the ideal is there (11-20)"})
+    for i, t in enumerate(out):
+        t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
+    if low:                                         # a poor substitute or the wrong place: 0.3
+        if len(out) >= 3:
+            out[2]["goal"]["any"] += low
+        else:
+            out.append({"name": "worst", "score": 0.3, "raw": "poor_or_wrong", "goal": {"all": [], "any": low},
+                        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"})
+    for t in out:
+        t["why"] = fix_why(t["why"])
+    return {**p, "tiers": out, "D": 1 if len(out) > 1 else 0, "loosened": "11-20"}
+
+
 def attach_scoring(out: dict) -> int:
     """Copy each reviewed design's scoring onto its layouts (per seed: per_layout); returns how many designs are
     reviewed."""
@@ -947,7 +1250,7 @@ def attach_scoring(out: dict) -> int:
             info["scoring"] = copy.deepcopy(s)
             per = {lid: per_layout(s, lid) for lid in info["layouts"]}
             for lid in info["layouts"]:
-                per[lid] = with_ideal(t["task_id"], design, lid, per[lid])
+                per[lid] = loosen(t, design, lid, with_ideal(t["task_id"], design, lid, per[lid]))
             if any(p["top"] != "ideal" or p["D"] != s["D"] for p in per.values()):
                 info["scoring"]["D_by_layout"] = {lid: p["D"] for lid, p in per.items()}
                 info["scoring"]["top_by_layout"] = {lid: p["top"] for lid, p in per.items()}
@@ -1038,9 +1341,7 @@ NOT_OK_ZH = {
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
-    ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
-    ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
     ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
@@ -1093,7 +1394,6 @@ NOT_OK_ZH = {
     ("T15", "lid_elsewhere"): "没盖；没找到锅盖；碰翻了别人的碗；还拿着",
     ("T15", "no_lid"): "没盖；还拿着或掉了",
     ("T15", "lid_in_use"): "汤锅没盖；炖菜的锅碰倒了；还拿着或掉了",
-    ("T14", "stack_them_stably"): "有书留在桌上或别处；书掉地上；还拿着或掉了",
     ("T11", "fruit_plate_for_guests"): "什么都没端过去；水果掉了；还拿着",
     ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",
     ("T10", "x6_gd_can_put_away"): "空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了",

@@ -75,11 +75,7 @@ def test_cup_on_the_desk_beside_the_bed_passes():
 
 
 DEPENDENT = [("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
-             pytest.param("T28", "where_his_cup_is", marks=pytest.mark.xfail(
-                 strict=True, reason="11-10: once the cabinet closes with the hand free (navigate back, close), the "
-                                     "in_cabinet route also solves on_counter (open, look, take the cup from the counter): "
-                                     "it failed there only for closing away from the cabinet. User 11-10: keep it, "
-                                     "the route is the GT.")),
+             ("T28", "where_his_cup_is"),     # 11-21: the cup put away on cabinet 4's top -- the routes branch again
              ("T30", "bowls_in_cabinet")]
 
 
@@ -101,10 +97,12 @@ def test_dependent_decisions_branch_on_what_is_found(tid, vid):
 
 
 def test_search_looks_only_in_its_room():
-    lid = "vessel_decides_appliance__in_pot"         # the pot on the dining table (a search on the floor is an
-    steps = TASKS["T07"]["routes"][TASKS["T07"]["oracle"][lid]]["steps"]   # explore_room: T23's is one now)
+    # the duck searched in the dining room (T07's pot search became a look
+    # at the dining table 11-22; a search on the floor is an explore_room: T23's is one now)
+    lid = "third_toy_elsewhere__duck"
+    steps = TASKS["T02"]["routes"][TASKS["T02"]["oracle"][lid]]["steps"]
     wrong = [dict(s, args={**s["args"], "region": "kitchen_0_0"}) if s["skill"] == "search" else s for s in steps]
-    assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T07", lid, lambda st: wrong))
+    assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T02", lid, lambda st: wrong))
 
 
 def test_reference_routes_pass_the_gate():

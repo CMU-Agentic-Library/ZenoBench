@@ -605,5 +605,25 @@
    0.054
   ],
   "prompt": "one large round ripe red beefsteak tomato with a short green stem, isolated product photo, plain white background"
+ },
+ "big_trash_can": {
+  "size": 0.36,
+  "mass": 1.2,
+  "tags": [
+   "bin",
+   "trash",
+   "container",
+   "floor_container"
+  ],
+  "collider": "round_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/big_trash_can/result/big_trash_can.urdf",
+  "target_size": [
+   0.36,
+   0.36,
+   0.36
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "trash_can scaled up (T10 after_dinner_clear, 11-23)"
  }
 }

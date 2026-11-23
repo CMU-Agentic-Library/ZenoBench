@@ -536,8 +536,9 @@ def T02(t):
         tk_tiers[case] = tiers
     LAYOUT_TIERS[("T02", "tower_for_kid")] = tk_tiers
     # block_put_away: as edge_base (A at the edge, B in the open), the third block put away in a closed low cabinet
+    # 11-22: the block 9 cm in from cabinet 6's front (0.36 was 14 cm in; a pencil top-pinched there was never picked)
     in_cab = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
-              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
+              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.41], "yaw_deg": 0.0}}
     put_away_goal = copy.deepcopy(tower_goal)
     put_away_goal["all"] += [["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
     edge_two = OR(t, "edge_base")                # look, nav A, pick A, nav B, approach B, stack A on B
@@ -723,21 +724,27 @@ def T04(t):
                nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top")]
     shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.50], "yaw_deg": 0.0},  # front: 0.30 m headroom
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
+    # 11-21 (user): the cups put away stand on cabinet 4's top (0.62 m) instead -- inside a cabinet none was picked
+    C4_TOP = {"support": "kitchen_cabinet_4/top", "xy": [1.40, 0.46], "yaw_deg": 0.0}
+    C4_TOP_B = {"support": "kitchen_cabinet_4/top", "xy": [1.62, 0.46], "yaw_deg": 0.0}
+
+    def cup_on_top(x):
+        """the cup on cabinet 4's top: look there, take it to the drinks spot"""
+        return [look("kitchen_island/top"), nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"),
+                nav(x), pick(x), nav("kitchen_cabinet_6/top"), place(x, "kitchen_cabinet_6/top")]
     # x6_gd_cup_in_cabinets (11-17, user): iced lemonade -- a glass; the mug in plain view is a poor stand-in for a
     # cold drink.  cup_in_4: the glass in cabinet 4 (ideal); plastic_only: no glass, the kid's plastic cup in
     # cabinet 6 (moderate).  Cups: glass 0, plastic 1, mug 2; a cabinet door left open costs 1
     closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
     ICED_COST = {C: 0, KID: 1, **{m: 2 for m in MUGS}}
     cup_cases = {
-        "cup_in_4": dict(move={C: shelf["kitchen_cabinet_4"]}, route=cup_from("kitchen_cabinet_6", "kitchen_cabinet_4"),
+        "cup_in_4": dict(move={C: C4_TOP}, route=cup_on_top(C),
                          failures=[f_initial("resource", [["on", C, "kitchen_cabinet_4/inside_shelf"]],
                                              fid="resource_cup_in_cabinet")]),
         "plastic_only": dict(
-            add={KID: {"asset": "plastic_cup", **shelf["kitchen_cabinet_6"]}},
+            add={KID: {"asset": "plastic_cup", **C4_TOP_B}},
             goal={"all": [*up(KID), ["hand_empty", "right"], *closed]},
-            route=[st if st.get("args", {}).get("object") != C and st.get("args", {}).get("destination") != C
-                   else {**st, "args": {k: (KID if v == C else v) for k, v in st["args"].items()}}
-                   for st in cup_from("kitchen_cabinet_4", "kitchen_cabinet_6")])}
+            route=cup_on_top(KID))}
     LT["x6_gd_cup_in_cabinets__cup_in_4"] = cost_tiers([(up(x), ICED_COST[x]) for x in (C, *MUGS)], [(closed, 1)])
     LT["x6_gd_cup_in_cabinets__plastic_only"] = cost_tiers([(up(x), ICED_COST[x]) for x in (KID, *MUGS)],
                                                            [(closed, 1)])
@@ -767,11 +774,12 @@ def T04(t):
     two_cases = {
         "glass_in_cabinet": dict(
             move={"mug": away["dining"][0]},
-            add={G2: {"asset": "breakfast_cup", **shelf["kitchen_cabinet_4"]}},
+            # 11-21 (user): on cabinet 4's top, not inside -- no cup inside a cabinet is picked (rim from above, the
+            # board over the shelf in the way: 1 of 6 in cabinet 4)
+            add={G2: {"asset": "breakfast_cup", **C4_TOP}},
             goal={"all": [*up(C), *up(G2), *apart(C, G2), ["is_closed", "kitchen_cabinet_4"], ["hand_empty", "right"]]},
-            route=first + open_explore("kitchen_cabinet_4") + [
-                nav(G2), pick(G2), S("retreat", obstacle="kitchen_cabinet_4", distance_m=0.3),
-                S("close", articulated="kitchen_cabinet_4"), nav(SPOT), place(G2, SPOT, [3.62, 0.36])]),
+            route=first + [nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"),
+                           nav(G2), pick(G2), nav(SPOT), place(G2, SPOT, [3.62, 0.36])]),
         "mug": dict(move={"mug": away["dining"][0]}, route=second("mug", away["dining"][1])),
         "kid_cup": dict(remove=list(MUGS), add={KID: {"asset": "plastic_cup", **away["study"][0]}},
                         goal={"all": [*up(C), *up(KID), *apart(C, KID), ["hand_empty", "right"]]},
@@ -880,12 +888,20 @@ def T05(t):
     t["instruction"], t["instruction_zh"] = PENCIL_TXT
     tail_desk = [nav("desk_1/top"), place("pencil", "desk_1/top")]
     # (11-17, user: no hint where the pens are kept, no "close the doors"; an open door is still a fault)
-    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90}
+    # 11-22: lying across the shelf's front, 10 cm in -- pointing into the cabinet at (3.63, 0.36) the pencil was
+    # never picked (0 of 13: v5 runs, v6full_1119, v6_sticky_1121)
+    # 11-22 (v6_sticky_1121j s10): 10 cm in, neither was reachable (no collision-free path to any grasp, 2 of 2):
+    # 2 cm behind the shelf's front edge (cabinet 4: y 0.562, cabinet 6: 0.502), the wrist outside the cabinet
+    # 11-22 (v6_sticky_1121j/m s10): in cabinet 4 (shelf z 0.31, 0.30 m clear) the pen had no collision-free IK at
+    # 10 cm in nor 2 cm behind the front (the arm on the cabinet's frame, 2 of 2): on cabinet 4's top instead, as
+    # the cups in cabinet 4 (user, 11-21); the pencil stays in cabinet 6 (picked 2 cm behind its front)
+    in4 = {"support": "kitchen_cabinet_4/top", "xy": [1.40, 0.46], "yaw_deg": 0.0}
+    in6_pencil = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.50, 0.48], "yaw_deg": 0.0}
 
     def fetch(x, art):
         return [nav(x), pick(x), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]
-    pen4 = open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")] \
-        + open_explore("kitchen_cabinet_4") + fetch("pen", "kitchen_cabinet_4") + [nav("desk_1/top"), place("pen", "desk_1/top")]
+    pen4 = [nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"), nav("pen"), pick("pen"),
+            nav("desk_1/top"), place("pen", "desk_1/top")]
     pen6 = open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")] \
         + open_explore("kitchen_cabinet_6") + fetch("pen", "kitchen_cabinet_6") + [nav("desk_1/top"), place("pen", "desk_1/top")]
     pen_goal = {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"], ["is_closed", "kitchen_cabinet_6"],
@@ -1031,6 +1047,8 @@ def T05(t):
     # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
     # pen first, so the trip to the desk also starts the mug's
     MUG = "used_mug"
+    # 11-21: at counter_2's west front -- (-0.15, 7.3) lay 37 cm in, under the wall cabinets (no spot reached, v6full_1116/17)
+    KC_FRONT = [-0.40, 7.60]
     # 11-17 (user): the mug goes "back where it belongs" -- a kitchen counter (0), the island or the stove (1),
     # outside the kitchen (2); seeds: pen_bedroom (the pen free), pen_in_use (the pen on grandma's list, the pencil on
     # the bedroom bookcase: 1; the pen taken from her 2)
@@ -1038,13 +1056,13 @@ def T05(t):
               (["not on", MUG, DESK], 2)]
     errand_cases = {
         "pen_bedroom": dict(move={"pen": P(BOOK, 1.15, -0.40)},
-                            route=fetch_to("pen", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, [-0.15, 7.3])]),
+                            route=fetch_to("pen", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, KC_FRONT)]),
         "pen_in_use": dict(move={"pen": on_list("pen"), "pencil": PENCIL0}, add=copy.deepcopy(list_add),
                            goal={"all": [*on_desk("pencil"), *stays("pen", LIST), ["on_any", MUG, KITCHEN_WORKTOPS_DESK],
                                          ["upright", MUG], ["hand_empty", "right"]]},
                            watch=["pen", "pencil", MUG, LIST],
                            route=[S("search", object="pen", region=REG[DT]), nav("pen"), look("pen")]
-                           + fetch_to("pencil", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, [-0.15, 7.3])])}
+                           + fetch_to("pencil", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, KC_FRONT)])}
     LT["errand_combined__pen_bedroom"] = cost_tiers(
         [(on_desk(w) + [m, ["upright", MUG]], cw + cm) for w, cw in (("pen", 0), ("pencil", 1)) for m, cm in mug_at])
     LT["errand_combined__pen_in_use"] = cost_tiers(
@@ -1085,18 +1103,7 @@ def T05(t):
             rationale="look before fetching: if the pen is there the goal already holds and the right plan is to stop "
                       "(fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
             cases=check_cases),
-        "all_pens": dict(
-            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["unknown_count", "not_in_view"],
-            instruction="The kid is filling the pencil case. Collect every pen and pencil in the house onto the study "
-                        "desk.",
-            instruction_zh="孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
-            factor="how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, "
-                   "the living room and the kitchen)",
-            challenge="the instruction does not say how many; two to four pens and pencils are spread over different "
-                      "rooms, most of them out of view",
-            rationale="an open-ended collection: search room after room, one item per trip, and stop only when every "
-                      "place has been checked; missing one fails",
-            cases=all_cases),
+        # all_pens: removed 11-20 (user: finding all / counting is not substitution)
         "homework_ready": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_items_unstated", "not_in_view"],
             instruction="The kid is about to do homework at the study desk. Get the desk ready with what they need to "
@@ -1109,19 +1116,7 @@ def T05(t):
             rationale="written homework needs something to write with and a notebook to write in: bring one of each "
                       "(any pen or pencil, any notebook), not the book or the teddy",
             cases=ready_cases),
-        "pens_per_notebook": dict(
-            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["count_from_scene", "not_in_view"],
-            instruction="The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil "
-                        "for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
-            instruction_zh="孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，"
-                           "每本旁边放一支，不要多拿。",
-            keep_design=[DESK],
-            factor="how many notebooks are on the desk (seed: 2 or 3)",
-            challenge="the number of pens is not in the instruction but on the desk (two or three notebooks); four "
-                      "writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-            rationale="count the notebooks first, then bring exactly that many writing things and put one by each; "
-                      "the others stay where they are",
-            cases=per_cases),
+        # pens_per_notebook: removed 11-20 (user)
         "errand_combined": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["errands_combined"],
             add={MUG: {"asset": "breakfast_mug", "support": DESK, "xy": [-0.35, -5.95], "yaw_deg": 0.0}},
@@ -1140,20 +1135,20 @@ def T05(t):
             cases=errand_cases),
         "x6_gd_pen_or_pencil_cabinets": dict(
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
-            factor="where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining "
+            factor="where the pen is (seed: on top of cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining "
                    "table, in use, only the pencil in the cabinets)",
             instruction=PEN_TXT[0], instruction_zh=PEN_TXT[1],
             challenge="nothing to write with on the desk; the writing things are put away in the two closed low "
-                      "kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+                      "kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
             rationale="find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen "
                       "is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen "
                       "taken) costs",
-            cases={"pen_in_4": dict(move={"pen": in4}, goal=pen_goal, route=pen4,
-                                    failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/inside_shelf"]],
+            cases={"pen_in_4": dict(move={"pen": in4, "pencil": in6_pencil}, goal=pen_goal, route=pen4,
+                                    failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/top"]],
                                                         fid="resource_pen_in_cabinet")]),
                    # pen_in_use (11-17, replaces pen_in_6): only the pencil in the cabinets (cabinet 6)
                    "pen_in_use": dict(
-                       move={"pen": on_list("pen")}, add=copy.deepcopy(list_add),
+                       move={"pen": on_list("pen"), "pencil": in6_pencil}, add=copy.deepcopy(list_add),
                        goal={"all": [*on_desk("pencil"), *stays("pen", LIST), ["is_closed", "kitchen_cabinet_6"],
                                      ["is_closed", "kitchen_cabinet_4"], ["hand_empty", "right"]]},
                        watch=["pen", "pencil", LIST],
@@ -1278,16 +1273,22 @@ def T06(t):
         names = list(things)
         kept = [*[["near_start", n, 0.05] for n in names], *[["upright", n] for n in names]]
         upright = [["upright", n] for n in names]
-        on_case = [([["on", A, sup]] + kept, 0) for sup in (BED, *BED_SHELVES)]
-        elsewhere = [([["on", A, sup]] + kept, 1) for sup in ROOM_TOPS]
-        made_room = [([["on", A, BED]] + upright, 1 if case == "boxes_middle" else 2)]
+        # 11-20 (user: the ideal there is always the top): with room on the top, a lower shelf is the substitute
+        # (0.6) and the other room tops / making room on the top a level below it (0.3)
+        free = case == "boxes_middle"
+        on_case = [([["on", A, BED]] + kept, 0)] + [([["on", A, sup]] + kept, 1 if free else 0) for sup in BED_SHELVES]
+        # 11-20 (user, v6_layouts_1120: 4 of 5 places on the low shelf failed under the top board): the top full, the
+        # desk beside the bed is as good as a lower shelf (1.0, as T28 side_covered) and the reference goes there
+        elsewhere = [([["on", A, sup]] + kept, 2 if free else (0 if sup == "desk_1/top" else 1)) for sup in ROOM_TOPS]
+        made_room = [([["on", A, BED]] + upright, 2)]
         LT[f"seen_from_bed__{case}"] = cost_tiers(on_case + elsewhere + made_room)
         if case == "boxes_middle":
             goal = {"any": [[["on", A, sup]] for sup in (BED, *BED_SHELVES)], "all": [*kept, ["hand_empty", "right"]]}
             tail = [nav(BED), look(BED), place(A, BED, [1.88, -4.88])]
         else:
-            goal = {"any": [[["on", A, sup]] for sup in BED_SHELVES], "all": [*kept, ["hand_empty", "right"]]}
-            tail = [nav(BED), look(BED), place(A, BED_SHELVES[0], [2.10, -4.88])]
+            goal = {"any": [[["on", A, sup]] for sup in (*BED_SHELVES, "desk_1/top")],
+                    "all": [*kept, ["hand_empty", "right"]]}
+            tail = [nav(BED), look(BED), nav("desk_1/top"), look("desk_1/top"), place(A, "desk_1/top", [-0.35, -5.95])]
         # 11-19 (physics side): shelf_1 has the top board 27 cm above it; a top pinch holds the palm above the block
         # and lifts out along the gripper axis into that board, so the block is taken by its side pinch for the
         # shelf (docs/skills/pick.md; as T17 lid_away into cabinet_4, 29.5 cm, which failed with the top pinch)
@@ -1357,7 +1358,11 @@ def T07(t):
     clear_stove = [X, POT, LID]                          # the old bowl and the empty pot on the burner leave
 
     def grab(x, region=None):
-        return ([S("search", object=x, region=region)] if region else []) + [nav(x)] \
+        # 11-22: the dining room's search drove for a view of kitchen cabinet 3 from (0.16, 5.27) / (0.01, 5.67),
+        # never reached (0 of 4; the view from (0.83, 6.34) 5 of 5) -- the dining table looked at instead
+        dining = [nav("dining_table_2/top"), look("dining_table_2/top")]
+        return (dining if region == "dining_room_0_1" else [S("search", object=x, region=region)] if region else []) \
+            + [nav(x)] \
             + ([S("expose", object=x), look(x)] if x in FLAT else []) + [pick(x)]
 
     def to_microwave(x, region=None, temp=40, heat=True):
@@ -1393,8 +1398,9 @@ def T07(t):
     def both_at_once(region):
         return (to_stove(SOUP, region, heat=False)[1:] + [S("press", button="kitchen_stove/power_button")]
                 + to_microwave(BOWL, heat=False)
-                + [S("approach", target="kitchen_microwave/start_button"),
-                   S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
+                # 11-22: press right after closing the door, as heat does (its press parks at (4.59, 1.68) and passed);
+                # the retired approach became navigate(start_button), parked at (5.07, 1.57, 120): no IK, 2 of 2
+                + [S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
                    S("stop", appliance=MW), S("close", articulated=MW), nav(ST), S("stop", appliance=ST)])
     two_cases = {c: dict(add={SOUP: {"asset": SOUP, **copy.deepcopy(pose)},
                               BOWL: {"asset": BOWL, **copy.deepcopy(ON_ISLAND)}},
@@ -1503,7 +1509,8 @@ def T08(t):
     used = [["not near_start", X, 0.05]]
     LT["far_sponge_tv"] = cost_tiers([(wiped + back(X), 0), (wiped + left(X), 1)])
     LT["far_sponge_foam_cube"] = cost_tiers([(wiped + back(X) + cube_stays, 0), (wiped + back(X), 1),
-                                             (wiped + used + left(X), 1), (wiped, 2)])
+                                             (wiped + used + left(X), 1),
+                                             (wiped + [["near_start", X, 0.05]], 2)])   # 11-20: the sponge never taken
     LT["far_sponge_spare_only"] = cost_tiers([(wiped + back(SPARE), 1), (wiped + left(SPARE), 2)])
     fetch_wipe = lambda x, region: [look(ISL), S("search", object=x, region=region), nav(x), pick(x), nav(ISL),  # noqa: E731
                                     S("approach", target=ISL), S("wipe", surface=ISL, tool=x), place(x, ISL)]
@@ -1604,7 +1611,8 @@ def T09(t):
     # apple beside it, not for soup)
     BIG, APPLE = "big_tomato", "fridge_apple"
     big = dict(
-        add={BIG: {"asset": "big_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.80, 3.25], "yaw_deg": 0.0},
+        # 11-20: at the door edge like the cherry tomato (y 3.14) -- 21 cm in (y 3.25) no base pose reached it
+        add={BIG: {"asset": "big_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.80, 3.12], "yaw_deg": 0.0},
              APPLE: {"asset": "apple", "support": f"{FRIDGE}/inside_shelf", "xy": [6.02, 3.30], "yaw_deg": 0.0}},
         thermal_override={BIG: dict(cold[F3])},
         goal={"all": [*goal["all"], ["inside", BIG, POT], ["temperature_at_least", BIG, 60], ["is_closed", FRIDGE]]},
@@ -1612,6 +1620,14 @@ def T09(t):
         route=base[:2] + open_explore(FRIDGE) + [nav(BIG), pick(BIG), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                                                  S("close", articulated=FRIDGE), nav(POT),
                                                  S("drop", object=BIG, container=POT)] + base[2:])
+    # 11-21 (v6_verify_1120b big_tomato s11, s14: every step done, the big tomato 55.9 C): heat waits for its food's
+    # target and switches off -- wait for the slowest thing in the pot (the cold one from the fridge, the big tomato),
+    # not for the first cherry tomato
+    for case, x in ((fridge, F3), (big, BIG)):
+        case["route"] = [dict(st, args=dict(st["args"], food=x)) if st["skill"] == "heat" else st for st in case["route"]]
+        # 11-21 (v6_verify_1120b s10/s15/s17, v6_verify_1121 s11: 4 of 7 picks of the lid on the stove's right burner
+        # (8.71, 1.66) out of reach at the straight's start): the lid on the island by the tomatoes, as in pot_in_dining_room
+        case["move"] = {**case.get("move", {}), LID: lid_isl}
     # per-seed tiers (11-17): the soup's side steps (stir, cover, the fridge closed) cost a level each
     LT = LAYOUT_TIERS.setdefault(("T09", "*"), {})
     core = lambda pot, xs: [*[["inside", x, pot] for x in xs], *[["temperature_at_least", x, 60] for x in xs],  # noqa: E731
@@ -1772,28 +1788,36 @@ def T10(t):
     # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
     # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
     TRAY, LEFT, MUG, FRIDGE = "takeout_tray", "leftovers", "used_mug", "breakfast_fridge"
+    # 11-23 (user): a bigger kitchen trash can (36 cm across, the 26 cm one scaled up) where the usual one stands:
+    # the 20 x 14 cm foil tray dropped into the 26 cm can, the hand hit its rim by 3 mm (never succeeded)
+    BIG_BIN = "kitchen_trash"
+    big_bin = {BIG_BIN: {"asset": "big_trash_can", "support": None, "z": 0.0, "xy": [9.05, 1.12], "yaw_deg": 0}}
+    throw_big = lambda x: [nav(x), pick(x), S("lift", object=x, height_m=0.95), nav(BIG_BIN),  # noqa: E731
+                           S("hover", object=x, target=BIG_BIN), S("drop", object=x, container=BIG_BIN)]
     on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.66, 6.45), LEFT: P(DINING, 3.66, 6.85),   # in reach
                 MUG: P(DINING, 3.62, 7.55)}
     asset = {TRAY: "foil_takeout_tray", LEFT: "glass_food_container", MUG: "breakfast_mug"}
-    fate = {CAN: [["inside", CAN, TRASH]], TRAY: [["inside", TRAY, TRASH]],
+    fate = {CAN: [["inside", CAN, BIG_BIN]], TRAY: [["inside", TRAY, BIG_BIN]],
             LEFT: [["on", LEFT, f"{FRIDGE}/inside_shelf"], ["is_closed", FRIDGE]],
             MUG: [["on_any", MUG, KITCHEN_WORKTOPS], ["upright", MUG]]}
-    steps = {CAN: throw(CAN), TRAY: [nav(TRAY), pick(TRAY), S("lift", object=TRAY, height_m=0.95), nav(TRASH),
-                                     S("drop", object=TRAY, container=TRASH)],
+    steps = {CAN: throw_big(CAN), TRAY: [nav(TRAY), pick(TRAY), S("lift", object=TRAY, height_m=0.95),
+                                         nav(BIG_BIN), S("drop", object=TRAY, container=BIG_BIN)],
              LEFT: [nav(FRIDGE), S("open", articulated=FRIDGE), nav(LEFT), pick(LEFT), nav(FRIDGE),
                     place(LEFT, f"{FRIDGE}/inside_shelf"), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                     S("close", articulated=FRIDGE)],
-             MUG: [nav(MUG), pick(MUG), nav(COUNTER), place(MUG, COUNTER)]}
+             # 11-21 (muqingj v6full_1116-1119: a mug set on counter_2 found no reachable spot 3 of 4): the island,
+             # a kitchen worktop the goal takes as well
+             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top")]}
     dinner_cases = {}
     for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
                      ("rubbish_mug", (CAN, TRAY, MUG))):
         dinner_cases[c] = dict(
-            move={CAN: on_table[CAN]},
-            add={x: {"asset": asset[x], **on_table[x]} for x in items if x != CAN},
+            move={CAN: on_table[CAN]}, remove=[TRASH],
+            add={**big_bin, **{x: {"asset": asset[x], **on_table[x]} for x in items if x != CAN}},
             goal={"all": [a for x in items for a in fate[x]] + [["near_start", n, 0.03] for n in
                                                                  ("clutter_cereal_a", "clutter_cereal_b")]
                   + [["hand_empty", "right"]]},
-            watch=[*items, "clutter_cereal_a", "clutter_cereal_b"],
+            watch=[*items, BIG_BIN, "clutter_cereal_a", "clutter_cereal_b"],
             route=[look(DINING)] + [st for x in items for st in steps[x]])
     # guests_coming: things lying about the living room go where they belong (the can into the trash, the used mug
     # to the kitchen counter, the kid's block into the toy box); what belongs there (the island's rolling pin and
@@ -2026,15 +2050,7 @@ def T12(t):
             rationale="the full bin has no room left: both toys go into the empty one, which may have to be found in "
                       "another room; the blocks stay in the full bin",
             cases=cap_cases),
-        "find_all_toys": dict(
-            base="toys_out", control="toys_out", conditions=["goal_items_unstated", "not_in_view", "multi_object_goal"],
-            factor="which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-            challenge="the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, "
-                      "dining table, TV stand); a yellow sponge on the dining table is not a toy",
-            rationale="the instruction does not list the toys: search the rooms until every toy is found, tell toys "
-                      "from look-alikes (leave the sponge), put each into the basket; stopping after the first few "
-                      "fails",
-            cases=all_cases),
+        # find_all_toys: removed 11-20 (user)
         "castle_stays": dict(
             base="toys_out", control="toys_out", conditions=["relational_exception", "multi_object_goal"],
             instruction="It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid "
@@ -2070,7 +2086,9 @@ def T13(t):
     # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
     # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
     # the room.  No cup in the house: the mug takes the cup's place.
-    B_SP, A_SP = [2.89, 7.30], [3.70, 6.55]     # the copy's spoon 10 cm from the west edge
+    # 11-21 (v6_verify_1120b s11: the bowl's place at x 2.89 hit the torso, 2 mm): the copy's spoon 16 cm from the west
+    # edge (x 2.788), the bowl and cup set beside it 8 cm clear of the edge, like the example 14 cm from the east edge
+    B_SP, A_SP = [2.95, 7.30], [3.70, 6.55]
     # (forward, left) of the spoon; nothing forward of it: the diner sits at the table's edge and what is
     # set there stays within 20 cm of it, in the robot's reach (the cup 17 cm forward lay 33 cm in)
     RIGHT = {"bowl": (0.0, 0.19), "cup": (0.0, -0.15)}
@@ -2098,11 +2116,16 @@ def T13(t):
             else:
                 route += fetch(x, B_SP, W, *pattern[k])
         news, refs = [use[k] for k in order], [f"example_{k}" for k in order]
-        goal = {"all": [["same_arrangement", news, refs, SPOON, "example_spoon", list(W), list(E), 0.07]]
+        # 11-20 (user: keep success simple): 12 cm -- the right side of the spoon still decides (a swap is ~34 cm)
+        goal = {"all": [["same_arrangement", news, refs, SPOON, "example_spoon", list(W), list(E), 0.12]]
                 + [["near_start", r, 0.03] for r in [*refs, "example_spoon"]]
                 + [["upright", use[k]] for k in order if k in ("bowl", "cup", "mug")]
                 + ([["on_top_of", BOWL, "plate_counter_a"]] if "plate" in kinds else []) + [["hand_empty", "right"]]}
-        copy_cases[c] = dict(add=ex, move={SPOON: {"support": TABLE, "xy": B_SP, "yaw_deg": 0.0}},
+        # 11-21: the plate to copy with stands 4 cm over counter_2's west edge (taken by that edge, no slide under
+        # the wall cabinets: v6_sticky_1121 T15 lid_in_use)
+        plate_edge = {"plate_counter_a": {"support": "kitchen_counter_2/top", "xy": [-0.44, 8.42], "yaw_deg": 0.0}} \
+            if "plate" in kinds else {}
+        copy_cases[c] = dict(add=ex, move={SPOON: {"support": TABLE, "xy": B_SP, "yaw_deg": 0.0}, **plate_edge},
                              remove=clear + ([CUP] if c == "no_cup" else []), goal=goal,
                              watch=[*news, *refs, "example_spoon", SPOON], route=route)
     # finish_the_table: some places are set (adults: bowl and mug; the kid: bowl and a plastic cup, a toy beside it);
@@ -2179,6 +2202,10 @@ def T14(t):
     B, DESK, CASE = "book_red", "desk_1/top", "bookcase_2/top"
     KIDS_CASE = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"]        # his bookcase, any level
     t["goal"] = {"all": [["on_any", B, KIDS_CASE], ["hand_empty", "right"]]}
+    # 11-22: the inherited control route sets the book down at the bookcase top's middle too (see shelve)
+    for st in (t.get("routes", {}).get("v5_e1_book_ready") or {}).get("steps", []):
+        if st["skill"] == "place" and st["args"].get("receptacle") == CASE and "hint_xy" not in st["args"]:
+            st["args"]["hint_xy"] = [1.0, -0.45]
     SIZE = {"book_red": 0.24, "book_green": 0.22, "book_blue": 0.20, "paperback_book": 0.18}
 
     def on_desk(asset, x):
@@ -2189,6 +2216,10 @@ def T14(t):
         return {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}
 
     def shelve(x, sup=CASE, hint=None):
+        # 11-22: onto the bookcase's top at its middle -- unhinted, book_red's edge set-down failed 41 of 59 (v4-v6);
+        # hinted at (1.0, -0.45) it passed
+        if hint is None and sup == CASE:
+            hint = [1.0, -0.45]
         return [nav(x), pick(x), nav(sup), place(x, sup, hint)]
     low = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1",
            "bookcase_3/shelf_0", "large_shelf_4/shelf_0", "large_shelf_4/shelf_1", "large_shelf_4/shelf_2",
@@ -2203,46 +2234,7 @@ def T14(t):
             add={f"set_book_{i + 1}": book("book_red", high, x, y) for i, x in enumerate(xs)},
             watch=[B, "set_book_1", "set_book_2"],
             route=[look(DESK), S("explore_room", room="bedroom_0_1")] + shelve(B, lower, [xs[0] + 0.5, y]))
-    # stack_them_stably: every book from the desk onto the bookcase in one pile, the largest at the bottom.
-    # Two books per seed (11-15): a third book onto the second found no edge spot in every run (the edge
-    # place needs an overhang off a small, raised book); one book onto another went through.
-    # 11-17 (user): the seed changes where the pile can go -- the bookcase top free (room, ideal), or the kid's
-    # things on it leaving a 13 cm gap: the paperback fits, the green book (18 x 22 cm) does not (static check), so
-    # the pile goes on a lower shelf or the bedside bookcase's top (the stand-in)
-    LT = LAYOUT_TIERS.setdefault(("T14", "*"), {})
-    KID_TOP = {"kid_bin_1": ("small_storage_bin", 0.818, -0.532), "kid_bin_2": ("small_storage_bin", 0.818, -0.33),
-               "kid_teddy": ("teddy_bear", 1.118, -0.33), "kid_duck": ("rubber_duck", 1.118, -0.52),
-               "kid_car": ("toy_car", 1.262, -0.45)}
-    SHELVES = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"]
-    stack_cases = {}
-    for c, books in (("room", ("book_red", "book_blue")), ("narrow_top", ("paperback_book", "book_green"))):
-        names = {a: ("book_red" if a == "book_red" else f"desk_{a}") for a in books}
-        add = {names[a]: on_desk(a, x) for a, x in zip(books, (-1.20, -0.90, -0.60)) if a != "book_red"}
-        move = {B: on_desk("book_red", -0.90 if books[1] == "book_red" else -1.20)} if "book_red" in books else {}
-        order = sorted(books, key=lambda a: -SIZE[a])
-        rm = [] if "book_red" in books else [B]
-        pile = [["on_top_of", names[hi], names[lo]] for lo, hi in zip(order, order[1:])]
-        shelved = [["on_any", names[a], SHELVES] for a in books]
-        if c == "room":
-            where, hint, kept = [CASE, "bookcase_3/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"], CASE, []
-            LT[f"stack_them_stably__{c}"] = cost_tiers([([["on_any", names[order[0]], where]] + pile, 0),
-                                                        (shelved, 2)])
-        else:
-            add.update({n: {"asset": a, **P(CASE, x, y)} for n, (a, x, y) in KID_TOP.items()})
-            where, hint = ["bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top"], "bookcase_2/shelf_1"
-            kept = [*[["near_start", n, 0.03] for n in KID_TOP], *[["upright", n] for n in KID_TOP]]
-            LT[f"stack_them_stably__{c}"] = cost_tiers(
-                [([["on_any", names[order[0]], where]] + pile + kept, 1),
-                 ([["on", names[order[0]], CASE]] + pile + [["upright", n] for n in KID_TOP], 2), (shelved, 3)])
-        route = [look(DESK), S("explore_room", room="bedroom_0_1")] if c != "room" else [look(DESK)]
-        route += shelve(names[order[0]], hint, [1.00, -0.45])
-        for lo, hi in zip(order, order[1:]):
-            route += [nav(names[hi]), pick(names[hi]), nav(hint), S("stack", object=names[hi], base=names[lo])]
-        stack_cases[c] = dict(
-            add=add, move=move, remove=rm, watch=[names[a] for a in books] + list(KID_TOP if c != "room" else []),
-            goal={"all": [["on_any", names[order[0]], where]] + pile + kept + [["hand_empty", "right"]]},
-            route=route)
+    # stack_them_stably: removed 11-20 (user)
     # homework_stays: tidy the desk; the finished book to the bookcase, the used mug to the kitchen, the homework
     # (an open notebook and a pencil) stays for tomorrow
     hw = {"homework": book("notebook", DESK, -0.55, -5.95, 10.0), "hw_pencil": book("pencil", DESK, -0.30, -5.95, 80.0)}
@@ -2257,7 +2249,10 @@ def T14(t):
     KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
     # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
-    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.50), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.50),
+    # 11-22 (v6_sticky_1121, muqingj v6full_1119: "no free edge spot", 2 of 2): the two standing at the top's ends,
+    # turned (14 cm wide), the middle 29 cm free for the third -- at 0.85 / 1.10 they left no room along the edge
+    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.785, -0.50, 90.0),
+               "blue_shelved_2": book("book_blue", KIDS, 1.215, -0.50, 90.0),
                "paperback_shelved_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
                "paperback_shelved_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
     whose_cases = {}
@@ -2274,19 +2269,25 @@ def T14(t):
                                   for st in shelve(n, sup, [1.0, -0.50] if sup == KIDS else [-1.86, -0.95])])
     # next_in_series: the red book back, and the other book of its set (the same red cover, among other books) to
     # the desk for tomorrow
-    others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
+    # 11-22 (no free edge spot, 2 of 2): the books on the bookcase turned and at its ends, the middle free for the red one
+    others = {"blue_book_case": book("book_blue", CASE, 0.785, -0.45, 90.0), "green_book_case": book("book_green", CASE, 1.20, -0.45, 90.0),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
     series_cases = {}
-    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.12, -0.45), None)),   # the green book's spot: in reach
+    # 11-22 (v6_sticky_1121j s10): at the right end (1.205) the slide to the edge put the arm on the wall behind
+    # the bookcase; now 6 cm over the south edge at its middle (as T01's bedroom book, picked without a slide),
+    # fetched before the red book is shelved into the middle
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.00, -0.559), None)),
                                  ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
                                  ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
-        add = {**others, "red_book_2": book("book_red", sup, *xy)}
+        add = {**others, "red_book_2": book("book_red", sup, *xy, 90.0 if sup == CASE else 0.0)}
         if sup == CASE:
             add["green_book_case"] = book("book_green", "large_shelf_4/shelf_1", 3.60, -5.15)
         series_cases[c] = dict(
             add=add, watch=[B, "red_book_2", *others],
-            route=[look(DESK)] + shelve(B, CASE, [1.00, -0.55]) + [look(CASE)]
-            + ([S("search", object="red_book_2", region=region), look(sup)] if region else [])
+            route=([look(DESK), nav(CASE), look(CASE), nav("red_book_2"), pick("red_book_2"), nav(DESK),
+                    place("red_book_2", DESK, [-0.80, -6.05])] + shelve(B, CASE, [1.00, -0.45])) if sup == CASE
+            else [look(DESK)] + shelve(B, CASE, [1.00, -0.45]) + [look(CASE)]
+            + [S("search", object="red_book_2", region=region), look(sup)]
             + [nav("red_book_2"), pick("red_book_2"), nav(DESK), place("red_book_2", DESK, [-0.80, -6.05])])
     return {
         "within_kids_reach": dict(
@@ -2303,19 +2304,6 @@ def T14(t):
             rationale="weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a "
                       "low shelf (below 0.8 m), not back with its set",
             cases=reach_cases),
-        "stack_them_stably": dict(
-            base="e1_book_ready", control="e1_book_ready", conditions=["subgoal_order", "multi_object_goal"],
-            instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the "
-                        "biggest at the bottom and the smallest on top.",
-            instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
-            keep_design=[CASE],
-            factor="whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it "
-                   "leave a gap too narrow for the bigger book, green + paperback)",
-            challenge="two books of different sizes on the desk; one pile on the bookcase; on one seed the top has "
-                      "only a 13 cm gap, too narrow for the bigger book",
-            rationale="the order follows from the sizes: the larger at the bottom, the smaller on top, so the top "
-                      "book does not overhang the one below",
-            cases=stack_cases),
         "homework_stays": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["category_rule", "multi_object_goal"],
             instruction="The kid finished reading. Tidy up his desk and put each thing where it belongs best; he will "
@@ -2464,7 +2452,10 @@ def T17(t):
     LT["hide_both__two_pots"] = cost_tiers(
         [(both_goal["all"][:-1] + [["near_start", SOUPP, 0.03]], 0),
          ([["hidden", B], ["hidden", F]] + noapp(B) + noapp(F), 1), ([["inside", B, SOUPP]], 3), ([["inside", F, SOUPP]], 3)])
-    LT["hide_somewhere__pot_ready"] = cost_tiers([([["hidden", B]] + noapp(B), 0)])
+    # 11-20 (user: the ideal there is always the top): with the lid beside the pot, the pot under its lid is 1.0 and
+    # any other hiding place (a cabinet) the substitute, 0.6
+    LT["hide_somewhere__pot_ready"] = cost_tiers([([["inside", B, POT], ["covered", POT, LID]] + noapp(B), 0),
+                                                  ([["hidden", B]] + noapp(B), 1)])
     LT["hide_somewhere__lid_away"] = cost_tiers([([["hidden", B]] + noapp(B), 1)])
     return {
         "hide_both": dict(
@@ -2480,7 +2471,9 @@ def T17(t):
             rationale="two hides share the lid: find the second block, take the lid off again between the hides, "
                       "cover at the end",
             cases={"tv_stand": dict(move={F: P("tv_stand_2/top", 7.0, 0.36)}, route=both("living_room_0_0")),
-                   "two_pots": dict(move={F: P("dining_table_2/top", 3.7, 6.3)},
+                   # 11-22 (v6_sticky_1121, muqingj v6full_1119: the lid at the stove's front right, beside the soup
+                   # pot, no grasp 2 of 2): the lid on the island, as T09's
+                   "two_pots": dict(move={F: P("dining_table_2/top", 3.7, 6.3), LID: P("kitchen_island/top", 7.75, 1.85)},
                                     add={SOUPP: {"asset": "soup_pot", **P(STOVE, 8.70, 1.725)}},
                                     goal={"all": [*both_goal["all"], ["near_start", SOUPP, 0.03]]},
                                     watch=[B, F, LID, POT, SOUPP],
@@ -2739,15 +2732,16 @@ def T11(t):
                                       "yaw_deg": 0.0}},
         route=[look(DINING)] + serve(TRAY, "living_room_0_1"))
     # tray_in_use (11-17, user): the small tray on the study desk holds the kid's homework (a notebook, a pencil);
-    # a bigger serving tray stands on the dining table (the stand-in)
-    BIG, KN, KP = "big_tray", "kid_notebook", "kid_pencil"
+    # a second small tray stands on the dining table (the stand-in).  11-23 (user): it was the 42 x 36 cm serving
+    # tray, deeper than the 30 cm TV stand (never set down there); now a second shallow tray (27 x 20 cm) as on the desk
+    BIG, KN, KP = "spare_tray", "kid_notebook", "kid_pencil"
     kid_stays = [["near_start", KN, 0.03], ["near_start", KP, 0.03]]
     plate_cases["tray_in_use"] = dict(
         add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", "support": DESK, "xy": [-0.90, -6.00],
                                       "yaw_deg": 0.0},
              KN: {"asset": "notebook", "support": None, "z": 0.705, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
              KP: {"asset": "pencil", "support": None, "z": 0.736, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
-             BIG: {"asset": "serving_tray", **P(DINING, 3.55, 6.55)}},
+             BIG: {"asset": "shallow_sorting_tray", **P(DINING, 3.55, 6.55)}},
         goal={"all": [["inside", X, BIG], ["inside", OR, BIG], ["on", BIG, TV], *kid_stays, ["hand_empty", "right"]]},
         watch=[X, OR, TRAY, BIG, KN, KP],
         route=[look(DINING)] + serve(BIG, None))
@@ -2785,7 +2779,7 @@ def T11(t):
                   "any": [[["on", TRAY, "tv_stand_2/top"]], [["on", TRAY, "tv_stand_1/top"]]]},
             watch=[X, OR, TRAY],
             factor="whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a "
-                   "bigger serving tray on the dining table)",
+                   "second small tray on the dining table)",
             challenge="the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in "
                       "front of the guests with the fruit on it",
             rationale="order the subgoals so that each step is feasible: one hand cannot carry a loaded tray "
@@ -2900,9 +2894,12 @@ def T03_more(t):
     sup_z = {"tv_stand_2/top": 0.484, "bookcase_2/top": 0.709}
 
     def put_both(c, drop_spoon=True):
-        return [nav(spoon), pick(spoon), nav(c), S("approach", target=c),
-                S("drop", object=spoon, container=c) if drop_spoon else place(spoon, c),
-                nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        sp = [nav(spoon), pick(spoon), nav(c), S("approach", target=c),
+              S("drop", object=spoon, container=c) if drop_spoon else place(spoon, c)]
+        pn = [nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        # 11-21 (muqingj v6full_1119 kitchen_bin_full: "no free spot in spare_tray"): a tray (26 x 19 cm inside) takes
+        # the 22 cm pin only while it is empty -- the pin first, the spoon dropped in beside it
+        return pn + sp if "tray" in c else sp + pn
 
     def inside_bin(where, items):
         """Items lying in a wide bin at ``where`` (support pose): [(name, dx, dy, yaw)]."""
@@ -3004,14 +3001,17 @@ def T03_more(t):
     find_bin = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"),
                 look("bookcase_2/top")]
 
-    def apart_route(c, first=()):
-        """The pin first, then the spoon from the dining table, both into ``c``."""
-        return find_bin + list(first) + [
-            nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c),
-            S("search", object=spoon, region="dining_room_0_1"), nav(spoon), pick(spoon), nav(c),
-            S("approach", target=c), S("drop", object=spoon, container=c)]
+    def apart_route(c, first=(), spoon_first=False):
+        """The pin first, then the spoon from the dining table, both into ``c``.  11-21 night: into the empty wide bin
+        the spoon goes first (as in put_both): dropped over the pin already lying there, the arm stopped short twice
+        (v6full_1119, v6_sticky_1121; 193 other spoon drops into that bin passed)"""
+        pn = [nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        # 11-22: the dining table looked at, not the dining room searched (its kitchen-cabinet-3 view never reached)
+        sp = [nav("dining_table_2/top"), look("dining_table_2/top"), nav(spoon), pick(spoon), nav(c),
+              S("approach", target=c), S("drop", object=spoon, container=c)]
+        return find_bin + list(first) + (sp + pn if spoon_first else pn + sp)
     apart, apart_tiers = {}, {}
-    apart["bin_free"] = dict(move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING}, route=apart_route(bin_),
+    apart["bin_free"] = dict(move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING}, route=apart_route(bin_, spoon_first=True),
                              goal={"all": both_in(bin_) + [["hand_empty", "right"]]}, watch=[pin, spoon, bin_])
     apart_tiers["bin_free"] = container_tiers(both_in, {bin_: "best"}, [])
     for case, (x, add_x, first) in {
@@ -3492,7 +3492,11 @@ def make_variant(t, fam, spec, case, cspec):
         for k in FIELDS:
             if k in src and k not in ("move", "remove", "add", "failures"):
                 v[k] = copy.deepcopy(src[k])
-    placed = set(spec.get("move", {})) | set(cspec.get("move", {})) | set(spec.get("add", {})) | set(cspec.get("add", {}))
+    # 11-20: what the seed (case) itself takes out stays out, though the design places it (T03 basket_in_bedroom:
+    # no wide bin; T09 spare_pot: the usual pot gone) -- only what the base removes and a variant places comes back
+    gone = set(cspec.get("remove", []))
+    placed = ((set(spec.get("move", {})) | set(spec.get("add", {}))) - gone) | set(cspec.get("move", {})) | \
+        set(cspec.get("add", {}))
     if v.get("remove") and placed & set(v["remove"]):
         v["remove"] = sorted(set(v["remove"]) - placed)      # an object the base removes but this variant places
     if v.get("remove") and v.get("move"):                # the base moves an object this variant takes out (11-17)
@@ -3526,10 +3530,64 @@ SPLIT = set()
 
 
 # conditions that are no challenge for the variant's own instruction: it names the substitute itself
+# 11-20 (user: as few single-level seeds as possible, more levels): substitutes put into a seed's scene, the poses
+# taken from the sibling seed that uses them (scoring.LOOSEN says what each one scores there).  Keyed by (task, layout)
+_SURF = lambda sup, x, y, asset, yaw=0.0: {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}  # noqa: E731
+_ON = lambda x, y, z, asset: {"asset": asset, "support": None, "z": z, "xy": [x, y], "yaw_deg": 0.0}  # noqa: E731
+_KID_CUP = {"kid_cup": _SURF("kitchen_counter_2/top", -0.364, 7.709, "plastic_cup")}
+EXTRA_SUBSTITUTES = {
+    ("T03", "utensils_apart__bin_free"): {"storage_basket": _ON(0.894, -1.931, 0.001, "storage_basket"),
+                                          "spare_tray": _SURF("desk_1/top", -0.7, -6.218, "shallow_sorting_tray")},
+    ("T05", "no_pen_pencil_away"): {"spare_pen": _SURF("bookcase_2/top", 1.15, -0.40, "pen")},
+    ("T08", "far_sponge_tv"): {"sponge_tray": _SURF("kitchen_cabinet_4/top", 1.40, 0.42, "shallow_sorting_tray"),
+                               "spare_sponge": _ON(1.45, 0.42, 0.645, "kitchen_sponge"),
+                               "foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
+    ("T08", "far_sponge_spare_only"): {"foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
+    ("T09", "lid_on_spoon_away"): {"lid_plate": _SURF("kitchen_island/top", 8.06, 1.795, "breakfast_plate"),
+                                   "cover_book": _SURF("kitchen_island/top", 7.40, 1.85, "book_blue")},
+    ("T09", "tomato_in_fridge__in_fridge"): {"big_tomato": _SURF("breakfast_fridge/inside_shelf", 5.72, 3.12, "big_tomato")},
+    ("T09", "x6_gd_tomato_elsewhere__dining"): {"lunch_plate": _SURF("dining_table_2/top", 3.62, 6.65, "breakfast_plate"),
+                                                "plate_tomato": _ON(3.62, 6.65, 0.858, "cherry_tomato"),
+                                                "lunch_spoon": _SURF("dining_table_2/top", 3.62, 6.86, "breakfast_spoon")},
+    ("T09", "pot_in_dining_room__pot_away"): {"spare_pot": _SURF("kitchen_island/top", 8.11, 1.80, "handled_cooking_pot")},
+    ("T10", "trash_moved__dining"): {"bathroom_trash": _ON(-0.75, 3.25, 0.0, "trash_can")},
+    ("T10", "x6_gd_can_put_away__in_cabinet"): {"fridge_soda": _SURF("breakfast_fridge/inside_shelf", 5.90, 3.30, "soda_can")},
+    ("T16", "box_in_cabinet__in_cabinet"): {"spare_bowl": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_bowl")},
+    ("T19", "m_can_in_dining_room"): {"seat_can": _SURF("dining_table_2/top", 3.70, 6.75, "soda_can"),
+                                      "seat_bowl": _SURF("dining_table_2/top", 3.45, 6.62, "oatmeal_bowl"),
+                                      "seat_book": _SURF("dining_table_2/top", 3.62, 6.92, "paperback_book")},
+    ("T19", "x6_gd_can_put_away__in_4"): {"full_juice": _SURF("kitchen_cabinet_4/inside_shelf", 1.15, 0.42, "juice_bottle")},
+    ("T20", "m_bottle_on_tv_stand"): {"living_juice": _SURF("tv_stand_2/top", 7.60, 0.36, "juice_bottle"),
+                                      "living_cup": _SURF("tv_stand_2/top", 7.75, 0.36, "breakfast_cup")},
+    ("T24", "no_apples_for_him__apple_free"): {"home_basket": _SURF("kitchen_island/top", 7.10, 1.78, "fruit_basket"),
+                                               "snack_banana": _SURF("kitchen_island/top", 7.40, 1.85, "banana")},
+    ("T25", "drink_in_fridge__juice"): {"cold_soda": _SURF("breakfast_fridge/inside_shelf", 6.05, 3.30, "soda_can")},
+    ("T26", "scattered__basket"): {"kids_toy_bin": _SURF("bookcase_2/top", 1.15, -0.43, "small_storage_bin")},
+    ("T30", "how_many__three_bowls"): {"spare_mug": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_mug")},
+    ("T30", "bowl_put_away__bowl_inside"): {"stored_mug": _SURF("kitchen_cabinet_4/inside_shelf", 1.65, 0.42, "breakfast_mug")},
+    **{("T04", lid): _KID_CUP for lid in ("no_cup", "no_cup_mug_away", "no_cup_mug_away__alt_dining_table_2",
+                                          "two_guests__mug")},
+    ("T11", "basket_missing"): {"used_bowl": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_bowl")},
+    ("T13", "no_cup"): _KID_CUP, ("T13", "copy_the_setting__no_cup"): _KID_CUP,
+    # a third level (user: the more levels the better)
+    ("T13", "copy_the_setting__bowl_cup"): _KID_CUP, ("T13", "copy_the_setting__plate_bowl_mug_left"): _KID_CUP,
+    ("T15", "lid_elsewhere__dining"): {"cover_book": _SURF("kitchen_island/top", 8.05, 1.80, "book_blue")},
+    ("T08", "far_sponge_foam_cube"): {"sponge_tray": _SURF("kitchen_cabinet_4/top", 1.40, 0.42, "shallow_sorting_tray"),
+                                      "spare_sponge": _ON(1.45, 0.42, 0.645, "kitchen_sponge")},
+    ("T09", "lid_missing"): {"cover_book": _SURF("kitchen_island/top", 7.40, 1.85, "book_blue")},
+}
+
+
 NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
                    # a pencil is asked for: no pen in the house is no longer a substitution
                    ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen"],
-                   ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"]}
+                   ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"],
+                   # 11-20 (user): finding a thing out of view is no substitution -- these count as controls
+                   ("T10_trash_the_can", "can_in_dining_room"): ["not_in_view"],
+                   ("T10_trash_the_can", "can_in_dining_room__alt_tv_stand_2"): ["not_in_view"],
+                   ("T12_tidy_toys", "duck_in_study"): ["not_in_view"],
+                   ("T12_tidy_toys", "duck_in_study__alt_dining_table_2"): ["not_in_view"],
+                   ("T18_set_out_bowls", "bowls_apart"): ["item_put_away", "not_in_view"]}
 
 
 # a task whose v5 instruction spelled out every place and fallback: one short instruction for the task and all of
@@ -3641,6 +3699,13 @@ def build_task(t: dict) -> dict:
             fam["seeds"] = seed_cases(t["task_id"], into, fam["layouts"])
             fam["factor"] = MERGE_FACTOR[(tid, into)]
     t["v6_variants"] = families
+    for (tid, lid), add in EXTRA_SUBSTITUTES.items():       # 11-20: substitutes put into the scene (scoring.LOOSEN)
+        if tid == t["task_id"][:3]:
+            v = t["variants"][lid]
+            v["add"] = {**v.get("add", {}), **copy.deepcopy(add)}
+            if "remove" in v:
+                v["remove"] = [n for n in v["remove"] if n not in add]
+            v["watch"] = sorted(set(v.get("watch") or []) | set(add))
     t["v6_replaced"] = {vid: why for (tid, vid), why in REPLACED.items() if tid == t["task_id"]}
     for (tid, vid), conds in NOT_A_CHALLENGE.items():
         if tid == t["task_id"]:
@@ -3738,6 +3803,15 @@ GT_PREFIX = {
     ("T25", "little_guest"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
     ("T26", "two_bedrooms"): [("explore_room", "living_room_0_0")],
     ("T30", "bowl_on_cabinet"): [("navigate", "kitchen_cabinet_6/top"), ("look", "kitchen_cabinet_6/top")],
+    # 11-20 (v6_layouts_1120, 3 of 5 big_tomato seeds): collect into the pot after looking only at the island:
+    # NOT_OBSERVED, the pot on the stove never seen -- look at the stove first
+    ("T09", "tomato_in_fridge"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
+    # 11-21 (v6_verify_1120b; (task, "*") = every design of the task): T09 -- the pot at the island's east end
+    # (8.41, 1.73) is out of view from the island's west stand-off, collect NOT_OBSERVED in 4 runs; T10 -- the
+    # trash can south of the stove (9.05, 1.12) was seen neither from the island nor by explore_room(living_room_0_0)
+    # in 3 runs; a sim probe: navigate(stove) sees it from every approach tried
+    ("T09", "*"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
+    ("T10", "*"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
 }
 GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
 _GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}
@@ -3806,7 +3880,7 @@ def gt_sequence_fixes(task: dict) -> list:
     added again.  Returns [(layout, what)]."""
     out, tid = [], task["task_id"][:3]
     for vid, info in task.get("v6_variants", {}).items():
-        prefix = GT_PREFIX.get((tid, vid))
+        prefix = GT_PREFIX.get((tid, vid)) or GT_PREFIX.get((tid, "*"))
         nav_look = (tid, vid) in GT_NAV_BEFORE_LOOK
         if not prefix and not nav_look:
             continue

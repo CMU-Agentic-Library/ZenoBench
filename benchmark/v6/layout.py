@@ -56,6 +56,17 @@ EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
 STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
                                          # from 0.45 out is still well inside the arm's 0.78 m
 SEARCH_TYPES = ("search_target", "search_tool")
+# 11-22 (v6_sticky_1121 T11 basket_gone_bowl_there s10): an apple drawn 1.7 cm from the dining table's west edge rolled
+# over it before the first step (2.76, the top ends at 2.788) and had no grasp. Round things keep this from every edge
+ROLLING = {"apple", "orange", "cherry_tomato", "big_tomato"}
+ROLL_EDGE_M = 0.06
+# 11-21 (v6_verify_1121, muqingj v6full_1119): the small kitchen's counter has wall cabinets over it; reach_edges
+# counts its south end and its north end, but a pick there failed (T25 s11: a cup at (-0.38, 7.04), no grasp from any
+# base pose; plates at its north end 1 of 3) and 18 cm in from the front no arm reached (T25 counter_cup).  What the
+# route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
+PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.05),
+             # cabinet 4's low top (0.62 m): what was picked there stood at y 0.40-0.46 (8 of 10); not deeper than 0.38
+             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62)}   # y by the box: a cup centred no deeper than 0.38
 
 
 # ----------------------------------------------------------------- scene data
@@ -495,9 +506,13 @@ def layout_spec(task, vid, registry, control=None):
     removed = set(scene.get("remove", [])) | set(v.get("remove", []))
     move = {**scene.get("move", {}), **v.get("move", {})}
     add = {**scene.get("add", {}), **v.get("add", {})}
-    placed = {**move, **add}
+    gone = set(v.get("remove", [])) - set(v.get("move", {})) - set(v.get("add", {}))
+    placed = {n: m for n, m in {**move, **add}.items() if n not in gone}    # 11-20: taken out stays out
     steps = task["routes"][task["oracle"][vid]]["steps"]
     picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
+    # 11-22: what a composite step picks up as well (hide: the thing and the lid; cover: the lid) -- T17 two_pots s19
+    # put the lid 2 cm from a block, the finger room only kept around plain picks
+    picked |= {s["args"].get(k) for s in steps if s["skill"] in ("hide", "cover") for k in ("object", "lid")} - {None}
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
@@ -711,6 +726,9 @@ def apply_layout(cfg, spec, rng):
                  for n in c.get("pick") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
         sought = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
                   for n in c.get("search") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+        rolling = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                   for n in c["names"] if _asset_of(base, n, cfg.get("add") or {}) in ROLLING
+                   and (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
         S = _sups(base)[c["support"]]["aabb_xy"]
         k_long = 0 if S[2] - S[0] >= S[3] - S[1] else 1
         long_top = max(S[2] - S[0], S[3] - S[1]) >= LONG_SUPPORT_M
@@ -729,6 +747,15 @@ def apply_layout(cfg, spec, rng):
             if long_top and any(min((sh(m)[k_long] + sh(m)[k_long + 2]) / 2 - S[k_long],
                                     S[k_long + 2] - (sh(m)[k_long] + sh(m)[k_long + 2]) / 2) < SEARCH_END_M
                                 for m in sought):
+                return False
+            if any(sh(m)[0] < S[0] + ROLL_EDGE_M or sh(m)[1] < S[1] + ROLL_EDGE_M or sh(m)[2] > S[2] - ROLL_EDGE_M
+                   or sh(m)[3] > S[3] - ROLL_EDGE_M for m in rolling):
+                return False
+            zone = PICK_ZONE.get(c["support"])
+            # x: the centre (a plate over the west edge sticks out); y: the whole thing (11-22 v6_sticky_1121 T13 s10: a
+            # plate centred at 9.04 reached 9.16, under the wall cabinet's north end: its slide collided)
+            if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= sh(m)[1]
+                                and sh(m)[3] <= zone[3] for m in members):
                 return False
             # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
             return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))

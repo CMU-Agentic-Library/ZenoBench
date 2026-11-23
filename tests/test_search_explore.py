@@ -13,6 +13,8 @@ from zeno_skills.motion_state import Failure, Plan, Segment, Spec
 from zeno_skills.policies import base_motion as BM
 from zeno_skills.policies import perceive as PC
 from zeno_skills.rig import SkillFailure
+from zeno_skills import run as RUN
+from zeno_skills.skill_jobs import base as RB
 from zeno_skills.skill_plans import look as LK
 
 
@@ -20,8 +22,9 @@ from zeno_skills.skill_plans import look as LK
 class World:
     """Where the robot stands, what it drove to, the looks it ran; ``sees(pose, point) -> bool``."""
 
-    def __init__(self, sees=lambda pose, p: True, fail_at=()):
+    def __init__(self, sees=lambda pose, p: True, fail_at=(), undrivable=()):
         self.pose, self.went, self.looks, self.sees, self.fail_at = (0.0, 0.0, 0.0), [], [], sees, set(fail_at)
+        self.undrivable = set(undrivable)      # stand-offs the whole-body base planner finds no path to
         self.aim = None
 
     def navigate(self, rig, pose, **kw):
@@ -50,6 +53,8 @@ def _patch(monkeypatch, w, poses, reachable=lambda p: True, in_view=lambda place
     monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: [reachable(p) for p in ps])
     monkeypatch.setattr(VW, "in_view_poses", lambda rig, place, ps: [p for p in ps if in_view(place, p)])
     monkeypatch.setattr(BM.skills, "navigate", w.navigate)
+    monkeypatch.setattr(RB.RigBase, "drivable", lambda self, state, goal: tuple(goal) not in w.undrivable)
+    monkeypatch.setattr(RUN, "observe", lambda rig: None)
     monkeypatch.setattr(PC, "look", w.look)
     monkeypatch.setattr(PC, "record_view", lambda rig: [])
     monkeypatch.setattr(PC, "memory", lambda rig: rig.memory.setdefault("m", {"observed": {}, "explored": {}}))
@@ -113,6 +118,26 @@ def test_a_drive_that_fails_fails_the_search(monkeypatch):
     with pytest.raises(SkillFailure, match="no base path"):
         _search(monkeypatch, w, _rig(SUPPORTS))
     assert w.went == []                                    # not on to the next piece
+
+
+def test_a_stand_off_without_a_base_path_is_skipped(monkeypatch):
+    """11-23: kitchen_cabinet_3's stand-off from the west (v6 dining room) passed the reachability field but the
+    whole-body base planner found no path ("search limit"); it is not driven to, the search goes on."""
+    w = World(undrivable=[STAND["a"][0]])
+    rig = _rig(SUPPORTS)
+    PC_vis = w.visible
+    w.visible = lambda p: PC_vis(p) or (w.pose == STAND["b"][0] and np.allclose(p, [2.2, 0.2, 0.8]))
+    rig.geo.centre = lambda n, st: np.array([2.2, 0.2, 0.8])
+    out = _search(monkeypatch, w, rig)
+    assert out["visited"] == ["b"] and w.went == [STAND["b"][0]]
+
+
+def test_a_skipped_stand_off_is_named_when_nothing_is_found(monkeypatch):
+    w = World(undrivable=[STAND["a"][0]])
+    with pytest.raises(SkillFailure) as exc:
+        _search(monkeypatch, w, _rig(SUPPORTS))
+    assert "no base path to the stand-off of: ['a']" in str(exc.value)
+    assert w.went == [STAND["b"][0], STAND["c"][0]]
 
 
 # ------------------------------------------------------------------ explore_room
