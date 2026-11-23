@@ -3493,7 +3493,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "cup_out_of_view__cup_found",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3505,7 +3505,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "cup_out_of_view__side_covered",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 2,
    "atoms_geometric": 1,
    "geometric_atoms": [

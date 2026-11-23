@@ -108,11 +108,35 @@ def test_search_names_what_it_could_not_see_or_reach(monkeypatch):
     assert STAND["c"][0] not in w.went
 
 
-def test_a_drive_that_fails_fails_the_search(monkeypatch):
+def test_a_stand_off_without_a_base_path_is_skipped(monkeypatch):
+    """11-23: kitchen_cabinet_3's stand-off from the west (v6 dining room) passed the reachability field but the
+    base planner found no path ("search limit"); the search goes on to the next piece instead of failing."""
     w = World(fail_at=[STAND["a"][0]])
-    with pytest.raises(SkillFailure, match="no base path"):
+    rig = _rig(SUPPORTS)
+    PC_vis = w.visible
+    w.visible = lambda p: PC_vis(p) or (w.pose == STAND["b"][0] and np.allclose(p, [2.2, 0.2, 0.8]))
+    rig.geo.centre = lambda n, st: np.array([2.2, 0.2, 0.8])
+    out = _search(monkeypatch, w, rig)
+    assert out["visited"] == ["b"] and w.went == [STAND["b"][0]]
+
+
+def test_a_skipped_stand_off_is_named_when_nothing_is_found(monkeypatch):
+    w = World(fail_at=[STAND["a"][0]])
+    with pytest.raises(SkillFailure) as exc:
         _search(monkeypatch, w, _rig(SUPPORTS))
-    assert w.went == []                                    # not on to the next piece
+    assert "no base path to the stand-off of: ['a']" in str(exc.value)
+    assert w.went == [STAND["b"][0], STAND["c"][0]]
+
+
+def test_a_drive_that_fails_after_moving_fails_the_search(monkeypatch):
+    w = World()
+
+    def moved_then_failed(rig, pose, **kw):
+        w.pose = (0.5, 0.0, 0.0)                            # drove half a metre, then failed
+        raise SkillFailure("navigate: collision")
+    w.navigate = moved_then_failed
+    with pytest.raises(SkillFailure, match="collision"):
+        _search(monkeypatch, w, _rig(SUPPORTS))
 
 
 # ------------------------------------------------------------------ explore_room

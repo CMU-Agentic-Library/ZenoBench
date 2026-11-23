@@ -1291,12 +1291,14 @@ def t28():
             "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
             "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is "
             "covered, the books left",
+            # 11-23: look at the dining table, not search the dining room -- from the counter the search drove for
+            # kitchen cabinet 3's stand-off, never reached (v6_layouts_1120 s11, s19; as T07, T03)
             {"cup_found": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR},
-                               route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1")] + to_side),
+                               route=[look(COUNTER), nav(T2), look(T2)] + to_side),
              "side_covered": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR, **B3_TOP_BOOKS},
                                   watch=[KC, *B3_TOP_BOOKS],
                                   goal={"all": at_side(KC, LOWER) + [H]},
-                                  route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1"), nav(KC),
+                                  route=[look(COUNTER), nav(T2), look(T2), nav(KC),
                                          pick(KC), nav(side), look(side), nav("desk_1/top"),
                                          place(KC, "desk_1/top", [-0.35, -5.95])])}),
         "already_there": fam(

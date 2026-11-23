@@ -5226,6 +5226,8 @@
    "other_variants_passing": [
     "where_his_cup_is__on_counter",
     "where_his_cup_is__in_cabinet",
+    "cup_out_of_view__cup_found",
+    "cup_out_of_view__side_covered",
     "already_there__wrong_cup"
    ]
   },
@@ -5260,6 +5262,8 @@
    },
    "other_variants_passing": [
     "which_bed__east",
+    "cup_out_of_view__cup_found",
+    "cup_out_of_view__side_covered",
     "already_there__wrong_cup"
    ]
   },
@@ -5279,6 +5283,8 @@
    },
    "other_variants_passing": [
     "which_bed__east",
+    "cup_out_of_view__cup_found",
+    "cup_out_of_view__side_covered",
     "already_there__wrong_cup"
    ]
   },
@@ -5300,7 +5306,7 @@
    "task": "T28_cup_to_bedside",
    "variant": "cup_out_of_view",
    "layout": "cup_out_of_view__cup_found",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"
@@ -5315,7 +5321,7 @@
    "task": "T28_cup_to_bedside",
    "variant": "cup_out_of_view",
    "layout": "cup_out_of_view__side_covered",
-   "steps": 9,
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"
@@ -5357,7 +5363,9 @@
    "other_variants_passing": [
     "which_bed__east",
     "where_his_cup_is__on_counter",
-    "where_his_cup_is__in_cabinet"
+    "where_his_cup_is__in_cabinet",
+    "cup_out_of_view__cup_found",
+    "cup_out_of_view__side_covered"
    ]
   },
   {

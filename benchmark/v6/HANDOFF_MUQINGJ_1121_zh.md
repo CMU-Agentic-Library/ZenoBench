@@ -1,6 +1,6 @@
 # 11-21 bench 改动：给 muqingj 的全量回归说明
 
-整理：2026-11-21 夜，11-22 中午定稿，11-23 加 T10 / T11 两处（用户定，没有物理复跑）。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
+整理：2026-11-21 夜，11-22 中午定稿，11-23 加 T10 / T11 / T28 和 search 技能一处（用户定，没有物理复跑）。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
 
 ## 1. 请跑全量
 
@@ -21,7 +21,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 # 另外三个：category_control.json、category_action_task.json、category_action.json（空）
 ```
 
-## 2. 改了你的代码两处（用户要求，都是 cover 认盘子）
+## 2. 改了你的代码三处（用户要求：两处 cover 认盘子，一处 search 跳过到不了的视点）
 
 `zeno_skills/skill_runtime.py` 的 `SLOT_VALIDATORS["lid_ref"]`：带 `plate` 标签的东西也算锅盖。
 
@@ -30,6 +30,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - **几何：** 盘子直径 24.8 cm，锅盖 25 cm。`CoverWithLidPolicy` 和 `lid_on` 对锅盖没有别的假设。
 - 第二处（82f5f945）：`is_lid` 也认 `plate` 标签。只改 lid_ref 时参数检查过了，但 cover 的 rim_plane 路径匹配不上，报 `NO_PATH`。
 - 你觉得不合适可以改回去，那这两个设计就得换一种替代品。
+- **第三处（11-23，用户要求，和 cover 无关）：** `zeno_skills/policies/perceive.py` 的 `SearchObjectPolicy`：可达性场认为能到、但底盘规划找不到路（search limit）的视点，跳过这件家具接着找下一件，不再整个 search 失败；已经开出去又失败的、或者手里东西掉了的，照旧失败。失败信息里多一句 `no base path to the stand-off of: [...]`。原因：餐厅里 3 号柜从西边进来的两个视点从来到不了（T07、T03、T28 共 4 次），planner 正式评测时自己调 `search_object(dining_room_0_1)` 也会卡在这。`tests/test_search_explore.py` 相应改了（原来那条"开不到就失败"的测试换成三条）。
 
 ## 3. 这两天 bench 改了什么（11-20 → 11-21）
 
@@ -70,6 +71,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 | T07 汤锅在餐桌、T03 `utensils_apart`（11-22） | `search_object(dining_room_0_1)` 去看 3 号柜的两个视点 (0.16, 5.27)、(0.01, 5.67) 从来没到过（0/4），第三个视点 5/5 | 路线改成 `navigate`/`look` 餐桌 |
 | T10 `after_dinner_clear`（三个，11-23，用户定） | 锡纸盒 20×14 cm 丢进 26 cm 的垃圾桶，手爪撞桶沿差 3 mm，从没成功过 | 换成大垃圾桶：新资产 `big_trash_can`（原垃圾桶等比放大到 36×36×36 cm，`usd/assets/big_trash_can.usd`），放在原垃圾桶的位置 (9.05, 1.12)，场景里原来的 `trash_can` 在这三个设计里移除，物体名 `kitchen_trash` |
 | T11 `fruit_plate_for_guests__tray_in_use`（11-23，用户定） | 餐桌上的替代托盘是 42×36 cm 的 serving_tray，比电视柜（30 cm 深）还深，放不上 | 换成第二个小托盘 `spare_tray`（shallow_sorting_tray，27×20 cm，和书桌上那个一样） |
+| T28 `cup_out_of_view`（两个，11-23） | 杯子在餐桌上，路线 `search_object(dining_room_0_1)` 从小厨房过来先去 3 号柜那两个到不了的视点（v6_layouts_1120 s11、s19） | 和 T07 一样改成 `navigate`/`look` 餐桌；另外 search 技能也修了（第 2 节第三处） |
 
 ## 4. 已知过不去的（不是布局问题）
 
@@ -81,7 +83,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - **T15 用盘子盖锅（`no_lid`、`lid_in_use`、`lid_elsewhere__covering_bowl`）：** 参数检查过了，但盘子是捏边拿起来的，cover 走 place 的捏边放置，要在锅沿上找"空边"，报 `no free edge spot on rim:handled_cooking_pot`（3/3）。要改的是 place 的捏边分支对 rim 目标的处理，是技能侧的事。
 - **铅笔拿着却判成没拿（T05 `pen_in_use`，11-22）：** 铅笔从 6 号柜抓起来了，sticky 也焊上了（slip 0.001 m），但放书桌前 `holding` 检查看手指读数 [0.0, 0.0004] 判成没拿着，报 `PRECONDITION_FAILED`。细东西 + sticky 时 holding 检查应该信焊接。
 - **碗叠到盘子上（T13 `copy_the_setting__plate_bowl_mug_left`，11-22 第一次走到这一步）：** 盘子捏边拿、`edge_held_flat` 放上餐桌都成功了；`stack_object(bowl, plate)` 松手时碗碰到桌面（4.7 mm），碗歪 15° 卡在盘沿上，报 `on support False`。`stack` 对准盘子的精度/放下高度的问题，技能侧。
-- **`search_object` 的视点不检查能不能到：** 餐厅里 3 号柜的两个视点从来规划不到底盘路径（search limit），bench 那两个路线已经改成看餐桌，别的在餐厅里 search 的路线机器人一般从东边进来，用的是能到的那个视点。
+- **`search_object` 的视点不检查能不能到：** 11-23 已在技能里修（第 2 节第三处），bench 那三个路线（T07、T03、T28）也改成看餐桌。
 - **偶发、没修（成功过很多次）：** T07 `broken_oatmeal`；T29 `several__toy_box` 拿着车走不到玩具箱（另外 3 个设计同路线成功）；T23 s13。
 - **设计问题：** T10 锡纸盒、T11 大托盘，用户 11-23 定了，见第 3 节最后两行（没有物理复跑）。
 
@@ -103,4 +105,4 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - T07 `two_portions__dining`（看餐桌代替 search）：**成功**（900 s）
 - T03 `utensils_apart__bin_full_tray`（看餐桌代替 search）：**成功**（2000 s）
 
-11-22 的布局改动到此结束。11-23 又按用户的决定改了 T10 / T11（第 3 节最后两行，只做了静态检查）。最新的 `main` 就是全量要用的版本；**新资产 `big_trash_can` 在 `usd/assets/` 和 `assets/asset3d/big_trash_can/`（git LFS），拉 main 时请一起拉下来（`git lfs pull`）。**
+11-22 的布局改动到此结束。11-23 又按用户的决定改了 T10 / T11 / T28（第 3 节最后三行）和 search 技能（第 2 节），只做了静态检查和单元测试。最新的 `main` 就是全量要用的版本；**新资产 `big_trash_can` 在 `usd/assets/` 和 `assets/asset3d/big_trash_can/`（git LFS），拉 main 时请一起拉下来（`git lfs pull`）。**

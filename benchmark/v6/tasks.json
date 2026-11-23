@@ -209978,9 +209978,6 @@
         ],
         "pick": [
          "kid_cup"
-        ],
-        "search": [
-         "kid_cup"
         ]
        },
        {
@@ -210058,9 +210055,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "kid_cup"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -210277,9 +210272,6 @@
         ],
         "pick": [
          "kid_cup"
-        ],
-        "search": [
-         "kid_cup"
         ]
        },
        {
@@ -210395,9 +210387,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "kid_cup"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -211391,10 +211381,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "kid_cup",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -211445,10 +211440,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "kid_cup",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
