@@ -1,115 +1,52 @@
-# Zeno House — a sim-ready multi-room house for the Zeno Malo mobile manipulator
+# A Benchmark for Task-Level Reasoning, Planning, and Substitution in Long-Horizon Mobile Manipulation
 
-An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
-asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
-planning), a **verb-based SkillNode library** for an upper-layer VLM (one verb + one noun per skill, GT-checked
-pre/postconditions, noun-selected policy paths), **eleven task scenes**, and **ZenoBench v6**, a household
-planning benchmark for an upper-layer planner (30 tasks, 151 task designs, 1,510 episodes; see
-[ZenoBench v6](#zenobench-v6-the-planning-benchmark)). Every task catalog runs through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
-[EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen) text-to-3D, including the seventeen textured props
-documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
+Based on instructions and observations of the environment, a robot interprets the task goal and its constraints,
+determines which objects, tools, and destinations to use, organizes subgoals and skill invocations, and adjusts its
+plan as new information becomes available to accomplish the overall task.
+
+**[Explore the tasks ↗](https://zenobench-task-level-replanning-2026.zihan-liu.chatgpt.site/)** ·
+Zeno Malo EDU mobile manipulator · Isaac Sim house with 10 rooms
 
 <p align="center">
-  <img src="media/rollouts/task_tidy_toys.gif" width="49%" alt="tidy_toys: the toys into the toy box"/>
-  <img src="media/rollouts/task_heat_without_microwave.gif" width="49%" alt="heat_without_microwave: food heated on the stove"/>
+  <img src="media/scenes/house_topdown.jpg" width="49%" alt="The house, top-down"/>
+  <img src="media/rollouts/task_heat_without_microwave.gif" width="49%" alt="Food heated on the stove"/>
 </p>
-<p align="center"><sub>
-Whole tasks, run as SkillNode subgraphs with their goal checked on GT state (sped up).
-Left: <b>tidy_toys</b>. Right: <b>heat_without_microwave</b>.
-Core grasp and motion planning use annotations; appliance skills also contain scene-specific park hints.
-</sub></p>
 
-Physics is real PhysX contact. The rollout writes robot drive targets (the base's x, y and
-yaw joints among them) and the powered microwave hinge target. Objects and doors are never teleported; food
-temperature uses a separate task-level model. Success is measured from simulator state
-(joint angle, object pose, finger gap, and task temperature).
+**30 household tasks · 151 variants · 316 preset layouts · 1,510 episodes**
 
-## ZenoBench v6 (the planning benchmark)
+## Categories
 
-ZenoBench v6 asks whether an upper-layer planner (a VLM) can finish everyday household requests. The planner sees
-the scene through the robot's camera and gets feedback from the skills it calls. Its choices are judged on
-simulator state. Each planner gets the same SkillNode library and the same observation limits. The planner never
-sees GT state: the Isaac Sim GT verifier decides success. Full design notes are in
-[benchmark/v6/README.md](benchmark/v6/README.md).
+| category | variants | what it tests |
+|---|---|---|
+| Control | 30 | the nominal plan works; a reference for the other variants |
+| Task-Level | 110 | interpret the goal and constraints, choose objects, destinations or procedures, revise the longer-horizon plan |
+| Action + Task | 8 | longer-horizon planning that also needs local handling: opening storage, an edge position, an immediate obstacle |
 
-| | |
-|---|---|
-| tasks | 30 everyday requests in one house (T01-T20 carried over from v5, T21-T30 new in v6), e.g. *"The kid is going to bed. Bring his cup to his bedside."* |
-| designs (variants) | 151: what is in the scene and what the planner has to work out (an absent object and its substitute, a lid on the pot, a taken destination, an item in another room, someone moving an object) |
-| seeds | 10-19 per design, each a different layout: object positions, the robot's start and the removed distractors; for a design with several layouts, also which one |
-| episodes | **1,510** (= 151 × 10); 316 layouts, each with an oracle reference route |
-| instructions | the goal only: no positions, no steps, no fallbacks; the same for every seed of a design |
-| injected failures | none: every difficulty comes from the scene or a dynamic event |
+## Variants and seeds
 
-### Categories
+- **Variant**: a distinct problem design within a task, covering its goal, scene conditions, available resources,
+  constraints and events. Different variants test different decisions, such as finding a substitute, identifying
+  the target or choosing a destination.
+- **Seed**: one reproducible initial scene of a variant, covering object placement, the robot's start pose and
+  distractors. For a variant with several preset layouts, the seed also selects the layout. The core conditions
+  the variant tests are kept.
+- **Layout**: a concrete configuration of a variant (e.g. the cup in cabinet 4 or in cabinet 6), with its own
+  instruction, goal predicates and reference contract sequence.
 
-Each design belongs to one category ([TRACKS.md](benchmark/v6/TRACKS.md)):
+**1 episode = task + variant + seed.** Each variant uses seeds 10–19.
 
-| category | what the design needs | designs | episodes |
-|---|---|---|---|
-| Control | nothing: the nominal plan works; the reference for the others | 33 | 330 |
-| Task-Level | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event moves | 110 | 1,100 |
-| Action + Task | a short fix at the work spot (expose a flat book, move the base in, clear the target) **and** a longer-horizon change | 8 | 80 |
-| Action-Level | a short fix only (none left as designs of their own) | 0 | 0 |
+## Scoring
 
-### Success and scoring
+Scores are given per seed. The best feasible option earns 1.0. Substitutes in object, location or container earn
+0.6 or 0.3, and an outcome that is not acceptable earns 0. Skipping a required instruction step also earns 0.
+D = 1 marks a layout with several tiers, and D = 0 a layout with a single tier. Tiers are checked from highest to
+lowest on the GT goal predicates of the final state. Incidental slips do not lower the score.
 
-- **Success** is decided once the episode ends, from GT goal atoms on the final simulator state. Goals are loose:
-  any way that does what the person asked counts (`on_any`, `count_on_at_least`, ...). Some goals also check
-  how the task was done, e.g. `never_picked` for a bowl that is in use.
-- **Score.** A design with several acceptable outcomes ranks them in up to three tiers: best 1.0, second 0.6,
-  worst 0.3. A run that misses every tier scores 0 and fails. An unfinished task never gets a tier.
-  `benchmark/v6/scoring.py` holds the tiers; [SCORING_zh.md](benchmark/v6/SCORING_zh.md) records the
-  rulings design by design.
+## Skills
 
-### Observation and execution profiles
-
-Episodes run through [episode/](episode/README.md) with a profile from `episode/profiles/<level>/<name>.yaml`:
-
-| profile | use |
-|---|---|
-| `physical/benchmark` | the scored setting: head camera, a GT-assisted detector limited by view and occlusion, an observation cache, masked feedback, no automatic recovery; any object argument must be observed first ([benchmark/README.md](benchmark/README.md#observation-boundary)) |
-| `physical/oracle`, `physical/gt` | the GT oracle and full-GT runs |
-| `sticky/gt`, `sticky/benchmark` | the same with *sticky carry*: a held object is welded to the gripper until the fingers open, so nothing slips out while it is carried. Pick and place stay physical. This is an execution assist, and its results are not comparable with `physical/*` |
-
-### Run
-
-```bash
-export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=~/miniforge3/envs/isaaclab/bin/python
-# one episode: a design, a seed, its oracle route
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
-    --variant cup_out_of_view --seed 10 --planner oracle --profile sticky/gt
-# your planner (reset / next_call, benchmark/planners.py) on the same episode
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
-    --variant cup_out_of_view --seed 10 --planner recovery --policy mypkg.planner:MyPlanner
-# a whole category (control 330 / task 1100 / action_task 80 episodes; at most two Isaac processes)
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
-    --batch benchmark/v6/batches/category_task.json --jobs 2 --profile sticky/gt --out benchmark/runs/v6_task
-# an external planner over HTTP
-$ISAACLAB_PYTHON -m env_service.server --port 8800
-```
-
-Rebuild and check the catalog (no simulator). Expect 1,510 statically ok episodes, 316 / 316 oracle routes ok, and
-the tests passing:
-
-```bash
-for m in define_tasks_v6 validate_v6 report_v6 tracks success_routes oracle_check plan_dependence substitution_stats; do
-    python -m benchmark.v6.$m; done
-python -m pytest benchmark/v6/tests -q
-```
-
-### Where to read
-
-| file | content |
-|---|---|
-| [VARIANTS_zh.md](benchmark/v6/VARIANTS_zh.md) | every design in plain Chinese: the situation, what the robot does, what the seed chooses |
-| [SUCCESS_ROUTES_zh.md](benchmark/v6/SUCCESS_ROUTES_zh.md) | success conditions and the reference call order of every layout |
-| [SCORING_zh.md](benchmark/v6/SCORING_zh.md), [SUBSTITUTION_STATS_zh.md](benchmark/v6/SUBSTITUTION_STATS_zh.md) | score tiers per design; substitutions by kind |
-| [TRACKS.md](benchmark/v6/TRACKS.md), [ROUTES.md](benchmark/v6/ROUTES.md) | categories with counts per task; every oracle route |
-| [PLAN_DEPENDENCE_zh.md](benchmark/v6/PLAN_DEPENDENCE_zh.md) | which designs a fixed plan solves, the key observations, the leakage audit |
-| [HANDOFF_MUQINGJ_1121_zh.md](benchmark/v6/HANDOFF_MUQINGJ_1121_zh.md), [SKILL_ISSUES_zh.md](benchmark/v6/SKILL_ISSUES_zh.md) | the latest run instructions and the open skill-side problems |
-
-## SkillNode / Contract / Policy
+The planner calls verb skills through contracts, one verb and one noun per call. Each contract checks GT pre- and
+postconditions and selects a policy path by noun. See [skill_library/](skill_library/README.md),
+[contract_library/](contract_library/README.md) and [policy_library/](policy_library/README.md).
 
 <!-- library:start -->
 **71 个动词 SkillNode**，一一对应 71 个 Contract，共 118 条按名词选择的 policy 路径，覆盖 101/117 个底层 policy（退役 16 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 97 条上一步/下一步、40 条 fallback、47 条 alternative。
@@ -124,499 +61,49 @@ python -m pytest benchmark/v6/tests -q
 | 多物体（嵌套 Contract） | `fetch`, `collect`, `sort`, `clear`, `empty`, `arrange`, `restore`, `swap`, `hide` |
 <!-- library:end -->
 
-上层 VLM 读取 [vlm_skill_catalog.json](skill_library/vlm_skill_catalog.json)（或单个 `skill_library/skills/skill_XXX/skill.json`），输出 schema 2 技能子图；[graph.py](skill_library/graph.py) 校验并 grounding，[runtime.py](skill_library/runtime.py) 逐节点调用 Contract。每次调用都在执行前评估 GT 前置条件，按名词选择 policy 路径，执行后评估 GT 后置条件，失败时返回测得的谓词与 fallback 候选。设计、关系类型和生成方式见 [SkillNode Library](skill_library/README.md)，Contract 与 policy 见 [Contract Library](contract_library/README.md) 和 [Policy Library](policy_library/README.md)。
-
-<!-- verification:start -->
-**物理验证**（Isaac Sim，GT 前后条件全部测量通过才计）：66/71 个动词、98/121 条 policy 路径已通过，29/35 个验证场景端到端通过。逐动词证据与失败原因见 [verification/STATUS.md](skill_library/verification/STATUS.md)。
-<!-- verification:end -->
-
-<!-- rollouts:start -->
-**Whole-task rollouts**: 16/35 planner-generated skill subgraphs ran end to end in Isaac Sim with their task goal holding on GT state (`tools/verify_skills.py --scenarios skill_library/verification/task_rollouts.json --video`). Failures are listed with the step that failed.
-
-<img src="media/rollouts/task_tidy_toys.gif" width="240" title="tidy_toys"> <img src="media/rollouts/task_heat_breakfast_preloaded.gif" width="240" title="heat_breakfast_preloaded"> <img src="media/rollouts/task_heat_without_microwave.gif" width="240" title="heat_without_microwave"> <img src="media/rollouts/task_throw_away_can.gif" width="240" title="throw_away_can"> <img src="media/rollouts/task_lay_down_bottle.gif" width="240" title="lay_down_bottle"> <img src="media/rollouts/task_roll_pin.gif" width="240" title="roll_pin"> <img src="media/rollouts/task_hide_block.gif" width="240" title="hide_block"> <img src="media/rollouts/task_greet_and_point.gif" width="240" title="greet_and_point"> <img src="media/rollouts/task_find_lid.gif" width="240" title="find_lid"> <img src="media/rollouts/task_explore_living_room.gif" width="240" title="explore_living_room"> <img src="media/rollouts/task_count_tomatoes.gif" width="240" title="count_tomatoes"> <img src="media/rollouts/task_inspect_cabinet.gif" width="240" title="inspect_cabinet"> <img src="media/rollouts/task_knock_then_open.gif" width="240" title="knock_then_open"> <img src="media/rollouts/task_square_block.gif" width="240" title="square_block"> <img src="media/rollouts/task_sweep_blocks.gif" width="240" title="sweep_blocks"> <img src="media/rollouts/task_present_block.gif" width="240" title="present_block">
-
-| task | steps done | result | goal / failure |
-|---|---|---|---|
-| `collect_fruits` | 6/7 | fail | navigate_place(destination=apple): carry: orange slipped out of the hand while carrying it |
-| `tidy_toys` | 12/12 | pass | goal inside(toy_car, storage_basket), inside(toy_block, storage_basket), inside(rubber_duck, storage_basket) |
-| `shelve_books` | 6/7 | fail | navigate_place(destination=bookcase_3/top): carry_navigate: no base path to [1.792378303490153, |
-| `desk_prep` | 2/3 | fail | navigate_place(destination=desk_1/top): carry_in: notebook slipped out of the hand while carryi |
-| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=dining_table_2/top, max_dist_m=0.5): SUBSKI |
-| `heat_breakfast` | 1/2 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
-| `heat_breakfast_preloaded` | 2/2 | pass | goal temperature_at_least(oatmeal, 60.0) |
-| `heat_breakfast_combo` | 3/4 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
-| `recycle_and_store` | 7/8 | fail | place_object(object=snack_carton, receptacle=wide_storage_bin): place snack_carton: target (1.14, -0.43) on in:wide_storage_bin unreachable  |
-| `organize_utility_items` | 1/2 | fail | pick_object(object=juice_bottle): pick juice_bottle: not held (lift -0.064 m) |
-| `cook_tomato_soup` | 7/8 | fail | place_object(object=breakfast_spoon, receptacle=mug): place breakfast_spoon: container shifted 0.104 m before release |
-| `heat_without_microwave` | 5/5 | pass | goal temperature_at_least(cherry_tomato_2, 45.0) |
-| `heat_can_in_microwave` | 5/6 | fail | place_object(object=soda_can, receptacle=kitchen_microwave/inside_floor): joint move to microwave_front: every joint-space path collides |
-| `chill_drink` | 5/6 | fail | place_object(object=soda_can, receptacle=breakfast_fridge/inside_shelf): place soda_can: xy err 0.108 m, on support True (breakfast_fridge/i |
-| `throw_away_can` | 4/4 | pass | goal inside(soda_can, trash_can) |
-| `stack_blocks` | 3/4 | fail | stack_object(object=wooden_block_b, base=wooden_block_a): place wooden_block_b: xy err 0.060 m, on support False (bottom at (7.25, 1.57, 0.8 |
-| `wipe_island` | 3/4 | fail | wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge): wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidat |
-| `lay_down_bottle` | 2/2 | pass | goal lying(juice_bottle) |
-| `roll_pin` | 2/2 | pass |  |
-| `flip_book` | 1/2 | fail | flip_object(object=paperback_book): flip paperback_book: the arc stopped at 0 deg |
-| `hide_block` | 3/3 | pass | goal hidden(wooden_block_b) |
-| `greet_and_point` | 3/3 | pass | goal waved(), nodded(), pointing_at(trash_can) |
-| `find_lid` | 1/1 | pass | goal observed(pot_lid) |
-| `explore_living_room` | 1/1 | pass | goal room_explored(living_room_0_0) |
-| `count_tomatoes` | 1/1 | pass | goal counted(cherry_tomato) |
-| `inspect_cabinet` | 1/1 | pass | goal observed(kitchen_cabinet_6), is_closed(kitchen_cabinet_6) |
-| `knock_then_open` | 3/3 | pass |  |
-| `square_block` | 2/2 | pass | goal squared(wooden_block_a) |
-| `swap_blocks` | 0/1 | fail | swap_objects(a=wooden_block_a, b=soda_can): SUBSKILL_FAILED: pick_object(object=wooden_block_a): pick wooden_block_a: not held (lift 0.000 m |
-| `sort_items` | 1/2 | fail | fetch_object(object=wooden_block_b, receptacle=mug): SUBSKILL_FAILED: place_object(object=wooden_block_b, receptacle=mug): joint move to pla |
-| `empty_mug` | 0/1 | fail | fetch_object(object=cherry_tomato_1, receptacle=kitchen_island/top): SUBSKILL_FAILED: pick_object(object=cherry_tomato_1): pick cherry_tomat |
-| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=bookcase_2/top): SUBSKILL_FAILED: pick_object(obje |
-| `sweep_blocks` | 1/1 | pass | goal clustered(['wooden_block_a', 'wooden_block_b'], 0.12) |
-| `present_block` | 3/3 | pass | goal presenting(wooden_block_a) |
-| `serve_in_left_hand` | 1/2 | fail | brace_object(object=wooden_block_a): steady wooden_block_a: no base pose lets the left arm reach a contact (rejected: {'candidates': 3432, ' |
-<!-- rollouts:end -->
-
-<!-- plans:start -->
-**任务分解**：[tasks.json](skill_library/tasks.json) 中 35/35 个任务由符号规划器（同一套 GT 谓词与导出的前后条件）分解为 SkillNode 链，子图在 [plans/](skill_library/plans/)。
-
-| 任务 | 步数 | SkillNode 链（动词/路径） |
-|---|---|---|
-| `collect_fruits` | 8 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container |
-| `tidy_toys` | 12 | navigate/empty → pick/floor_top → navigate/carry → place/container → navigate/empty → pick/floor_top → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container |
-| `shelve_books` | 8 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
-| `desk_prep` | 12 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/top_pinch → navigate/carry → place/surface → navigate/empty → pick/round_rim → navigate/carry → place/surface |
-| `breakfast_setup` | 1 | arrange/place_near_common_spot |
-| `heat_breakfast` | 20 | navigate/empty → open/refrigerator → navigate/empty → open/powered_microwave → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave → open/powered_microwave → navigate/empty → pick/microwave_cavity → navigate/carry → place/surface → navigate/empty → close/handle_push → navigate/empty → close/powered |
-| `heat_breakfast_preloaded` | 2 | navigate/empty → heat/microwave |
-| `heat_breakfast_combo` | 10 | navigate/empty → heat/microwave → navigate/empty → open/refrigerator → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/surface → navigate/empty → close/handle_push |
-| `recycle_and_store` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/floor_top → navigate/carry → place/container |
-| `organize_utility_items` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
-| `cook_tomato_soup` | 15 | navigate/empty → uncover/knob_lift_aside → navigate/empty → pick/top_pinch → navigate/carry → stir/circle_below_rim → navigate/carry → place/container → pick/round_rim → navigate/carry → place/stove_burner → heat/stove_pot → navigate/empty → pick/top_pinch → cover/rim_plane |
-| `heat_without_microwave` | 5 | navigate/empty → pick/round_rim → navigate/carry → place/stove_burner → heat/stove_pot |
-| `heat_can_in_microwave` | 9 | navigate/empty → open/powered_microwave → navigate/empty → pick/top_pinch → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave |
-| `chill_drink` | 8 | navigate/empty → open/refrigerator → navigate/empty → pick/top_pinch → navigate/carry → place/cabinet_or_fridge_shelf → close/handle_push → chill/fridge_wait |
-| `throw_away_can` | 4 | navigate/empty → pick/top_pinch → navigate/carry → place/container |
-| `stack_blocks` | 4 | navigate/empty → pick/top_pinch → navigate/carry → stack/top_face |
-| `wipe_island` | 5 | navigate/empty → pick/top_pinch → navigate/carry → wipe/sponge_strip → place/surface |
-| `lay_down_bottle` | 2 | navigate/empty → tip/push_high |
-| `roll_pin` | 2 | navigate/empty → roll/push_above_axis |
-| `flip_book` | 2 | navigate/empty → flip/edge_roll |
-| `hide_block` | 3 | navigate/empty → uncover/knob_lift_aside → hide/container_with_lid |
-| `greet_and_point` | 3 | wave/raised_swing → nod/pitch_cycles → point/front |
-| `find_lid` | 1 | look/head_only |
-| `explore_living_room` | 1 | explore_room/viewpoints |
-| `count_tomatoes` | 1 | count/head_sweep |
-| `inspect_cabinet` | 1 | look/turn_then_head |
-| `knock_then_open` | 3 | navigate/empty → knock/panel_taps → open/hinged_door |
-| `square_block` | 2 | navigate/empty → square/pick_rotate_place |
-| `swap_blocks` | 1 | swap/via_buffer |
-| `sort_items` | 2 | fetch/to_container → fetch/to_container |
-| `empty_mug` | 3 | fetch/to_surface → fetch/to_surface → fetch/to_surface |
-| `clear_tv_stand` | 2 | fetch/to_surface → fetch/to_surface |
-| `sweep_blocks` | 1 | sweep/push_to_centroid |
-| `present_block` | 3 | navigate/empty → pick/top_pinch → present/front_of_head |
-| `serve_in_left_hand` | 4 | navigate/empty → brace/left_rim_pinch → navigate/empty → open/left_holds_load |
-<!-- plans:end -->
-
----
-
-## Contents
-
-- [ZenoBench v6 (the planning benchmark)](#zenobench-v6-the-planning-benchmark)
-- [SkillNode / Contract / Policy](#skillnode--contract--policy)
-- [Scenes](#scenes)
-- [New EmbodiedGen V2 assets and task scenes](#new-embodiedgen-v2-assets-and-task-scenes)
-- [Tasks and scenes](#tasks-and-scenes)
-- [Documentation index (all docs, by category)](docs/README.md)
-- [GT policy inventory](docs/archive/GT_POLICY.md)
-- [Policy capability catalog (with implementation status)](docs/reference/POLICY_CATALOG.md)
-- [Physical verification report](docs/archive/POLICY_VERIFICATION.md)
-- [Known limitations (round 30)](docs/archive/KNOWN_LIMITATIONS.md)
-- [Contract proposal (8 reusable templates)](docs/archive/CONTRACT_PROPOSAL.md)
-- [GT annotations](#gt-annotations-ik--grasp--rl)
-- [Atomic skills](#atomic-skills)
-- [Skills](#skills)
-- [Physics fixes baked into the scene](#physics-fixes-baked-into-the-scene)
-- [Quick start](#quick-start)
-- [新建任务、资产、场景和标注](docs/guides/CREATE_TASKS.md)
-- [Repository layout](#repository-layout)
-- [Limitations](#limitations)
-
----
-
-## Scenes
-
-One house (`sim/zeno_house.usd`) contains 10 rooms, 58 pieces of static furniture, 15
-articulated cabinets and drawers, a microwave and the Zeno Malo robot. No cabinet stands in a bathroom
-(the ones the layout generator put there were moved to the living and dining rooms, `tools/relocate_furniture.py`). Each task scene is a thin
-USD layer on top of it (`tasks/<task>/scene.usd`); the breakfast heating tasks layer over the
-appliance scene (`sim/zeno_house_appliances.usd`). The rooms themselves are never modified; a
-task only adds assets to furniture tops or to the floor.
-
-Objects are placed on support layers: the boards of 26 static furniture pieces (bookcases, shelves, TV stands,
-desks, tables, counters, mattresses) listed by hand in [`annotations/support_layers.json`](annotations/support_layers.json),
-named `<furniture>/shelf_<i>` from the bottom up and `<furniture>/top`. Infinigen's collision meshes put boards up to
-5 cm off the rendered ones, so `tools/fit_support_repairs.py` lays an invisible collider slab on each rendered board
-and removes the collision faces that stick into the space above it. Furniture nothing is placed on (beds, pillows,
-plant pots, ovens, dishwashers, toilets, sinks), closed cabinet interiors of the kitchen counters and boards above
-the robot's reach (1.5 m) have no support.
-
-| | | |
-|---|---|---|
-| ![](media/scenes/house_topdown.jpg) House, top-down (roofless) | ![](media/scenes/living_room_cabinet.jpg) Articulated cabinet with side-hook handle, living room | ![](scenes/kitchen_pot/check/pot_close.png) Cooking pot on the kitchen counter |
-
-The [kitchen pot demo](scenes/kitchen_pot/scene.usd)
-is outside the ten benchmark tasks; a physical lift remains unverified.
-
-The base house, task scenes, and kitchen pot demo have recorded three-second physics
-checks: free bodies drift less than 1 cm, articulated parts stay closed, and the robot
-holds its pose (see `sim/checks/`, `tasks/*/check/`, and
-`scenes/kitchen_pot/check/`). These checks establish scene stability, not task completion.
-
-## New EmbodiedGen V2 assets and task scenes
-
-The [recycle-and-store scene](tasks/recycle_and_store/scene.usd) adds a V2 soda can and snack carton on the living-room TV stand, a V2 foam cube on the floor, and a V2 wide storage bin on the bookcase. The goal is to move the three portable objects into the bin.
-
-| Task scene | Source objects | Destination |
-| --- | --- | --- |
-| <img src="tasks/recycle_and_store/check/overview.png" width="350" alt="Recycling task scene in the existing house"/> | <img src="tasks/recycle_and_store/check/tv_stand.png" width="350" alt="V2 soda can and snack carton"/> | <img src="tasks/recycle_and_store/check/bin_close.png" width="350" alt="V2 wide storage bin on the bookcase"/> |
-
-The [organize-utility-items scene](tasks/organize_utility_items/scene.usd) places six more V2 assets in the same house: bottle and tissue box on the TV stand, cup and rolling pin on the side dining table, book on the dining table, and sorting tray on the bookcase.
-
-| House view | Cup and rolling pin | TV stand objects | Sorting tray |
-| --- | --- | --- | --- |
-| <img src="tasks/organize_utility_items/check/overview.png" width="255" alt="Utility task overview"/> | <img src="tasks/organize_utility_items/check/side_table.png" width="255" alt="V2 cup and rolling pin"/> | <img src="tasks/organize_utility_items/check/tv_stand.png" width="255" alt="V2 bottle and tissue box"/> | <img src="tasks/organize_utility_items/check/bookcase.png" width="255" alt="V2 sorting tray"/> |
-
-All 22 V2 props (the 12 task props, the 5 SkillNode-library props and the 5 leftovers of the v6 heating task) have textured visual meshes, collision meshes, URDFs, converted USDs, and shared grasp annotations; the gallery below shows them in its last four rows. The smaller storage bin is an available scene variant. The [V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md) lists their dimensions and rebuild commands. The [kitchen pot demo](scenes/kitchen_pot/scene.usd) uses an open V2 pot with two side handles; its handle and rim are grasp candidates. The rebuilt V2 scenes pass their three-second stability checks ([recycling](tasks/recycle_and_store/check/check.json), [utility](tasks/organize_utility_items/check/check.json), [pot](scenes/kitchen_pot/check/check.json), [kitchen skills](tasks/kitchen_skills/check/check.json)). Physical Skill Contract results on these assets are listed per verb in [verification/STATUS.md](skill_library/verification/STATUS.md).
-
----
-
-### Kitchen skills scene
-
-`tools/build_kitchen_scene.py` adds a cooking corner to the living room as a layer over the appliance scene (`sim/zeno_house_kitchen.usd`): a 1.7 m prep island and an electric stove with two burner discs and a physical power key. The footprint was chosen by a search that keeps the base paths between the start, microwave, refrigerator, dining table, bookcase and TV stand open. The stove is a task-level heat source: pressing its key toggles the burner, and food inside a vessel standing on a burner heats (`zeno_skills/thermal.py`, which also models refrigerator cooling). The [`kitchen_skills`](task_specs/kitchen_skills.json) scene places the five new props from [`embodiedgen_skill_assets.json`](assets/embodiedgen_skill_assets.json) (pot lid, sponge, trash can, cherry tomatoes, wooden blocks) next to existing ones, so that every verb in the SkillNode library has an object to act on. `tools/make_kitchen_scene.sh` rebuilds, settles, checks and annotates it.
-
-| Prep island | Stove (pot with lid, free burner, power key) and trash can |
-| --- | --- |
-| <img src="tasks/kitchen_skills/check/island.png" width="420" alt="Prep island with rolling pin, bottle, blocks, spoon, book, mug of tomatoes, sponge and can"/> | <img src="tasks/kitchen_skills/check/stove.png" width="420" alt="Stove with covered pot, free burner, power key and trash can"/> |
-
-## Tasks and scenes
-
-Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into
-`tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot
-start, thermal state and placed objects. A task's goal is a list of GT predicate atoms
-(`zeno_skills/predicates.py`) and is defined in a catalog:
-
-| catalog | tasks | default profile |
-|---|---|---|
-| [benchmark/v6/tasks.json](benchmark/v6/tasks.json) | **ZenoBench v6** (above): 30 tasks, 151 designs × 10 seeds | `benchmark` |
-| [skill_library/tasks.json](skill_library/tasks.json) | 35 tasks, one per SkillNode family; planner subgraphs in [skill_library/plans/](skill_library/plans/) | `gt` |
-| [benchmark/v3/tasks.json](benchmark/v3/tasks.json), [benchmark/v5/tasks.json](benchmark/v5/tasks.json) | earlier benchmark catalogs. v6 reads v5 and never writes it ([benchmark/README.md](benchmark/README.md)) | `benchmark` |
-
-```bash
-# an original SkillNode task through the GT oracle (its plan as the route)
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
-```
-
-### Appliance scenes
-
-`tools/build_appliance_scene.py` adds an articulated refrigerator and a relocated
-microwave with a complete four-sided shell, a powered articulated door,
-physical door and start buttons, and a low stand. The
-appliance layer is `sim/zeno_house_appliances.usd`; the original house is unchanged.
-The `heat_breakfast`, `heat_breakfast_preloaded` and `heat_breakfast_combo` scenes layer over it.
-
-<img src="media/tasks/heat_breakfast_combo_open.png" width="540" alt="Microwave door open with oatmeal inside and complete side panel"/><br>
-The microwave door at its measured open angle of −1.4 rad.
-
-```bash
-# Rebuild the appliance layer and its scenes:
-$ISAACLAB_PYTHON tools/build_appliance_scene.py
-$ISAACLAB_PYTHON tools/settle_scene.py sim/zeno_house_appliances.usd
-$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_appliances.usd annotations/zeno_house_appliances.json
-bash tools/make_tasks.sh heat_breakfast_preloaded heat_breakfast_combo heat_breakfast
-```
-
-Temperature is an explicit task-level state model, not a PhysX heat simulation. It
-starts at 4 °C and rises at 4 °C/s only while the microwave is active, its door is
-closed, and the oatmeal is inside its annotated cavity (`zeno_skills/thermal.py`).
-
-### Define your own task
-
-See [新建任务、资产、场景和标注](docs/guides/CREATE_TASKS.md) for the spec, build, settle, check, annotate, and run workflow. The runnable starting point is [`task_specs/examples/serve_guest.json`](task_specs/examples/serve_guest.json).
-
-## GT annotations (IK + grasp + RL)
-
-**Every object in every scene has an asset annotation, and every articulated part has a handle
-frame.** These supply core geometry for scripted IK and grasp planning, and can serve as
-privileged observations and dense rewards for RL. Appliance actions also use specialized control.
-
-<p align="center"><img src="media/annotation_map.png" width="70%"/></p>
-
-`annotations/assets.json` holds one entry per asset type, in the object frame:
-- size, mass, tags (e.g. `fruit`, `container`, `book`)
-- the origin → bottom-centre offset
-- the container wall profile (rim radius and height)
-- grasp primitives for the Zeno 8 cm pinch gripper:
-  - `rim_pinch` / `rim_pinch_rect`: containers. Pinch the wall at the rim; candidates over rim
-    azimuth × approach tilt.
-  - `top_pinch`: vertical approach across the narrowest cross-section. The cross-section is found
-    by sliding a pad-wide slab along the object, so pens, spoons and toy cars work; `offset_xy`
-    gives the pinch point.
-  - `thickness_pinch`: flat objects wider than the gripper (plate, books, notebook): pads above and below,
-    from outside a side that overhangs its support (expose slides it there).
-  - Not graspable by Zeno: cereal box (wider than the gripper in every direction). The teddy bear only has a
-    crown pinch on its head (`"crown": true`), which does not survive a carry.
-
-<p align="center"><img src="media/assets_gallery.jpg" width="85%"/></p>
-
-`annotations/<scene>.json` and `tasks/*/annotation.json` are per scene, in the world frame:
-
-| key | content |
-|---|---|
-| `rooms` | floor triangles (point-in-room queries) |
-| `obstacles` | 58 furniture AABBs, cabinet bodies, 1874 wall segments |
-| `supports` | 112 horizontal surfaces in the base house: 65 board layers of the static furniture (`<furniture>/shelf_<i>`, `<furniture>/top`) and the tops, shelves and floors of the cabinets: height, extent, vertical clearance |
-| `articulated` | 16 doors/drawers: joint path, type, pivot, axis, limits, open/closed value, moving-part boxes, handle frame (centre, outward normal, along-face direction, bar size) |
-| `objects` | prim, rigid-body path, asset type, pose, AABB, room, supporting surface |
-
-Python helpers (`zeno_skills/annotations.py`):
-
-```python
-ann = SceneAnnotations("tasks/collect_fruits/annotation.json")
-ann.grasp_poses(ann.objects["orange"], pos, quat)          # world TCP grasp candidates
-ann.handle_pose(ann.art("kitchen_cabinet_6"), q)  # handle TCP pose at joint value q
-ann.motion(art, q)                                         # rigid motion of the door/drawer
-```
-
----
-
-## Atomic skills
-
-<!-- SKILL_VIDEOS -->
-| | |
-|---|---|
-| <img src="media/skills/open_close_door.gif" width="100%"/><br><sub>Open + close a cabinet door (revolute): side-hook grasp, base rides with the door ([mp4](media/skills/open_close_door.mp4))</sub> | <img src="media/skills/open_close_drawer.gif" width="100%"/><br><sub>Open + close a drawer (prismatic) ([mp4](media/skills/open_close_drawer.mp4))</sub> |
-| <img src="media/skills/pick_place_table.gif" width="100%"/><br><sub>Pick a pencil from the study desk, carry it through two rooms, place it on the bedroom desk ([mp4](media/skills/pick_place_table.mp4))</sub> | <img src="media/skills/place_in_container.gif" width="100%"/><br><sub>Pick an orange, drop it into the fruit basket ([mp4](media/skills/place_in_container.mp4))</sub> |
-| <img src="media/skills/floor_pick.gif" width="100%"/><br><sub>Floor pick (torso fully lowered) into the storage basket ([mp4](media/skills/floor_pick.mp4))</sub> | <img src="media/skills/flat_pick_place.gif" width="100%"/><br><sub>Flat book: push it over the desk edge, pinch the overhang, place it on a bookcase and push it on ([mp4](media/skills/flat_pick_place.mp4))</sub> |
-<!-- /SKILL_VIDEOS -->
-
-Run any sequence of skills on any scene (records `run.mp4` + `result.json`):
-
-```bash
-$ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
-    --ann tasks/collect_fruits/annotation.json --out runs/demo \
-    --plan "pick orange" "place orange in:fruit_basket" \
-           "open kitchen_cabinet_6" "close kitchen_cabinet_6"
-# steps: open <art> | close <art> | pick <obj> | place <obj> in:<container>
-#        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
-```
-
-## Skill / Contract / Policy public IDs
-
-The [Skill Library](skill_library/README.md) provides the planner-visible verb SkillNodes (see the counts above), each one verb + one noun with typed inputs and outputs. The [Contract Library](contract_library/README.md) has one executable Contract per SkillNode, and the [Policy Library](policy_library/README.md) records every public low-level policy that the Contracts compose. Public IDs use `skill_XXX`, `contract_XXX` and `policy_XXX`; [the mapping](docs/reference/INTERFACE_IDS.md) lists legacy aliases. The eight older family Contracts and the Python policy class names remain callable.
-
-The [SkillNode table](skill_library/SKILLS.md) lists every verb, its signature, noun-selected paths and postconditions; [verification/STATUS.md](skill_library/verification/STATUS.md) records which verbs and paths passed in Isaac Sim with the measured GT facts.
-
-## Atomic GT policy class API
-
-`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs.
-
-The [capability catalog](docs/reference/POLICY_CATALOG.md) lists every public entry with its implementation status, and [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md) shows which SkillNode paths call it. See the [verification record](docs/archive/POLICY_VERIFICATION.md) for the single-step checks of the original entries. General dispatchers and convenience composites are counted separately.
-
-| Interface | Representative calls |
-|---|---|
-| General | `policy.navigate.execute((x, y, yaw_deg))`, `policy.pick.execute("cup")`, `policy.place.on("cup", support)`, `policy.open.execute(door)`, `policy.close.execute(door)` |
-| Object-specific grasp | `policy.pick_top.execute("toy_block")`, `policy.pick_round_rim.execute("cup")`, `policy.pick_cup_handle.execute("mug")`, `policy.pick_edge.execute("book_red")` |
-| Motion and posture | `policy.right_tcp_move.execute(position, rotation)`, `policy.right_gripper_open.execute(0.04)`, `policy.lower_torso.execute()`, `policy.pick_while_moving.execute(...)` |
-| Appliance stages | `policy.microwave_button_press.execute(...)`, `policy.microwave_cavity_insert.execute(...)`, `policy.open_powered.execute("kitchen_microwave")` |
-
-`pick_cup_handle` needs a physical handle collider: `tools/run_skills.py` and `tools/run_contracts.py` add it for a requested mug route; direct Python setup uses `make_rig(..., handle_objects=("mug",))`. `pick_from_cavity` has only been verified when the same rig just placed the cup inside. The six public policy entries without a successful representative object-level check are listed in the catalog and should be treated as experimental.
-
-### Compose through contracts
-
-The older eight [family Contract interfaces](docs/archive/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The verb [Skill Contracts](contract_library/README.md) take named noun arguments and choose a path from the bound object's annotation and state: `SkillContractRunner(rig).run("pick", {"object": "apple"})`, or `ContractRunner(rig).run_skill(...)`. They check GT pre/postconditions and record failure for the caller to handle; nothing is replanned automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
-
-```bash
-OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
-  --scene runs/verify_microwave_fixture/task/scene.usd \
-  --ann runs/verify_microwave_fixture/task/annotation.json \
-  --plan tests/fixtures/contract_microwave_cycle.json \
-  --out runs/my_contract_cycle
-```
-
-Build the scene with the commands in the [verification record](docs/archive/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is judged on the goal's GT predicates (`episode/episode.py`).
-
-For a manual policy sequence, use `tools/run_skills.py --plan "pick_round_rim cup" "place_microwave cup"` with a scene and annotation. All route names, scopes, and evidence are in the catalog; `pick_and_carry` and `microwave_door_cycle` are convenience compositions rather than additional atomic entries.
-
-### Malo first-person RGB camera
-
-Malo has a camera mounted on `stereo_camera_link`. Enable it when launching and building the rig, then capture the current view on demand:
-
-```python
-from zeno_skills.runtime import launch, make_rig
-
-app = launch(video=False, first_person=True)
-rig = make_rig(app, "tasks/tidy_toys/scene.usd", "tasks/tidy_toys/annotation.json",
-               video=False, first_person=True)
-rig.step(30)  # let the scene initialize
-rgb = rig.get_first_person_image()  # NumPy uint8 array, (480, 640, 3)
-# imageio.v2.imwrite("runs/malo_first_person.png", rgb)
-app.close()
-```
-
-The camera follows Malo's head. `get_first_person_image()` renders the latest state without advancing physics; `first_person_res=(height, width)` changes the resolution. The camera can be enabled with or without third-person video.
-
-`make_rig(..., wrist_cameras=True)` also mounts RGB cameras on `left_gripper_camera_link` and `right_gripper_camera_link`, looking past the fingertips at the same resolution. `rig.get_camera_images()` renders all robot cameras once and returns `{"head", "left_wrist", "right_wrist"}` images.
-
-## Skills
-
-`zeno_skills/skills.py` uses annotated geometry and simulator feedback. Appliance actions
-also use specialized control and scene-specific parking hints. Each skill measures its own
-outcome from simulator state and raises `SkillFailure` on failure, so a policy can react.
-Standard pinch picks, mug-handle picks, and surface/container placements now ease
-into and out of contact along the same planned arm path; their gripper targets close
-and release gradually. The contact-sensitive book edge route retains its original timing.
-Object-specific grasp annotations and measured success checks still apply.
-
-| skill | how |
-|---|---|
-| `navigate` | Tuck the arm (or lift and pull in the held object), A* over free base cells, drive the holonomic base; slower while carrying, and the object is checked to still be in the hand afterwards (`Dropped` → the caller can pick it up again) |
-| `open_articulated` / `close_articulated` | Search base poses where pre-grasp → grasp is a continuous collision-free IK path *and* the robot can ride rigidly with the door or drawer to its goal; prefer the lowest wrist torque. Side-hook grasp: one finger sits between the panel and the bar. Closed loop on the measured joint value. Doors (revolute) and drawers (prismatic) |
-| `pick` (pinch) | Grasp candidates at the object's current pose (`top_pinch`, `rim_pinch`), a base pose per candidate, approach → close → lift; floor objects with the torso fully lowered |
-| `push` | Fingers closed and pointing down, pads just above the surface, slide the object along it; if nothing reaches behind the object, press on its top and drag it |
-| `pick` (flat) | Plates, books, notebooks are wider than the 8 cm gripper: push them until they overhang a free support edge (centre of mass kept 5 cm inside), then pinch the overhang horizontally. On the floor: a diagonal corner pinch (side face + top face) |
-| `place` | Keep the measured TCP→object offset, search the object's yaw and a base pose, lower, release; into containers from just above the rim. Edge-held flat objects are slid back over the edge of the target surface |
-| `press_microwave_start` | Physically press the annotated start button after checking that the door is closed and food is in the cavity; activate the task-level thermal model |
-| `open_microwave_door` / `close_microwave_door` | Separate powered-door actions; opening physically presses the annotated blue button, and both check the measured hinge angle |
-| `cycle_microwave_door` | Composite demonstration that calls the separate microwave open and close actions |
-
-Forward kinematics and the Jacobian are exact URDF math on the fingertip TCP. Every IK query, Cartesian
-line, collision check and joint-space trajectory goes to [cuRobo](https://github.com/NVlabs/curobo)
-(v0.7.8, in the Isaac Sim process; `zeno_skills/motion.py`). There is no other solver: a query cuRobo
-cannot answer fails the skill.
-
-- **World**: every enabled PhysX collider of the stage (`zeno_skills/scene_geometry.py`), not the
-  annotation boxes. Cube colliders become cuboids, convex approximations their hull (at most 64
-  vertices), and static triangle meshes are two-sided like PhysX's (a cuRobo patch,
-  `docker/patches/curobo_two_sided.py`). Loose objects and doors are kept at their simulated poses.
-- **Not obstacles**: held objects (and what they carry), and an object whose box contains the query's
-  TCP target.
-- **Robot**: spheres that Isaac Sim's own generator (lula, as in the XRDF editor) fitted to each link's
-  PhysX colliders (`tools/build_curobo_robot.py`, `robot_sources/curobo/zeno_malo.yml`). The base pose,
-  the other arm, the head and the fingers are locked joints for each query.
-- **Base**: navigation (footprint check, A* grid) still uses the annotation boxes.
-
-## Physics fixes baked into the scene
-
-Each fix removes a bug found in the URDF→USD import. The code is in `zeno_skills/physics.py`.
-
-| problem as imported | fix |
-|---|---|
-| All robot drives had damping 0 | Damped position drives; joint targets time-scaled to 60 % of URDF velocity limits (torso lift is 0.117 m/s) |
-| Floating base on 2 N·m wheel drives: the base moved instead of the door | Fixed-base articulation with holonomic x, y, yaw base joints on position drives (`physics.base_joints`, applied at load). A first fix hung the base on a fixed joint from the world whose frame was moved: that drag bent the waist to its limit on every forward drive |
-| Finger colliders (convex decomposition) fused pad and rail into a wedge, so the fingers stalled 3.4 cm open | Pad-sized box colliders, rubber friction (μ 2.0, combine = max) |
-| Left arm hung into the floor when the torso lowered | Held folded |
-| Containers were imported as one convex hull (a solid dome) | Walls following the mesh profile plus a base plate, fitted around the body: handles left out (the mug's walls were 1.2 cm too wide and 1.6 cm off towards the handle), oval rims as ellipses |
-| Placeholder inertia (1, 1, 1) kg·m² | Box inertia from real size and mass |
-| Rigid body nested under a rigid body (`collisions` prim) | Stripped |
-| Collision API on Xforms, uneven bottoms: boxes rocked, spoons fell through | Convex hull on the collision mesh; concave solids (banana, teddy bear, toy car, duck, spoon, plate), whose one hull filled hollows by 1-4 cm, as 16-32 V-HACD convex pieces (`annotations/collision_hulls.json`, `tools/prepare_assets.py --hulls`) |
-| Hinges with no damping; joint friction made doors un-openable | Viscous damping only on hinges; small friction on drawers |
-| Objects spawned floating or interpenetrating | Drop-and-settle, rest poses written back |
-| Every generated asset shared one texture file (`material_0.png`) | Per-asset textures (`tools/fix_textures.py`) |
-| Round containers had a gap between the floor plate and the wall; small items fell through | Floor tiles out to the wall |
-
-Built scenes get changed collider rules with `tools/refresh_colliders.py` (in place, positions kept), then `tools/settle_scene.py` and `tools/check_scene.py`.
-| Small light bodies tunnelled and rolled forever | Per-body CCD and angular damping for objects < 6 cm |
-| Dangling `lidar_link` visual reference in the robot USD | Empty prim at the referenced path |
-
-The full list, including what was checked and kept, is in [the physics and asset audit](docs/archive/PHYSICS_AUDIT.md).
-
----
-
 ## Quick start
 
-Requirements: Isaac Sim 5.1 + Isaac Lab 2.3 (tested) and cuRobo 0.7.8 built against Isaac Sim's torch
-(`docker/Dockerfile.curobo`, image `zenobench:isaaclab2.3-curobo07`, which `docker/run.sh` uses). For
-regenerating assets only: an
-[EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen) checkout (`EMBODIEDGEN_ROOT`).
+Requires Isaac Sim 5.1 + Isaac Lab 2.3 and cuRobo 0.7.8.
 
 ```bash
 git lfs install && git clone <this repo> zeno-house && cd zeno-house
 export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
 
-# physics check + preview renders of a task scene
-$ISAACLAB_PYTHON tools/check_scene.py tasks/collect_fruits/scene.usd --out runs/check \
-    --view table 4.4 6.0 1.7 3.5 7.1 0.85
-
-# a whole task: the original task's plan through the GT oracle (benchmark/runs/collect_fruits/...)
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
-
-# a ZenoBench v6 episode: design cup_out_of_view, layout seed 10, its oracle route
+# one episode (task, variant, seed) through its reference contract sequence
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
-    --variant cup_out_of_view --seed 10 --planner oracle --profile sticky/gt
+    --variant cup_out_of_view --seed 10 --planner oracle
 
-# single skills (see "Atomic skills")
-$ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
-    --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
+# your planner: reset(instruction, skills) / next_call(observation), see benchmark/planners.py
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
+    --variant cup_out_of_view --seed 10 --planner recovery --policy mypkg.planner:MyPlanner
 
-# plan a task as a SkillNode subgraph (symbolic planner, no Isaac Sim)
-python -m skill_library.planner --task recycle_and_store
-
-# run SkillNode verification scenarios (GT pre/postconditions measured per call)
-$ISAACLAB_PYTHON tools/verify_skills.py --id k_trash --video
-
-python -m pytest tests/ skill_library/tests/ benchmark/tests/ benchmark/v6/tests/   # simulator-free regression tests
+# HTTP service for an external planner
+$ISAACLAB_PYTHON -m env_service.server --port 8800
 ```
-
-
-## Add your own assets
-
-For text-to-3D objects, see the [EmbodiedGen creation guide](docs/guides/CREATE_TASKS.md#2-新增可抓取资产). The twelve task props use the [V2 manifest and rebuild guide](assets/EMBODIEDGEN_V2_ASSETS.md). The same grasp annotations, USD conversion and task builder apply to every asset.
-
-## Rebuild pipeline
-
-The [creation README](docs/guides/CREATE_TASKS.md) gives the task, scene, annotation, and PartNet commands in execution order.
 
 ## Repository layout
 
 ```text
-sim/zeno_house.usd      final house scene (+ sim/checks); zeno_house_appliances.usd, zeno_house_kitchen.usd layers
-task_specs/             scene specs (+ places.json aliases, examples/)
-tasks/<scene>/          built scene: layer, task.json (scene description), annotation.json, check renders
-episode/                one episode pipeline for every task catalog: catalogs, profiles, Episode
-benchmark/              ZenoBench: v6/ (current catalog, layouts, scoring, checks), v3/ v5/ (earlier
-                        catalogs v6 builds on), run_episode, evaluation
-skill_library/          verb SkillNodes (definitions.py -> skills/, catalogs), relations, planner, tasks, verification
-env_service/            HTTP environment service for an external planner (initial_task / do_contract / check_task)
-contract_library/       one Skill Contract per SkillNode (generated) + legacy family Contracts
-policy_library/         public low-level policy records and coverage (generated)
-annotations/            assets.json, zeno_house.json, house_static.json
-zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
-                        predicates (GT pre/postconditions), skill_runtime (Skill Contract runner),
-                        perception (head camera), thermal, policies/ (atomic GT policy classes),
-                        tasks (spec loading), evaluator (scene geometry), runtime
-tests/                  pipeline, service, spec and skill tests (pytest, no simulator)
-tools/                  pipeline scripts
-usd/                    house, robot and asset USDs (+ materials/textures)
-assets/asset3d/         EmbodiedGen V2 asset sources (URDF + textured OBJ)
-assets/custom_assets.json   dimensions and provenance of custom V2 props
-robot_sources/          Zeno Malo URDF + meshes
-media/                  README media, demo videos, rollout result.json files
+benchmark/          task catalogs, episode runner, scoring
+episode/            episode pipeline and observation profiles
+env_service/        HTTP environment service
+skill_library/      verb skills, relations, planner
+contract_library/   one contract per skill
+policy_library/     low-level policies
+zeno_skills/        kinematics, planning, perception, predicates, skill runtime
+sim/, usd/, tasks/  house, robot, assets and task scenes
+annotations/        GT annotations for every asset
+assets/             EmbodiedGen V2 asset sources
+docs/               design notes and guides (index: docs/README.md)
 ```
-
-## Limitations
-
-- The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
-  are annotated but were taken out of the task specs: their grasps do not survive a carry.
-- SkillNode verification measures every pre/postcondition on GT state, but a pass is one scene and one start state; [verification/STATUS.md](skill_library/verification/STATUS.md) lists which verbs and paths have passed and why the others fail. Task plans in `skill_library/plans/` are symbolic; executing a whole plan can still fail at a step that passed on its own (long carries of rim-held containers are the most fragile).
-- Holonomic base on x, y, yaw joints: no wheel dynamics. Base motion uses one smooth
-  time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).
-- Robot links are gravity-compensated, like the real arm controller.
-- Generated asset sizes and masses come from a spec table in `tools/prepare_assets.py` (plus
-  `assets/custom_assets.json`). EmbodiedGen's LLM sizing needs an API key that was not available.
-- Reachability in the task builder is a top-down pinch check with the planner; it does not
-  guarantee that the physical grasp succeeds.
 
 ## Acknowledgements
 
 House layout: [Infinigen](https://github.com/princeton-vl/infinigen) (BSD-3). Assets:
-[EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen) V2 (Apache-2.0). Robot:
-Zeno Malo EDU description (see `robot_sources/zeno_malo_description-master/LICENSE`).
+[EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen) V2 (Apache-2.0). Robot: Zeno Malo EDU description
+(see `robot_sources/zeno_malo_description-master/LICENSE`).
+
+<!-- verification:start -->
+<!-- verification:end -->
+<!-- rollouts:start -->
+<!-- rollouts:end -->
