@@ -114965,7 +114965,20 @@
      ],
      "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
      "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "remove": [
+      "trash_can"
+     ],
      "add": {
+      "kitchen_trash": {
+       "asset": "big_trash_can",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        9.05,
+        1.12
+       ],
+       "yaw_deg": 0
+      },
       "takeout_tray": {
        "asset": "foil_takeout_tray",
        "support": "dining_table_2/top",
@@ -114990,12 +115003,12 @@
        [
         "inside",
         "soda_can",
-        "trash_can"
+        "kitchen_trash"
        ],
        [
         "inside",
         "takeout_tray",
-        "trash_can"
+        "kitchen_trash"
        ],
        [
         "on",
@@ -115026,6 +115039,7 @@
       "soda_can",
       "takeout_tray",
       "leftovers",
+      "kitchen_trash",
       "clutter_cereal_a",
       "clutter_cereal_b"
      ],
@@ -115067,12 +115081,12 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "inside",
             "takeout_tray",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on",
@@ -115109,12 +115123,12 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "inside",
             "takeout_tray",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on",
@@ -115141,12 +115155,12 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "inside",
             "takeout_tray",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "hand_empty",
@@ -115194,7 +115208,20 @@
      ],
      "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
      "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "remove": [
+      "trash_can"
+     ],
      "add": {
+      "kitchen_trash": {
+       "asset": "big_trash_can",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        9.05,
+        1.12
+       ],
+       "yaw_deg": 0
+      },
       "leftovers": {
        "asset": "glass_food_container",
        "support": "dining_table_2/top",
@@ -115219,7 +115246,7 @@
        [
         "inside",
         "soda_can",
-        "trash_can"
+        "kitchen_trash"
        ],
        [
         "on",
@@ -115263,6 +115290,7 @@
       "soda_can",
       "leftovers",
       "used_mug",
+      "kitchen_trash",
       "clutter_cereal_a",
       "clutter_cereal_b"
      ],
@@ -115304,7 +115332,7 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on",
@@ -115354,7 +115382,7 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on",
@@ -115394,7 +115422,7 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on_any",
@@ -115455,7 +115483,20 @@
      ],
      "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
      "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "remove": [
+      "trash_can"
+     ],
      "add": {
+      "kitchen_trash": {
+       "asset": "big_trash_can",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        9.05,
+        1.12
+       ],
+       "yaw_deg": 0
+      },
       "takeout_tray": {
        "asset": "foil_takeout_tray",
        "support": "dining_table_2/top",
@@ -115480,12 +115521,12 @@
        [
         "inside",
         "soda_can",
-        "trash_can"
+        "kitchen_trash"
        ],
        [
         "inside",
         "takeout_tray",
-        "trash_can"
+        "kitchen_trash"
        ],
        [
         "on_any",
@@ -115520,6 +115561,7 @@
       "soda_can",
       "takeout_tray",
       "used_mug",
+      "kitchen_trash",
       "clutter_cereal_a",
       "clutter_cereal_b"
      ],
@@ -115561,12 +115603,12 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "inside",
             "takeout_tray",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on_any",
@@ -115611,12 +115653,12 @@
            [
             "inside",
             "soda_can",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "inside",
             "takeout_tray",
-            "trash_can"
+            "kitchen_trash"
            ],
            [
             "on_any",
@@ -117790,21 +117832,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "trash_can"
+        "destination": "kitchen_trash"
        }
       },
       {
        "skill": "hover",
        "args": {
         "object": "soda_can",
-        "target": "trash_can"
+        "target": "kitchen_trash"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "soda_can",
-        "container": "trash_can"
+        "container": "kitchen_trash"
        }
       },
       {
@@ -117829,14 +117871,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "trash_can"
+        "destination": "kitchen_trash"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "takeout_tray",
-        "container": "trash_can"
+        "container": "kitchen_trash"
        }
       },
       {
@@ -117947,21 +117989,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "trash_can"
+        "destination": "kitchen_trash"
        }
       },
       {
        "skill": "hover",
        "args": {
         "object": "soda_can",
-        "target": "trash_can"
+        "target": "kitchen_trash"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "soda_can",
-        "container": "trash_can"
+        "container": "kitchen_trash"
        }
       },
       {
@@ -118097,21 +118139,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "trash_can"
+        "destination": "kitchen_trash"
        }
       },
       {
        "skill": "hover",
        "args": {
         "object": "soda_can",
-        "target": "trash_can"
+        "target": "kitchen_trash"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "soda_can",
-        "container": "trash_can"
+        "container": "kitchen_trash"
        }
       },
       {
@@ -118136,14 +118178,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "trash_can"
+        "destination": "kitchen_trash"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "takeout_tray",
-        "container": "trash_can"
+        "container": "kitchen_trash"
        }
       },
       {
@@ -119144,12 +119186,12 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "inside",
              "takeout_tray",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "on",
@@ -119187,7 +119229,7 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "on",
@@ -119238,12 +119280,12 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "inside",
              "takeout_tray",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "on_any",
@@ -119293,12 +119335,12 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "inside",
              "takeout_tray",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "hand_empty",
@@ -119322,7 +119364,7 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "on_any",
@@ -119359,12 +119401,12 @@
             [
              "inside",
              "soda_can",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "inside",
              "takeout_tray",
-             "trash_can"
+             "kitchen_trash"
             ],
             [
              "on_any",
@@ -122191,7 +122233,7 @@
       "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
       "control": "fruits_on_table",
       "contrast": null,
-      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
+      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a second small tray on the dining table)",
       "derived_from": "fruits_on_table"
      },
      "layout": {
@@ -122512,16 +122554,16 @@
        [
         "inside",
         "apple",
-        "big_tray"
+        "spare_tray"
        ],
        [
         "inside",
         "lunch_orange",
-        "big_tray"
+        "spare_tray"
        ],
        [
         "on",
-        "big_tray",
+        "spare_tray",
         "tv_stand_2/top"
        ],
        [
@@ -122546,7 +122588,7 @@
       "apple",
       "lunch_orange",
       "fruit_tray",
-      "big_tray",
+      "spare_tray",
       "kid_notebook",
       "kid_pencil"
      ],
@@ -122589,12 +122631,12 @@
        ],
        "yaw_deg": 0.0
       },
-      "big_tray": {
-       "asset": "serving_tray",
+      "spare_tray": {
+       "asset": "shallow_sorting_tray",
        "support": "dining_table_2/top",
        "xy": [
-        3.55,
-        6.55
+        3.628,
+        6.555
        ],
        "yaw_deg": 0.0
       }
@@ -122608,7 +122650,7 @@
       "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
       "control": "fruits_on_table",
       "contrast": null,
-      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
+      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a second small tray on the dining table)",
       "derived_from": "fruits_on_table"
      },
      "layout": {
@@ -122653,27 +122695,27 @@
        },
        {
         "names": [
-         "big_tray",
-         "lunch_orange"
+         "lunch_orange",
+         "spare_tray"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.34,
+         3.493,
          5.6279,
-         3.76,
-         6.7291
+         3.763,
+         6.655
         ],
         "dx": [
-         -0.54,
+         -0.69,
          0.06
         ],
         "dy": [
          -0.12,
-         1.21
+         1.29
         ],
         "pick": [
-         "big_tray",
-         "lunch_orange"
+         "lunch_orange",
+         "spare_tray"
         ]
        },
        {
@@ -122833,16 +122875,16 @@
            [
             "inside",
             "apple",
-            "big_tray"
+            "spare_tray"
            ],
            [
             "inside",
             "lunch_orange",
-            "big_tray"
+            "spare_tray"
            ],
            [
             "on_any",
-            "big_tray",
+            "spare_tray",
             [
              "tv_stand_2/top",
              "tv_stand_1/top"
@@ -123584,13 +123626,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "big_tray"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "big_tray"
+        "object": "spare_tray"
        }
       },
       {
@@ -123602,7 +123644,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "big_tray",
+        "object": "spare_tray",
         "receptacle": "tv_stand_2/top",
         "hint_xy": [
          7.5,
@@ -123625,14 +123667,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "big_tray"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "apple",
-        "receptacle": "big_tray"
+        "receptacle": "spare_tray"
        }
       },
       {
@@ -123650,14 +123692,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "big_tray"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "lunch_orange",
-        "receptacle": "big_tray"
+        "receptacle": "spare_tray"
        }
       }
      ],
@@ -124118,7 +124160,7 @@
       "fruit_plate_for_guests__tray_in_study",
       "fruit_plate_for_guests__tray_in_use"
      ],
-     "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
+     "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a second small tray on the dining table)",
      "seeds": {
       "10": "fruit_plate_for_guests__tray_in_use",
       "11": "fruit_plate_for_guests__tray_in_use",
@@ -124179,16 +124221,16 @@
              [
               "inside",
               "apple",
-              "big_tray"
+              "spare_tray"
              ],
              [
               "inside",
               "lunch_orange",
-              "big_tray"
+              "spare_tray"
              ],
              [
               "on_any",
-              "big_tray",
+              "spare_tray",
               [
                "tv_stand_2/top",
                "tv_stand_1/top"
@@ -124288,11 +124330,11 @@
              [
               "inside",
               "apple",
-              "big_tray"
+              "spare_tray"
              ],
              [
               "on_any",
-              "big_tray",
+              "spare_tray",
               [
                "tv_stand_2/top",
                "tv_stand_1/top"
@@ -124303,11 +124345,11 @@
              [
               "inside",
               "lunch_orange",
-              "big_tray"
+              "spare_tray"
              ],
              [
               "on_any",
-              "big_tray",
+              "spare_tray",
               [
                "tv_stand_2/top",
                "tv_stand_1/top"

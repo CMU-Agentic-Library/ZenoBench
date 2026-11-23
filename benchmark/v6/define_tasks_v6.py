@@ -1788,14 +1788,20 @@ def T10(t):
     # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
     # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
     TRAY, LEFT, MUG, FRIDGE = "takeout_tray", "leftovers", "used_mug", "breakfast_fridge"
+    # 11-23 (user): a bigger kitchen trash can (36 cm across, the 26 cm one scaled up) where the usual one stands:
+    # the 20 x 14 cm foil tray dropped into the 26 cm can, the hand hit its rim by 3 mm (never succeeded)
+    BIG_BIN = "kitchen_trash"
+    big_bin = {BIG_BIN: {"asset": "big_trash_can", "support": None, "z": 0.0, "xy": [9.05, 1.12], "yaw_deg": 0}}
+    throw_big = lambda x: [nav(x), pick(x), S("lift", object=x, height_m=0.95), nav(BIG_BIN),  # noqa: E731
+                           S("hover", object=x, target=BIG_BIN), S("drop", object=x, container=BIG_BIN)]
     on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.66, 6.45), LEFT: P(DINING, 3.66, 6.85),   # in reach
                 MUG: P(DINING, 3.62, 7.55)}
     asset = {TRAY: "foil_takeout_tray", LEFT: "glass_food_container", MUG: "breakfast_mug"}
-    fate = {CAN: [["inside", CAN, TRASH]], TRAY: [["inside", TRAY, TRASH]],
+    fate = {CAN: [["inside", CAN, BIG_BIN]], TRAY: [["inside", TRAY, BIG_BIN]],
             LEFT: [["on", LEFT, f"{FRIDGE}/inside_shelf"], ["is_closed", FRIDGE]],
             MUG: [["on_any", MUG, KITCHEN_WORKTOPS], ["upright", MUG]]}
-    steps = {CAN: throw(CAN), TRAY: [nav(TRAY), pick(TRAY), S("lift", object=TRAY, height_m=0.95), nav(TRASH),
-                                     S("drop", object=TRAY, container=TRASH)],
+    steps = {CAN: throw_big(CAN), TRAY: [nav(TRAY), pick(TRAY), S("lift", object=TRAY, height_m=0.95),
+                                         nav(BIG_BIN), S("drop", object=TRAY, container=BIG_BIN)],
              LEFT: [nav(FRIDGE), S("open", articulated=FRIDGE), nav(LEFT), pick(LEFT), nav(FRIDGE),
                     place(LEFT, f"{FRIDGE}/inside_shelf"), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                     S("close", articulated=FRIDGE)],
@@ -1806,12 +1812,12 @@ def T10(t):
     for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
                      ("rubbish_mug", (CAN, TRAY, MUG))):
         dinner_cases[c] = dict(
-            move={CAN: on_table[CAN]},
-            add={x: {"asset": asset[x], **on_table[x]} for x in items if x != CAN},
+            move={CAN: on_table[CAN]}, remove=[TRASH],
+            add={**big_bin, **{x: {"asset": asset[x], **on_table[x]} for x in items if x != CAN}},
             goal={"all": [a for x in items for a in fate[x]] + [["near_start", n, 0.03] for n in
                                                                  ("clutter_cereal_a", "clutter_cereal_b")]
                   + [["hand_empty", "right"]]},
-            watch=[*items, "clutter_cereal_a", "clutter_cereal_b"],
+            watch=[*items, BIG_BIN, "clutter_cereal_a", "clutter_cereal_b"],
             route=[look(DINING)] + [st for x in items for st in steps[x]])
     # guests_coming: things lying about the living room go where they belong (the can into the trash, the used mug
     # to the kitchen counter, the kid's block into the toy box); what belongs there (the island's rolling pin and
@@ -2726,15 +2732,16 @@ def T11(t):
                                       "yaw_deg": 0.0}},
         route=[look(DINING)] + serve(TRAY, "living_room_0_1"))
     # tray_in_use (11-17, user): the small tray on the study desk holds the kid's homework (a notebook, a pencil);
-    # a bigger serving tray stands on the dining table (the stand-in)
-    BIG, KN, KP = "big_tray", "kid_notebook", "kid_pencil"
+    # a second small tray stands on the dining table (the stand-in).  11-23 (user): it was the 42 x 36 cm serving
+    # tray, deeper than the 30 cm TV stand (never set down there); now a second shallow tray (27 x 20 cm) as on the desk
+    BIG, KN, KP = "spare_tray", "kid_notebook", "kid_pencil"
     kid_stays = [["near_start", KN, 0.03], ["near_start", KP, 0.03]]
     plate_cases["tray_in_use"] = dict(
         add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", "support": DESK, "xy": [-0.90, -6.00],
                                       "yaw_deg": 0.0},
              KN: {"asset": "notebook", "support": None, "z": 0.705, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
              KP: {"asset": "pencil", "support": None, "z": 0.736, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
-             BIG: {"asset": "serving_tray", **P(DINING, 3.55, 6.55)}},
+             BIG: {"asset": "shallow_sorting_tray", **P(DINING, 3.55, 6.55)}},
         goal={"all": [["inside", X, BIG], ["inside", OR, BIG], ["on", BIG, TV], *kid_stays, ["hand_empty", "right"]]},
         watch=[X, OR, TRAY, BIG, KN, KP],
         route=[look(DINING)] + serve(BIG, None))
@@ -2772,7 +2779,7 @@ def T11(t):
                   "any": [[["on", TRAY, "tv_stand_2/top"]], [["on", TRAY, "tv_stand_1/top"]]]},
             watch=[X, OR, TRAY],
             factor="whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a "
-                   "bigger serving tray on the dining table)",
+                   "second small tray on the dining table)",
             challenge="the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in "
                       "front of the guests with the fruit on it",
             rationale="order the subgoals so that each step is feasible: one hand cannot carry a loaded tray "
