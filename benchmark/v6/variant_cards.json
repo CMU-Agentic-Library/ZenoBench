@@ -13854,10 +13854,13 @@
     "soda_can"
    ],
    "added": [
+    "kitchen_trash",
     "leftovers",
     "takeout_tray"
    ],
-   "removed": [],
+   "removed": [
+    "trash_can"
+   ],
    "conditions": [
     "disposal_by_state",
     "multi_object_goal"
@@ -13870,12 +13873,12 @@
     [
      "inside",
      "soda_can",
-     "trash_can"
+     "kitchen_trash"
     ],
     [
      "inside",
      "takeout_tray",
-     "trash_can"
+     "kitchen_trash"
     ],
     [
      "on",
@@ -13924,10 +13927,13 @@
     "soda_can"
    ],
    "added": [
+    "kitchen_trash",
     "leftovers",
     "used_mug"
    ],
-   "removed": [],
+   "removed": [
+    "trash_can"
+   ],
    "conditions": [
     "disposal_by_state",
     "multi_object_goal"
@@ -13940,7 +13946,7 @@
     [
      "inside",
      "soda_can",
-     "trash_can"
+     "kitchen_trash"
     ],
     [
      "on",
@@ -14002,10 +14008,13 @@
     "soda_can"
    ],
    "added": [
+    "kitchen_trash",
     "takeout_tray",
     "used_mug"
    ],
-   "removed": [],
+   "removed": [
+    "trash_can"
+   ],
    "conditions": [
     "disposal_by_state",
     "multi_object_goal"
@@ -14018,12 +14027,12 @@
     [
      "inside",
      "soda_can",
-     "trash_can"
+     "kitchen_trash"
     ],
     [
      "inside",
      "takeout_tray",
-     "trash_can"
+     "kitchen_trash"
     ],
     [
      "on_any",
@@ -14889,11 +14898,11 @@
     "fruit_basket"
    ],
    "added": [
-    "big_tray",
     "fruit_tray",
     "kid_notebook",
     "kid_pencil",
-    "lunch_orange"
+    "lunch_orange",
+    "spare_tray"
    ],
    "removed": [
     "serving_tray"
@@ -14910,16 +14919,16 @@
     [
      "inside",
      "apple",
-     "big_tray"
+     "spare_tray"
     ],
     [
      "inside",
      "lunch_orange",
-     "big_tray"
+     "spare_tray"
     ],
     [
      "on",
-     "big_tray",
+     "spare_tray",
      "tv_stand_2/top"
     ],
     [

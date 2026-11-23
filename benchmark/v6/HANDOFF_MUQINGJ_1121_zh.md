@@ -1,6 +1,6 @@
 # 11-21 bench 改动：给 muqingj 的全量回归说明
 
-整理：2026-11-21 夜，11-22 中午定稿。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
+整理：2026-11-21 夜，11-22 中午定稿，11-23 加 T10 / T11 两处（用户定，没有物理复跑）。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
 
 ## 1. 请跑全量
 
@@ -68,6 +68,8 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 | T05 `pen_or_pencil_cabinets`（11-22） | 柜子里的笔、铅笔放在里面 10 cm 都抓不到（2/2） | 铅笔挪到 6 号柜层板前沿后 2 cm (3.50, 0.48)，能抓起来了；4 号柜层板太低（z 0.31，净空 0.30 m），前沿也抓不到，`pen_in_4` 的笔改放 4 号柜顶（同柜子里杯子的处理），路线改成 `navigate`/`look` 柜顶 |
 | T14 `next_in_series__on_bookcase`（11-22） | 第二本红书在书架东端，拿的时候往边上推，手臂撞到书架后面的墙 | 放到书架南沿中间、伸出 6 cm（和 T01 卧室那本书一样，以前拿起来过）；路线先拿它去书桌，再把第一本放上书架 |
 | T07 汤锅在餐桌、T03 `utensils_apart`（11-22） | `search_object(dining_room_0_1)` 去看 3 号柜的两个视点 (0.16, 5.27)、(0.01, 5.67) 从来没到过（0/4），第三个视点 5/5 | 路线改成 `navigate`/`look` 餐桌 |
+| T10 `after_dinner_clear`（三个，11-23，用户定） | 锡纸盒 20×14 cm 丢进 26 cm 的垃圾桶，手爪撞桶沿差 3 mm，从没成功过 | 换成大垃圾桶：新资产 `big_trash_can`（原垃圾桶等比放大到 36×36×36 cm，`usd/assets/big_trash_can.usd`），放在原垃圾桶的位置 (9.05, 1.12)，场景里原来的 `trash_can` 在这三个设计里移除，物体名 `kitchen_trash` |
+| T11 `fruit_plate_for_guests__tray_in_use`（11-23，用户定） | 餐桌上的替代托盘是 42×36 cm 的 serving_tray，比电视柜（30 cm 深）还深，放不上 | 换成第二个小托盘 `spare_tray`（shallow_sorting_tray，27×20 cm，和书桌上那个一样） |
 
 ## 4. 已知过不去的（不是布局问题）
 
@@ -81,9 +83,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - **碗叠到盘子上（T13 `copy_the_setting__plate_bowl_mug_left`，11-22 第一次走到这一步）：** 盘子捏边拿、`edge_held_flat` 放上餐桌都成功了；`stack_object(bowl, plate)` 松手时碗碰到桌面（4.7 mm），碗歪 15° 卡在盘沿上，报 `on support False`。`stack` 对准盘子的精度/放下高度的问题，技能侧。
 - **`search_object` 的视点不检查能不能到：** 餐厅里 3 号柜的两个视点从来规划不到底盘路径（search limit），bench 那两个路线已经改成看餐桌，别的在餐厅里 search 的路线机器人一般从东边进来，用的是能到的那个视点。
 - **偶发、没修（成功过很多次）：** T07 `broken_oatmeal`；T29 `several__toy_box` 拿着车走不到玩具箱（另外 3 个设计同路线成功）；T23 s13。
-- **需要用户定的设计问题：**
-  - T10 `after_dinner_clear` 的 `rubbish_leftovers` / `rubbish_mug`：锡纸盒 20×14 cm，垃圾桶口 26 cm，手爪撞桶沿差 3 mm，从没成功过。
-  - T11 `fruit_plate_for_guests__tray_in_use`：托盘 42×36 cm，电视柜 tv_stand_2 只有 30 cm 深，放不上。
+- **设计问题：** T10 锡纸盒、T11 大托盘，用户 11-23 定了，见第 3 节最后两行（没有物理复跑）。
 
 ## 5. 11-21 夜到 11-22 上午的验证结果（sticky/gt，种子 10，一次只跑一个）
 
@@ -103,4 +103,4 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - T07 `two_portions__dining`（看餐桌代替 search）：**成功**（900 s）
 - T03 `utensils_apart__bin_full_tray`（看餐桌代替 search）：**成功**（2000 s）
 
-11-22 的布局改动到此结束，最新的 `main` 就是全量要用的版本。
+11-22 的布局改动到此结束。11-23 又按用户的决定改了 T10 / T11（第 3 节最后两行，只做了静态检查）。最新的 `main` 就是全量要用的版本；**新资产 `big_trash_can` 在 `usd/assets/` 和 `assets/asset3d/big_trash_can/`（git LFS），拉 main 时请一起拉下来（`git lfs pull`）。**
