@@ -11137,8 +11137,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `cup_found`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `side_covered`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=kid_cup, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
+- 摆法 `cup_found`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=kid_cup)` → 6. `pick(object=kid_cup)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `side_covered`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=kid_cup)` → 6. `pick(object=kid_cup)` → 7. `navigate(destination=bookcase_3/top)` → 8. `look(target=bookcase_3/top)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=kid_cup, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
 ### already_there（Task）
 
