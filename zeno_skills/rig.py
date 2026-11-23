@@ -353,16 +353,16 @@ class Rig:
             if abs(yaw) > math.pi:
                 yaw = (yaw + math.pi) % (2 * math.pi) - math.pi
                 self.robot.set_joint_positions(t.tensor([yaw], dtype=t.float32), joint_indices=self.base[2:])
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.q_cmd, dtype=t.float32),
-                                                       joint_indices=self.arm))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.grip_cmd)),
-                                                       joint_indices=self.fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.left_q_cmd, dtype=t.float32),
-                                                       joint_indices=self.left))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.left_grip_cmd)),
-                                                       joint_indices=self.left_fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
-                                                       joint_indices=self.head))
+            # both arms, both hands and the head: one action (their joints are disjoint; one call per
+            # group was 5 of the 6 apply_action calls a tick)
+            pos_idx = self.__dict__.get("_pos_idx")
+            if pos_idx is None:
+                pos_idx = self._pos_idx = t.cat([self.arm, self.fing, self.left, self.left_fing, self.head])
+                assert len(set(pos_idx.tolist())) == len(pos_idx), "arm / hand / head joints overlap"
+            self.robot.apply_action(ArticulationAction(joint_positions=t.cat([
+                t.tensor(self.q_cmd, dtype=t.float32), t.full((2,), float(self.grip_cmd)),
+                t.tensor(self.left_q_cmd, dtype=t.float32), t.full((2,), float(self.left_grip_cmd)),
+                t.tensor(self.head_cmd, dtype=t.float32)]), joint_indices=pos_idx))
             # the yaw target within half a turn of the joint's reading
             base_q = self.base_cmd.copy()
             base_q[2] = yaw + (base_q[2] - yaw + math.pi) % (2 * math.pi) - math.pi

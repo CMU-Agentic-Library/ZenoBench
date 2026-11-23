@@ -295,7 +295,7 @@ def test_physx_contacts_log_each_new_touch_the_motion_does_not_permit():
     report = {}
     clear = Clearance(rig)
     clear.monitor = True
-    clear.physx = SimpleNamespace(touching=lambda: dict(report))
+    clear.physx = SimpleNamespace(read=lambda bodies: (dict(report), {}))
     clear.skills = ["pick"]
     clear.motion("pick_close", Allow(checked=False, hand="right", touch=("mug",), reason="closing"))
     pad = "right_gripper_left_finger_link"
@@ -330,8 +330,7 @@ def test_what_the_hand_holds_touching_the_world_is_a_contact_of_held_object():
     held = {}
     clear = Clearance(rig)
     clear.monitor = True
-    clear.physx = SimpleNamespace(touching=lambda: {}, held_touching=lambda bodies: {k: v for k, v in held.items()
-                                                                                    if k[0] in bodies})
+    clear.physx = SimpleNamespace(read=lambda bodies: ({}, {k: v for k, v in held.items() if k[0] in bodies}))
     clear.skills = ["place"]
     rig.held = {"name": "pot_lid"}
     rim = ("/World/Tasks/pot_lid/Asset", "/World/Tasks/handled_cooking_pot/Asset/wall_22")

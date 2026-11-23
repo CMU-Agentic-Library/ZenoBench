@@ -703,8 +703,9 @@ class Motion:
                     out[c.body] = T_b
         return out
 
-    def _put_poses(self, poses):
-        """cuRobo obstacles of the bodies in ``poses`` to those poses (the rest unchanged)."""
+    def _put_poses(self, poses, only=None):
+        """cuRobo obstacles of the bodies in ``poses`` to those poses (the rest unchanged); ``only``:
+        just the colliders of these names."""
         from curobo.types.math import Pose
         if not poses:
             return
@@ -715,7 +716,8 @@ class Motion:
         at = lambda b: poses[b] if b in poses else self.body_pose.get(b)
         for b in poses:
             for c in self._cols_of_body.get(b, ()):
-                self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(G.world_pose(c, at))))
+                if only is None or c.name in only:
+                    self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(G.world_pose(c, at))))
 
     @_timed("sync_s")
     def sync(self, rig):
@@ -2003,7 +2005,9 @@ class Motion:
         use = {c.name for c in self._mon_cols}
         flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
         try:
-            self._put_poses(poses)
+            # only the colliders the check uses move (and move back): a held object's are off in it, and
+            # putting its convex pieces at the hand and back was 3/4 of a check while carrying (11-23)
+            self._put_poses(poses, use)
             for c in flip:
                 self._set_enabled(c, c.name in use)
             buf = CollisionQueryBuffer.initialize_from_shape(sph.shape, self.arms["right"].mg.tensor_args,
@@ -2019,5 +2023,5 @@ class Motion:
         finally:
             for c in flip:
                 self._set_enabled(c, c.name not in use)
-            self._put_poses({b: self.body_pose.get(b) for b in poses})
+            self._put_poses({b: self.body_pose.get(b) for b in poses}, use)
         return [(l, e, v) for (l, e), v in sorted(out.items())]
