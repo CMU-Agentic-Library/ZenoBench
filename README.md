@@ -1,4 +1,6 @@
-# A Benchmark for Task-Level Reasoning, Planning, and Substitution in Long-Horizon Mobile Manipulation
+# SHIFT: A Benchmark for Task-Level Reasoning, Planning, and Substitution in Long-Horizon Mobile Manipulation
+
+**S**ubstitution-aware **H**ousehold **I**nstruction **F**ollowing over long-horizon **T**asks
 
 Based on instructions and observations of the environment, a robot interprets the task goal and its constraints,
 determines which objects, tools, and destinations to use, organizes subgoals and skill invocations, and adjusts its
