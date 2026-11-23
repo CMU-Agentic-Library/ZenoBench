@@ -187,8 +187,8 @@ def _edge_goals(rig, name, s, relations, hint, st):
     leaves the lower fingertip EDGE_FINGER_CLEAR past the edge (the TCP ``depth`` inside the face,
     PAD_TIP beyond it; not less than EDGE_MIN_OVERHANG) up to the most that keeps the centre of mass
     COM_MARGIN on the support (it is pushed on afterwards: the overhang is the fingers' room) -- where the
-    load's footprint is free of other objects.  An object's top (a stack): every edge may be hung over,
-    the object itself is not in the way (the furniture it stands on lies lower, under the overhang;
+    load's footprint is free of other objects.  An object's top (a stack) or a container's rim (cover): every
+    edge may be hung over, the object itself is not in the way (the furniture it stands on lies lower, under the overhang;
     the plan's checks decide).  Ranked by the distance to ``hint`` (else to the robot) and on shelving
     the middle of its long edge, as place_flat was; EDGE_SPOTS of them, each with every relation.
     (goals, leg_sets, costs) as place_job's, and per goal (the edge's outward normal, the overhang):
@@ -197,7 +197,10 @@ def _edge_goals(rig, name, s, relations, hint, st):
     h, depth, lat_half = float(held["h"]), float(held["depth"]), float(held["lat_half"])
     size = rig.ann.asset_of(rig.ann.objects[name])["size"]
     x0, y0, x1, y1 = s["aabb_xy"]
-    top = s.get("category") == "object_top"
+    # an object's top (a stack) or a container's rim (cover: a plate, held at its edge, laid on a pot) -- the
+    # object under it is not in the way and every edge may be hung over (the plate in T15: "no free edge spot
+    # on rim:handled_cooking_pot", 3/3, while the pot under the rim counted as an obstacle)
+    top = s.get("category") in ("object_top", "rim")
     skip = {name, str(s["name"]).split(":", 1)[1]} if top else {name}
     edges = [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))] if top else _open_edges(rig, s)
     open_dirs = [tuple(np.round(d, 3)) for d in edges]

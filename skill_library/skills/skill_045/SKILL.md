@@ -21,7 +21,7 @@ A container must be closed with its lid.
 ## Inputs
 
 - `container` (`container_ref`): The pot or box to cover.
-- `lid` (`lid_ref`): The held lid.
+- `lid` (`lid_ref`): The held lid: an object tagged lid (a pot lid, or a plate set on the rim).
 
 ## Applicability
 

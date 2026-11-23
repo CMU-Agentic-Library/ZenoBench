@@ -10291,7 +10291,7 @@
     "lid": {
      "type": "lid_ref",
      "required": true,
-     "description": "The held lid."
+     "description": "The held lid: an object tagged lid (a pot lid, or a plate set on the rim)."
     }
    },
    "outputs": {},
