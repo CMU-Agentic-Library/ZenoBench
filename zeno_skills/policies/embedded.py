@@ -112,7 +112,7 @@ class SlideToEdgePolicy(AtomicPolicy):
             raise SkillFailure(f"slide to edge: no graspable free edge of {support['name']}")
         need, direction, _ = min(choices, key=lambda item: item[0])
         if need > 0.012:
-            # every free edge one goal of one push search, its cost how far it goes (docs/MOTION_ARCHITECTURE.md
+            # every free edge one goal of one push search, its cost how far it goes (docs/motion/MOTION_ARCHITECTURE.md
             # 7: every way of the task a goal -- no search per edge, no other edge after a failure)
             direction, _ = push_object(rig, name, support, [(n, a, k) for k, n, a in choices],
                                        label="SLIDE_TO_EDGE")

@@ -1,4 +1,4 @@
-"""plan_posture (docs/MOTION_ARCHITECTURE.md 6, 9.3 step 5): one free leg to a joint goal where the robot
+"""plan_posture (docs/motion/MOTION_ARCHITECTURE.md 6, 9.3 step 5): one free leg to a joint goal where the robot
 stands -- a body posture moves one body joint, the arms riding it as they are and checked with both arms'
 chains; nothing else is tried when the leg cannot be made."""
 

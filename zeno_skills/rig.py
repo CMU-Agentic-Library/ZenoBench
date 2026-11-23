@@ -36,7 +36,7 @@ FINGERS_KW = {}           # coll_kw of a park search's approach target: the fing
 BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targets beyond are clipped
 # Base drive speed caps (m/s, rad/s, the least ramp in s) by what the hands hold, kept in this one place:
 # drive_base takes the cap of the load, a caller may only ask for slower.  Inherited (the navigate
-# speeds from 32a2d66c, the one-hand cap from d705872b), never measured: docs/COLLISION_PLAN.md §2.
+# speeds from 32a2d66c, the one-hand cap from d705872b), never measured: docs/motion/COLLISION_PLAN.md §2.
 DRIVE_EMPTY = (0.35, 0.8, 0.0)
 DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in the right hand
 DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch, or a load in the left hand alone: it pivots
@@ -545,7 +545,7 @@ class Rig:
         return self._settle(settle, tol, side)
 
     # ------------------------------------------------------------ arm motions
-    # Every arm motion has two ways (docs/COLLISION_PLAN.md principle 2): collision-checked, the
+    # Every arm motion has two ways (docs/motion/COLLISION_PLAN.md principle 2): collision-checked, the
     # straight move when it is free, else a planned trajectory; unchecked, the straight move.
     # A checked motion with a fallback Allow that finds no path makes the unchecked one, logged.
     def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, allow=FREE, q_hint=None,
@@ -644,7 +644,7 @@ class Rig:
             return
         follow = lambda qs: (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
         straight = lambda: line
-        # the fingers too: the next relay pose is planned with them (docs/COLLISION_PLAN.md, 3b)
+        # the fingers too: the next relay pose is planned with them (docs/motion/COLLISION_PLAN.md, 3b)
         with self._lifting(self.kin, allow), self._fingers_checked(self.kin):
             if self._exits_contact(allow, self.kin):
                 self._leave_contact(label, allow, self.kin, straight, follow, lifts_off=lifts_off)

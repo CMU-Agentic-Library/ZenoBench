@@ -1,4 +1,4 @@
-"""Whole-body base planning (docs/COLLISION_PLAN.md step 2).
+"""Whole-body base planning (docs/motion/COLLISION_PLAN.md step 2).
 
 The base moves on a lattice of (x, y, yaw) poses -- RES m, YAW_STEP deg -- carrying the arms in one of
 a chain of postures ("modes", e.g. current -> tucked -> hanging -> tucked).  A mode whose posture

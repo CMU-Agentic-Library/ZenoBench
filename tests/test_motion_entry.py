@@ -1,4 +1,4 @@
-"""Rig's arm motion entry (docs/COLLISION_PLAN.md step 1): straight line, else one planner; the
+"""Rig's arm motion entry (docs/motion/COLLISION_PLAN.md step 1): straight line, else one planner; the
 unchecked move is the straight one; a load in the hand is moved slowly and smoothly."""
 
 from types import SimpleNamespace

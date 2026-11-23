@@ -1,4 +1,4 @@
-"""The posture shape's plan (docs/MOTION_ARCHITECTURE.md 2.3, 6, 9.3 step 5): crouch / stand, bend /
+"""The posture shape's plan (docs/motion/MOTION_ARCHITECTURE.md 2.3, 6, 9.3 step 5): crouch / stand, bend /
 straighten, tuck -- one free leg to a joint goal where the robot stands.
 
 No park and no anchor before the leg: a posture is built from the State measured right before it runs (run_skill

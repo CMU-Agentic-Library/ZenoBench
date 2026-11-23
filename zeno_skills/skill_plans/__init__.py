@@ -1,4 +1,4 @@
-"""Skill plans (docs/MOTION_ARCHITECTURE.md section 6, layer 2): one module per shape of skill
+"""Skill plans (docs/motion/MOTION_ARCHITECTURE.md section 6, layer 2): one module per shape of skill
 (9.4) -- pick, place, navigate, look, posture, door, contact (slide, stir) -- what they share in _common.  They know no simulator: no module
 here imports the rig (tests/test_layering.py)."""
 

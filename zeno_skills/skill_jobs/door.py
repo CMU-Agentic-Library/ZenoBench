@@ -221,7 +221,7 @@ def push_target(rig, a, q, above=PUSH_ABOVE):
 
 
 def close_job(rig, args, state, skill=None):
-    """motion_skills.Job of closing ``args["name"]`` (docs/MOTION_ARCHITECTURE.md 6, close; 9.3 step 6b):
+    """motion_skills.Job of closing ``args["name"]`` (docs/motion/MOTION_ARCHITECTURE.md 6, close; 9.3 step 6b):
     one park search over every empty hand x every way -- a hinged door pushed shut on its outer face
     (skill_plans.plan_push), the handle held and ridden shut (plan_door, the right hand only) -- the
     push before the handle, the right hand before the left (VARIANT_COST per rank: a weak preference,

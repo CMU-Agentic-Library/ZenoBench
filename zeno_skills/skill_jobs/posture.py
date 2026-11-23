@@ -1,4 +1,4 @@
-"""The jobs of the posture shape (motion_skills.Job; docs/MOTION_ARCHITECTURE.md 2.3, 6, 9.3 step 5): crouch,
+"""The jobs of the posture shape (motion_skills.Job; docs/motion/MOTION_ARCHITECTURE.md 2.3, 6, 9.3 step 5): crouch,
 stand, bend and straighten move one body joint (body_job), tuck folds an empty arm (tuck_job) -- plan_posture
 where the robot stands.  The hooks check what the hands hold after the move and done() whether the posture
 got where it was sent; they judge and register, they do not move the robot (docs 8.6)."""

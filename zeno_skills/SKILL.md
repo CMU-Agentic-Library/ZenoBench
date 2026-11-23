@@ -37,10 +37,10 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
 [Contract Library](../contract_library/README.md) 和
 [Policy Library](../policy_library/README.md)。
 
-`PolicySuite(rig)` exposes the [116 policy entries](../docs/POLICY_CATALOG.md).
+`PolicySuite(rig)` exposes the [116 policy entries](../docs/reference/POLICY_CATALOG.md).
 Choose a concrete route such as `pick_round_rim`, `pick_cup_handle`, or
 `open_powered` and call its `execute(...)` method. The eight compatibility family
-[contracts](../docs/CONTRACT_PROPOSAL.md) bind route names to these same policy
+[contracts](../docs/archive/CONTRACT_PROPOSAL.md) bind route names to these same policy
 classes. `ContractRunner(rig).run("pick.v1", "round_rim", "cup")` executes one
 route and verifies the measured postcondition; it records failures for an
 upper-layer replanner. The JSON CLI is `tools/run_contracts.py` and the example
@@ -51,7 +51,7 @@ calling `pick_cup_handle.execute("mug")`; the CLI detects this automatically.
 A separate collision bar then represents the mug handle. `pick_from_cavity`
 uses the measured release pose when the same rig has just placed the object
 in the microwave. Its preloaded-object route has not passed physical
-verification. See the [verification record](../docs/POLICY_VERIFICATION.md)
+verification. See the [verification record](../docs/archive/POLICY_VERIFICATION.md)
 before selecting a route for a new task.
 
 ## How each skill works

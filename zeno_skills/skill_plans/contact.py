@@ -1,4 +1,4 @@
-"""Contact skills (docs/MOTION_ARCHITECTURE.md section 6, contact): an object pushed or dragged across its
+"""Contact skills (docs/motion/MOTION_ARCHITECTURE.md section 6, contact): an object pushed or dragged across its
 support by the closed fingers -- plan_slide; a held spoon stirred round inside a pot -- plan_stir.  Its trajectory is a task segment over the hand's travel
 (primitives.Pushed: the object along n from where the fingers meet it, the hand rigid in its frame), checked
 whole with the object where each step of the push puts it, as far as the arm reaches from the park; where

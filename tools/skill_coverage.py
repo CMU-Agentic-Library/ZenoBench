@@ -1,4 +1,4 @@
-"""What of zeno_skills/ a set of episodes ran (docs/COLLISION_PLAN.md section 5): a skill path no
+"""What of zeno_skills/ a set of episodes ran (docs/motion/COLLISION_PLAN.md section 5): a skill path no
 episode ran is not checked by a regression that passed, whatever its result.
 
     ZB_COVERAGE=1 $ISAACLAB_PYTHON benchmark/run_episode.py --batch B --out RUN ...   # collect

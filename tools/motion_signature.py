@@ -1,4 +1,4 @@
-"""Motion signature of a set of episodes, and its diff against a snapshot (docs/COLLISION_PLAN.md
+"""Motion signature of a set of episodes, and its diff against a snapshot (docs/motion/COLLISION_PLAN.md
 section 5): which motions each skill makes and under what collision rules, read from the
 ``contacts.segments`` the motion record (zeno_skills/clearance.py, Clearance.motion) writes
 into every result.json.

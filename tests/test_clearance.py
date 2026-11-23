@@ -1,4 +1,4 @@
-"""Collision policy of robot motions (zeno_skills/clearance.py, docs/COLLISION_AUDIT.md)."""
+"""Collision policy of robot motions (zeno_skills/clearance.py, docs/archive/COLLISION_AUDIT.md)."""
 
 from types import SimpleNamespace
 

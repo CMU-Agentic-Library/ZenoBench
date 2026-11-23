@@ -1,4 +1,4 @@
-"""The place's plan and the drop's (docs/MOTION_ARCHITECTURE.md section 6, place; docs/skills/drop_hover.md)."""
+"""The place's plan and the drop's (docs/motion/MOTION_ARCHITECTURE.md section 6, place; docs/skills/drop_hover.md)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""navigate's plan (docs/MOTION_ARCHITECTURE.md section 6, navigate): the arm into its travel
+"""navigate's plan (docs/motion/MOTION_ARCHITECTURE.md section 6, navigate): the arm into its travel
 posture, the base driven there, the arrival.
 
     tuck / carry_in   empty hand: free_leg to the first free of {fold, hanging at the side}, none

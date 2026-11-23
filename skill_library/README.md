@@ -79,7 +79,7 @@ python -m pytest tests skill_library/tests -q
 $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 ```
 
-源文件只有 [definitions.py](definitions.py)（技能）和 [zeno_skills/predicates.py](../zeno_skills/predicates.py)（谓词）。`skills/`、`contract_library/`、`relations.json`、`vlm_skill_catalog.json`、`SKILLS.md`、`docs/INTERFACE_IDS.md` 都由 `tools/build_skill_library.py` 生成。
+源文件只有 [definitions.py](definitions.py)（技能）和 [zeno_skills/predicates.py](../zeno_skills/predicates.py)（谓词）。`skills/`、`contract_library/`、`relations.json`、`vlm_skill_catalog.json`、`SKILLS.md`、`docs/reference/INTERFACE_IDS.md` 都由 `tools/build_skill_library.py` 生成。
 
 <!-- skills:start -->
 ## 全部 SkillNode

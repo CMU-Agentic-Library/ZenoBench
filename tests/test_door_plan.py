@@ -1,4 +1,4 @@
-"""Opening a door by its handle (docs/MOTION_ARCHITECTURE.md section 6, open / close):
+"""Opening a door by its handle (docs/motion/MOTION_ARCHITECTURE.md section 6, open / close):
 skill_plans.plan_door -- one grasp, the base riding the part, one release -- and the failure exit
 letting go of a handle.  FakeKin: no simulator."""
 

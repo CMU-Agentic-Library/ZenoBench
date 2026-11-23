@@ -1,4 +1,4 @@
-"""Opening and closing a door or a drawer (docs/MOTION_ARCHITECTURE.md section 6, open / close): by its
+"""Opening and closing a door or a drawer (docs/motion/MOTION_ARCHITECTURE.md section 6, open / close): by its
 handle -- one grasp, one task segment, one release, the base riding the part (carry "base") -- or a
 hinged door pushed shut on its outer face (plan_push: no grasp, the same ride).
 
@@ -148,7 +148,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
 
 
 def plan_push(kin, state, push, rest_goals, base=None, start="push_arrive", prior=None, step=0.003):
-    """A hinged door pushed shut by ``kin``'s hand from ``state`` (docs/MOTION_ARCHITECTURE.md section 6,
+    """A hinged door pushed shut by ``kin``'s hand from ``state`` (docs/motion/MOTION_ARCHITECTURE.md section 6,
     close): push = {part, pose (v -> the part frame's world pose at joint value v), T_part_tcp (the closed
     fingertips just touching the panel's outer face, in the part frame), n_part (that face's outward
     normal in the part frame), pre (the stand-off the hand comes in from), s1 (closed), ride_step,

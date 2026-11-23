@@ -1,5 +1,5 @@
-"""Inventory of how robot motions are collision-checked (docs/COLLISION_AUDIT.md) and of what is
-left of the checklist of docs/COLLISION_PLAN.md section 1 (categories of docs/COLLISION_CLEANUP.md).
+"""Inventory of how robot motions are collision-checked (docs/archive/COLLISION_AUDIT.md) and of what is
+left of the checklist of docs/motion/COLLISION_PLAN.md section 1 (categories of docs/motion/COLLISION_CLEANUP.md).
 
     python tools/audit_collision.py                    # summary per file
     python tools/audit_collision.py --sites            # every site: file:line, function, kind, label
@@ -25,9 +25,9 @@ Kinds, per file under zeno_skills/ (static, by AST; a count is a site to look at
                      (break / continue / return) (F, checklist 4)
   old_entry          a direct call of an old motion entry of the rig (OLD_ENTRIES: move_to, joint_path,
                      leave, tuck, swing, follow, drive_base, grip ...): what a skill not yet on the motion layers
-                     moves the robot with (docs/MOTION_ARCHITECTURE.md 9.3, "only goes down"; 0 at step 10)
+                     moves the robot with (docs/motion/MOTION_ARCHITECTURE.md 9.3, "only goes down"; 0 at step 10)
 
-The motion layers (docs/MOTION_ARCHITECTURE.md 2.5):
+The motion layers (docs/motion/MOTION_ARCHITECTURE.md 2.5):
   - a segment's collision rules are a ``Spec``: ``Spec(allow=LEGACY / unchecked(...))`` counts as
     LEGACY / unchecked, ``Spec(exempt=...)`` (not False) as exempt, ``Spec(fingers=False)`` as
     ignore_fingers -- the same relaxations as on a move_to;
@@ -77,7 +77,7 @@ OLD_ENTRIES = ("move_to", "move_to_any", "joint_path", "joint_path_via", "move_l
 # where the robot is moved: the execution of the motion layers (only through the Actuator) and the Actuator's
 # implementation (with the old entries themselves)
 EXECUTION = {"zeno_skills/run.py", "zeno_skills/rig.py"}
-# (file, function) translating a segment's Spec into the collision query (docs/MOTION_ARCHITECTURE.md 4.4)
+# (file, function) translating a segment's Spec into the collision query (docs/motion/MOTION_ARCHITECTURE.md 4.4)
 QUERY_LAYER = {("zeno_skills/motion.py", "Motion.query"), ("zeno_skills/motion.py", "Motion.path_free_only")}
 QUERY_KINDS = {"coll_kw", "exempt", "ignore_fingers"}
 

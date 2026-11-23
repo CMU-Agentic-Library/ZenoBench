@@ -17,7 +17,7 @@ from ..kinematics import vel_limits
 from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
-# Switched off (2026-11-02, docs/COLLISION_PLAN.md section 2): the arm moves along a base path
+# Switched off (2026-11-02, docs/motion/COLLISION_PLAN.md section 2): the arm moves along a base path
 # planned for the posture it starts in, checked step by step only for the arm (the fingers not at
 # all), never against the whole robot.  No benchmark task asks for pass_by; the policies stay bound
 # (catalog, contracts) but refuse to run until moving manipulation is planned whole-body.

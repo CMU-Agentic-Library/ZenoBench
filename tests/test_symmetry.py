@@ -1,4 +1,4 @@
-"""Left and right arm alike (docs/MOTION_ARCHITECTURE.md 4.1, 4.2, 7, 9.3 step 6a): the State's
+"""Left and right arm alike (docs/motion/MOTION_ARCHITECTURE.md 4.1, 4.2, 7, 9.3 step 6a): the State's
 body and arms, the body kept while the other hand holds something, segments that name their arm,
 the park search's goals of either hand."""
 

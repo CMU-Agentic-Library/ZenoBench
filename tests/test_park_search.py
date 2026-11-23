@@ -1,4 +1,4 @@
-"""The park search (docs/MOTION_ARCHITECTURE.md section 7): candidates around the goals, the cheap
+"""The park search (docs/motion/MOTION_ARCHITECTURE.md section 7): candidates around the goals, the cheap
 tests, a ranking, then the skill's builder in that order -- the first park whose plan is made wins."""
 
 import math

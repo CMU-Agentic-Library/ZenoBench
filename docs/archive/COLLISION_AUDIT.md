@@ -293,7 +293,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 
 ## 8. 修订后的计划（2026-11-01）
 
-> 逐步执行的清单见 `COLLISION_PLAN.md`。
+> 逐步执行的清单见 `../motion/COLLISION_PLAN.md`。
 
 ### 8.1 目标
 

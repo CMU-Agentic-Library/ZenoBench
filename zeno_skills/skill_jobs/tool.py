@@ -1,4 +1,4 @@
-"""A held tool's working point (docs/MOTION_ARCHITECTURE.md 6, contact skills): the one place a named
+"""A held tool's working point (docs/motion/MOTION_ARCHITECTURE.md 6, contact skills): the one place a named
 ``tool_frame`` of an asset's annotation (annotations/assets.json, tools/prepare_assets.TOOL_FRAMES -- the
 spoon's "bowl" and "handle" ends) becomes the matrix the plans take, T_tcp_tool = Held.T_tcp_obj . T_obj_tool (4.1).  The
 contact skills never convert from the annotation themselves: a new tool is a new annotation."""

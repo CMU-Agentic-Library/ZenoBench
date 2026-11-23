@@ -1365,7 +1365,7 @@ def _tray_support(rig, tray):
 
 
 def place(rig, name, support, xy=None, spots=None):
-    """Set the held object down: pick run backwards (docs/COLLISION_PLAN.md 6.2, skills/place.md).
+    """Set the held object down: pick run backwards (docs/motion/COLLISION_PLAN.md 6.2, skills/place.md).
     ``support``: a support surface (at xy, or at any of ``spots``, free_spots order), or
     "in:<container>": a tray's floor the same way, any other container a drop (drop_into).
 

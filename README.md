@@ -138,17 +138,18 @@ temperature uses a separate task-level model. Success is measured from simulator
 - [Scenes](#scenes)
 - [New EmbodiedGen V2 assets and task scenes](#new-embodiedgen-v2-assets-and-task-scenes)
 - [Tasks (ZenoBench)](#tasks-zenobench)
-- [GT policy inventory](docs/GT_POLICY.md)
-- [Policy capability catalog (with implementation status)](docs/POLICY_CATALOG.md)
-- [Physical verification report](docs/POLICY_VERIFICATION.md)
-- [Known limitations (round 30)](docs/KNOWN_LIMITATIONS.md)
-- [Contract proposal (8 reusable templates)](docs/CONTRACT_PROPOSAL.md)
+- [Documentation index (all docs, by category)](docs/README.md)
+- [GT policy inventory](docs/archive/GT_POLICY.md)
+- [Policy capability catalog (with implementation status)](docs/reference/POLICY_CATALOG.md)
+- [Physical verification report](docs/archive/POLICY_VERIFICATION.md)
+- [Known limitations (round 30)](docs/archive/KNOWN_LIMITATIONS.md)
+- [Contract proposal (8 reusable templates)](docs/archive/CONTRACT_PROPOSAL.md)
 - [GT annotations](#gt-annotations-ik--grasp--rl)
 - [Atomic skills](#atomic-skills)
 - [Skills](#skills)
 - [Physics fixes baked into the scene](#physics-fixes-baked-into-the-scene)
 - [Quick start](#quick-start)
-- [新建任务、资产、场景和标注](docs/README.md)
+- [新建任务、资产、场景和标注](docs/guides/CREATE_TASKS.md)
 - [Repository layout](#repository-layout)
 - [Limitations](#limitations)
 
@@ -256,7 +257,7 @@ closed, and the oatmeal is inside its annotated cavity (`zeno_skills/thermal.py`
 
 ### Define your own task
 
-See [新建任务、资产、场景和标注](docs/README.md) for the spec, build, settle, check, annotate, and run workflow. The runnable starting point is [`task_specs/examples/serve_guest.json`](task_specs/examples/serve_guest.json).
+See [新建任务、资产、场景和标注](docs/guides/CREATE_TASKS.md) for the spec, build, settle, check, annotate, and run workflow. The runnable starting point is [`task_specs/examples/serve_guest.json`](task_specs/examples/serve_guest.json).
 
 ## GT annotations (IK + grasp + RL)
 
@@ -327,7 +328,7 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 
 ## Skill / Contract / Policy public IDs
 
-The [Skill Library](skill_library/README.md) provides the planner-visible verb SkillNodes (see the counts above), each one verb + one noun with typed inputs and outputs. The [Contract Library](contract_library/README.md) has one executable Contract per SkillNode, and the [Policy Library](policy_library/README.md) records every public low-level policy that the Contracts compose. Public IDs use `skill_XXX`, `contract_XXX` and `policy_XXX`; [the mapping](docs/INTERFACE_IDS.md) lists legacy aliases. The eight older family Contracts and the Python policy class names remain callable.
+The [Skill Library](skill_library/README.md) provides the planner-visible verb SkillNodes (see the counts above), each one verb + one noun with typed inputs and outputs. The [Contract Library](contract_library/README.md) has one executable Contract per SkillNode, and the [Policy Library](policy_library/README.md) records every public low-level policy that the Contracts compose. Public IDs use `skill_XXX`, `contract_XXX` and `policy_XXX`; [the mapping](docs/reference/INTERFACE_IDS.md) lists legacy aliases. The eight older family Contracts and the Python policy class names remain callable.
 
 The [SkillNode table](skill_library/SKILLS.md) lists every verb, its signature, noun-selected paths and postconditions; [verification/STATUS.md](skill_library/verification/STATUS.md) records which verbs and paths passed in Isaac Sim with the measured GT facts.
 
@@ -335,7 +336,7 @@ The [SkillNode table](skill_library/SKILLS.md) lists every verb, its signature, 
 
 `zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs.
 
-The [capability catalog](docs/POLICY_CATALOG.md) lists every public entry with its implementation status, and [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md) shows which SkillNode paths call it. See the [verification record](docs/POLICY_VERIFICATION.md) for the single-step checks of the original entries. General dispatchers and convenience composites are counted separately.
+The [capability catalog](docs/reference/POLICY_CATALOG.md) lists every public entry with its implementation status, and [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md) shows which SkillNode paths call it. See the [verification record](docs/archive/POLICY_VERIFICATION.md) for the single-step checks of the original entries. General dispatchers and convenience composites are counted separately.
 
 | Interface | Representative calls |
 |---|---|
@@ -348,7 +349,7 @@ The [capability catalog](docs/POLICY_CATALOG.md) lists every public entry with i
 
 ### Compose through contracts
 
-The older eight [family Contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The verb [Skill Contracts](contract_library/README.md) take named noun arguments and choose a path from the bound object's annotation and state: `SkillContractRunner(rig).run("pick", {"object": "apple"})`, or `ContractRunner(rig).run_skill(...)`. They check GT pre/postconditions and record failure for the caller to handle; nothing is replanned automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
+The older eight [family Contract interfaces](docs/archive/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The verb [Skill Contracts](contract_library/README.md) take named noun arguments and choose a path from the bound object's annotation and state: `SkillContractRunner(rig).run("pick", {"object": "apple"})`, or `ContractRunner(rig).run_skill(...)`. They check GT pre/postconditions and record failure for the caller to handle; nothing is replanned automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
@@ -358,7 +359,7 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
   --out runs/my_contract_cycle
 ```
 
-Build the scene with the commands in the [verification record](docs/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is judged on the goal's GT predicates (`episode/episode.py`).
+Build the scene with the commands in the [verification record](docs/archive/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is judged on the goal's GT predicates (`episode/episode.py`).
 
 For a manual policy sequence, use `tools/run_skills.py --plan "pick_round_rim cup" "place_microwave cup"` with a scene and annotation. All route names, scopes, and evidence are in the catalog; `pick_and_carry` and `microwave_door_cycle` are convenience compositions rather than additional atomic entries.
 
@@ -443,7 +444,7 @@ Built scenes get changed collider rules with `tools/refresh_colliders.py` (in pl
 | Small light bodies tunnelled and rolled forever | Per-body CCD and angular damping for objects < 6 cm |
 | Dangling `lidar_link` visual reference in the robot USD | Empty prim at the referenced path |
 
-The full list, including what was checked and kept, is in [the physics and asset audit](docs/PHYSICS_AUDIT.md).
+The full list, including what was checked and kept, is in [the physics and asset audit](docs/archive/PHYSICS_AUDIT.md).
 
 ---
 
@@ -481,11 +482,11 @@ python -m pytest tests/ skill_library/tests/ benchmark/tests/   # simulator-free
 
 ## Add your own assets
 
-For text-to-3D objects, see the [EmbodiedGen creation guide](docs/README.md#2-新增可抓取资产). The twelve task props use the [V2 manifest and rebuild guide](assets/EMBODIEDGEN_V2_ASSETS.md). The same grasp annotations, USD conversion and task builder apply to every asset.
+For text-to-3D objects, see the [EmbodiedGen creation guide](docs/guides/CREATE_TASKS.md#2-新增可抓取资产). The twelve task props use the [V2 manifest and rebuild guide](assets/EMBODIEDGEN_V2_ASSETS.md). The same grasp annotations, USD conversion and task builder apply to every asset.
 
 ## Rebuild pipeline
 
-The [creation README](docs/README.md) gives the task, scene, annotation, and PartNet commands in execution order.
+The [creation README](docs/guides/CREATE_TASKS.md) gives the task, scene, annotation, and PartNet commands in execution order.
 
 ## Repository layout
 

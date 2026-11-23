@@ -1,4 +1,4 @@
-"""The push's layer-5 side (skill_jobs.slide; docs/MOTION_ARCHITECTURE.md section 6, contact, and 7):
+"""The push's layer-5 side (skill_jobs.slide; docs/motion/MOTION_ARCHITECTURE.md section 6, contact, and 7):
 every direction and way one goal of one park search, the direction it went kept for the later legs, no
 direction or way tried after a failure -- slide_job's goal set, push_object's legs and the policies on
 top (slide to edge).  No simulator: run_skill and the plan are stand-ins."""

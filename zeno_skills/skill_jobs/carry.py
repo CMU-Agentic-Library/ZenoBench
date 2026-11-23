@@ -1,4 +1,4 @@
-"""The carry constraints and the carry posture (docs/MOTION_ARCHITECTURE.md 6, navigate; 9.3 step 1.3)."""
+"""The carry constraints and the carry posture (docs/motion/MOTION_ARCHITECTURE.md 6, navigate; 9.3 step 1.3)."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ CARRY_LOW_COST = 1.0          # m-equivalent cost of a carry goal below the heig
 
 def _carry(rig, name, min_bottom_z=None):
     """skill_plans.Carry for ``name`` in the right hand: the constraints a posture to drive in meets
-    (docs/MOTION_ARCHITECTURE.md 6, navigate) -- the load in front of the body near its centre line
+    (docs/motion/MOTION_ARCHITECTURE.md 6, navigate) -- the load in front of the body near its centre line
     (CARRY_FRONT_*: held out to the side, objects caught on door frames), its bottom no lower than
     CARRY_Z, the whole robot clear where it stands in that posture (poses_clear) -- and the carry
     goal set when it does not.  ``min_bottom_z`` (a destination's rim, _carry_floor) is a wish, not a

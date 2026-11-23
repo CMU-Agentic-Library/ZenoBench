@@ -2,7 +2,7 @@
 from pathlib import Path
 from html import escape
 
-OUT = Path("/home/muqingj/Projects/ZenoBench/docs/benchmark_v1")
+OUT = Path("/home/muqingj/Projects/ZenoBench/docs/archive/benchmark_v1")
 OUT.mkdir(parents=True, exist_ok=True)
 
 FONT = "'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif"

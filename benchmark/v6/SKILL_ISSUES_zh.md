@@ -65,7 +65,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task
 
 ## 7. 放不进有门的隔层
 
-- **报错**：`place bought_juice: onto a shelf behind a door is not supported yet (set down from the open side, docs/COLLISION_PLAN.md 6.2)`。
+- **报错**：`place bought_juice: onto a shelf behind a door is not supported yet (set down from the open side, docs/motion/COLLISION_PLAN.md 6.2)`。
 - **影响的 episode**：T22 全部 6 个（果汁放冰箱）。全部 GT 路线里放进冰箱或柜子隔层的约 20 条：T22 8、T27 7、T18 2、T10 2、T17 1。
 
 ## 8. 拿得到却报 "no reachable grasp"

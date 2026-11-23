@@ -1,4 +1,4 @@
-"""The thresholds of the motion layers' error model, one source each (docs/MOTION_ARCHITECTURE.md
+"""The thresholds of the motion layers' error model, one source each (docs/motion/MOTION_ARCHITECTURE.md
 4.5): the error bounds of the anchors (8.2), what a segment is checked again by (8.4), and the
 contact geometry the primitives measure by (5.1-5.3).  Each with its unit and where its value comes
 from (``src``) -- measured, estimated, chosen, or inherited and never measured -- so which numbers

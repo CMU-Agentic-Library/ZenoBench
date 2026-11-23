@@ -1,4 +1,4 @@
-"""look's plan (docs/MOTION_ARCHITECTURE.md 2.3, perception shape): navigate + head actions, the arms still.
+"""look's plan (docs/motion/MOTION_ARCHITECTURE.md 2.3, perception shape): navigate + head actions, the arms still.
 
 A look aims the head camera at points (``heads``: the caller's function of the State -> head angles, the
 look job's perception.look_angles from the base the plan assumes; the head geometry imports the predicates,

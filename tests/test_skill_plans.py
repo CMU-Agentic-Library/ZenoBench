@@ -1,4 +1,4 @@
-"""Skill plans and their execution (docs/MOTION_ARCHITECTURE.md sections 6, 8): the segments in the
+"""Skill plans and their execution (docs/motion/MOTION_ARCHITECTURE.md sections 6, 8): the segments in the
 skill's order, each from where the one before ends, the State moved on between them; run checks
 each segment before it and builds the rest again from here when it no longer holds."""
 

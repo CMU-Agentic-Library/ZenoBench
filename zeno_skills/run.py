@@ -1,4 +1,4 @@
-"""Executing a plan (docs/MOTION_ARCHITECTURE.md section 8): ``run`` takes the segments one by one
+"""Executing a plan (docs/motion/MOTION_ARCHITECTURE.md section 8): ``run`` takes the segments one by one
 -- checks that each still holds in the world as it is now (primitives.holds), else builds the rest of the
 plan again from here with the skill's own builder, runs it, and reads the State back
 (``observe``).  It touches the simulator only through motion_state.Actuator (docs 2.5): the reads

@@ -1,5 +1,5 @@
 """Where the robot can stand to see something: the one source of the view criteria navigate, search,
-explore_room, explore_furniture and view_support stand by (docs/MOTION_ARCHITECTURE.md 9.3 step 3).
+explore_room, explore_furniture and view_support stand by (docs/motion/MOTION_ARCHITECTURE.md 9.3 step 3).
 
 A stand-off sees a place when, with the base there in the posture navigate arrives in (skills._rest_posture:
 its torso and waist place the camera) and the head aimed as look aims it, a point of the place is in the head

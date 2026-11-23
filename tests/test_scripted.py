@@ -1,4 +1,4 @@
-"""Task segments and a held part (docs/MOTION_ARCHITECTURE.md 2.4, 3.1, 4.1, 4.2, 5.5, 8.4, 8.6):
+"""Task segments and a held part (docs/motion/MOTION_ARCHITECTURE.md 2.4, 3.1, 4.1, 4.2, 5.5, 8.4, 8.6):
 primitives.Script / couplings / scripted, Spec.touch on parts and with the hand, Held(kind="part"),
 holds and run.execute of a task segment, Rig.ride's closed loop.  No simulator."""
 

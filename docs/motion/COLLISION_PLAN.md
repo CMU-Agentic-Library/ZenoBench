@@ -1,8 +1,8 @@
 # 碰撞与运动规划：执行计划
 
-只写要做什么、按什么顺序、做到什么算完，以及维护时必须知道的现有机制和排查方法。做过的事在 git 历史里，过程记录在 `archive/`。相关文档：
+只写要做什么、按什么顺序、做到什么算完，以及维护时必须知道的现有机制和排查方法。做过的事在 git 历史里，过程记录在 `../archive/`。相关文档：
 
-- `COLLISION_AUDIT.md`：最初的现状盘点和问题来源（历史，"审计 x.y"指它的章节）。
+- `../archive/COLLISION_AUDIT.md`：最初的现状盘点和问题来源（历史，"审计 x.y"指它的章节）。
 - `COLLISION_CLEANUP.md`：要删的东西逐条列表，每条标了类别（W、F、C、K、S、B、X）和归哪一步。
 - `skills/`：每个技能在物理上一步一步做什么。改了技能就同步改那里。
 - `CONTAINER_COLLIDERS.md`：容器碰撞体和真实网格对不上（马克杯、锅），先不修。
@@ -88,7 +88,7 @@ pick（微波炉里除外）和 place（书的 `place_flat` 除外）不再走�
 
 ### 接近与离开（`Rig._approach`、`Rig.leave`）
 
-物理上怎么走见 `skills/approach_leave.md`。这两个是代码机制，技能里的直线按第 2 节的物理名字叫：伸入段、放下段用接近，抬起段用离开。要点：
+物理上怎么走见 `../skills/approach_leave.md`。这两个是代码机制，技能里的直线按第 2 节的物理名字叫：伸入段、放下段用接近，抬起段用离开。要点：
 
 - **接近**：技能给中继位姿、方向 u、直线长度 L。自由段规划到直线起点，再沿直线进去，手指和目标物体都是障碍物（`FREE_SPACE_KW`）。
   - `Allow` 不查碰撞时（place 的 `place_down` 等，`into_contact`）：接触段长度由碰撞模型往回量（多走 `LEAVE_MARGIN`，最长 `LEAVE_MAX`），直线起点在中继位姿往回 max(L, 接触段) 处，接触段不查碰撞。
@@ -98,7 +98,7 @@ pick（微波炉里除外）和 place（书的 `place_flat` 除外）不再走�
 
 ### pick（`_pick_pinch_core`）
 
-物理上怎么走见 `skills/pick.md`，分层见上面和 `MOTION_ARCHITECTURE.md` 第 6–8 节。
+物理上怎么走见 `../skills/pick.md`，分层见上面和 `MOTION_ARCHITECTURE.md` 第 6–8 节。
 
 1. **张开的手到抓取位姿**：到伸入段起点（`pick_reach`），再伸入段（`pick_grasp`）：沿夹爪轴直线，长度是手指碰撞球的长度加 `LEAVE_MARGIN`（`pick_approach`，约 7.3 cm）；要抓的物体是障碍物，不做目标豁免，模型里的手指张到候选的宽度。
 2. **合爪前查到位**：TCP 离抓取位姿超过 `PICK_REACH_TOL` 就不合爪、失败。
@@ -184,7 +184,7 @@ v6 全量覆盖不到 v3 的 21 个 P 探针（两手、手势、倒……），
 
 ### 6.1 pick（暂停）
 
-范围：`pick` 从选停车点到抓起后到达搬运姿态为止；微波炉腔体取物和双手平抬在 6.4。物理步骤见 `skills/pick.md`。验证都在 `sticky/gt` 下。恢复时按下面的顺序：
+范围：`pick` 从选停车点到抓起后到达搬运姿态为止；微波炉腔体取物和双手平抬在 6.4。物理步骤见 `../skills/pick.md`。验证都在 `sticky/gt` 下。恢复时按下面的顺序：
 
 1. **到位检查误判"被挡住"**（T06 s10 occupied_block_away 差 6.8 mm、T10 s11 can_in_dining_room 差 7.9 mm，同一张桌子 (3.7, 6.3)）：物体没动、没有真实接触、模型里抓取位姿也不碰。`follow` 收尾在关节误差 < 0.01 rad 就停（手臂 0.8 m 上约 8 mm），到位门槛 `PICK_REACH_TOL` 是 5 mm。**已改（11-07）**：`Rig._settle`（`follow`、`follow_smooth` 共用）等到 TCP 离指令位姿 < `SETTLE_TCP`（1 mm）或 TCP 停下（`SETTLE_WINDOW` 10 tick 里速度 < `SETTLE_STILL` 2 mm/s），上限仍是 300 tick；停住了还超门槛才算被挡。所有手臂运动收尾都会多等一会儿，全量里看耗时。11-07 三个误判过的 episode 全过（`/data/zenobench/settle1107`：T06 s10、T10 s11、T14 shelf_taken s11），pick 伸入段误差 0.1–0.5 mm；持物时驱动有稳态误差，停在"停下"上：mug_shelf 放下段 4.1 mm（门槛 5 mm，余量小）、搬运姿态 4–10 mm。
 2. **真被挡住**：T13 s11 no_cup_bowl_on_cabinet，差 5.8 cm，马克杯被推 1.66 mm，左手指和杯子有真实接触。
@@ -197,11 +197,11 @@ v6 全量覆盖不到 v3 的 21 个 P 探针（两手、手势、倒……），
 9. **常数**：见第 8 节标 6.1 的。
 10. **抓取高度的参照面统一**（第 10 节）。
 
-完成标准：上面 1–3、6–9 做完；针对性检查（approach_leave 14 个加 T03、T04、T05、T09、T12、T13、P14、P15、P16、T01 overhang_ready、T14 book_on_desk、P05，种子 10、11，加覆盖率，再加一批 `physical` profile）；`approach_moved` 为 0、`pick_grasp` 上没有真实接触；失败都归了类；`skills/pick.md` 同步。
+完成标准：上面 1–3、6–9 做完；针对性检查（approach_leave 14 个加 T03、T04、T05、T09、T12、T13、P14、P15、P16、T01 overhang_ready、T14 book_on_desk、P05，种子 10、11，加覆盖率，再加一批 `physical` profile）；`approach_moved` 为 0、`pick_grasp` 上没有真实接触；失败都归了类；`../skills/pick.md` 同步。
 
 ### 6.2 place
 
-**范围：** `place`、`place_on`、`place_flat`（书）、drop、hover，以及 sticky 的 place，从拿着东西选放置停车点到松手、抽出、收臂为止。微波炉里放（`place_microwave`）在 6.4。物理步骤见 `skills/place.md`、`skills/drop_hover.md`。
+**范围：** `place`、`place_on`、`place_flat`（书）、drop、hover，以及 sticky 的 place，从拿着东西选放置停车点到松手、抽出、收臂为止。微波炉里放（`place_microwave`）在 6.4。物理步骤见 `../skills/place.md`、`../skills/drop_hover.md`。
 
 **设计：pick 倒过来走一遍。** pick 是"伸入 → 合爪 → 抬起"，place 是"放下 → 张开 → 抽出"：放下段是抬起段倒着走，抽出段是伸入段倒着走（第 2 节）。重写 `place()` 的流程（对外签名不变），复用运动入口（`move_to`、`tuck`）、`find_park_set`、`free_spots`、放置关系（摆正 / 吊着）的计算、开到后的重新测量和结果检查；`place_flat` 删掉，书走同一个流程。
 
@@ -256,7 +256,7 @@ v6 全量覆盖不到 v3 的 21 个 P 探针（两手、手势、倒……），
 
 *针对性检查结果（11-07，`/data/zenobench/relay1107`）：* 11-07 全量的 6 个直线失败 6/6 过（第一轮 T01 s11 找不到停车点：`relay_approach` 少了执行时原有的"按位姿规划不出来就规划到关节解"那一步，比执行严；补上后搜索和执行同一套，过了）。6.2 针对性检查 39 个：35/39（9f5d71c 时 34/39），没有由成转败，P15 s11 转成；剩下 4 个都是原来的失败（T03 far_small_and_large ×2 擀面杖卡在杯口、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒）。`relay`：`pick_grasp` 70/70 原样走计划；`place_down` 29 原样、13 重做（重新测量后目标偏 1.0–4.7 mm，超过 `HINT_REACH`），重做的全成。其中 T05 s11 pen 那次偏 4.7 cm、135°，查出是老问题：`find_park_set` 在同一个底盘位置检查多个目标（空位、手腕朝向），检查结果只按底盘位置存，后检查的目标覆盖了选中目标的计划、放下段长度和抽出段终点（以前只当提示用，看不出来）；改成按底盘位置加这个目标的解存（`skills._park_key`），重跑 T05 s11 原样走计划、过了。耗时合计 +4%。`carry_pose_kept` 4 次（P15 s11 ×3、T20 table_full s11，都是 pick 后去搬运姿态倾角约束规划不出来，6.1 第 6 项）；`place_pull_out_stuck` 4 次，都走出来了（T13 s10 在 6 个那批里有一次没走出来：离开接触 5.25 cm 后剩下的直线没有 IK，重跑过了；抽出段还没进计划）。
 
-*pick / place 每段运动（11-07 的做法；11-08 起按 `MOTION_ARCHITECTURE.md` 第 6、8 节，下表的抬起段、搬运段、抽出段、收臂都进了计划，F 类退路在 pick 里删了）：* 机制见 `skills/approach_leave.md`。"内部换法"是查碰撞的几种做法依次试，不算 fallback；"fallback"指改走不查碰撞的路或跳过这一段。
+*pick / place 每段运动（11-07 的做法；11-08 起按 `MOTION_ARCHITECTURE.md` 第 6、8 节，下表的抬起段、搬运段、抽出段、收臂都进了计划，F 类退路在 pick 里删了）：* 机制见 `../skills/approach_leave.md`。"内部换法"是查碰撞的几种做法依次试，不算 fallback；"fallback"指改走不查碰撞的路或跳过这一段。
 
 | 段 | 怎么生成 | 约束 / 碰撞规则 | 停车点搜索验证了什么 | 执行时的退路 / 失败 |
 |---|---|---|---|---|
@@ -290,7 +290,7 @@ v6 全量覆盖不到 v3 的 21 个 P 探针（两手、手势、倒……），
 
 **针对性检查：** 上面列到的 episode 加用到书、drop、hover、sticky place 的（T14、T15 书架等），种子 10、11，加覆盖率。跑完存第一份运动记录快照。
 
-**完成标准：** place 系每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.2–3.4 和 sticky place 的行清零；失败都归了类；`skills/place.md`、`skills/drop_hover.md` 同步。做完跑全量，重新定基线。
+**完成标准：** place 系每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.2–3.4 和 sticky place 的行清零；失败都归了类；`../skills/place.md`、`../skills/drop_hover.md` 同步。做完跑全量，重新定基线。
 
 ### 6.3 3b 其余
 

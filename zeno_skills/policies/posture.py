@@ -1,4 +1,4 @@
-"""The posture policies (docs/MOTION_ARCHITECTURE.md 2.3, 9.3 step 5): each is run_skill of a posture skill --
+"""The posture policies (docs/motion/MOTION_ARCHITECTURE.md 2.3, 9.3 step 5): each is run_skill of a posture skill --
 tuck (an empty arm's fold), crouch / stand (the torso lift), bend / straighten (the waist pitch).  The plan,
 its checks and the result are the skill's (skill_plans.posture, skill_jobs.posture): one leg where the robot
 stands, nothing tried instead when it cannot be made."""

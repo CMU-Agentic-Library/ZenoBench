@@ -1,4 +1,4 @@
-"""Layer 5 (docs/MOTION_ARCHITECTURE.md 2.3): the catalog is what runs -- the job builds with the
+"""Layer 5 (docs/motion/MOTION_ARCHITECTURE.md 2.3): the catalog is what runs -- the job builds with the
 catalog's template, the park search takes the catalog's postures -- and a park close enough not to
 drive to has its plan made again where the base stands."""
 

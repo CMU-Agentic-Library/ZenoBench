@@ -25,8 +25,8 @@ sys.path.insert(0, str(ROOT))
 from zeno_skills.contracts import policy_contract_relations
 from zeno_skills.interface_ids import CONTRACT_PUBLIC_IDS
 CATALOG = ROOT / "zeno_skills/policies/catalog.json"
-SVG = ROOT / "docs/contract_layers.svg"
-PNG = ROOT / "docs/contract_layers_preview.png"
+SVG = ROOT / "docs/reference/contract_layers.svg"
+PNG = ROOT / "docs/reference/contract_layers_preview.png"
 
 ORDER = ("navigate.v1", "pick.v1", "place.v1", "open.v1",
          "close.v1", "push.v1", "click.v1", "set_posture.v1")

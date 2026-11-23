@@ -24,7 +24,7 @@ from ..rig import SkillFailure
 
 
 # Stand-off poses around a place (standoff_poses).  Inherited (32a2d66c), never measured:
-# docs/COLLISION_PLAN.md §2.  The base column is checked as the base planner checks it (the
+# docs/motion/COLLISION_PLAN.md §2.  The base column is checked as the base planner checks it (the
 # footprint's default margin), the whole robot by skills.poses_clear.
 STANDOFF_RING = (0.45, 0.55, 0.70, 0.85, 1.0)   # m out from the place's footprint
 STANDOFF_DEG = 15.0                             # deg between stand-offs on a ring
@@ -105,7 +105,7 @@ class NavigateToPlacePolicy(AtomicPolicy):
         min_bottom_z = None
         if rig.held is not None:
             # the load's bottom clear of the destination surface (W: skill_jobs.carry._carry_bottom_z,
-            # until the base planner changes the carry height itself, docs/COLLISION_PLAN.md §7)
+            # until the base planner changes the carry height itself, docs/motion/COLLISION_PLAN.md §7)
             from ..skill_jobs.carry import _carry_bottom_z
             min_bottom_z = _carry_bottom_z(rig, place)
             # the carry posture the drive will use, before the stand-offs are checked in it

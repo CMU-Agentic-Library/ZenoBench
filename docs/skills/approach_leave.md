@@ -1,6 +1,6 @@
 # 接近与离开
 
-技能里进出接触的直线怎么做。pick 和 place 用计划里的原语（`zeno_skills/primitives.py`，见 `../MOTION_ARCHITECTURE.md` 第 5 节），停车点搜索和执行是同一个函数，执行原样走搜索的路点；还没迁移的技能用 `Rig` 里的旧机制：
+技能里进出接触的直线怎么做。pick 和 place 用计划里的原语（`zeno_skills/primitives.py`，见 `../motion/MOTION_ARCHITECTURE.md` 第 5 节），停车点搜索和执行是同一个函数，执行原样走搜索的路点；还没迁移的技能用 `Rig` 里的旧机制：
 
 - **直线进入中继位姿**（`skill_plans._reach` + `primitives.straight`）：到直线起点，再从那一段实际停下的关节解走直线到中继位姿。pick 的伸入段、place 的放下段。
 - **接触段**（`primitives.contact_extent` + `contact_segment`）：从接触里退到不碰为止的直线，长度由碰撞模型量。pick 的抬起段；place 的放下段长度也这样量。

@@ -1,4 +1,4 @@
-"""Ratchet on the collision checklist (docs/COLLISION_PLAN.md section 1): the counts of
+"""Ratchet on the collision checklist (docs/motion/COLLISION_PLAN.md section 1): the counts of
 tools/audit_collision.py per file and kind may only go down from tests/fixtures/collision_audit_baseline.json."""
 
 import warnings
@@ -27,7 +27,7 @@ def test_collision_audit_counts_only_go_down():
         for f, k, n, b in up:
             msg.append(f"{f} {k}: {b} -> {n}")
             msg += [f"    {f}:{line} {fn} {label}" for f_, line, fn, k_, label in rows if f_ == f and k_ == k]
-        raise AssertionError("collision audit counts went up (checklist of docs/COLLISION_PLAN.md section 1): "
+        raise AssertionError("collision audit counts went up (checklist of docs/motion/COLLISION_PLAN.md section 1): "
                              "remove the new site rather than raising the baseline\n" + "\n".join(msg))
 
 

@@ -220,7 +220,7 @@ def self_sphere_pairs(k):
 
 def arm_self_collision(k, side):
     """``k`` (add_held_links' kinematics dict, a copy for ``side``'s arm model) with that model's
-    self-collision pairs (docs/MOTION_ARCHITECTURE.md 4.4): the shared table's pairs that involve this
+    self-collision pairs (docs/motion/MOTION_ARCHITECTURE.md 4.4): the shared table's pairs that involve this
     arm -- with the body and with the other arm; the other arm's own pairs and its pairs with the body
     dropped (locked in this arm's queries, it rides the torso: only its distance to the lift changes,
     with the waist), so are the body's among themselves (none checked); this hand's held link against
@@ -932,7 +932,7 @@ class Motion:
     @contextmanager
     def query(self, kin, state, spec):
         """Queries of ``kin``'s arm inside take the world and the robot as ``state`` has them and
-        the collision rules of ``spec`` (docs/MOTION_ARCHITECTURE.md 4.4): the base, the other
+        the collision rules of ``spec`` (docs/motion/MOTION_ARCHITECTURE.md 4.4): the base, the other
         arm, the head and finger locks, what each hand holds (on its held link, not an obstacle to
         it), objects and parts where the state puts them, and kin.coll_kw from the spec.  The body
         (torso, waist) is pinned where the state has it when it may not move (motion_state.kept: the other

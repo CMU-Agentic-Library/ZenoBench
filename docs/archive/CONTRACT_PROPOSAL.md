@@ -1,28 +1,28 @@
 # Zeno House contract 接口与扩展提案
 
-> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../contract_library/README.md)。 文中提到的 `TaskPolicy`、`TaskEvaluator` 已于 2026-10-21 删除，任务的 goal 现在由 GT 谓词判定（[episode/README.md](../episode/README.md)）。
+> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../../contract_library/README.md)。 文中提到的 `TaskPolicy`、`TaskEvaluator` 已于 2026-10-21 删除，任务的 goal 现在由 GT 谓词判定（[episode/README.md](../../episode/README.md)）。
 
-八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
+八个 [ContractSpec](../../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
 公开 ID 为 contract_001–contract_008；本文出现的 navigate.v1、pick.v1 等是
-仍可执行的旧名。逐项 JSON 与说明见 [Contract Library](../contract_library/README.md)，
-新旧 ID 对照见 [INTERFACE_IDS.md](INTERFACE_IDS.md)。
+仍可执行的旧名。逐项 JSON 与说明见 [Contract Library](../../contract_library/README.md)，
+新旧 ID 对照见 [../reference/INTERFACE_IDS.md](../reference/INTERFACE_IDS.md)。
 与上层 Skill Graph 对接时，Contract 是一次执行的可测承诺；供规划器选择的
-Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)。
+Agent Skill 风格能力定义在 [skill_library](../../skill_library/README.md)。
 新 Skill Contract 的范围、前后条件与路径由
-[skill_library/definitions.py](../skill_library/definitions.py) 生成。
+[skill_library/definitions.py](../../skill_library/definitions.py) 生成。
 当前 8 个 Contract 的机器可读范围、输入和逐谓词检查状态见
-[contract_profiles.json](../zeno_skills/contract_profiles.json)；成功返回已验证谓词，
+[contract_profiles.json](../../zeno_skills/contract_profiles.json)；成功返回已验证谓词，
 失败记录动作后的观测和错误类型。
 
-[ContractRunner](../zeno_skills/contract_runtime.py) 现可按顺序执行指定路线，检查共用前置条件与动作后的实测状态，并留下成功或失败记录；[run_contracts.py](../tools/run_contracts.py) 接受 JSON 调用序列。`TaskPolicy` 仍负责已有任务目标的自动动作选择；技能子图规划器和自动路线选择尚未实现。新增目标谓词或物理机制需要研究者扩展评估器或控制器。
+[ContractRunner](../../zeno_skills/contract_runtime.py) 现可按顺序执行指定路线，检查共用前置条件与动作后的实测状态，并留下成功或失败记录；[run_contracts.py](../../tools/run_contracts.py) 接受 JSON 调用序列。`TaskPolicy` 仍负责已有任务目标的自动动作选择；技能子图规划器和自动路线选择尚未实现。新增目标谓词或物理机制需要研究者扩展评估器或控制器。
 
 ## 第三层 Contract 与第四层底层 Policy（8 × 63，兼容 family）
 
-![八个兼容 family contract 与六十三个底层 policy 的分层引用关系图](contract_layers_preview.png)
+![八个兼容 family contract 与六十三个底层 policy 的分层引用关系图](../reference/contract_layers_preview.png)
 
-[打开高清 PNG](contract_layers_preview.png) · [SVG 原图](contract_layers.svg)
+[打开高清 PNG](../reference/contract_layers_preview.png) · [SVG 原图](../reference/contract_layers.svg)
 
-此兼容关系图从 [policy 能力目录](POLICY_CATALOG.md) 中的 63 个旧入口 和 [ContractSpec 注册表](../zeno_skills/contracts.py) 生成，覆盖全部 **63 个不同的公开 policy**：其中 **38 个**是至少一个 contract 的直接 `executor`，其余 **25 个**目前只作为支撑动作引用。同一 policy 可在多个 contract 下重复出现。实心方块是 `ContractSpec.executor` 可通过 `bind()` 选择的直接类绑定；空心圆是该 contract 使用或准备时可能需要的支撑动作引用，**不会由 `bind()` 自动执行**。绿色表示对应动作已有 Isaac Sim 成功记录，蓝色表示有独立入口但待物理验证。图表示静态关系；`ContractRunner` 可执行直接绑定并检查共用的实测前后状态，技能子图规划器仍未实现。
+此兼容关系图从 [policy 能力目录](../reference/POLICY_CATALOG.md) 中的 63 个旧入口 和 [ContractSpec 注册表](../../zeno_skills/contracts.py) 生成，覆盖全部 **63 个不同的公开 policy**：其中 **38 个**是至少一个 contract 的直接 `executor`，其余 **25 个**目前只作为支撑动作引用。同一 policy 可在多个 contract 下重复出现。实心方块是 `ContractSpec.executor` 可通过 `bind()` 选择的直接类绑定；空心圆是该 contract 使用或准备时可能需要的支撑动作引用，**不会由 `bind()` 自动执行**。绿色表示对应动作已有 Isaac Sim 成功记录，蓝色表示有独立入口但待物理验证。图表示静态关系；`ContractRunner` 可执行直接绑定并检查共用的实测前后状态，技能子图规划器仍未实现。
 
 ## 抽象边界
 
@@ -45,7 +45,7 @@ Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)。
 
 ## 可运行的 contract 串接
 
-下面的计划在 Isaac Sim 中依次完成开门、杯沿抓取、放入微波炉、从炉腔取出；每一步都通过 contract 的关节、抓持或几何后置检查。记录：`runs/final_contract_microwave/result.json`（`runs/` 默认不纳入 Git）。复现用的场景定义见 [policy_microwave_cup.json](../tests/fixtures/policy_microwave_cup.json)。
+下面的计划在 Isaac Sim 中依次完成开门、杯沿抓取、放入微波炉、从炉腔取出；每一步都通过 contract 的关节、抓持或几何后置检查。记录：`runs/final_contract_microwave/result.json`（`runs/` 默认不纳入 Git）。复现用的场景定义见 [policy_microwave_cup.json](../../tests/fixtures/policy_microwave_cup.json)。
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
@@ -55,7 +55,7 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
   --out runs/my_contract_cycle
 ```
 
-[计划 JSON](../tests/fixtures/contract_microwave_cycle.json) 中每项指定 `contract`、`route`、`args` 和可选的 `kwargs`。上层程序也可在一个 `rig` 上调用 `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`。失败会抛出异常并保留已发生的物理状态，调用方应重新观察后决定后续路线。`requires`、`achieves` 中的完整领域谓词仍是下述设计接口；当前 runner 实现的是八类 contract 的共用检查，不执行 YAML 中的全部概念谓词，也不会自动执行图上的支撑 policy。
+[计划 JSON](../../tests/fixtures/contract_microwave_cycle.json) 中每项指定 `contract`、`route`、`args` 和可选的 `kwargs`。上层程序也可在一个 `rig` 上调用 `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`。失败会抛出异常并保留已发生的物理状态，调用方应重新观察后决定后续路线。`requires`、`achieves` 中的完整领域谓词仍是下述设计接口；当前 runner 实现的是八类 contract 的共用检查，不执行 YAML 中的全部概念谓词，也不会自动执行图上的支撑 policy。
 
 ## Contract 定义
 
@@ -284,7 +284,7 @@ verifier:
 
 ## 简洁的 Python 表示与 policy 引用
 
-真实的八字段定义在 [`zeno_skills/contracts.py`](../zeno_skills/contracts.py)。`executor` 直接保存已有 `AtomicPolicy` 子类；`bind()` 只选择并实例化路线。`ContractRunner` 实现八类共用的实测前后检查，完整领域谓词仍由上层补充。例如杯子使用圆形杯沿路线：
+真实的八字段定义在 [`zeno_skills/contracts.py`](../../zeno_skills/contracts.py)。`executor` 直接保存已有 `AtomicPolicy` 子类；`bind()` 只选择并实例化路线。`ContractRunner` 实现八类共用的实测前后检查，完整领域谓词仍由上层补充。例如杯子使用圆形杯沿路线：
 
 ```python
 from zeno_skills.contracts import CONTRACTS

@@ -1,4 +1,4 @@
-"""The pick's plan (docs/MOTION_ARCHITECTURE.md section 6, pick)."""
+"""The pick's plan (docs/motion/MOTION_ARCHITECTURE.md section 6, pick)."""
 
 from __future__ import annotations
 

@@ -207,7 +207,7 @@ def nested_skills(rec, by_verb):
     return nested
 
 
-# The motion layers' skill catalog (docs/MOTION_ARCHITECTURE.md 2.3, layer 5): per verb that runs on
+# The motion layers' skill catalog (docs/motion/MOTION_ARCHITECTURE.md 2.3, layer 5): per verb that runs on
 # motion_skills.run_skill, its shape (the row of 2.3's table), its skill_plans builder (the job builds
 # with it: Skill.build), whether it chooses a park, the arm posture at the park / on the way (run_skill
 # gives them to the park search; a skill without a park states what its own plan does), and its Python
@@ -465,7 +465,7 @@ def build():
     L += [f"| `{pub}` | `{leg}` |" for leg, pub in sorted(ids["contract_ids"].items(), key=lambda kv: kv[1])]
     L += ["", "## Policies", "", "| Policy | Alias (PolicySuite attribute) |", "|---|---|"]
     L += [f"| `{pub}` | `{leg}` |" for leg, pub in sorted(ids["policy_ids"].items(), key=lambda kv: kv[1])]
-    files[Path("docs/INTERFACE_IDS.md")] = "\n".join(L) + "\n"
+    files[Path("docs/reference/INTERFACE_IDS.md")] = "\n".join(L) + "\n"
     # counts + verb table injected into skill_library/README.md
     from collections import Counter
     kinds = Counter((r["kind"], r.get("sequence_type") or r.get("fallback_type") or "") for r in rel_rows)

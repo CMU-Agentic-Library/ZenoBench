@@ -2,7 +2,7 @@
 
 右手拿着勺子，把勺尖伸进锅里，绕锅心转 1.25 圈。数的是勺尖实际转过的角度：勺尖在锅沿半径以内、锅沿以下时才算，满 1 圈才成功。`turns=0` 是 dip（policy DipUtensilPolicy）：勺尖伸进去再出来，不画圈。
 
-入口：policy_085 `StirContainerPolicy` → `motion_skills.run_skill(SKILLS["stir"])` → `skill_jobs/stir.py` 的 `stir_job` + `skill_plans/contact.py` 的 `plan_stir`。设计见 `../MOTION_ARCHITECTURE.md` 第 6 节"接触类技能"。
+入口：policy_085 `StirContainerPolicy` → `motion_skills.run_skill(SKILLS["stir"])` → `skill_jobs/stir.py` 的 `stir_job` + `skill_plans/contact.py` 的 `plan_stir`。设计见 `../motion/MOTION_ARCHITECTURE.md` 第 6 节"接触类技能"。
 
 ## 勺尖在哪：`tool_frame`
 
@@ -49,4 +49,4 @@
 
 ## 已知问题和没查到的
 
-- 仿真检查（stir2_1115）：T09 lid_off nominal、tomato_elsewhere dining 整集成功；pot_in_use（换成勺柄以后）、tomato_in_fridge、pot_in_dining_room、lid_on_spoon_away 还没跑。详见 `../MOTION_ARCHITECTURE.md` 9.3 第 7 步。
+- 仿真检查（stir2_1115）：T09 lid_off nominal、tomato_elsewhere dining 整集成功；pot_in_use（换成勺柄以后）、tomato_in_fridge、pot_in_dining_room、lid_on_spoon_away 还没跑。详见 `../motion/MOTION_ARCHITECTURE.md` 9.3 第 7 步。

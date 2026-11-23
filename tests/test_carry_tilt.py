@@ -1,4 +1,4 @@
-"""The one tilt rule of a held object (kinematics.carry_tilt_allowed, docs/MOTION_ARCHITECTURE.md 6):
+"""The one tilt rule of a held object (kinematics.carry_tilt_allowed, docs/motion/MOTION_ARCHITECTURE.md 6):
 CARRY_TILT beyond the goal's own tilt, for the straight joint move, the joint plan and the pose plan
 alike; and cuRobo's pose planner's status said as it is (motion.plan_status)."""
 

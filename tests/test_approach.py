@@ -1,4 +1,4 @@
-"""Approach into a contact and leave out of one (docs/COLLISION_PLAN.md 3b item 2): the contact
+"""Approach into a contact and leave out of one (docs/motion/COLLISION_PLAN.md 3b item 2): the contact
 segment's length from the collision model, the free motion before it planned with the fingers
 to end straight along the approach; the park search checks each target with its own coll_kw."""
 

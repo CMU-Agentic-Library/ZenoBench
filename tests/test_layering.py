@@ -1,4 +1,4 @@
-"""The dependency direction of the motion layers (docs/MOTION_ARCHITECTURE.md 2.5, rule 10): the
+"""The dependency direction of the motion layers (docs/motion/MOTION_ARCHITECTURE.md 2.5, rule 10): the
 primitives, the skill plans and the park search know no simulator -- not the rig, not the skills
 that drive it -- and the execution touches it only through motion_state.Actuator.  Read off the
 import statements (module-level and inside functions), followed through the package."""

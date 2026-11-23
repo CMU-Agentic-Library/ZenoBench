@@ -1,4 +1,4 @@
-"""A held spoon stirred round inside a pot (docs/MOTION_ARCHITECTURE.md section 6, contact; docs/skills/stir.md):
+"""A held spoon stirred round inside a pot (docs/motion/MOTION_ARCHITECTURE.md section 6, contact; docs/skills/stir.md):
 skill_plans.plan_stir -- the free leg over the pot with the spoon tilted (its tilt not held: a tool turned on
 purpose), the dip straight down, the circle a task segment in the pot's frame checked whole, the leave back up,
 back to the posture it arrived in.  FakeKin: no simulator."""

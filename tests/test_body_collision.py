@@ -1,5 +1,5 @@
 """The robot's own base as a second environment of the world checker (zeno_skills.body_collision,
-scene_geometry.body_world; docs/MOTION_ARCHITECTURE.md 4.4): which spheres are switched off against it,
+scene_geometry.body_world; docs/motion/MOTION_ARCHITECTURE.md 4.4): which spheres are switched off against it,
 its boxes from the base planner's shapes, the switch-off itself.  The GPU side: tools/check_body_collision.py."""
 
 import numpy as np

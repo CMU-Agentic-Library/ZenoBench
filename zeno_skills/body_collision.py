@@ -1,4 +1,4 @@
-"""The arms against the robot's own base (docs/MOTION_ARCHITECTURE.md 4.4): one more world-collision term in
+"""The arms against the robot's own base (docs/motion/MOTION_ARCHITECTURE.md 4.4): one more world-collision term in
 cuRobo's optimisation and feasibility, inside the planner -- not a check after it.
 
 The base (chassis and column) has no collision spheres: the robot model's sphere and self-collision budgets

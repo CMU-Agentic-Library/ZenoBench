@@ -1,125 +1,68 @@
-# 新建任务、资产、场景与标注
+# 文档索引
 
-以下命令从 `zeno-house/` 仓库根目录运行。现有房屋是 `sim/zeno_house.usd`；带冰箱和微波炉的版本是 `sim/zeno_house_appliances.usd`。任务场景是叠在房屋上的 USD layer，可以放入新物体并设置 Malo 的初始位置。
+整个仓库的文档从这里找。`docs/` 下按用途分目录；benchmark 和各模块的文档留在各自目录里（很多是脚本生成的，路径不能动），这里只列出来。
 
-| 文件 | 作用 | 何时更新 |
+## docs/ 的目录
+
+| 目录 | 放什么 | 状态 |
 |---|---|---|
-| `task_specs/<name>.json` | 场景说明、待放置物体、候选支撑面、候选起点 | 新建或修改场景时 |
-| `tasks/<name>/scene.usd` | 生成后的具体布局 | 重新生成布局时 |
-| `tasks/<name>/task.json` | 本次布局的场景描述：USD、annotation、机器人起点、温度设置、实际物体清单 | 与 scene 一起生成 |
-| `skill_library/tasks.json` 或 `benchmark/v3/tasks.json` | 跑在场景上的任务：指令和 goal（GT 谓词原子） | 新建任务时 |
-| `tasks/<name>/annotation.json` | **场景专属**的房间、支撑面、障碍、物体和关节几何 | scene 改变或物体 settle 后重新生成 |
-| `annotations/assets.json` | **资产类型共享**的尺寸、质量、抓取候选和容器几何 | 新增或重新处理资产时 |
+| [motion/](motion/) | 运动规划与碰撞的设计、执行计划、待删清单、待定问题 | 现行，跟着代码改 |
+| [skills/](skills/) | 每个技能在物理上一步一步做什么；代码地图 | 现行，跟着代码改 |
+| [reference/](reference/) | 脚本生成的 ID 表、policy 目录、contract 关系图 | 生成文件，不要手改 |
+| [guides/](guides/) | 操作步骤：新建任务、资产、场景与标注 | 现行 |
+| [archive/](archive/) | 写的是过去某个时间点的状态：旧审计、旧接口提案、验证记录、交接文档、旧图 | 只读，不再更新 |
 
-`scene.usd`、`task.json`、`annotation.json` 必须对应同一次布局。不能把一个任务的 annotation 直接配给另一个 scene。标注提供 GT 几何候选；能否真正抓住、放下或打开，仍要在仿真中验证。
+新文档放哪：描述现在的设计和要做的事 → `motion/` 或 `skills/`；一次会话的交接 → `archive/handoffs/HANDOFF_<日期>_<主题>.md`（交接完就是历史）；计划里做完的过程记录 → `archive/`。
 
-## 1. 用已有资产新建任务
+## 运动规划与碰撞（motion/）
 
-任务分两部分：场景（spec 生成的 `tasks/<name>/`）和任务定义（catalog 中的一条，写明指令和 goal）。需要 Isaac Lab Python。先查看可用资产、物体实例、支撑面及别名，再从可运行的例子修改场景 spec：
+1. [MOTION_ARCHITECTURE.md](motion/MOTION_ARCHITECTURE.md)：运动规划的分层设计。规则、各层职责、9.3 迁移步骤。**先读这篇。**
+2. [COLLISION_PLAN.md](motion/COLLISION_PLAN.md)：碰撞与运动规划的执行计划：做什么、按什么顺序、做到什么算完；第 5 节基线、第 9 节"试过、不要再做的"。
+3. [COLLISION_CLEANUP.md](motion/COLLISION_CLEANUP.md)：代码里还没删、没改的特殊实现，逐条标类别和归属步骤。
+4. [CONTAINER_COLLIDERS.md](motion/CONTAINER_COLLIDERS.md)：容器碰撞体和真实网格对不上（未改，改了动基线）。
 
-```bash
-export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
-python tools/list_places.py --room bedroom
-cp task_specs/examples/serve_guest.json task_specs/serve_guest.json
-# 编辑 task_specs/serve_guest.json 中的 objects 和 supports
-SEED=0 bash tools/make_tasks.sh serve_guest
-# 在 skill_library/tasks.json 中加一条任务（见下文），然后用 GT oracle 跑它的计划
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task serve_guest --planner oracle
-```
+## 技能（skills/）
 
-`make_tasks.sh` 依次执行 `build_tasks.py`（选物体位置并生成 USD/task.json）、`settle_scene.py`（物理落稳）、`check_scene.py`（稳定性和预览图）、`annotate_scene.py`（生成场景标注）。检查终端里的 `TASK`、`CHECK`、`ANNOTATION` 输出，以及 `tasks/serve_guest/` 中生成的文件；脚本为便于批量处理会继续执行后续任务，不能只凭 shell 退出码判断成功。
+[skills/README.md](skills/README.md) 是入口：阅读顺序、哪些技能已走运动分层。[skills/CODE_MAP.md](skills/CODE_MAP.md) 讲代码怎么组织。各技能一篇：[接近与离开](skills/approach_leave.md)、[pick](skills/pick.md)、[place](skills/place.md)、[drop / hover](skills/drop_hover.md)、[wipe](skills/wipe.md)、[搬运姿态](skills/carry.md)、[导航与收臂](skills/navigate.md)、[open](skills/open.md)、[close](skills/close.md)、[push](skills/push.md)、[stir](skills/stir.md)、[mark_spots](skills/mark_spots.md)、[姿态](skills/posture.md)。
 
-Spec 中 `objects` 使用 `annotations/assets.json` 的资产名，`supports` 使用 `list_places.py` 列出的支撑面或 `task_specs/places.json` 中的别名。`SEED` 可生成另一种布局，但会覆盖同名 `tasks/<name>/`；生成新布局后要重新 settle、check 和 annotate。
+## 参考（reference/，生成文件）
 
-`skill_library/tasks.json` 中的一条任务形如：
+| 文件 | 生成命令 |
+|---|---|
+| [INTERFACE_IDS.md](reference/INTERFACE_IDS.md)：SkillNode / Contract / policy 公开 ID | `python tools/build_skill_library.py` |
+| [POLICY_CATALOG.md](reference/POLICY_CATALOG.md)：policy 能力目录 | `python tools/render_policy_catalog.py` |
+| [contract_layers.svg](reference/contract_layers.svg)、[预览 png](reference/contract_layers_preview.png)：contract 分层关系图 | `python tools/render_contract_layers.py` |
 
-```json
-{"task_id": "serve_guest", "exp_id": "serve_guest",
- "instruction": "Serve the guest a cup of juice on the bedside table.",
- "scene": {"base": "tasks/serve_guest"},
- "variants": {"default": {"note": "the scene as built, no overlay"}},
- "goal": {"all": [["on", "juice_cup", "<bedside table support>"]]},
- "entities": ["juice_cup", "<bedside table support>"],
- "watch": ["juice_cup"],
- "nominal": null, "routes": {}, "oracle": {}}
-```
+`tests/test_policy_catalog.py` 检查这些文件和生成结果一致。
 
-格式和 benchmark 任务相同，只有一个 variant `default`。goal 是 `zeno_skills/predicates.py` 中谓词的原子列表，全部成立即成功；`entities` 是规划器考虑的物体和地点，`watch` 是其中的物体（用于掉落和副作用统计）。规划器专用的输入（`composite`、`values`、`initial_facts_extra`）放在可选的 `planner` 字段里。`python -m skill_library.planner --task serve_guest` 生成 `skill_library/plans/serve_guest.skill_subgraph.json`，并把它写进这条任务的 `routes.nominal` 和 `oracle`，oracle 跑的就是它。需要 condition variant 的任务写进 benchmark catalog（`benchmark/define_tasks_v3.py`），格式见 [benchmark/v3/README.md](../benchmark/v3/README.md)。新谓词或新的电器机制可能还需要扩展 predicates 或底层 policy。
+## 操作指南（guides/）
 
-## 2. 新增可抓取资产
+- [CREATE_TASKS.md](guides/CREATE_TASKS.md)：新建任务、新增可抓取资产、选择或扩展场景、改 scene 后重新标注。
 
-`tools/generate_assets.py` 将 EmbodiedGen V2 生成的网格注册为带物理碰撞、纹理和抓取标注的 USD 资产。EmbodiedGen 需要单独的环境；参考其[安装文档](https://horizonrobotics.github.io/EmbodiedGen/docs/install.html)。已有 URDF 可使用 `--skip-generate`，此时不需要重新生成网格。
+## 历史（archive/）
 
-```bash
-export EMBODIEDGEN_ROOT=/path/to/EmbodiedGen
-# 可选：export EMBODIEDGEN_PYTHON=/path/to/embodiedgen/bin/python
-python tools/generate_assets.py --name soda_can \
-  --prompt "an empty red aluminium soda can" \
-  --size 0.12 --mass 0.02 --tags can recyclable
+| 文件 | 内容 |
+|---|---|
+| [COLLISION_AUDIT.md](archive/COLLISION_AUDIT.md) | 2026-10-31 碰撞检查现状盘点（代码注释里的"审计 x.y"、"COLLISION_AUDIT §n"指它的章节） |
+| [PICK_6_1_2026-11-06.md](archive/PICK_6_1_2026-11-06.md) | 计划 6.1 pick 暂停时的过程记录 |
+| [GT_POLICY.md](archive/GT_POLICY.md) | 2026-10-01 的原子 GT policy 清单 |
+| [CONTRACT_PROPOSAL.md](archive/CONTRACT_PROPOSAL.md) | contract_001–008 family 接口提案（已被动词 SkillNode 库取代） |
+| [POLICY_VERIFICATION.md](archive/POLICY_VERIFICATION.md) | 2026-10-01/02 policy 物理验证记录 |
+| [KNOWN_LIMITATIONS.md](archive/KNOWN_LIMITATIONS.md) | 验证第 30 轮的已知限制 |
+| [PHYSICS_AUDIT.md](archive/PHYSICS_AUDIT.md) | 2026-10 物理与资产审计 |
+| [handoffs/](archive/handoffs/) | 会话交接：10-24 support 碰撞板、10-29 六条失败路线、10-30 http planner 失败、11-14 carry tilt held |
+| [benchmark_v1/](archive/benchmark_v1/) | benchmark v1 的图（`make_figs.py` 生成） |
 
-# 或从照片生成容器；圆形容器需有可放物的碰撞结构
-python tools/generate_assets.py --name my_mug --image photos/mug.jpg \
-  --size 0.10 --mass 0.30 --tags mug container --collider round_container
-```
+## benchmark 的文档（在 benchmark/ 下）
 
-`--size` 是最长边（米），`--mass` 是千克；`--collider` 可选 `solid`、`round_container`、`rect_container`；薄物体可加 `--lay-flat`。命令依次写入 `assets/asset3d/<name>/result/`、`assets/custom_assets.json`、`usd/assets/<name>.usd`、`annotations/assets.json`，并修复材质纹理。抓取标注可能包含 `top_pinch`、`rim_pinch` 或宽于夹爪物体的 `edge_pinch_after_push`；无法标出可行抓取时，资产会被标为不可抓。可用 `--batch assets/new_assets.example.json` 批量生成。
+- 总说明：[benchmark/README.md](../benchmark/README.md)；评测指标与失败分类：[EVALUATION_SPEC.md](../benchmark/EVALUATION_SPEC.md)；v2 结果：[EVALUATION.md](../benchmark/EVALUATION.md)、[RESULTS.md](../benchmark/RESULTS.md)。
+- **v6（当前）**：[README](../benchmark/v6/README.md)。
+  - 任务设计：[VARIANTS_zh](../benchmark/v6/VARIANTS_zh.md)（全部 variant 说明）、[VARIANT_FOCUS_zh](../benchmark/v6/VARIANT_FOCUS_zh.md)、[TRACKS](../benchmark/v6/TRACKS.md)、[SCORING_zh](../benchmark/v6/SCORING_zh.md)、[TIER_REVIEW_1120_zh](../benchmark/v6/TIER_REVIEW_1120_zh.md)、[SUBSTITUTION_STATS_zh](../benchmark/v6/SUBSTITUTION_STATS_zh.md)、[PLAN_DEPENDENCE_zh](../benchmark/v6/PLAN_DEPENDENCE_zh.md)。
+  - 路线：[ROUTES](../benchmark/v6/ROUTES.md)、[SUCCESS_ROUTES_zh](../benchmark/v6/SUCCESS_ROUTES_zh.md)。
+  - 物理侧（给 muqingj）：[HANDOFF_MUQINGJ_1121_zh](../benchmark/v6/HANDOFF_MUQINGJ_1121_zh.md)（最新）、[HANDOFF_MUQINGJ_1118_zh](../benchmark/v6/HANDOFF_MUQINGJ_1118_zh.md)、[PHYSICS_TODO](../benchmark/v6/PHYSICS_TODO.md)、[PHYSICS_EXCLUDED_zh](../benchmark/v6/PHYSICS_EXCLUDED_zh.md)、[SKILL_FIX_LIST](../benchmark/v6/SKILL_FIX_LIST.md)、[SKILL_ISSUES_zh](../benchmark/v6/SKILL_ISSUES_zh.md)。
+- v5：[README](../benchmark/v5/README.md)、[REPORT](../benchmark/v5/REPORT.md)（10-31 基线）、[CAPABILITIES](../benchmark/v5/CAPABILITIES.md)、[VALIDATION](../benchmark/v5/VALIDATION.md)。
+- v3 / v4：[README](../benchmark/v3/README.md)、[MATRIX](../benchmark/v3/MATRIX.md)、[RESULTS](../benchmark/v3/RESULTS.md)、[EVALUATION](../benchmark/v3/EVALUATION.md)、[V4_HARD_VALIDATION](../benchmark/v3/V4_HARD_VALIDATION.md)。
 
-随后在 task spec 中引用新资产，并重新生成任务场景和场景 annotation：
+## 各模块的 README
 
-```json
-"objects": {"can_1": {"asset": "soda_can", "supports": ["tv_stand"]}}
-```
-
-如果已有 URDF，只需把文件放在 `assets/asset3d/<name>/result/<name>.urdf`，然后用 `--skip-generate` 运行同一命令；不要手工只改 `annotations/assets.json` 而漏掉 USD 和注册信息。
-
-## 3. 选择或扩展场景
-
-通常无需手写任务 USD：`build_tasks.py` 会在基础房屋上创建任务 layer。普通任务默认使用 `sim/zeno_house.usd` 与 `annotations/zeno_house.json`；电器任务在 spec 中指定相互匹配的基础 scene/annotation：
-
-```json
-"base_scene": "sim/zeno_house_appliances.usd",
-"base_annotation": "annotations/zeno_house_appliances.json"
-```
-
-如果要给房屋增加门、抽屉等 PartNet-Mobility 资产，使用导入、放置和标注工具；实例和关节名要以新 annotation 中的条目为准：
-
-```bash
-$ISAACLAB_PYTHON tools/import_partnet.py --id 48452 --name partnet_cabinet_48452 --height 1.0
-$ISAACLAB_PYTHON tools/place_partnet.py --asset partnet_cabinet_48452 --name partnet_cabinet
-$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_partnet.usd annotations/zeno_house_partnet.json
-$ISAACLAB_PYTHON tools/run_skills.py --scene sim/zeno_house_partnet.usd \
-  --ann annotations/zeno_house_partnet.json --out runs/partnet_open \
-  --plan "open partnet_cabinet" "close partnet_cabinet"
-```
-
-导入器从 URDF 提取关节轴、限位及门板/抽屉，并为可识别的把手生成接触几何；是否能 hook 或 pinch，要看导入报告和实际动作。若新的基础场景不是上述房屋结构，需要先适配标注器预期的房间、支撑面、机器人路径和关节约定；它不是通用 USD 自动标注器。
-
-## 4. 手工改了 scene 后重新标注
-
-场景标注应在物体 settle、物理检查之后生成。以下命令也适用于修改过的任务 USD；路径按实际场景替换：
-
-```bash
-$ISAACLAB_PYTHON tools/settle_scene.py tasks/serve_guest/scene.usd --seconds 5
-$ISAACLAB_PYTHON tools/check_scene.py tasks/serve_guest/scene.usd --out tasks/serve_guest/check
-$ISAACLAB_PYTHON tools/annotate_scene.py tasks/serve_guest/scene.usd tasks/serve_guest/annotation.json
-```
-
-`annotate_scene.py` 复用 `annotations/house_static.json` 中的房屋静态几何，读取当前 USD 的任务物体、关节和机器人位置。新场景若改变了房屋本体，不能只重用旧的静态缓存。`annotations/assets.json` 是按资产类型共享的数据，不应把世界坐标写入其中。
-
-最后确认三个文件指向同一场景，再运行任务：
-
-```bash
-python - <<'PY'
-import json
-from pathlib import Path
-name = "serve_guest"
-root = Path("tasks") / name
-task = json.loads((root / "task.json").read_text())
-ann = json.loads((root / "annotation.json").read_text())
-assert task["scene_usd"] == ann["scene_usd"] == str(root / "scene.usd")
-print("scene / task / annotation match:", ann["scene_usd"])
-PY
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task serve_guest --planner oracle
-```
-
-想仅验证一个原子动作，可以调用 `tools/run_skills.py --scene ... --ann ... --plan "pick <object>"`；完整任务是否成功以 `benchmark/runs/serve_guest/*/result.json` 中的 goal 判定为准。
+[仓库 README](../README.md) · [zeno_skills/SKILL.md](../zeno_skills/SKILL.md) · [skill_library](../skill_library/README.md)（[SKILLS.md](../skill_library/SKILLS.md)、[验证状态](../skill_library/verification/STATUS.md)） · [contract_library](../contract_library/README.md) · [policy_library](../policy_library/README.md)（[POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)） · [episode](../episode/README.md) · [env_service](../env_service/README.md) · [failure_injection](../failure_injection/README.md) · [skill_ext](../skill_ext/README.md) · [EmbodiedGen V2 资产](../assets/EMBODIEDGEN_V2_ASSETS.md) · [演讲稿](../presentations/SPEAKER_NOTES.md)

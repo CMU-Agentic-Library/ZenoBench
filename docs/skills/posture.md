@@ -1,6 +1,6 @@
 # 姿态：下蹲、站起、弯腰、直腰、收臂
 
-2026-11-16 起走运动分层（`skill_plans/posture.py` 的 `plan_posture`，job 在 `skill_jobs/posture.py`；`../MOTION_ARCHITECTURE.md` 第 6 节、9.3 第 5 步）：在机器人现在站的地方做一段关节运动，不选停车点，不挪底盘。
+2026-11-16 起走运动分层（`skill_plans/posture.py` 的 `plan_posture`，job 在 `skill_jobs/posture.py`；`../motion/MOTION_ARCHITECTURE.md` 第 6 节、9.3 第 5 步）：在机器人现在站的地方做一段关节运动，不选停车点，不挪底盘。
 
 ## crouch / stand / bend / straighten（一个身体关节）
 

@@ -36,7 +36,7 @@ def test_policy_catalog_status_matches_callable_api():
 
 def test_catalog_document_is_current():
     catalog = json.loads((ROOT / "zeno_skills/policies/catalog.json").read_text())
-    assert (ROOT / "docs/POLICY_CATALOG.md").read_text() == render(catalog)
+    assert (ROOT / "docs/reference/POLICY_CATALOG.md").read_text() == render(catalog)
 
 
 def test_every_policy_is_reached_by_a_family_or_skill_contract():
@@ -65,4 +65,4 @@ def test_every_policy_is_reached_by_a_family_or_skill_contract():
             assert type(getattr(suite, policy_id)) in direct_classes
         assert not set(group["direct"]) & set(group["support"])
     svg, _, _ = render_contract_layers(catalog)
-    assert (ROOT / "docs/contract_layers.svg").read_text() == svg
+    assert (ROOT / "docs/reference/contract_layers.svg").read_text() == svg

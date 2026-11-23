@@ -68,7 +68,7 @@ SIDE_PINCH_EXTRA = {"wooden_block", "soda_can", "snack_carton"}
 # enough to lift the palm off the surface for a 4 cm block (the TCP 43 mm up level, 26 mm dipped 15 degrees)
 SIDE_PINCH_TILTS = (0.0, 0.3)
 # a tool's working points in the body frame (the asset's own, as grasps): the frames the contact skills move
-# (docs/MOTION_ARCHITECTURE.md 6, contact; skill_jobs.tool.tool_in_tcp).  The spoon's two ends: the bowl at +x
+# (docs/motion/MOTION_ARCHITECTURE.md 6, contact; skill_jobs.tool.tool_in_tcp).  The spoon's two ends: the bowl at +x
 # (the collider hull 4 cm wide there; 1 cm in from the end, 4 mm down in the bowl) and the handle's end at -x
 # (5 mm in).  Its top pinch closes on the bowl end (the fingers ~4 cm apart: v6 stir_1115), so a stir puts the
 # end away from the hand in the pot -- the handle, as the old stir's "far end of the long axis" did

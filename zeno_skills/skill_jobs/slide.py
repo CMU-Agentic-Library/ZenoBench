@@ -1,4 +1,4 @@
-"""An object pushed or dragged across its support (motion_skills.Job, the catalog's "push": docs/MOTION_ARCHITECTURE.md
+"""An object pushed or dragged across its support (motion_skills.Job, the catalog's "push": docs/motion/MOTION_ARCHITECTURE.md
 section 6, contact): one leg -- every way to touch it (each direction it may go; a push from behind it or a drag
 pressing on its top; each with the closed fingers turned four ways) one goal of the park search, the whole leg
 planned there as far as the arm reaches (skill_plans.plan_slide) -- and ``push_object``, the legs of a longer
@@ -43,7 +43,7 @@ def slide_ways(rig, name, T_obj, n, d, modes=MODES):
     on, a drag pressing on its top near the leading rim; the fingers closing across n, the other way
     across, along n, against n), mode by mode in the order of ``modes``.  The push point in the
     object's box frame as the State has it (the plan derives it from there: ``T_obj``, that frame in
-    the State).  The entry by a pick's rule (docs/COLLISION_PLAN.md 2): the hand comes down
+    the State).  The entry by a pick's rule (docs/motion/COLLISION_PLAN.md 2): the hand comes down
     pick_approach() -- the fingers are what reaches in, their length and LEAVE_MARGIN -- landing a push
     LEAVE_MARGIN behind the push point.  The hand runs ``lag`` before the object moves (primitives.Pushed):
     a push's SLIDE_GAP and the planner's finger box beyond the real pads along n (2.7 / 4.2 mm, by the
@@ -164,7 +164,7 @@ def push_object(rig, name, s, ways, label="PUSH", modes=MODES):
     """``name`` slid across its support ``s`` along one of ``ways`` [(n: a horizontal unit, distance: m,
     enough: m or None)] by the ways of ``modes`` (preferred first): the catalog's "push" (slide_job) leg
     by leg, each from where the last left it and as far as the arm gets from its park -- no set length
-    (docs/COLLISION_PLAN.md 2: the park that pushes farthest, until it reaches no further, then the next
+    (docs/motion/COLLISION_PLAN.md 2: the park that pushes farthest, until it reaches no further, then the next
     park).  The first leg's one park search has every direction as goals (its cost: its distance --
     docs 7: every way of the task a goal, no search per direction and none after a failure); the
     direction it went is kept for the rest.  It stops once the object is within PUSH_DONE_TOL of the

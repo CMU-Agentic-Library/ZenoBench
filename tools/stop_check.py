@@ -1,5 +1,5 @@
 """Claude Code Stop hook (.claude/settings.json): before Claude ends a turn, the checks of
-docs/COLLISION_PLAN.md section 5 that take seconds, so "done" is not Claude's word alone.
+docs/motion/COLLISION_PLAN.md section 5 that take seconds, so "done" is not Claude's word alone.
 
     python3 tools/stop_check.py            # what the hook runs (reads the hook JSON on stdin)
 
@@ -67,7 +67,7 @@ def problems():
     up, _ = compare(counts(), load_baseline())
     if up:
         rows = sites()
-        out.append("collision audit counts went up (docs/COLLISION_PLAN.md section 1; remove the new site, "
+        out.append("collision audit counts went up (docs/motion/COLLISION_PLAN.md section 1; remove the new site, "
                    "do not raise the baseline):")
         for f, k, n, b in up:
             out.append(f"  {f} {k}: {b} -> {n}")

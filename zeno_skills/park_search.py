@@ -1,4 +1,4 @@
-"""Where to park the base for a skill (docs/MOTION_ARCHITECTURE.md section 7): candidates around
+"""Where to park the base for a skill (docs/motion/MOTION_ARCHITECTURE.md section 7): candidates around
 the skill's goals, the cheap tests on all of them at once, a ranking, then the skill's own plan
 builder in that order -- the first park whose whole plan can be made wins, with that plan.
 

@@ -1,8 +1,8 @@
 # 技能的执行步骤
 
-这组文档讲每个技能在物理上一步一步做什么：手臂、底盘、手指各走到哪里，每一段查不查碰撞，失败了会怎样。不讲代码怎么实现。各篇写的是它最后一次更新时的代码（`git log` 可查）；下面"现在走运动分层的"一节按 2026-11-13（`90a2a31`）核对过。为什么这样改、试过什么，见 `../COLLISION_PLAN.md` 第 9 节（试过、不要再做的）和对应的提交。
+这组文档讲每个技能在物理上一步一步做什么：手臂、底盘、手指各走到哪里，每一段查不查碰撞，失败了会怎样。不讲代码怎么实现。各篇写的是它最后一次更新时的代码（`git log` 可查）；下面"现在走运动分层的"一节按 2026-11-13（`90a2a31`）核对过。为什么这样改、试过什么，见 `../motion/COLLISION_PLAN.md` 第 9 节（试过、不要再做的）和对应的提交。
 
-代码怎么组织（调用分层、每段运动在哪里决定查不查碰撞、哪些还没迁移）见 **[代码地图](CODE_MAP.md)**；分层的设计见 `../MOTION_ARCHITECTURE.md`。
+代码怎么组织（调用分层、每段运动在哪里决定查不查碰撞、哪些还没迁移）见 **[代码地图](CODE_MAP.md)**；分层的设计见 `../motion/MOTION_ARCHITECTURE.md`。
 
 ## 先读哪篇
 
@@ -33,7 +33,7 @@
 - stir 和 dip：拿勺子搅、勺尖伸进去再出来（[stir](stir.md)，11-15）；
 - 姿态：crouch、stand、bend、straighten、tuck（[姿态](posture.md)，11-16）。
 
-还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类（look、inspect 是技能，search / explore 是它上面的任务层）和姿态类（[姿态](posture.md)）11-16 迁了（`../MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）；手势（wave、point_at、present）还走旧入口。
+还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类（look、inspect 是技能，search / explore 是它上面的任务层）和姿态类（[姿态](posture.md)）11-16 迁了（`../motion/MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）；手势（wave、point_at、present）还走旧入口。
 
 ## 11-04（3b 第 2 项）改了什么
 
@@ -60,11 +60,11 @@
 | 自由段 | 接触段之外的运动，**查碰撞**，由规划器生成 |
 | 查手指 | 手指算进碰撞模型。很多旧动作不查手指（`ignore_fingers`），手指可以穿过台面 |
 | 目标豁免 | 手要去碰的那个物体不当障碍物 |
-| fallback | 查碰撞的自由段规划不出来时，唯一的退路：从当前位置直线走过去（不查碰撞），并记一条 `clearance_fallback`。放进容器时没有这条退路，直接失败。运动分层上的技能都没有这条退路：做不出来就失败（`../MOTION_ARCHITECTURE.md` 第 1 节第 3 条），只剩旧入口还有 |
+| fallback | 查碰撞的自由段规划不出来时，唯一的退路：从当前位置直线走过去（不查碰撞），并记一条 `clearance_fallback`。放进容器时没有这条退路，直接失败。运动分层上的技能都没有这条退路：做不出来就失败（`../motion/MOTION_ARCHITECTURE.md` 第 1 节第 3 条），只剩旧入口还有 |
 | 停车点 | 底盘停的位置和朝向。技能先搜索停车点，验证在那里手臂能走完这个技能的所有中继位姿，再开过去 |
 
 ## 11-04 那次全量（`benchmark/runs/v3_sticky_gt_1104_2seeds/`，119/170）里看到的问题
 
-这是当时的情况。11-09 起全量跑 v6，现在的基线见 `../MOTION_ARCHITECTURE.md` 9.1、`../COLLISION_PLAN.md` 第 5 节。每篇末尾有各自的"已知问题"，当时最主要的一条：
+这是当时的情况。11-09 起全量跑 v6，现在的基线见 `../motion/MOTION_ARCHITECTURE.md` 9.1、`../motion/COLLISION_PLAN.md` 第 5 节。每篇末尾有各自的"已知问题"，当时最主要的一条：
 
 - **竖直下放时左臂压到桌面**（当时 place 的第 10 步，现在是 `place.md` 第 9 步）：躯干一降，收在身侧的左臂碰到桌沿，下放这段规划不出来，落到 fallback（41 次），有 5 个 episode 被顶住失败。place 现在没有 fallback，规划不出来就失败。

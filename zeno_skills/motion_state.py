@@ -1,4 +1,4 @@
-"""What a motion is planned for, and by what rules (docs/MOTION_ARCHITECTURE.md section 4).
+"""What a motion is planned for, and by what rules (docs/motion/MOTION_ARCHITECTURE.md section 4).
 
 ``State``: the robot and the objects as they are (Rig.observe) or as a plan assumes they will be
 (a park the base is not at yet, an object the hand has not closed on yet, one let go) -- data
@@ -29,7 +29,7 @@ def other_side(side):
 
 class SkillFailure(RuntimeError):
     """A skill could not be done: a plan that cannot be made, or a simulated result that is wrong
-    (docs/MOTION_ARCHITECTURE.md 8.6).  Here, below every layer that raises it (rig re-exports it)."""
+    (docs/motion/MOTION_ARCHITECTURE.md 8.6).  Here, below every layer that raises it (rig re-exports it)."""
 
 
 class Dropped(SkillFailure):
@@ -61,7 +61,7 @@ class Held:
 
 @dataclass(frozen=True, eq=False)
 class Aim:
-    """A contact pose as a State gives it (docs/MOTION_ARCHITECTURE.md section 6): the TCP at ``T``
+    """A contact pose as a State gives it (docs/motion/MOTION_ARCHITECTURE.md section 6): the TCP at ``T``
     in the box frame of ``obj`` standing in the world (``held`` False: a grasp) -- with ``frame``,
     ``obj`` is an articulated part and ``frame(v)`` its frame's world pose at joint value v
     (State.parts: a handle where the part stands now) -- or the TCP that
@@ -84,7 +84,7 @@ class Hand:
 
 @dataclass(frozen=True, eq=False)
 class Posture:
-    """The robot's joints, or some of them (docs/MOTION_ARCHITECTURE.md 4.1): ``body`` the torso lift
+    """The robot's joints, or some of them (docs/motion/MOTION_ARCHITECTURE.md 4.1): ``body`` the torso lift
     and the waist both arms ride on (None: as they are), ``arms`` {side: its 7 joints} (a side left
     out: as it is).  A posture goal (a fold, an arrival) names the arms it moves; its body applies
     only where no other hand holds something (with_posture)."""
@@ -174,7 +174,7 @@ class Spec:
 
 def kept(state, spec, side, names=BODY_JOINTS):
     """Per joint of ``names`` (a planning chain's joint names, the body's first: kin.names): whether
-    ``side``'s queries under ``spec`` keep it where ``state`` has it (docs/MOTION_ARCHITECTURE.md 4.1,
+    ``side``'s queries under ``spec`` keep it where ``state`` has it (docs/motion/MOTION_ARCHITECTURE.md 4.1,
     4.2).  Spec.joints names what may move, by joint name (ARM: every arm joint of the chain), and every
     other joint of the chain is kept -- a posture segment moves one body joint, the arms riding it as they
     are.  None, the rule: the body kept while the other hand holds something, which would ride the body
@@ -351,7 +351,7 @@ def _frame_off(Ta, Tb):
 
 def state_offset(assumed: State, now: State, watch=()) -> dict:
     """How the State read back at an anchor (``now``) stands off the State the plan assumed there
-    (``assumed``): the error that came in since the plan was built (docs/MOTION_ARCHITECTURE.md 8.2,
+    (``assumed``): the error that came in since the plan was built (docs/motion/MOTION_ARCHITECTURE.md 8.2,
     9.3 step 2.1), JSON-ready, for the log only -- nothing is judged here.
       base       [mm, deg] the base off where the plan put it (the park: how it stopped)
       arm        rad, the commanded arm joints off the plan's (PLAN_AT_START judges them)
@@ -419,7 +419,7 @@ def touches(state, spec, side="right"):
 
 # --------------------------------------------------------------------- the simulator, as layer 4 sees it
 class Actuator(Protocol):
-    """All of the simulator the execution (run.py, layer 4) may touch (docs/MOTION_ARCHITECTURE.md
+    """All of the simulator the execution (run.py, layer 4) may touch (docs/motion/MOTION_ARCHITECTURE.md
     2.5): the writes ``execute`` makes, the read ``observe`` makes.  Rig implements it; another
     robot or simulator implements this and the kinematics, nothing above.
 
@@ -460,7 +460,7 @@ class Actuator(Protocol):
 
 
 class BaseModel(Protocol):
-    """The whole-body base model the drive primitives and the park search query (docs/MOTION_ARCHITECTURE.md
+    """The whole-body base model the drive primitives and the park search query (docs/motion/MOTION_ARCHITECTURE.md
     5.4): the base planner over the robot's sphere model, what the hands hold included.  Like ``kin`` it
     is handed down, never imported: skills.RigBase implements it on a rig.  It plans from the robot as it
     stands (``state`` is the State now, or now with the arms elsewhere: the loads ride as they sit in the

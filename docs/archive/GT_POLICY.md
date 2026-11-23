@@ -1,6 +1,6 @@
 # Zeno House: atomic GT policy inventory
 
-> Current interface: the planner-facing layer is the verb-based [SkillNode library](../skill_library/README.md). Each SkillNode's Contract binds its noun slots to GT attributes, checks GT preconditions, selects a policy path by noun and state, chains the policies of that path, and verifies GT postconditions (`zeno_skills/skill_runtime.py`). The public policies, including the ones added for the verb library, are listed in [POLICY_CATALOG.md](POLICY_CATALOG.md); the text below documents the original atomic policies. Whole tasks run through the episode pipeline ([episode/README.md](../episode/README.md)); the scripted task coordinator `TaskPolicy` and its evaluator were removed on 2026-10-21.
+> Current interface: the planner-facing layer is the verb-based [SkillNode library](../../skill_library/README.md). Each SkillNode's Contract binds its noun slots to GT attributes, checks GT preconditions, selects a policy path by noun and state, chains the policies of that path, and verifies GT postconditions (`zeno_skills/skill_runtime.py`). The public policies, including the ones added for the verb library, are listed in [../reference/POLICY_CATALOG.md](../reference/POLICY_CATALOG.md); the text below documents the original atomic policies. Whole tasks run through the episode pipeline ([episode/README.md](../../episode/README.md)); the scripted task coordinator `TaskPolicy` and its evaluator were removed on 2026-10-21.
 
 This document describes the code in this repository as of 2026-10-01. **GT policy means one reusable, target-parameterized action with a checked outcome at the skill-graph boundary**: `pick`, `place`, `open`, `close`, `navigate`, and supporting actions such as `push` and microwave control. Its internal controller may contain multiple motion stages. A call such as `pick(apple)` takes a target and the current privileged simulator/annotation state, selects a feasible strategy, executes it, and checks the actual result. `pick(apple)` and `pick(book_red)` use different branches and grasp geometry; they are not the same action trace.
 
@@ -66,7 +66,7 @@ briefly lifted 3.7 cm, but the left grasp subsequently slipped; stable two-hand
 pickup has not passed. The
 new synchronized base/arm controller passed a moving reach and a moving
 `toy_block` pickup; moving placement released an apple onto the dining table before the base stopped. See the
-[capability catalog](POLICY_CATALOG.md) for each route's status and caveat.
+[capability catalog](../reference/POLICY_CATALOG.md) for each route's status and caveat.
 Eight `ContractSpec` objects connect direct routes to a measured `ContractRunner`.
 The [verification record](POLICY_VERIFICATION.md) separates 54 scene-verified routes from six callable routes that still lack a successful object-level test. A skill sub-graph planner is not implemented.
 

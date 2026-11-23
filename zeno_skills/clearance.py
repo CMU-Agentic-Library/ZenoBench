@@ -1,4 +1,4 @@
-"""Collision policy of robot motions (docs/COLLISION_AUDIT.md).
+"""Collision policy of robot motions (docs/archive/COLLISION_AUDIT.md).
 
 ``Allow``      what one motion may touch.  ``FREE`` (the default) checks the whole robot;
                ``FREE_ELSE_STRAIGHT`` checks it too, but where no collision-free path exists it
@@ -105,7 +105,7 @@ def unchecked(reason: str) -> Allow:
     return Allow(checked=False, reason=reason)
 
 
-LEGACY = unchecked("legacy: unchecked before docs/COLLISION_AUDIT.md, not migrated yet")
+LEGACY = unchecked("legacy: unchecked before docs/archive/COLLISION_AUDIT.md, not migrated yet")
 # a free-space leg that used to be unchecked (COLLISION_AUDIT.md phase 2, decision 1): planned
 # collision-free when a path exists, else the straight move it always made, logged
 FREE_ELSE_STRAIGHT = Allow(fallback=True, reason="free-space leg: collision-free when a path exists, "
@@ -229,7 +229,7 @@ class Clearance:
 
     def executing(self):
         """follow / follow_smooth / left_follow start: waypoints with no motion declared since
-        the last ones (a raw follow, docs/COLLISION_AUDIT.md) get a row of their own."""
+        the last ones (a raw follow, docs/archive/COLLISION_AUDIT.md) get a row of their own."""
         if not self._declared:
             self._record(self.leg, "raw", "right")
         self._declared = False

@@ -1,4 +1,4 @@
-"""The errors and re-plans of a set of episodes (docs/MOTION_ARCHITECTURE.md 9.3 step 2.1): what the
+"""The errors and re-plans of a set of episodes (docs/motion/MOTION_ARCHITECTURE.md 9.3 step 2.1): what the
 error bounds of 8.2 / 8.4 (BASE_TOL, HOLD_DRIFT, HELD_POSE_MARGIN, PICK_TOL, PLACE_TOL) are set from,
 and the counts the open questions of section 10 wait on, read from the events every result.json has.
 

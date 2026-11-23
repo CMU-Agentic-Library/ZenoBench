@@ -1,6 +1,6 @@
 # Known limitations (verification round 30)
 
-Round 30 ran all 35 scenarios on one code version. 65 of the 70 verbs and 97 of the 120 policy paths passed physically in Isaac Sim ([STATUS](../skill_library/verification/STATUS.md)).
+Round 30 ran all 35 scenarios on one code version. 65 of the 70 verbs and 97 of the 120 policy paths passed physically in Isaac Sim ([STATUS](../../skill_library/verification/STATUS.md)).
 
 The verbs below were not verified physically. Each one still has its GT contract, its pre- and postconditions and its verifier. A failed run returns a precise error and a `replan_request` to the caller.
 

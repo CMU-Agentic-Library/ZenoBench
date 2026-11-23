@@ -16,7 +16,7 @@
    - 掌心、相机不碰物体的最低高度由 `tools/prepare_assets.py` 按碰撞球对物体网格推导，写在抓取标注里。
 3. **排序。** 按离机器人的远近；长物体优先夹中间。门后的（在腔体里，或在 `<柜子>/inside_…` 支撑面上）按朝开口的远近排，最靠外的先（`_behind_door`；11-08 审计前是微波炉、冰箱层板两个写死的特例）。
 
-**选停车点**（`skill_jobs/pick.py` 的 `_pick_problem` → `motion_skills.run_skill` → `park_search.find_park`，见 `../MOTION_ARCHITECTURE.md` 第 2.3、7 节）
+**选停车点**（`skill_jobs/pick.py` 的 `_pick_problem` → `motion_skills.run_skill` → `park_search.find_park`，见 `../motion/MOTION_ARCHITECTURE.md` 第 2.3、7 节）
 
 4. **所有候选一起找停车点**：每个抓取候选是目标集合里的一个目标（标注的候选最多前 12 个，旋转 90° 的那组排在后面），排名每靠后一位代价加 `PICK_CAND_COST`（5 cm）。每个目标给出手要够到的点（伸入段起点、抓取位姿、抓取位姿往上 `PICK_LEAVE_CHECK`）和排序用的中继位姿（伸入段起点）。门后的先试门自由边前方 `FRONT_SEED_M`（0.65 m）、朝着物体的停车点（`prefer`，`_front_of`：由标注的门轴、门板、把手朝外方向算，不写场景坐标；替掉了冰箱 `(6.246, 2.337, 135)`、微波炉 `(4.8, 1.7, 150)` 两个手写的点，推出来的点离它们 6 cm / 15 cm）。
    - **便宜的检查**：围着目标取候选底盘位置（每个目标最多 `MAX_PER_GOAL` 个）；手够得着、底盘占地不碰家具；收起的手臂在那里整机不碰（一次批量）；从现在的位置开得到（一次可达场）。
@@ -31,7 +31,7 @@
    - 胜出的停车点再做一次精确的底盘路径（整机）。都做不出来就失败（`pick_no_park`，带每项拒绝计数和构造失败原因）。日志 `park_search`。
 5. **开过去**（`run_skill` 调 [navigate](navigate.md)：已收起就不再收臂，再按整机规划开到停车点）。已经在停车点上就不动。
 
-**抓**（`skill_jobs/pick.py` 的 `_pick_ready` → `run.run`，见 `../MOTION_ARCHITECTURE.md` 第 8 节）
+**抓**（`skill_jobs/pick.py` 的 `_pick_ready` → `run.run`，见 `../motion/MOTION_ARCHITECTURE.md` 第 8 节）
 
 6. **记下这次抓取**（`pick_target`，sticky hands 用它）：抓取位姿是候选在物体框里的位姿乘上物体现在的位姿。job 不另做重新测量、重做：抓取写在物体框里（`_grasp_of`：`T_obj_tcp`，伸入方向在 TCP 框里），`plan_pick` 每次都从 `State` 里物体的位姿推出世界系的抓取位姿；开车碰动了物体、底盘停偏了，由下一步的复核发现。
 7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）；伸入段起点和伸入段（`pick_reach`、`pick_grasp`）在现在的底盘下的终点，离按现在的物体位姿推出的抓取位姿，比建这段时多偏不超过 `PICK_TOL`（1 mm / 0.01 rad：物体动了、底盘停偏了都算，`primitives.holds`，记 `its end is ... further off its target than built`）；路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。计划里有两个锚点（`pick_arrive`：开到以后、张手之前；`pick_held`：合爪之后、抬起之前）：走到锚点时用同一个 `plan_pick` 从下一段起复核剩下的整份，还成立的运动段原样留下，不成立的从那里重做（`anchor` 事件记 `kept` / `rebuilt` 和耗时）；合爪后的那一次用的是实测握法、不放大。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。
@@ -74,7 +74,7 @@
 
 ## 已知问题
 
-完整清单和证据在 `../COLLISION_PLAN.md` 6.1、`../MOTION_ARCHITECTURE.md` 第 9 节，这里只列和物理步骤直接相关的：
+完整清单和证据在 `../motion/COLLISION_PLAN.md` 6.1、`../motion/MOTION_ARCHITECTURE.md` 第 9 节，这里只列和物理步骤直接相关的：
 
 - **抓得稳不稳没验证过**：验证都在 `sticky/gt` 下，合爪后物体焊在手上。不焊的 `physical` 下没测；已见碗在搬运中滑动 6 cm（T20）。`HELD_POSE_MARGIN` 也要到 `physical` 下按 `held_offset` 重定。（T03 擀面杖不在手里不是抓取问题：place 把它卡在杯口判了成功，见 `COLLISION_PLAN.md` 6.2。）
 - **搜索慢**：持物、保持倾角按位姿规划去搬运姿态单次 0.6–8.4 s（失败时用满尝试次数），pick 的停车点搜索 4–26 s（旧版约 9 s）。

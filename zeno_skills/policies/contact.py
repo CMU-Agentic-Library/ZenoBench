@@ -72,7 +72,7 @@ class PullTowardBasePolicy(AtomicPolicy):
             raise SkillFailure(f"pull {name}: already at the near edge")
         # the drag and the hook from the far side are ways of one search (Problem.tiers: every drag first),
         # chosen before the hand moves; a drag whose pads slid over the top fails -- no hook after it
-        # (docs/COLLISION_PLAN.md 2: "拖不动改推" is a change of strategy)
+        # (docs/motion/COLLISION_PLAN.md 2: "拖不动改推" is a change of strategy)
         from ..skill_jobs.slide import push_object
         _, moved = push_object(rig, name, s, [(n, d, None)], label="PULL", modes=("drag", "push"))
         rig.log("pull_result", obj=name, moved_m=round(moved, 3))
@@ -108,7 +108,7 @@ class SeparateFromNeighbourPolicy(AtomicPolicy):
             if not choices:
                 raise SkillFailure(f"separate {name}: no room on {s['name']} to move away from {other}")
             # every direction away one goal of one push search, its cost how far it goes (the most direct
-            # is the shortest): no direction after another's failure (docs/MOTION_ARCHITECTURE.md 7; the
+            # is the shortest): no direction after another's failure (docs/motion/MOTION_ARCHITECTURE.md 7; the
             # neighbour itself may stand where a straight push starts)
             from ..skill_jobs.slide import push_object
             push_object(rig, name, s, [(n, need, None) for _, n, need in sorted(choices, key=lambda t: t[0])],

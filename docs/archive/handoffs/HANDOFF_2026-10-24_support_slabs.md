@@ -6,9 +6,9 @@
 
 那次会话是 CLI 会话 `056186d1-9ca7-4c35-ad27-c72a0f7bda7a`（transcript 在 `~/.claude/projects/-home-muqingj-Projects-ZenoBench/056186d1-….jsonl`），做了这些事：
 
-- **新的 support 定义**：Infinigen 静态家具原来的 215 个 `surface_N` 是从碰撞网格聚类出来的，和渲染出来的板差 1–5 cm。现在改成手工列出的支撑层 [annotations/support_layers.json](../annotations/support_layers.json)，覆盖 26 件家具，命名为 `shelf_0`、`shelf_1`…、`top`。
-- **铺碰撞板**：[tools/fit_support_repairs.py](../tools/fit_support_repairs.py) 在每一层渲染出来的板面上铺一块 2 cm 厚、渲染不可见的碰撞板（`/World/SupportRepairs/<家具>__<层>`），并删掉板上方空间里的非竖直碰撞面。
-- **标注改从碰撞板读**：[tools/annotate_scene.py](../tools/annotate_scene.py) 改成直接从这些板读 support；`house_static.json` 不再存 supports。
+- **新的 support 定义**：Infinigen 静态家具原来的 215 个 `surface_N` 是从碰撞网格聚类出来的，和渲染出来的板差 1–5 cm。现在改成手工列出的支撑层 [annotations/support_layers.json](../../../annotations/support_layers.json)，覆盖 26 件家具，命名为 `shelf_0`、`shelf_1`…、`top`。
+- **铺碰撞板**：[tools/fit_support_repairs.py](../../../tools/fit_support_repairs.py) 在每一层渲染出来的板面上铺一块 2 cm 厚、渲染不可见的碰撞板（`/World/SupportRepairs/<家具>__<层>`），并删掉板上方空间里的非竖直碰撞面。
+- **标注改从碰撞板读**：[tools/annotate_scene.py](../../../tools/annotate_scene.py) 改成直接从这些板读 support；`house_static.json` 不再存 supports。
 - **改名和重新生成**：39 个文件里的旧名字按高度换成了新名字，所有任务场景都重新 settle 并重新标注。
 - **备份**：改动前的场景和标注备份在 `/tmp/claude-1000/-home-muqingj-Projects-ZenoBench/056186d1-…/scratchpad/backup/`（在 /tmp 里，可能被清掉）。注意这份备份里的 `sim/zeno_house.usd` 已经带了新碰撞板，不是真正的改动前版本。真正的改动前基线是 git HEAD。
 
@@ -24,7 +24,7 @@
 - **问题出在哪**：`fit_support_repairs.py` 最后有个循环，会清空**所有**不在 support 表里的碰撞网格的面列表。3 面房间外墙（`bedroom_0_1`、`living_room_0_0`、`living_room_0_1` 的 `*_exterior_collision_openroof_wideopen/World/mesh`）也被清了。
 - **后果**：这 3 面墙带着 `tools/cut_doorway.py` 开门洞时写的覆盖层，点坐标是裁剪过的。清掉面列表后，裁剪过的点配上原始网格的面索引，碰撞几何变成一堆错乱的三角形。机器人穿过门洞时会被撞倒，第一人称画面是歪的。往 `bookcase_2` 和书房方向走的路线全部因此失败。
 - **修复**：
-  - **脚本**：现在只重置 `annotations/furniture_names.json` 里列出的家具的碰撞网格（[fit_support_repairs.py:222](../tools/fit_support_repairs.py)）。
+  - **脚本**：现在只重置 `annotations/furniture_names.json` 里列出的家具的碰撞网格（[fit_support_repairs.py:222](../../../tools/fit_support_repairs.py)）。
   - **数据**：把这 3 个网格的 `faceVertexCounts` 和 `faceVertexIndices` 从 HEAD 拷回 `sim/zeno_house.usd`。点数和 HEAD 完全一致。
   - **备份**：修复前 `/data/zenobench/support_layers/zeno_house.before_doorway_restore.usd`，修复后 `zeno_house.after_restore.usd`。
   - **验证**：用修好的脚本再跑一遍，房屋文件逐个 spec 对比没有任何变化，说明脚本是幂等的，也不再动墙。
@@ -54,7 +54,7 @@
          1. **抓取朝向变了**：`desk_1/top` 的边往外挪了 1 cm、高了 6 mm，expose/pick 选的停车位跟着变了（pick 时 -270° → -285°）。抓到手里的书相对机器人多转了 15–18°；运到书架前时，书相对机器人的朝向是 42°，HEAD 是 5°。
          2. **抬手时 IK 跳到了另一组解**：place_flat 里 `_goto_park` → `navigate` → `_carry_pose`，不管书是不是已经举高了，都会再往上抬至少 6 cm。这时手臂已经到了够不着的边缘（躯干在上限，腰快到上限），直线路径走不通，于是退回 `ik_global`。`ik_global` 返回的是固定随机种子里第一个不碰撞的解，不看离当前姿态有多远。HEAD 碰巧用第 1 个随机种子拿到一个只差 0.17 rad 的解；当前版本拿到的是差 2.85 rad 的那组：躯干降到最低，第 2 关节 3.11 rad。离线跑 `ArmKin` 可以精确复现这两个解。
          3. **停车位检查用错了姿态**：find_park 检查的 travel_q 是抬手**之前**的姿态，不是机器人到达时实际的姿态。
-         4. **`square` 打分符号反了**（[skills.py](../zeno_skills/skills.py) `place_flat` 里的 `def square`）：它返回 `-abs(yaw - face)`，而 find_park 是按升序取第一个的，所以选到的是**最歪**的停车位，和注释"要正对书架边"的意思正好相反。HEAD 的候选是 60/75/90/75/90°，选了 60°；当前版本的候选里多出一个 45°，就选了 45°。
+         4. **`square` 打分符号反了**（[skills.py](../../../zeno_skills/skills.py) `place_flat` 里的 `def square`）：它返回 `-abs(yaw - face)`，而 find_park 是按升序取第一个的，所以选到的是**最歪**的停车位，和注释"要正对书架边"的意思正好相反。HEAD 的候选是 60/75/90/75/90°，选了 60°；当前版本的候选里多出一个 45°，就选了 45°。
          5. **跳过碰撞检查把书撞进书架**：在 45° 停车位上，翻转后的姿态被判成已经在碰撞里，走了 `joint_from_contact`，不做碰撞检查直接插值，书被扫进了书架前侧面。
          6. **只翻符号也不够**：`SQUARE_FIX=1` 选了 90°，`flat_pre` 很顺利，书也放平了，但 `flat_push` 没有 IK 解，书还悬在边沿外面，还是失败。原因是 find_park 只检查了 legs 和 retreat 两段，没把 push 这一段的目标算进去。
        - **相关的疑点（没验证）**：开门停车位的 score 对已经失败过的停车位返回 `-1e9`，升序排序后反而会优先选它们，可能是同一类符号错误。
@@ -75,7 +75,7 @@
 | 成功条件 | 房间里 ≥ 75% 的**家具**被看到。一件家具只要有一层（0.3–1.6 m 高、面积 > 0.05、净空 ≥ 0.3）进入视野就算看到。不在 benchmark 里时，物体也算目标 | 这件家具的**每一层**都看到 |
 | 后置条件 | `room_explored(room)` | 新谓词 `furniture_explored(furniture)`。两个都存在 `memory["explored"]` 里，用名字区分 |
 
-`explore_furniture` 的策略（[perceive.py](../zeno_skills/policies/perceive.py) 里的 `ExploreFurniturePolicy`）：
+`explore_furniture` 的策略（[perceive.py](../../../zeno_skills/policies/perceive.py) 里的 `ExploreFurniturePolicy`）：
 
 - **怎么算看到一层**：看板面上方放东西的那块空间，取板面中心往上 10 cm 或净空的一半（`_layer_point`）。这个点要在头部相机视野里，而且不能被**这件家具自己的板**挡住（`_board_blocks`）。原有的可见性检测会忽略家具自身的板，不加这条，低层会被当成透过上面的板看到，相机高度以上的顶面也会被当成从下面看到。
 - **站位和次数**：机器人已经在家具附近就先原地扫一遍，否则从最多 3 个站位里扫。和家具之间隔着墙的站位会跳过（用 `_segment_blocked` 检查）。
@@ -85,21 +85,21 @@
 ### 2.2 改了哪些地方
 
 - **谓词、类型、运行时**：
-  - [predicates.py](../zeno_skills/predicates.py)：新增 `furniture_ref` 和 `furniture_explored`，改了 `room_explored` 的说明文字。
-  - [skill_runtime.py](../zeno_skills/skill_runtime.py)：给 `furniture_ref` 加了校验器。
+  - [predicates.py](../../../zeno_skills/predicates.py)：新增 `furniture_ref` 和 `furniture_explored`，改了 `room_explored` 的说明文字。
+  - [skill_runtime.py](../../../zeno_skills/skill_runtime.py)：给 `furniture_ref` 加了校验器。
 - **策略和编号**：
-  - [perceive.py](../zeno_skills/policies/perceive.py)：`ExploreRoomPolicy` 改成按家具计数，新增 `ExploreFurniturePolicy`。
-  - [policies/__init__.py](../zeno_skills/policies/__init__.py)、[policies/catalog.json](../zeno_skills/policies/catalog.json)、[interface_ids.json](../zeno_skills/interface_ids.json)：注册 `explore_furniture`，编号 `policy_116`。
+  - [perceive.py](../../../zeno_skills/policies/perceive.py)：`ExploreRoomPolicy` 改成按家具计数，新增 `ExploreFurniturePolicy`。
+  - [policies/__init__.py](../../../zeno_skills/policies/__init__.py)、[policies/catalog.json](../../../zeno_skills/policies/catalog.json)、[interface_ids.json](../../../zeno_skills/interface_ids.json)：注册 `explore_furniture`，编号 `policy_116`。
 - **SkillNode 定义和检查**：
-  - [definitions.py](../skill_library/definitions.py)：`explore` 改名为 `explore_room`，新增 `explore_furniture`，补了 relations、USE_WHEN、DISTINCT。
-  - [check.py](../skill_library/check.py)：动词规则放宽为 `[a-z]+(_[a-z]+)?`；同义词组拆成 `explore_room…` 和 `explore_furniture…` 两组；加上 `furniture` 名词。
-  - [build_skill_library.py](../tools/build_skill_library.py)：新增 `node_name()`。动词已经包含名词时不再重复，所以 SKILL.md 的 name 是 `explore-room` / `explore-furniture`，action 名是 `explore_room` / `explore_furniture`。房间那个的 action 字符串和以前一样是 `explore_room(room=…)`。
+  - [definitions.py](../../../skill_library/definitions.py)：`explore` 改名为 `explore_room`，新增 `explore_furniture`，补了 relations、USE_WHEN、DISTINCT。
+  - [check.py](../../../skill_library/check.py)：动词规则放宽为 `[a-z]+(_[a-z]+)?`；同义词组拆成 `explore_room…` 和 `explore_furniture…` 两组；加上 `furniture` 名词。
+  - [build_skill_library.py](../../../tools/build_skill_library.py)：新增 `node_name()`。动词已经包含名词时不再重复，所以 SKILL.md 的 name 是 `explore-room` / `explore-furniture`，action 名是 `explore_room` / `explore_furniture`。房间那个的 action 字符串和以前一样是 `explore_room(room=…)`。
 - **按动作名找动词的地方**：
-  - [verify_summary.py](../tools/verify_summary.py)：改成优先匹配最长的动词。
-  - [benchmark/metrics.py](../benchmark/metrics.py)：`PERCEPTION` 换成两个新动词，并修了按 `_` 拆动作名的逻辑。
-- **Benchmark 的权限检查**：[observation.py](../benchmark/observation.py) 里，`furniture` 参数必须是已知的静态地点。
+  - [verify_summary.py](../../../tools/verify_summary.py)：改成优先匹配最长的动词。
+  - [benchmark/metrics.py](../../../benchmark/metrics.py)：`PERCEPTION` 换成两个新动词，并修了按 `_` 拆动作名的逻辑。
+- **Benchmark 的权限检查**：[observation.py](../../../benchmark/observation.py) 里，`furniture` 参数必须是已知的静态地点。
 - **Route**：
-  - [define_tasks.py](../benchmark/define_tasks.py)、[define_tasks_v3.py](../benchmark/define_tasks_v3.py)、[v3_candidates.py](../benchmark/v3_candidates.py) 里所有 `S("explore", …)` 换成 `explore_room`，然后重新生成。`benchmark/tasks.json` 改了 4 处，`v3/tasks.json` 改了 9 处，`v3/candidates/tasks.json` 改了 15 处，diff 里只有这些。
+  - [define_tasks.py](../../../benchmark/define_tasks.py)、[define_tasks_v3.py](../../../benchmark/define_tasks_v3.py)、[v3_candidates.py](../../../benchmark/v3_candidates.py) 里所有 `S("explore", …)` 换成 `explore_room`，然后重新生成。`benchmark/tasks.json` 改了 4 处，`v3/tasks.json` 改了 9 处，`v3/candidates/tasks.json` 改了 15 处，diff 里只有这些。
   - 路线**类型** `"kind": "explore"`（一种决策类别）保持不变。
   - config_hash 只覆盖场景叠加层，不包含 route 步骤，所以以前的验收 run 仍然有效。
 - **skill_library 侧**：
@@ -108,7 +108,7 @@
   - `verification/scenarios.json` 里改了名，并在 `k_perceive` 末尾加了 `explore_furniture large_shelf_2` 和 `tv_stand_2` 两步。
   - `verification/status.json` 和 `STATUS.md` 是**手动**更新的（66/71 个动词、98/121 条路径），因为 `runs/skillv2/verify` 不在这台机器上，没法重新生成。
 - **测试和文档**：
-  - [benchmark/tests/sim_permissions.py](../benchmark/tests/sim_permissions.py) 改成按家具数统计目标。
+  - [benchmark/tests/sim_permissions.py](../../../benchmark/tests/sim_permissions.py) 改成按家具数统计目标。
   - `test_library_v2.py` 里的动词总数改成 71。
   - README、benchmark/README、benchmark/v3/README、episode/README 里讲 explore 的地方和数量都更新了。
 - **重新生成的导出文件**：`build_skill_library.py`、`export_interface_libraries.py`、`render_policy_catalog.py`、`render_contract_layers.py` 四个都已重新生成，`--check` 全部通过。
@@ -134,9 +134,9 @@ docker/run.sh '$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/ta
 ```
 
 - **`--views`**：每个相机单独输出一个 MP4 到回合目录：`video_follow.mp4`（肩后跟拍）和 `video_level.mp4`（水平相机，见下）。视频边渲染边写到磁盘（`Episode(video_views=…)` → `rig.view_frames`），不会把整段视频放在内存里。（最早是 follow / wide / head 三个视角，后来改成了这两个。普通的 `--video` 仍然是 follow + wide。）
-- **水平相机 `level`**（[runtime.py](../zeno_skills/runtime.py) 里的 `_level_view`）：相机高度等于支撑面顶部 z，水平看过台面，看的是机器人够得到的那一段。从和机器人朝向垂直、不在机器人身后、到台沿之间没有墙或家具挡着的那一侧拍，距离台沿 0.6 / 0.35 / 0.15 m，按顺序选第一个可用的。看哪块支撑面：`--level-support <支撑面或家具名>` 指定（家具名取最高一层）；不指定时取机器人正在 pick/place 的那块（`rig.focus_z` 附近、机器人前方），没有 pick/place 时保持上一块不变。
+- **水平相机 `level`**（[runtime.py](../../../zeno_skills/runtime.py) 里的 `_level_view`）：相机高度等于支撑面顶部 z，水平看过台面，看的是机器人够得到的那一段。从和机器人朝向垂直、不在机器人身后、到台沿之间没有墙或家具挡着的那一侧拍，距离台沿 0.6 / 0.35 / 0.15 m，按顺序选第一个可用的。看哪块支撑面：`--level-support <支撑面或家具名>` 指定（家具名取最高一层）；不指定时取机器人正在 pick/place 的那块（`rig.focus_z` 附近、机器人前方），没有 pick/place 时保持上一块不变。
 - **`--video-stride N`**：每 N 个物理步出一帧，默认 4，也就是 30 fps；12 对应 10 fps。物理仍然是 120 Hz。
-- **`--show-colliders`**：碰撞板渲染成**品红**；有 support 层的 26 件家具的碰撞网格渲染成**青色**（[runtime.py](../zeno_skills/runtime.py) 里的 `show_colliders`）。闪烁表示碰撞面和渲染面重合；青色明显凸出，说明碰撞几何在看得见的表面外面。只改渲染材质，物理不变。开了之后头部相机图像里也会出现这些颜色，所以不能用于计分的 run。
+- **`--show-colliders`**：碰撞板渲染成**品红**；有 support 层的 26 件家具的碰撞网格渲染成**青色**（[runtime.py](../../../zeno_skills/runtime.py) 里的 `show_colliders`）。闪烁表示碰撞面和渲染面重合；青色明显凸出，说明碰撞几何在看得见的表面外面。只改渲染材质，物理不变。开了之后头部相机图像里也会出现这些颜色，所以不能用于计分的 run。
 - **为什么是不透明色**：用 `/data/zenobench/support_layers/collider_look_test.py` 实测过，在 RTX 实时渲染下，UsdPreviewSurface 的 opacity < 1 和 OmniGlass 都完全看不见，所以只能用不透明色。
 
 ### 3.2 顺带修的相机问题（会影响以后所有 `--video`）

@@ -1,4 +1,4 @@
-"""navigate on the motion layers (docs/MOTION_ARCHITECTURE.md 6, navigate; 5.4 drive; 9.3 step 1):
+"""navigate on the motion layers (docs/motion/MOTION_ARCHITECTURE.md 6, navigate; 5.4 drive; 9.3 step 1):
 plan_navigate's arm stage, the drive segment, its execution, the travel chain the park search shares,
 and the catalog run_skill reads."""
 

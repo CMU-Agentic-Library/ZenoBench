@@ -1,5 +1,5 @@
 """GPU check of the robot's own base as a second checker environment (zeno_skills.body_collision,
-docs/MOTION_ARCHITECTURE.md 4.4) -- no simulator: the checker and the arms built as motion.Motion builds
+docs/motion/MOTION_ARCHITECTURE.md 4.4) -- no simulator: the checker and the arms built as motion.Motion builds
 them, with an empty scene.
 
     docker/run.sh '$ISAACLAB_PYTHON tools/check_body_collision.py'

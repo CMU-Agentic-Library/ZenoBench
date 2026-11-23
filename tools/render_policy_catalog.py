@@ -1,6 +1,6 @@
 """Render the human-readable policy inventory from its JSON source.
 
-    python tools/render_policy_catalog.py          # update docs/POLICY_CATALOG.md
+    python tools/render_policy_catalog.py          # update docs/reference/POLICY_CATALOG.md
     python tools/render_policy_catalog.py --check  # fail if the document is stale
 """
 
@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "zeno_skills/policies/catalog.json"
-OUTPUT = ROOT / "docs/POLICY_CATALOG.md"
+OUTPUT = ROOT / "docs/reference/POLICY_CATALOG.md"
 GROUPS = {
     "navigation": "导航与携物移动",
     "posture": "躯干与姿态",
@@ -54,11 +54,11 @@ def render(catalog):
         "`pick_and_carry` 则是先抓取后移动。`place_while_moving` 已在底盘继续移动时释放苹果并验证桌面支撑。",
         "`bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。",
         "",
-        "机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。",
+        "机器可读源文件：[catalog.json](../../zeno_skills/policies/catalog.json)。",
         f"稳定公开 ID 为 `policy_001`–`{max(r['policy_id'] for r in rows)}`；原描述性名称保留为兼容别名。",
-        "每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。",
+        "每项的独立 JSON 与说明见 [policy_library](../../policy_library/catalog.json)。",
         "`input` 和 `effect` 是能力摘要；每个 policy 被哪些 Skill Contract 路径调用、在路径前后检查哪些 GT 谓词，",
-        "见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../contract_library/README.md)。",
+        "见 [POLICY_COVERAGE.md](../../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../../contract_library/README.md)。",
         "",
     ]
     grouped = defaultdict(list)

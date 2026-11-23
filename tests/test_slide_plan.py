@@ -1,4 +1,4 @@
-"""An object pushed or dragged across its support (docs/MOTION_ARCHITECTURE.md section 6, contact):
+"""An object pushed or dragged across its support (docs/motion/MOTION_ARCHITECTURE.md section 6, contact):
 primitives.Pushed and skill_plans.plan_slide -- the closed hand down behind it (or onto it), the push a
 task segment with the object moving along from where the fingers meet it, as far as the arm reaches,
 checked whole; the way out measured.  FakeKin: no simulator."""

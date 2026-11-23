@@ -1,4 +1,4 @@
-"""Spheres for a held object in the planner's model (docs/MOTION_ARCHITECTURE.md 4.4).
+"""Spheres for a held object in the planner's model (docs/motion/MOTION_ARCHITECTURE.md 4.4).
 
 cuRobo models the robot, and what its hands hold, as spheres.  A held object's spheres have to
 stay close to its surface both ways: sticking out by more than LEAVE_GAP below it, a set-down's

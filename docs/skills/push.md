@@ -2,7 +2,7 @@
 
 把放在支撑面上的东西沿水平方向推一段：从后面用合拢的指尖推（push），或者按在顶面上拖（drag）。**每段一次停车点搜索**，目标集合 = 方向 × 做法 × 合拢手指的 4 个朝向；手推到手臂够不着为止，没推够就换停车点接着推。只用右手，右手必须空着。
 
-入口：策略调 `skill_jobs/slide.py` 的 `push_object`（任务层，一段一段推）→ 每段 `motion_skills.run_skill(SKILLS["push"])` → `slide_job` + `skill_plans/contact.py` 的 `plan_slide`。调它的策略：推到桌边（policy_045 `SlideToEdgePolicy`，v6 里只有它用到），以及 `PushPolicy`、`PushFromBehindPolicy`、`TopDragPolicy`、`PullTowardBasePolicy`（先拖后推）、`SeparateFromNeighbourPolicy`、`CenterOnSupportPolicy`、`SweepTogetherPolicy`。设计见 `../MOTION_ARCHITECTURE.md` 第 6 节"推桌上的物体"。
+入口：策略调 `skill_jobs/slide.py` 的 `push_object`（任务层，一段一段推）→ 每段 `motion_skills.run_skill(SKILLS["push"])` → `slide_job` + `skill_plans/contact.py` 的 `plan_slide`。调它的策略：推到桌边（policy_045 `SlideToEdgePolicy`，v6 里只有它用到），以及 `PushPolicy`、`PushFromBehindPolicy`、`TopDragPolicy`、`PullTowardBasePolicy`（先拖后推）、`SeparateFromNeighbourPolicy`、`CenterOnSupportPolicy`、`SweepTogetherPolicy`。设计见 `../motion/MOTION_ARCHITECTURE.md` 第 6 节"推桌上的物体"。
 
 ## 一段怎么选（`slide_job` → `park_search.find_park`）
 

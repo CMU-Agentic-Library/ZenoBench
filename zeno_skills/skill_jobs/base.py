@@ -1,4 +1,4 @@
-"""The whole-body base model on a rig (motion_state.BaseModel, docs/MOTION_ARCHITECTURE.md 2.5, 5.4)."""
+"""The whole-body base model on a rig (motion_state.BaseModel, docs/motion/MOTION_ARCHITECTURE.md 2.5, 5.4)."""
 
 from __future__ import annotations
 

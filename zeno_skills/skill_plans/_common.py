@@ -1,4 +1,4 @@
-"""What the skill plans share (docs/MOTION_ARCHITECTURE.md section 6, 9.4): the collision rules of
+"""What the skill plans share (docs/motion/MOTION_ARCHITECTURE.md section 6, 9.4): the collision rules of
 free space, the contact criteria by name, the free leg to a straight's start.
 
 Skill plans: the primitives chained in a skill's order,
@@ -127,7 +127,7 @@ def held_frame(kin, q, held):
 
 
 def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, name="fail_clear"):
-    """A skill's failure exit (docs/MOTION_ARCHITECTURE.md 8.6, build_clear): with nothing in the
+    """A skill's failure exit (docs/motion/MOTION_ARCHITECTURE.md 8.6, build_clear): with nothing in the
     hand, open it to ``open_width`` (None, or that open already: no open) and (``leave``) back out of
     any contact straight up (contact_extent, near_world: no segment when nothing is touched).  With
     a load in the hand: None -- opening would drop it (a part's handle is let go: it stays where it is).  Still touching LEAVE_MAX up: the open alone

@@ -1,4 +1,4 @@
-"""The motion primitives and the State they plan for (docs/MOTION_ARCHITECTURE.md sections 4, 5)."""
+"""The motion primitives and the State they plan for (docs/motion/MOTION_ARCHITECTURE.md sections 4, 5)."""
 
 import numpy as np
 import pytest

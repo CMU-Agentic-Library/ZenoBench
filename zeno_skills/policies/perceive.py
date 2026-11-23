@@ -30,7 +30,7 @@ from ..tolerances import (COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z
                           SEARCH_STEPS, SWEEP_PITCH, SWEEP_STEPS, SWEEP_YAWS, VIEW_TURNS)
 
 # Exploration and search: what counts, when it succeeds, and the sweep's angles and ticks are in tolerances
-# (inherited, unmeasured: docs/COLLISION_PLAN.md §8).  Every head motion here is a look (run_skill: the look
+# (inherited, unmeasured: docs/motion/COLLISION_PLAN.md §8).  Every head motion here is a look (run_skill: the look
 # skill's plan of head segments, skill_plans/look.py); these policies are the task layer that chooses where
 # to stand and what to aim at, and judges what was seen.
 SWEEP = tuple(("head", y, SWEEP_PITCH, SWEEP_STEPS) for y in SWEEP_YAWS)

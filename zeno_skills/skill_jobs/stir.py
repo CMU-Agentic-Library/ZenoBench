@@ -1,4 +1,4 @@
-"""The stir's job (motion_skills.Job, the catalog's "stir": docs/MOTION_ARCHITECTURE.md section 6, contact;
+"""The stir's job (motion_skills.Job, the catalog's "stir": docs/motion/MOTION_ARCHITECTURE.md section 6, contact;
 docs/skills/stir.md): a held spoon dipped into a pot and turned round inside it -- every way to hold it over
 the pot (the hand turned about the vertical, the circle's radius) one goal of the park search, the whole stir
 planned there (skill_plans.plan_stir); the turns counted from the tip as the simulator has it while it runs."""

@@ -1,8 +1,8 @@
 # Policy 物理验证记录（2026-10-01 至 2026-10-02）
 
-> 本文是 `policy_001`–`policy_064` 单步验证的历史记录。动词 SkillNode 库新增的 policy（`policy_065` 起）通过 Skill Contract 场景验证，前后条件在 GT 状态上测量，结果见 [skill_library/verification/STATUS.md](../skill_library/verification/STATUS.md)。
+> 本文是 `policy_001`–`policy_064` 单步验证的历史记录。动词 SkillNode 库新增的 policy（`policy_065` 起）通过 Skill Contract 场景验证，前后条件在 GT 状态上测量，结果见 [skill_library/verification/STATUS.md](../../skill_library/verification/STATUS.md)。
 
-本轮从 **32/60 已验证、28/60 待验证** 开始。用 Isaac Sim 的刚体、关节和夹爪实际读数判定动作，不把 Python 类可调用或运动规划成功等同于物理动作成功。当前为 **54/60 在至少一个明确场景通过单步物理验证、6/60 仍待验证**。这里的 `verified` 只说明列出的场景和动作通过，不是跨物品或多种初态的可靠性保证。权威状态见 [POLICY_CATALOG.md](POLICY_CATALOG.md) 与 [catalog.json](../zeno_skills/policies/catalog.json)。
+本轮从 **32/60 已验证、28/60 待验证** 开始。用 Isaac Sim 的刚体、关节和夹爪实际读数判定动作，不把 Python 类可调用或运动规划成功等同于物理动作成功。当前为 **54/60 在至少一个明确场景通过单步物理验证、6/60 仍待验证**。这里的 `verified` 只说明列出的场景和动作通过，不是跨物品或多种初态的可靠性保证。权威状态见 [../reference/POLICY_CATALOG.md](../reference/POLICY_CATALOG.md) 与 [catalog.json](../../zeno_skills/policies/catalog.json)。
 
 ## 本轮通过的 20 项
 
@@ -22,7 +22,7 @@
 | 抓持积木先物理倾斜 29.1°，再扶正至 0.95° | `upright_object` | `runs/verify_callable_upright/result.json` |
 | 杯子从柜顶抓起，经开启的炉门放入炉腔；腔体支撑关系为真、倾角 0° | `place_microwave` | `runs/verify_callable_microwave_cycle_cup/result.json` |
 
-`top_drag` 的手指目标高度和滑移补偿已按实测调整。验证脚本新增独立 route、启动状态检查和物理倾斜夹具。`runs/` 按仓库规则不纳入 Git；可用 [微波炉测试场景定义](../tests/fixtures/policy_microwave_cup.json) 和 [地面书本测试场景定义](../tests/fixtures/policy_floor_book.json) 重建对应场景。
+`top_drag` 的手指目标高度和滑移补偿已按实测调整。验证脚本新增独立 route、启动状态检查和物理倾斜夹具。`runs/` 按仓库规则不纳入 Git；可用 [微波炉测试场景定义](../../tests/fixtures/policy_microwave_cup.json) 和 [地面书本测试场景定义](../../tests/fixtures/policy_floor_book.json) 重建对应场景。
 
 ## 本轮进一步修复并通过的 2 项
 

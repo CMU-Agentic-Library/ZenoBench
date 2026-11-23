@@ -1,4 +1,4 @@
-"""The motion primitives (docs/MOTION_ARCHITECTURE.md section 5): each makes one segment of a plan
+"""The motion primitives (docs/motion/MOTION_ARCHITECTURE.md section 5): each makes one segment of a plan
 from a State and a Spec, the same way for the park search and for the execution.
 
     decide_ik        a contact pose's joint solution: the prior as it is, else solved again
