@@ -289,15 +289,33 @@ class WorldModel:
     def set_joint(self, name, q):
         self.joint_q[name] = float(q)
 
-    def moving_part_dist(self, pts, span=None):
+    def moving_part_dist(self, pts, span=None, within=None):
         """Distance to every articulated moving part (leaf/drawer) at its q.  ``pts``: (N, 3) points,
         or (N, 2) with ``span`` (z0, z1) -- each point is then the vertical segment between those
-        heights, so one call covers a whole layer of the base instead of a sample height."""
+        heights, so one call covers a whole layer of the base instead of a sample height.
+        ``within``: only whether a distance is above it counts -- a part box whose xy bounds are
+        farther than that from all the points is skipped (inf for it: the comparison comes out the
+        same), the parts across the house were 95 % of a footprint check (11-23)."""
         pts = np.asarray(pts, float)
         d = np.full(len(pts), np.inf)
+        if within is not None and len(pts):
+            p_lo, p_hi = pts[:, :2].min(0), pts[:, :2].max(0)
         for a in self.ann.articulated:
             q = self.joint_q.get(a["name"], a["closed_q"])
             T = self.ann.part_pose(a, q)                      # 4x4 world pose of part frame
+            boxes = a.get("part_boxes") or [a["part_box"]]
+            if within is not None and len(pts):
+                near = []
+                for lo, hi in boxes:
+                    lo, hi = np.asarray(lo, float), np.asarray(hi, float)
+                    corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+                    xy = corners @ T[:3, :3].T[:, :2] + T[:2, 3]
+                    gap = np.hypot(*np.maximum(np.maximum(xy.min(0) - p_hi, p_lo - xy.max(0)), 0.0))
+                    if gap <= within:               # the true distance is at least the bounds' gap
+                        near.append((lo, hi))
+                if not near:
+                    continue
+                boxes = near
             if span is None:
                 queries = [(pts, None)]
             elif abs(T[2, 2]) > 1 - 1e-6:
@@ -310,7 +328,7 @@ class WorldModel:
                 queries = [(np.c_[pts[:, :2], np.full(len(pts), zv)], None) for zv in np.linspace(*span, n)]
             for P, z in queries:
                 local = (P - T[:3, 3]) @ T[:3, :3]
-                for lo, hi in a.get("part_boxes") or [a["part_box"]]:
+                for lo, hi in boxes:
                     d = np.minimum(d, _aabb_dist(local, np.asarray(lo), np.asarray(hi), z))
         return d
 
@@ -349,7 +367,7 @@ class WorldModel:
             if len(B):
                 ok &= self._circles_clear_boxes(xy, B, r)
         if self.ann.articulated:
-            ok[ok] &= self.moving_part_dist(xy[ok], LOW_SPAN) > r
+            ok[ok] &= self.moving_part_dist(xy[ok], LOW_SPAN, within=r) > r
         return ok
 
     def _static_circle_grid(self, r):
@@ -436,6 +454,6 @@ class WorldModel:
                             (C[:, :, None, :] < b[None, None, :, 3:5] + margin), axis=-1)
             ok &= ~(inside & _spans_overlap(b, COLUMN_SPAN)[None, None, :]).any(axis=(1, 2))
         if self.ann.articulated:
-            ok &= (self.moving_part_dist(L.reshape(-1, 2), LOW_SPAN) > reach).reshape(len(poses), -1).all(axis=1)
-            ok &= (self.moving_part_dist(C.reshape(-1, 2), COLUMN_SPAN) > margin).reshape(len(poses), -1).all(axis=1)
+            ok &= (self.moving_part_dist(L.reshape(-1, 2), LOW_SPAN, within=reach) > reach).reshape(len(poses), -1).all(axis=1)
+            ok &= (self.moving_part_dist(C.reshape(-1, 2), COLUMN_SPAN, within=margin) > margin).reshape(len(poses), -1).all(axis=1)
         return ok
