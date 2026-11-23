@@ -136,8 +136,20 @@ def test_a_skipped_stand_off_is_named_when_nothing_is_found(monkeypatch):
     w = World(undrivable=[STAND["a"][0]])
     with pytest.raises(SkillFailure) as exc:
         _search(monkeypatch, w, _rig(SUPPORTS))
-    assert "no base path to the stand-off of: ['a']" in str(exc.value)
+    assert "no base path to a stand-off of: ['a']" in str(exc.value)
     assert w.went == [STAND["b"][0], STAND["c"][0]]
+
+
+def test_search_drives_to_the_next_stand_off_that_sees_a_piece(monkeypatch):
+    """viewpoints.drivable rejects a's first stand-off: its second one that sees a, not the next piece."""
+    w = World(undrivable=[(1.2, -0.6, 90.0)])
+    stand = dict(STAND, a=[(1.2, -0.6, 90.0), (1.0, -0.8, 60.0)])
+    rig = _rig(SUPPORTS)
+    _patch(monkeypatch, w, stand)
+    rig.base_pose = lambda: w.pose
+    with pytest.raises(SkillFailure):
+        PC.SearchObjectPolicy(rig).execute("cup")
+    assert w.went[0] == (1.0, -0.8, 60.0)
 
 
 # ------------------------------------------------------------------ explore_room
@@ -194,6 +206,26 @@ def test_a_drive_that_fails_fails_the_exploration(monkeypatch):
     assert w.went == []                                    # not on to the next viewpoint
 
 
+def test_a_viewpoint_navigate_cannot_get_to_is_replaced_for_what_only_it_sees(monkeypatch):
+    """The cover picked spots[1]; viewpoints.drivable rejects it: for a, b, c the next best viewpoints of the
+    goal set, not a failed exploration."""
+    spots = [(0.0, 1.0, 0.0), (5.0, 1.0, 0.0), (9.0, 1.0, 0.0)]
+    pred = {spots[0]: ["furniture:a", "furniture:b"], spots[1]: ["furniture:a", "furniture:b", "furniture:c"],
+            spots[2]: ["furniture:c"]}
+    w = World(undrivable=[spots[1]])
+    out = _explore(monkeypatch, w, _rig(ROOM_SUPPORTS), {"room": spots}, pred)
+    assert spots[1] not in w.went and set(w.went) == {spots[0], spots[2]} and out["coverage"] == 1.0
+
+
+def test_a_turn_round_navigate_cannot_make_is_not_looked_from(monkeypatch):
+    """11-19 T05 / T27: the turn to look back collided in the arrival posture and failed the exploration."""
+    spot = (5.0, 1.0, 0.0)
+    w = World(undrivable=[(5.0, 1.0, 180.0)])
+    out = _explore(monkeypatch, w, _rig(ROOM_SUPPORTS), {"room": [spot]},
+                   {spot: ["furniture:a", "furniture:b", "furniture:c"]})
+    assert out["coverage"] == 1.0 and not any("back" in lb for lb, _, _ in w.looks)
+
+
 def test_explore_with_no_reachable_viewpoint_says_so(monkeypatch):
     spots = [(0.0, 1.0, 0.0)]
     w = World()
@@ -239,6 +271,13 @@ def test_explore_furniture_drives_only_to_reachable_stand_offs_it_is_in_view_fro
     out = _furniture(monkeypatch, w, poses, reachable=lambda p: p != poses[0],
                      in_view=lambda place, p: p == poses[2])
     assert w.went == [poses[2]] and out["layers"] == ["shelf/shelf_0", "shelf/top"]
+
+
+def test_explore_furniture_passes_over_a_stand_off_navigate_cannot_get_to(monkeypatch):
+    poses = [(1.2, -2.5, 90.0), (1.2, -3.5, 90.0)]
+    w = World(sees=lambda pose, p: pose == poses[1], undrivable=[poses[0]])
+    out = _furniture(monkeypatch, w, poses)
+    assert w.went == [poses[1]] and out["layers"] == ["shelf/shelf_0", "shelf/top"]
 
 
 def test_a_drive_that_fails_fails_explore_furniture(monkeypatch):
