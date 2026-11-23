@@ -30,7 +30,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - **几何：** 盘子直径 24.8 cm，锅盖 25 cm。`CoverWithLidPolicy` 和 `lid_on` 对锅盖没有别的假设。
 - 第二处（82f5f945）：`is_lid` 也认 `plate` 标签。只改 lid_ref 时参数检查过了，但 cover 的 rim_plane 路径匹配不上，报 `NO_PATH`。
 - 你觉得不合适可以改回去，那这两个设计就得换一种替代品。
-- **第三处（11-23，用户要求，和 cover 无关）：** `zeno_skills/policies/perceive.py` 的 `SearchObjectPolicy`：可达性场认为能到、但底盘规划找不到路（search limit）的视点，跳过这件家具接着找下一件，不再整个 search 失败；已经开出去又失败的、或者手里东西掉了的，照旧失败。失败信息里多一句 `no base path to the stand-off of: [...]`。原因：餐厅里 3 号柜从西边进来的两个视点从来到不了（T07、T03、T28 共 4 次），planner 正式评测时自己调 `search_object(dining_room_0_1)` 也会卡在这。`tests/test_search_explore.py` 相应改了（原来那条"开不到就失败"的测试换成三条）。
+- **第三处（11-23，用户要求，和 cover 无关）：** `zeno_skills/policies/perceive.py` 的 `SearchObjectPolicy`：开往每件家具的视点之前，先用 `RigBase.drivable`（park_search 用的同一个整机底盘规划检查，quiet）问一下能不能开到；可达性场认为能到、但整机规划找不到路（search limit）的，跳过这件家具接着找下一件，和"没有视点"的家具一样处理。开的过程中失败照旧整个失败，没有加 try/except（collision audit 计数不变）。失败信息里多一句 `no base path to the stand-off of: [...]`。代价：每件家具多规划一次底盘。原因：餐厅里 3 号柜从西边进来的两个视点从来到不了（T07、T03、T28 共 4 次，每次 50 s 后整个 search 失败），planner 正式评测时自己调 `search_object(dining_room_0_1)` 也会卡在这。`tests/test_search_explore.py` 加了两条测试。
 
 ## 3. 这两天 bench 改了什么（11-20 → 11-21）
 
