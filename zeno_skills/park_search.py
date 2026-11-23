@@ -40,6 +40,8 @@ VARIANT_COST = 0.05                    # m of goal cost per rank among the ways 
                                        # grasps, a push's closed-finger turns): a weak preference, the
                                        # score's manipulability outweighs it (PARK_DIST_W; tiers: a strict one)
 MAX_PER_GOAL = 120                     # cheapest candidates per goal past the reach and footprint tests
+FOOTPRINT_CHUNK = 2048                 # candidates whose footprint one batched call tests (the ones past the
+                                       # last kept are tested for nothing: a speed knob, no effect on the result)
 LIMIT_CLEAR = 0.15                     # rad: arm joints closer than this to a limit cost (planner.LIMIT_CLEAR)
 PARK_DIST_W = 0.5                      # weight of the candidate's own cost in the ranking (planner.PARK_DIST_W)
 BUILD_S = 20.0                         # s: plans are built in rank order for at most this long (0.45 s each
@@ -384,7 +386,17 @@ def find_park(kin, world, problem, state, log, base=None):
 
     # cheap, per candidate, cheapest first, up to MAX_PER_GOAL per goal
     pool, per = [], [0] * len(problem.goals)
-    for c, ok in zip(cands, reachable(cands, problem)):
+    reach_ok = reachable(cands, problem)
+    clear = {}                          # candidate index -> footprint clear, filled FOOTPRINT_CHUNK at a time
+
+    def footprint_ok(i):
+        if i not in clear:              # one batched call for the next chunk (a candidate per call was 2/3 of the search)
+            idx = [j for j in range(i, min(i + FOOTPRINT_CHUNK, len(cands))) if reach_ok[j] and not is_here(cands[j])]
+            got = world.footprints_clear(np.array([[cands[j][1], cands[j][2], math.radians(cands[j][3])] for j in idx]))
+            clear.update(zip(idx, map(bool, got)))
+        return clear[i]
+
+    for i, (c, ok) in enumerate(zip(cands, reach_ok)):
         k = c[4]
         if per[k] >= MAX_PER_GOAL and not is_here(c):
             continue
@@ -393,7 +405,7 @@ def find_park(kin, world, problem, state, log, base=None):
             if dbg is not None:
                 dbg["rejected"]["out_of_reach"].append(c[1:5])
             continue
-        if not is_here(c) and not world.footprint_clear(c[1], c[2], math.radians(c[3])):
+        if not is_here(c) and not footprint_ok(i):
             diag["footprint"] += 1
             if dbg is not None:
                 dbg["rejected"]["footprint"].append(c[1:5])

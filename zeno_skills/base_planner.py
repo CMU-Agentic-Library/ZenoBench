@@ -151,15 +151,18 @@ class Lattice:
         poses = np.vstack(runs)
         ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + DEPTH_TOL
         self.evaluated += len(poses)
-        out = []
-        lows = np.split(self.footprint(poses), cuts) if self.footprint is not None else None
-        for i, part in enumerate(np.split(ok, cuts)):
-            if lows is not None:
-                low = lows[i].copy()
+        out = [bool(np.all(part)) for part in np.split(ok, cuts)]
+        # the footprint (CPU) only along the segments the whole body (GPU) passed: most of _shortcut's
+        # long candidates run into a wall, and their footprint was 9/10 of a long plan's time (11-23)
+        live = [i for i, o in enumerate(out) if o]
+        if self.footprint is not None and live:
+            lows = np.split(self.footprint(np.vstack([runs[i] for i in live])),
+                            np.cumsum([len(runs[i]) for i in live])[:-1])
+            for i, low in zip(live, lows):
                 if exempt is not None and exempt[i]:
+                    low = low.copy()
                     low[:int(np.argmax(low)) if low.any() else len(low)] = True
-                part = part & low
-            out.append(bool(np.all(part)))
+                out[i] = bool(np.all(low))
         return out
 
     def edge_ok(self, n, d, m):

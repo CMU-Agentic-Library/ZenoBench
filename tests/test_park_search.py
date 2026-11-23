@@ -51,7 +51,7 @@ class Base:
 
 
 def _find(log, problem, state, reach=True):
-    return PS.find_park(Kin(), SimpleNamespace(footprint_clear=lambda x, y, yaw: True), problem, state,
+    return PS.find_park(Kin(), SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)), problem, state,
                         lambda ev, **kw: log.append((ev, kw)), base=Base(reach))
 
 
@@ -179,7 +179,7 @@ def test_behind_a_door_the_parks_whose_ranking_solution_is_free_are_built_first(
                          build=lambda s, k, prior: built.append(ok(prior["pick_reach"])) or Failure("no", "x"),
                          relay="pick_reach", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9),
                          relay_free=Spec())
-    _, diag = PS.find_park(kin, SimpleNamespace(footprint_clear=lambda x, y, yaw: True), problem, _state(),
+    _, diag = PS.find_park(kin, SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)), problem, _state(),
                            lambda ev, **kw: None, base=Base())
     n_free = diag["relay_free"][1]
     assert 0 < n_free < diag["relay_free"][0]
@@ -190,7 +190,7 @@ def test_behind_a_door_the_parks_whose_ranking_solution_is_free_are_built_first(
 def test_without_relay_free_the_order_is_the_rankings():
     kin = Kin()
     kin.free = lambda q: (_ for _ in ()).throw(AssertionError("checked"))
-    found, diag = PS.find_park(kin, SimpleNamespace(footprint_clear=lambda x, y, yaw: True),
+    found, diag = PS.find_park(kin, SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
                                _problem(lambda s, k, prior: Plan(())), _state(), lambda ev, **kw: None, base=Base())
     assert found is not None and "relay_free" not in diag
 
@@ -207,3 +207,20 @@ def test_a_search_records_its_candidates_only_when_asked(monkeypatch, tmp_path):
     monkeypatch.setenv("ZB_PARK_DUMP_MATCH", "place")                    # another label: nothing written
     _find([], _problem(lambda s, k, prior: Plan(())), _state())
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_the_batched_footprint_keeps_the_one_candidate_at_a_time_result(monkeypatch):
+    # the footprint is tested FOOTPRINT_CHUNK candidates per call; the pool, the counts and the park must be
+    # the ones a test per candidate (chunk 1, as before 11-23) gives
+    world = SimpleNamespace(footprints_clear=lambda poses: (np.floor(np.asarray(poses)[:, 0] * 37) % 3) != 0)
+    goal = np.array([1.0, 0.0, 0.8])
+    problem = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0), ((goal + [0.3, 0.2, 0.0],), (goal, np.eye(3)), 0.1)),
+                         build=lambda s, k, relay: Plan(()), relay="pick_reach", arrive=lambda x, y, yaw: np.zeros(9),
+                         travel=np.zeros(9), near=(0.2, 0.0, 0.0))
+    runs = []
+    for chunk in (1, PS.FOOTPRINT_CHUNK):
+        monkeypatch.setattr(PS, "FOOTPRINT_CHUNK", chunk)
+        found, diag = PS.find_park(Kin(), world, problem, _state(), lambda ev, **kw: None, base=Base())
+        runs.append(((found.x, found.y, found.yaw, found.k), {k: diag[k] for k in ("out_of_reach", "footprint", "pool")}))
+    assert runs[0] == runs[1]
+    assert runs[0][1]["footprint"] > 0

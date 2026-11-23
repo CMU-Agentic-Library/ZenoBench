@@ -168,3 +168,28 @@ def test_the_arms_hang_only_through_the_stretch_the_fold_does_not_fit():
     for st in steps:
         if st.kind == "drive" and st.mode != 1:
             assert all(not 0.4 <= x <= 0.6 for x, y, yaw in _executed(st.path))
+
+
+def test_segments_clear_tests_the_footprint_only_where_the_body_passed():
+    # same answers as the body and the footprint over every pose (before 11-23), the footprint asked only
+    # along the segments the body passed
+    asked = []
+    def low(poses):
+        asked.append(len(poses))
+        return ~((np.asarray(poses)[:, 1] > 0.4) & (np.asarray(poses)[:, 1] < 0.45))
+    body = _oracle(lambda x, y, yaw, p: 0.05 if 0.45 <= x <= 0.55 else 0.0)
+    lat = bp.Lattice(body, (0.0, 0.0), _sets(0), [], footprint=low, start=(0, 0, 0))
+    segs = [((0.0, 0.0, 0.0), (1.0, 0.0, 0.0)), ((0.0, 0.0, 0.0), (0.3, 0.6, 0.0)),
+            ((0.0, 0.0, 0.0), (0.3, 0.2, 0.5)), ((0.0, 0.5, 0.0), (0.3, 0.3, 0.0))]
+    exempt = [False, False, False, True]
+    got = lat.segments_clear(segs, 0, exempt)
+    old = []
+    for (a, b), ex in zip(segs, exempt):
+        p = bp.segment(a, b, lat.reach[0])
+        ok = body(p, _sets(0))[0] <= bp.DEPTH_TOL
+        lo = low(p)
+        if ex:
+            lo[:int(np.argmax(lo)) if lo.any() else len(lo)] = True
+        old.append(bool(np.all(ok & lo)))
+    assert got == old == [False, False, True, False]
+    assert asked[0] == sum(len(bp.segment(a, b, lat.reach[0])) for a, b in segs[1:])

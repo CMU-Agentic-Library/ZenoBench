@@ -136,7 +136,7 @@ def test_each_goal_is_ranked_and_built_with_its_hands_kinematics():
                          arrive=lambda x, y, yaw: Posture(np.zeros(2), {"left": np.full(7, 0.25)}),
                          travel=Posture(np.zeros(2), {"right": np.zeros(7), "left": np.zeros(7)}))
     log = []
-    found, diag = PS.find_park({"right": right, "left": left}, SimpleNamespace(footprint_clear=lambda *a: True),
+    found, diag = PS.find_park({"right": right, "left": left}, SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
                                problem, _state(), lambda ev, **kw: log.append(ev), base=Base())
     assert right.asked and left.asked                              # one batched ranking IK per hand
     assert len(right.asked[0][2]) + len(left.asked[0][2]) == diag["pool"]
@@ -157,7 +157,7 @@ def test_the_ranking_ik_keeps_the_body_joints_the_build_keeps():
                          relay="door_reach", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9), hand="left",
                          body_free=("torso_lift_joint",))
     kin = Rank()
-    PS.find_park({"left": kin}, SimpleNamespace(footprint_clear=lambda *a: True), problem, st, lambda *a, **k: None,
+    PS.find_park({"left": kin}, SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)), problem, st, lambda *a, **k: None,
                  base=Base())
     lo, hi, seed = seen[0]
     assert lo[1] == hi[1] == st.body[1] and seed[1] == st.body[1]     # the waist pinned where the state has it
