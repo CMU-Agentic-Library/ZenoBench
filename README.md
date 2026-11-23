@@ -3,8 +3,9 @@
 An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
 planning), a **verb-based SkillNode library** for an upper-layer VLM (one verb + one noun per skill, GT-checked
-pre/postconditions, noun-selected policy paths), **eleven task scenes**, and two task catalogs (35 SkillNode
-tasks and the 41-task observation-limited benchmark) that run through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
+pre/postconditions, noun-selected policy paths), **eleven task scenes**, and **ZenoBench v6**, a household
+planning benchmark for an upper-layer planner (30 tasks, 151 task designs, 1,510 episodes; see
+[ZenoBench v6](#zenobench-v6-the-planning-benchmark)). Every task catalog runs through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
 [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen) text-to-3D, including the seventeen textured props
 documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
 
@@ -22,6 +23,91 @@ Physics is real PhysX contact. The rollout writes robot drive targets (the base'
 yaw joints among them) and the powered microwave hinge target. Objects and doors are never teleported; food
 temperature uses a separate task-level model. Success is measured from simulator state
 (joint angle, object pose, finger gap, and task temperature).
+
+## ZenoBench v6 (the planning benchmark)
+
+ZenoBench v6 asks whether an upper-layer planner (a VLM) can finish everyday household requests. The planner sees
+the scene through the robot's camera and gets feedback from the skills it calls. Its choices are judged on
+simulator state. Each planner gets the same SkillNode library and the same observation limits. The planner never
+sees GT state: the Isaac Sim GT verifier decides success. Full design notes are in
+[benchmark/v6/README.md](benchmark/v6/README.md).
+
+| | |
+|---|---|
+| tasks | 30 everyday requests in one house (T01-T20 carried over from v5, T21-T30 new in v6), e.g. *"The kid is going to bed. Bring his cup to his bedside."* |
+| designs (variants) | 151: what is in the scene and what the planner has to work out (an absent object and its substitute, a lid on the pot, a taken destination, an item in another room, someone moving an object) |
+| seeds | 10-19 per design, each a different layout: object positions, the robot's start and the removed distractors; for a design with several layouts, also which one |
+| episodes | **1,510** (= 151 × 10); 316 layouts, each with an oracle reference route |
+| instructions | the goal only: no positions, no steps, no fallbacks; the same for every seed of a design |
+| injected failures | none: every difficulty comes from the scene or a dynamic event |
+
+### Categories
+
+Each design belongs to one category ([TRACKS.md](benchmark/v6/TRACKS.md)):
+
+| category | what the design needs | designs | episodes |
+|---|---|---|---|
+| Control | nothing: the nominal plan works; the reference for the others | 33 | 330 |
+| Task-Level | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event moves | 110 | 1,100 |
+| Action + Task | a short fix at the work spot (expose a flat book, move the base in, clear the target) **and** a longer-horizon change | 8 | 80 |
+| Action-Level | a short fix only (none left as designs of their own) | 0 | 0 |
+
+### Success and scoring
+
+- **Success** is decided once the episode ends, from GT goal atoms on the final simulator state. Goals are loose:
+  any way that does what the person asked counts (`on_any`, `count_on_at_least`, ...). Some goals also check
+  how the task was done, e.g. `never_picked` for a bowl that is in use.
+- **Score.** A design with several acceptable outcomes ranks them in up to three tiers: best 1.0, second 0.6,
+  worst 0.3. A run that misses every tier scores 0 and fails. An unfinished task never gets a tier.
+  `benchmark/v6/scoring.py` holds the tiers; [SCORING_zh.md](benchmark/v6/SCORING_zh.md) records the
+  rulings design by design.
+
+### Observation and execution profiles
+
+Episodes run through [episode/](episode/README.md) with a profile from `episode/profiles/<level>/<name>.yaml`:
+
+| profile | use |
+|---|---|
+| `physical/benchmark` | the scored setting: head camera, a GT-assisted detector limited by view and occlusion, an observation cache, masked feedback, no automatic recovery; any object argument must be observed first ([benchmark/README.md](benchmark/README.md#observation-boundary)) |
+| `physical/oracle`, `physical/gt` | the GT oracle and full-GT runs |
+| `sticky/gt`, `sticky/benchmark` | the same with *sticky carry*: a held object is welded to the gripper until the fingers open, so nothing slips out while it is carried. Pick and place stay physical. This is an execution assist, and its results are not comparable with `physical/*` |
+
+### Run
+
+```bash
+export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=~/miniforge3/envs/isaaclab/bin/python
+# one episode: a design, a seed, its oracle route
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
+    --variant cup_out_of_view --seed 10 --planner oracle --profile sticky/gt
+# your planner (reset / next_call, benchmark/planners.py) on the same episode
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
+    --variant cup_out_of_view --seed 10 --planner recovery --policy mypkg.planner:MyPlanner
+# a whole category (control 330 / task 1100 / action_task 80 episodes; at most two Isaac processes)
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
+    --batch benchmark/v6/batches/category_task.json --jobs 2 --profile sticky/gt --out benchmark/runs/v6_task
+# an external planner over HTTP
+$ISAACLAB_PYTHON -m env_service.server --port 8800
+```
+
+Rebuild and check the catalog (no simulator). Expect 1,510 statically ok episodes, 316 / 316 oracle routes ok, and
+the tests passing:
+
+```bash
+for m in define_tasks_v6 validate_v6 report_v6 tracks success_routes oracle_check plan_dependence substitution_stats; do
+    python -m benchmark.v6.$m; done
+python -m pytest benchmark/v6/tests -q
+```
+
+### Where to read
+
+| file | content |
+|---|---|
+| [VARIANTS_zh.md](benchmark/v6/VARIANTS_zh.md) | every design in plain Chinese: the situation, what the robot does, what the seed chooses |
+| [SUCCESS_ROUTES_zh.md](benchmark/v6/SUCCESS_ROUTES_zh.md) | success conditions and the reference call order of every layout |
+| [SCORING_zh.md](benchmark/v6/SCORING_zh.md), [SUBSTITUTION_STATS_zh.md](benchmark/v6/SUBSTITUTION_STATS_zh.md) | score tiers per design; substitutions by kind |
+| [TRACKS.md](benchmark/v6/TRACKS.md), [ROUTES.md](benchmark/v6/ROUTES.md) | categories with counts per task; every oracle route |
+| [PLAN_DEPENDENCE_zh.md](benchmark/v6/PLAN_DEPENDENCE_zh.md) | which designs a fixed plan solves, the key observations, the leakage audit |
+| [HANDOFF_MUQINGJ_1121_zh.md](benchmark/v6/HANDOFF_MUQINGJ_1121_zh.md), [SKILL_ISSUES_zh.md](benchmark/v6/SKILL_ISSUES_zh.md) | the latest run instructions and the open skill-side problems |
 
 ## SkillNode / Contract / Policy
 
@@ -134,10 +220,11 @@ temperature uses a separate task-level model. Success is measured from simulator
 
 ## Contents
 
+- [ZenoBench v6 (the planning benchmark)](#zenobench-v6-the-planning-benchmark)
 - [SkillNode / Contract / Policy](#skillnode--contract--policy)
 - [Scenes](#scenes)
 - [New EmbodiedGen V2 assets and task scenes](#new-embodiedgen-v2-assets-and-task-scenes)
-- [Tasks (ZenoBench)](#tasks-zenobench)
+- [Tasks and scenes](#tasks-and-scenes)
 - [Documentation index (all docs, by category)](docs/README.md)
 - [GT policy inventory](docs/archive/GT_POLICY.md)
 - [Policy capability catalog (with implementation status)](docs/reference/POLICY_CATALOG.md)
@@ -210,27 +297,23 @@ All 22 V2 props (the 12 task props, the 5 SkillNode-library props and the 5 left
 | --- | --- |
 | <img src="tasks/kitchen_skills/check/island.png" width="420" alt="Prep island with rolling pin, bottle, blocks, spoon, book, mug of tomatoes, sponge and can"/> | <img src="tasks/kitchen_skills/check/stove.png" width="420" alt="Stove with covered pot, free burner, power key and trash can"/> |
 
-## Tasks (ZenoBench)
+## Tasks and scenes
 
-Two task catalogs run on the scenes in `tasks/<scene>/`. Both go through one pipeline, [episode/](episode/README.md): `benchmark/run_episode.py` runs an episode locally (scripted route, GT oracle, or an in-process planner), and [env_service](env_service/README.md) serves it to an external planner over HTTP. A task's goal is a list of GT predicate atoms (`zeno_skills/predicates.py`), judged on the final simulator state.
+Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into
+`tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot
+start, thermal state and placed objects. A task's goal is a list of GT predicate atoms
+(`zeno_skills/predicates.py`) and is defined in a catalog:
 
-| catalog | tasks | variants | default profile |
-|---|---|---|---|
-| [skill_library/tasks.json](skill_library/tasks.json) | 35 tasks, one per SkillNode family; planner subgraphs in [skill_library/plans/](skill_library/plans/) | one (`default`) | `gt`: full GT observation |
-| [benchmark/v3/tasks.json](benchmark/v3/tasks.json) | 41 tasks, instruction-only, with fallback and alternative conditions ([benchmark/](benchmark/README.md)) | condition variants × seeds | `benchmark`: observation-limited, no automatic recovery |
+| catalog | tasks | default profile |
+|---|---|---|
+| [benchmark/v6/tasks.json](benchmark/v6/tasks.json) | **ZenoBench v6** (above): 30 tasks, 151 designs × 10 seeds | `benchmark` |
+| [skill_library/tasks.json](skill_library/tasks.json) | 35 tasks, one per SkillNode family; planner subgraphs in [skill_library/plans/](skill_library/plans/) | `gt` |
+| [benchmark/v3/tasks.json](benchmark/v3/tasks.json), [benchmark/v5/tasks.json](benchmark/v5/tasks.json) | earlier benchmark catalogs. v6 reads v5 and never writes it ([benchmark/README.md](benchmark/README.md)) | `benchmark` |
 
 ```bash
-export OMNI_KIT_ACCEPT_EULA=YES
-# an original task through the GT oracle (its plan as the route)
+# an original SkillNode task through the GT oracle (its plan as the route)
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
-# a benchmark condition through its declared recovery route
-$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/tasks.json --task T01_book_to_dining_table \
-    --variant no_overhang --seed 10 --route fallback_expose
-# the HTTP service for an external planner (both catalogs)
-$ISAACLAB_PYTHON -m env_service.server --port 8800
 ```
-
-Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into `tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot start, thermal state and placed objects. The tasks that run on a scene and their goals are defined in the catalogs; 24 of the 35 SkillNode tasks and 34 of the 41 benchmark tasks use `tasks/kitchen_skills`.
 
 ### Appliance scenes
 
@@ -466,6 +549,10 @@ $ISAACLAB_PYTHON tools/check_scene.py tasks/collect_fruits/scene.usd --out runs/
 # a whole task: the original task's plan through the GT oracle (benchmark/runs/collect_fruits/...)
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
 
+# a ZenoBench v6 episode: design cup_out_of_view, layout seed 10, its oracle route
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside \
+    --variant cup_out_of_view --seed 10 --planner oracle --profile sticky/gt
+
 # single skills (see "Atomic skills")
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
     --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
@@ -476,7 +563,7 @@ python -m skill_library.planner --task recycle_and_store
 # run SkillNode verification scenarios (GT pre/postconditions measured per call)
 $ISAACLAB_PYTHON tools/verify_skills.py --id k_trash --video
 
-python -m pytest tests/ skill_library/tests/ benchmark/tests/   # simulator-free regression tests
+python -m pytest tests/ skill_library/tests/ benchmark/tests/ benchmark/v6/tests/   # simulator-free regression tests
 ```
 
 
@@ -495,7 +582,8 @@ sim/zeno_house.usd      final house scene (+ sim/checks); zeno_house_appliances.
 task_specs/             scene specs (+ places.json aliases, examples/)
 tasks/<scene>/          built scene: layer, task.json (scene description), annotation.json, check renders
 episode/                one episode pipeline for every task catalog: catalogs, profiles, Episode
-benchmark/              observation-limited benchmark: task catalogs, run_episode, evaluation
+benchmark/              ZenoBench: v6/ (current catalog, layouts, scoring, checks), v3/ v5/ (earlier
+                        catalogs v6 builds on), run_episode, evaluation
 skill_library/          verb SkillNodes (definitions.py -> skills/, catalogs), relations, planner, tasks, verification
 env_service/            HTTP environment service for an external planner (initial_task / do_contract / check_task)
 contract_library/       one Skill Contract per SkillNode (generated) + legacy family Contracts
