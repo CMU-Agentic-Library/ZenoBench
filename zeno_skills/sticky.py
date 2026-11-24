@@ -149,18 +149,11 @@ class StickyHands:
         self.snap_on = snap        # level "snap": failed picks / places are completed, not only welded
         self.welds = {}            # hand -> object name
         self.plans = {}            # object -> the grasp the last physical pick went for
-        self._links = {}
 
     # ------------------------------------------------------------ weld
     def link_pose(self, hand):
         """Gripper link pose as PhysX has it (identical to the arm FK of the measured joints)."""
-        prim = self._links.get(hand)
-        if prim is None:
-            from isaacsim.core.prims import SingleRigidPrim
-            prim = SingleRigidPrim(LINKS[hand], name=f"sticky_{hand}_gripper_link")
-            prim.initialize()
-            self._links[hand] = prim
-        p, q = prim.get_world_pose()
+        p, q = self.rig.gripper_links[hand].get_world_pose()      # built with the rig (Rig.__init__)
         return p.cpu().numpy().astype(float), quat_R(q.cpu().numpy().astype(float))
 
     def welded(self, hand, name=None):
@@ -328,6 +321,7 @@ class StickyHands:
         b.set_world_pose(t.tensor(body, dtype=t.float32), t.tensor(_wxyz(Rb), dtype=t.float32))
         b.set_linear_velocity(t.zeros(3))
         b.set_angular_velocity(t.zeros(3))
+        rig.wake(name)
         self.weld("right", name, "snap")                 # same tick: the object never falls
         f = rig.grip(0.0, 60, gradual=True)
         if float(np.min(f)) < SHUT:
@@ -403,6 +397,7 @@ class StickyHands:
             b.set_world_pose(t.tensor(c - R @ c_b, dtype=t.float32), q)
             b.set_linear_velocity(t.zeros(3))
             b.set_angular_velocity(t.zeros(3))
+            rig.wake(name)
             rig.step(60)
             st = rig.state()
             ok, why = (rig.geo.inside if container else rig.geo.on)(name, receptacle, st)

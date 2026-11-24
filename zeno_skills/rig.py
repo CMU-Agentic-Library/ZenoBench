@@ -15,7 +15,7 @@ import numpy as np
 from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below the layers; re-exported here)
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
-from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
+from .physics import ASSET, BASE_JOINTS, OBJECT_SLEEP, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
 from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
 
@@ -156,7 +156,16 @@ class Rig:
         for name, o in ann.objects.items():
             b = SingleRigidPrim(o["body"], name=f"obj_{name}")
             b.initialize()
+            b.set_sleep_threshold(OBJECT_SLEEP)          # resting objects sleep (physics.OBJECT_SLEEP)
             self._bodies[name] = b
+        # the gripper links' rigid views (sticky hands weld to them), built now: a view built mid-episode
+        # puts every object that slept and has moved since back where it fell asleep (physics.OBJECT_SLEEP)
+        from .sticky import LINKS
+        self.gripper_links = {}
+        for hand, path in LINKS.items():
+            g = SingleRigidPrim(path, name=f"gripper_link_{hand}")
+            g.initialize()
+            self.gripper_links[hand] = g
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
         self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
@@ -388,6 +397,19 @@ class Rig:
                     cam.update(1 / PHYSICS_HZ)
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
+
+    def wake(self, name):
+        """Wake object ``name``'s body: a pose or velocity written into a sleeping body need not wake
+        it, and asleep it would hang where it was put (sticky's snap and place teleport objects)."""
+        w = self.__dict__.get("_waker")
+        if w is None:
+            import omni.usd
+            from omni.physx import get_physx_simulation_interface
+            from pxr import PhysicsSchemaTools
+            sim, sid, to_int = (get_physx_simulation_interface(), omni.usd.get_context().get_stage_id(),
+                                PhysicsSchemaTools.sdfPathToInt)
+            w = self._waker = lambda body: sim.wake_up(sid, to_int(body))
+        w(self.ann.objects[name]["body"])
 
     def _payload_mass(self, name):
         """(kg, centre of mass in the body frame) of object ``name`` as PhysX has it (cached)."""
