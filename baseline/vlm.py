@@ -79,10 +79,10 @@ class AnthropicClient:
 
 
 class OpenAICompatClient:
-    def __init__(self, model, base_url=None, api_key=None):
+    def __init__(self, model, base_url=None, api_key=None, extra_body=None):
         import openai
         self.client = openai.OpenAI(base_url=base_url, api_key=api_key)
-        self.model = model
+        self.model, self.extra_body = model, extra_body
 
     def chat(self, system, user_text, image_paths=()):
         content = [{"type": "image_url", "image_url": {"url": f"data:image/png;base64,{_png_b64(p)}"}}
@@ -91,7 +91,8 @@ class OpenAICompatClient:
         t0 = time.time()
         resp = _retry(lambda: self.client.chat.completions.create(
             model=self.model, messages=[{"role": "system", "content": system},
-                                        {"role": "user", "content": content}]))
+                                        {"role": "user", "content": content}],
+            **({"extra_body": self.extra_body} if self.extra_body else {})))
         u = resp.usage
         details = getattr(u, "prompt_tokens_details", None)
         cached = (getattr(details, "cached_tokens", 0) or 0) if details else 0
@@ -125,5 +126,8 @@ def make_client(model: str):
         return OpenAICompatClient(model)
     if m.startswith("gemini"):
         return OpenAICompatClient(model, base_url=GEMINI_URL, api_key=os.environ.get("GEMINI_API_KEY"))
+    # SHIFT_QWEN_THINKING=0 turns Qwen's thinking mode off (chat template switch); default: on
+    thinking = os.environ.get("SHIFT_QWEN_THINKING", "1") not in ("0", "false", "off")
     return OpenAICompatClient(model, base_url=os.environ.get("SHIFT_VLLM_URL", VLLM_URL),
-                              api_key=os.environ.get("SHIFT_VLLM_KEY", "EMPTY"))
+                              api_key=os.environ.get("SHIFT_VLLM_KEY", "EMPTY"),
+                              extra_body=None if thinking else {"chat_template_kwargs": {"enable_thinking": False}})

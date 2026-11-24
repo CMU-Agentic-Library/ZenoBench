@@ -37,6 +37,8 @@ $PY -m baseline.run_http --server http://localhost:8800 --model claude-opus-5-5 
 $PY -m pytest baseline/tests -q                    # 离线测试：假模型、假观察、假 HTTP
 ```
 
+- Qwen 服务（11-23 在本机测通）：显存占 0.60（约 15.8 GB），并发上限 16；系统 nvcc 是 CUDA 12.2，编不了 FlashInfer 的采样 kernel，脚本里关了 FlashInfer 采样（`VLLM_USE_FLASHINFER_SAMPLER=0`）。启动约 2 分钟。
+- Qwen 思考模式：默认开。一步 ReAct 约 4k 输出 token、40 s；`SHIFT_QWEN_THINKING=0` 关掉后约 100 token、1 s。论文用哪种还没定。
 - 环境（都在 `physical_harnessing/` 下，仓库外）：`.venvs/vllm-qwen`（vLLM 0.32.0）、`.venvs/shift-planner`（规划器）、`models/Qwen3.5-4B`（权重）。
 - key：`cp baseline/.env.example baseline/.env` 后自己填（已 gitignore），或在 shell 里 export。
 - 调试也可以在进程内跑：`SHIFT_MODEL=... $ISAACLAB_PYTHON benchmark/run_episode.py --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark ...`。isaaclab 环境里装的是旧版 SDK（anthropic 0.85、openai 1.109）：新版要求 typing_extensions>=4.14，和 Isaac Sim 锁的 4.12.2 / idna 3.10 冲突，不要 `pip install -U`。人类参考只能用这条路径（要终端）。
