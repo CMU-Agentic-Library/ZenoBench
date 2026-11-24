@@ -1,8 +1,8 @@
 # ZenoBench v6 本地 VLM 基线 · Isaac Sim 6.0.0.1
 
-**原生计分覆盖 7 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
+**原生计分覆盖 13 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
 
-汇总时间为 2026-11-24 09:05 UTC。
+汇总时间为 2026-11-24 09:19 UTC。
 
 Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a684758db346189976a18a6c39`。cuRobo 0.7.8，Warp 1.13.0，PyTorch 2.11.0（CUDA 13.0）。
 
@@ -16,21 +16,21 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 
 | 方法 | 模型 | 已计分/计划 | 中断待重跑 | 平均分 | 平均分 95% CI | 任务成功 | 正分 | 满分 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
-| OpenLoop | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
-| OpenLoop | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| OpenLoop | qwen3.5-4b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
+| OpenLoop | qwen3.5-27b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
+| OpenLoop | internvl3.5-8b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | ReAct | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
 | ReAct | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
-| ReAct | internvl3.5-8b | 0/1510 | 0 | — | — | — | — | — |
-| CodeAsPolicies | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| ReAct | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| CodeAsPolicies | qwen3.5-4b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | CodeAsPolicies | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
-| CodeAsPolicies | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
-| SayPlan | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
+| CodeAsPolicies | internvl3.5-8b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
+| SayPlan | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
 | SayPlan | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
 | SayPlan | internvl3.5-8b | 0/1510 | 0 | — | — | — | — | — |
-| GraphManager | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
-| GraphManager | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| GraphManager | qwen3.5-4b | 0/1510 | 1 | — | — | — | — | — |
+| GraphManager | qwen3.5-27b | 0/1510 | 1 | — | — | — | — | — |
+| GraphManager | internvl3.5-8b | 0/1510 | 1 | — | — | — | — | — |
 
 置信区间按任务内的设计聚类，重采样 2,000 次。只有全量覆盖的行给出区间。
 
@@ -40,9 +40,9 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 
 | 方法 | 模型 | Control | Task | Action + Task | 理想选择可用 | 理想选择不可用 |
 | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 0.000 (1) | — | — | 0.000 (1) | — |
-| OpenLoop | qwen3.5-27b | 0.000 (1) | — | — | 0.000 (1) | — |
-| OpenLoop | internvl3.5-8b | 0.000 (1) | — | — | 0.000 (1) | — |
+| OpenLoop | qwen3.5-4b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — |
+| OpenLoop | qwen3.5-27b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — |
+| OpenLoop | internvl3.5-8b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — |
 | ReAct | qwen3.5-4b | — | — | — | — | — |
 | ReAct | qwen3.5-27b | — | — | — | — | — |
 | ReAct | internvl3.5-8b | — | — | — | — | — |
@@ -82,21 +82,21 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 
 | 方法 | 模型 | 出现执行错误/已计分 | 技能调用/局 | 模型查询/局 | 输入 token/局 | 输出 token/局 | 秒/局 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 1/1 | 1.00 | 1.00 | 10579 | 66 | 106.9 |
-| OpenLoop | qwen3.5-27b | 1/1 | 1.00 | 1.00 | 10579 | 228 | 334.8 |
-| OpenLoop | internvl3.5-8b | 0/1 | 1.00 | 1.00 | 13505 | 72 | 535.1 |
+| OpenLoop | qwen3.5-4b | 2/2 | 2.50 | 1.00 | 10586 | 138 | 421.4 |
+| OpenLoop | qwen3.5-27b | 1/2 | 1.50 | 1.00 | 10586 | 202 | 505.0 |
+| OpenLoop | internvl3.5-8b | 0/2 | 1.00 | 1.00 | 13512 | 76 | 591.5 |
 | ReAct | qwen3.5-4b | — | — | — | — | — | — |
 | ReAct | qwen3.5-27b | — | — | — | — | — | — |
-| ReAct | internvl3.5-8b | — | — | — | — | — | — |
-| CodeAsPolicies | qwen3.5-4b | 1/1 | 1.00 | 1.00 | 10684 | 58 | 365.1 |
+| ReAct | internvl3.5-8b | 0/1 | 60.00 | 60.00 | 873346 | 4278 | 948.9 |
+| CodeAsPolicies | qwen3.5-4b | 1/2 | 1.00 | 1.00 | 10691 | 57 | 494.2 |
 | CodeAsPolicies | qwen3.5-27b | 1/1 | 2.00 | 1.00 | 10684 | 1856 | 213.2 |
-| CodeAsPolicies | internvl3.5-8b | 1/1 | 7.00 | 1.00 | 13610 | 243 | 183.9 |
-| SayPlan | qwen3.5-4b | — | — | — | — | — | — |
+| CodeAsPolicies | internvl3.5-8b | 1/2 | 3.50 | 1.50 | 20436 | 4218 | 175.2 |
+| SayPlan | qwen3.5-4b | 1/1 | 6.00 | 15.00 | 122105 | 1184 | 704.8 |
 | SayPlan | qwen3.5-27b | — | — | — | — | — | — |
 | SayPlan | internvl3.5-8b | — | — | — | — | — | — |
 | GraphManager | qwen3.5-4b | — | — | — | — | — | — |
 | GraphManager | qwen3.5-27b | — | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | 1/1 | 2.00 | — | — | — | 428.3 |
+| GraphManager | internvl3.5-8b | — | — | — | — | — | — |
 | ReActHint | qwen3.5-4b | — | — | — | — | — | — |
 | ReActHint | qwen3.5-27b | — | — | — | — | — | — |
 | ReActHint | internvl3.5-8b | — | — | — | — | — | — |
@@ -112,3 +112,5 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T01_book_to_dining_table | overhang_ready | 10 | 696211a +工作树 | 7/7 | 成功 | 1.0 | — |
 | T02_stack_blocks | block_put_away__gone_toy_block | 10 | 7846509 | 8/23 | 失败 | 0.0 | open · open kitchen_cabinet_4: no base pose can grasp the handle and ride the motion |
+| T10_trash_the_can | after_dinner_clear__rubbish_leftovers | 10 | 7846509 | 13/24 | 失败 | 0.0 | pick · carry_in: the arm stopped 0.024 m short of where it was sent |
+| T24_snack_for_kid | apple_on_table | 10 | 7846509 | 6/6 | 成功 | 1.0 | — |

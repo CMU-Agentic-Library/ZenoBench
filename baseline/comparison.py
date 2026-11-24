@@ -94,6 +94,8 @@ def run_graph(args, job, directory, library, patch):
     attempt = directory / "graph" / str(time.time_ns())
     attempt.mkdir(parents=True)
     (attempt / "workspace").mkdir()
+    from baseline.graph_profile import configure
+    configure(patch, attempt)
     command = [args.graph_bin, "--task", job["task"], "--variant", job["variant"], "--seed", str(job["seed"]),
                "--env-profile", MAIN, "--env-url", args.server, "--zenobench-root", str(library),
                "--provider", "lab-vlm", "--model", args.model, "--patch", str(patch),

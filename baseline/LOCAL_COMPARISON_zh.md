@@ -1,6 +1,6 @@
 # v6 本地 VLM 对比协议
 
-本轮在 Isaac Sim 6.0.0.1 上运行，评测代码固定在 `7846509`。结果表列出每个模型和方法已计分的局数、相同布局上的得分，以及脚本参考路线的原生判定。[本轮结果表](results/local_v6_sim6.md)
+本轮在 Isaac Sim 6.0.0.1 上运行，原生执行和规划方法沿用 `7846509`。Graph Manager 的本地服务配置另记录在每次尝试的 `local-provider.json` 中。结果表列出每个模型和方法已计分的局数、相同布局上的得分，以及脚本参考路线的原生判定。[本轮结果表](results/local_v6_sim6.md)
 
 同一组任务用于比较三个本地模型。Qwen3.5-4B 与 Qwen3.5-27B 给出同一家族的规模对照，InternVL3.5-8B 加入另一种视觉语言架构。精确的权重 revision 在 `baseline/comparison.py` 中。vLLM 0.32.0 使用 BF16，温度为 0，单次最多生成 4,096 token，上下文长度 32,768。Qwen 关闭显式思考。所有模型端点绑定在实验机的回环地址上。
 
@@ -14,9 +14,16 @@
 
 Graph Manager 使用固定的子模块、当前 checkout 的 71 项技能和 v6 任务索引，保留其原生 Harness 工具调用。它每回合可以多次调用模型，原生停止条件还包括 5 次重规划和约 27 分钟的时间预算。InternVL 发布的视觉对话模板用于普通请求；有工具时，通过其 Qwen3 语言基座的 ChatML 工具格式提供函数签名和返回值。模型工具协议影响 Graph Manager 的横向比较。其余四种方法沿用仓库统一的文本调用格式。
 
+Harness 的手动模型配置须声明 `contextWindow: 32768` 和 `maxTokens: 4096`，与本地 vLLM 实际容量相同。这样 Harness 可以按自己的策略及时压缩历史。最早一批 Graph Manager 尝试遗漏容量声明，沿用了 262,144 token 的默认值，其中一次请求达到 35,298 token。已归档该配置下的尝试，并对三个模型重跑；正式表只接受带本地容量记录的 Graph Manager 结果。
+
 ## 运行
 
 先将 Git LFS 场景资产和 `baseline/graph_manager` 子模块取到本地。仓库原协议使用 Isaac Sim 5.1、Isaac Lab 2.3.2 和 cuRobo 0.7.8。vLLM 和规划器各使用独立 Python 环境。下面是一个模型和一个方法的完整分片。其他方法和模型替换对应参数。
+
+```bash
+git submodule update --init baseline/graph_manager
+git lfs pull --include='tasks/**/scene*.usd,scenes/**,sim/**,usd/**,robot_sources/**,assets/**'
+```
 
 ```bash
 export ZB_RUN=/path/to/local-v6-run

@@ -4,6 +4,7 @@ import pytest
 
 from baseline import run_http
 from baseline.comparison import MAIN, episodes, graph_library, representatives
+from baseline.graph_profile import configure
 from baseline.report import read_outcome
 
 
@@ -18,6 +19,18 @@ def test_paired_catalog_and_local_graph_library(tmp_path):
     assert set(index[0]) == {"task_id", "variants", "catalog", "default_profile"}
     assert set(index[0]["variants"]) >= {j["variant"] for j in jobs if j["task"] == index[0]["task_id"]}
     assert len(list((tmp_path / "skills").glob("*/skill.json"))) == 71
+
+
+def test_harness_compacts_against_the_served_context_window(tmp_path):
+    import yaml
+    patch_file = tmp_path / "provider.yml"
+    template = run_http.ROOT / "baseline/graph_manager/examples/harness-local-vlm.patch.yml"
+    patch_file.write_text(template.read_text())
+    configure(patch_file, tmp_path)
+    config = yaml.safe_load(patch_file.read_text())[0]["config"]["providers"]["lab-vlm"]
+    model, = config["models"]
+    assert (model["contextWindow"], model["maxTokens"], model["input"]) == (32768, 4096, ["text", "image"])
+    assert json.loads((tmp_path / "local-provider.json").read_text())["model"] == "qwen3.5-4b"
 
 
 def test_checked_after_model_crash_remains_retryable(tmp_path):
