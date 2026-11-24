@@ -11,6 +11,7 @@ tools/verify_skills.py and episode/episode.py.
 from __future__ import annotations
 
 import math
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,8 +38,12 @@ def _clear(world, eye, tgt):
 def launch(video=True, first_person=False):
     """Start Isaac Sim with rendering enabled when either camera is requested."""
     from isaaclab.app import AppLauncher
-    return AppLauncher({"headless": True, "enable_cameras": bool(video or first_person), "no_splash": True,
-                        "fast_shutdown": True}).app
+    options = {"headless": True, "enable_cameras": bool(video or first_person), "no_splash": True,
+               "fast_shutdown": True}
+    if "ZENO_SIM_GPU" in os.environ:
+        # Kit selects the render GPU by Vulkan index. cuRobo uses cuda:0 within CUDA_VISIBLE_DEVICES.
+        options.update(device=f"cuda:{int(os.environ['ZENO_SIM_GPU'])}", multi_gpu=False)
+    return AppLauncher(options).app
 
 
 def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=None, prepare=None,

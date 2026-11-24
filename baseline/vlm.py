@@ -128,6 +128,13 @@ def make_client(model: str):
         return OpenAICompatClient(model, base_url=GEMINI_URL, api_key=os.environ.get("GEMINI_API_KEY"))
     # SHIFT_QWEN_THINKING=0 turns Qwen's thinking mode off (chat template switch); default: on
     thinking = os.environ.get("SHIFT_QWEN_THINKING", "1") not in ("0", "false", "off")
+    options = {}
+    if not thinking and m.startswith("qwen"):
+        options["chat_template_kwargs"] = {"enable_thinking": False}
+    if os.environ.get("SHIFT_VLLM_TEMPERATURE"):
+        options["temperature"] = float(os.environ["SHIFT_VLLM_TEMPERATURE"])
+    if os.environ.get("SHIFT_VLLM_MAX_TOKENS"):
+        options["max_tokens"] = int(os.environ["SHIFT_VLLM_MAX_TOKENS"])
     return OpenAICompatClient(model, base_url=os.environ.get("SHIFT_VLLM_URL", VLLM_URL),
                               api_key=os.environ.get("SHIFT_VLLM_KEY", "EMPTY"),
-                              extra_body=None if thinking else {"chat_template_kwargs": {"enable_thinking": False}})
+                              extra_body=options or None)

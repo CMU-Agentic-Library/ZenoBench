@@ -26,6 +26,7 @@ import base64
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import threading
@@ -85,12 +86,37 @@ def run_dir(out_root, policy, model, job):
     return Path(out_root) / f"{method}@{model}" / job["task"] / f"s{job['seed']}_{job['variant']}"
 
 
+def write_report(path, report):
+    temp = path.with_suffix(".tmp")
+    temp.write_text(json.dumps(report, indent=1, default=str))
+    temp.replace(path)
+
+
+def prepare_attempt(out, profile):
+    result = out / "result.json"
+    if result.is_file():
+        saved = json.loads(result.read_text())
+        if saved.get("profile") != profile:
+            raise ValueError(f"{out} contains another observation profile; choose a separate --out")
+        if not (saved.get("crash") or saved.get("check_error")):
+            return saved
+    out.mkdir(parents=True, exist_ok=True)
+    previous = [out / name for name in ("config.json", "images", "calls.jsonl", "failed.json", "result.json")
+                if (out / name).exists()]
+    if previous:
+        archive = out / "attempts" / str(time.time_ns())
+        archive.mkdir(parents=True)
+        for p in previous:
+            shutil.move(str(p), archive / p.name)
+    return None
+
+
 def run_one(server, job, policy, profile, out_root, model, menu):
     from benchmark.planners import load_policy
     out = run_dir(out_root, policy, model, job)
-    if (out / "result.json").exists():
-        return json.loads((out / "result.json").read_text())
-    out.mkdir(parents=True, exist_ok=True)
+    saved = prepare_attempt(out, profile)
+    if saved is not None:
+        return saved
     os.environ.setdefault("SHIFT_MODEL", model)
     report = {"task_id": job["task"], "variant": job["variant"], "seed": job["seed"], "policy": policy,
               "model": model, "profile": profile, "calls": [], "started": time.time()}
@@ -162,10 +188,8 @@ def run_one(server, job, policy, profile, out_root, model, menu):
                 report["check_error"] = f"{type(exc).__name__}: {exc}"
         report["skill_calls"] = len(report["calls"])
         report["wall_s"] = round(time.time() - report["started"], 1)
-        if exp_id is not None and "check_error" not in report:
-            (out / "result.json").write_text(json.dumps(report, indent=1, default=str))
-        else:                                                   # no score: not written as done, rerun later
-            (out / "failed.json").write_text(json.dumps(report, indent=1, default=str))
+        complete = exp_id is not None and "check_error" not in report and "crash" not in report
+        write_report(out / ("result.json" if complete else "failed.json"), report)
         sc = report.get("score") or {}
         print(f"RESULT {job['task']} s{job['seed']} {job['variant']} score={sc.get('score')} tier={sc.get('tier')} "
               f"calls={report['skill_calls']} stop={report.get('stop_reason')}", flush=True)
