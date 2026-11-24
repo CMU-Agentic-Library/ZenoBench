@@ -10,11 +10,11 @@
 
 | # | 方法 | 角色 | 计划何时改 | 模型 | 现状 |
 |---|---|---|---|---|---|
-| 1 | VLM open-loop | 证明闭环必要 | 从不：开头一次给出整份计划 | 4 个（见下） | 已写（`baseline/open_loop.py`） |
-| 2 | ReAct / tool-use | 平铺、每步反馈 | 每次调用之后 | 4 个 | 已写（`baseline/react.py`），未在仿真里跑过 |
-| 3 | Code-as-Policies | 用代码表示计划 | 程序里的分支 | 4 个 | 已写（`baseline/code_policy.py`） |
-| 4 | SayPlan 式 | 场景图记忆 + 搜索 | 场景图搜索后重规划 | 4 个 | 已写（`baseline/sayplan.py`） |
-| 5 | Graph Manager | skill graph 规划器（方法论文中作为 ours） | 每个子目标边界，以及失败时 | 4 个 | submodule `baseline/graph_manager/`，要在 v6 上统一设置后重跑 |
+| 1 | VLM open-loop | 证明闭环必要 | 从不：开头一次给出整份计划 | 3 个（见下） | 已写（`baseline/open_loop.py`） |
+| 2 | ReAct / tool-use | 平铺、每步反馈 | 每次调用之后 | 3 个 | 已写（`baseline/react.py`），未在仿真里跑过 |
+| 3 | Code-as-Policies | 用代码表示计划 | 程序里的分支 | 3 个 | 已写（`baseline/code_policy.py`） |
+| 4 | SayPlan 式 | 场景图记忆 + 搜索 | 场景图搜索后重规划 | 3 个 | 已写（`baseline/sayplan.py`） |
+| 5 | Graph Manager | skill graph 规划器（方法论文中作为 ours） | 每个子目标边界，以及失败时 | 3 个 | submodule `baseline/graph_manager/`，要在 v6 上统一设置后重跑 |
 
 参考行和消融（11-23 加）：
 
@@ -28,16 +28,15 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
 
 暂不跑：Nominal script、Oracle（11-23 先删掉，之后需要上下界时再加回）、Retry-only、Reflexion（要跨 episode 多次尝试，和每 episode 1 次冲突）、LLM+P（71 个技能写 PDDL 成本高、替换语义难表达）、SayCan 式、相似度启发式。主表完成后再决定。
 
-模型：每个 VLM 方法用 4 个模型各跑一遍：
+模型：每个 VLM 方法用 3 个模型各跑一遍（11-23 定：Qwen3.5-4B、Claude Opus 5.5、GPT-6；Gemini 暂不跑）：
 
 | 模型 | 类型 | 说明 |
 |---|---|---|
 | Qwen3.5-4B | 开源，本地部署 | 之后 SFT / RL 的基座 |
 | Claude Opus 5.5（`claude-opus-5-5`） | 闭源 API | |
-| GPT（当前旗舰，具体版本待填） | 闭源 API | |
-| Gemini（当前旗舰，具体版本待填） | 闭源 API | |
+| GPT-6（模型 id 暂写 `gpt-6`，有 key 后用 `check_models` 确认） | 闭源 API | |
 
-三个闭源模型的输入信息、预算和 prompt 完全相同；只换 VLM 客户端的后端。
+两个闭源模型和 Qwen 的输入信息、预算和 prompt 完全相同；只换 VLM 客户端的后端。
 
 ---
 
@@ -57,6 +56,13 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
 **Graph Manager 走 HTTP 时**：HTTP 服务会给物体位置和每条目标的真假，必须关掉，或者改成走进程内的 `--planner recovery`，保证和其他方法看到的一样。
 
 ---
+
+## 2.1 部署：模型和仿真分开跑（11-23，同 Graph Manager）
+
+- 仿真机：`$ISAACLAB_PYTHON -m env_service.server --port 8800 --max-sims 2 --catalog benchmark/v6/tasks.json=sticky/benchmark`
+- 规划器侧（不需要 Isaac）：`.venvs/shift-planner`（最新 anthropic / openai SDK），`python -m baseline.run_http --server http://<仿真机>:8800 --policy baseline.react:ReAct --batch benchmark/v6/batches/category_control.json`
+- Qwen：`bash baseline/serve_qwen.sh`（vLLM 0.32.0，`.venvs/vllm-qwen`，权重 `models/Qwen3.5-4B`，端口 8001，和 Graph Manager 同一组参数，两边共用）
+- 进程内 `run_episode.py --planner recovery` 仍可用（调试用），两条路径给 planner 的观察相同
 
 ## 3. 任务划分（为 SFT/RL 预留）
 
@@ -117,7 +123,7 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
   - 技能说明：现在 vendored 的是旧快照（70 个技能，ZenoBench `eb4b3f0`），而且 `graph-manager-run` 每次运行前会从 git 拉最新的 ZenoBench。放进本仓库后改成直接读本仓库的 `skill_library/`，和冻结 commit 一致
   - 预算：已统一为 60（env_service 按请求的 profile 定预算，`sticky/benchmark` 即 60）；请求里必须写 `profile: sticky/benchmark`，并用 `--catalog benchmark/v6/tasks.json=sticky/benchmark` 启动服务（默认 catalog 只有 skill_library 和 v3）
   - 观察：HTTP 服务会给物体位置和目标状态，改成和 `sticky/benchmark` 一样（或接到进程内 runner）
-  - 模型：现在支持本地 vLLM 的 Qwen3.5-4B；要加 Claude / GPT / Gemini 后端
+  - 模型：现在支持本地 vLLM 的 Qwen3.5-4B；要加 Claude / GPT 后端
   - 在 v6 的冻结 commit 上重跑
 
 ---
@@ -127,9 +133,9 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
 | 方法 | 模型 | 全部 30 个任务 | 测试任务 |
 |---|---|---|---|
 | Open-loop / ReAct / CaP / SayPlan / Graph Manager | Qwen3.5-4B | ✓ | ✓ |
-| 同上 | Claude Opus 5.5 / GPT / Gemini | ✓ | ✓ |
+| 同上 | Claude Opus 5.5 / GPT-6 | ✓ | ✓ |
 
-- 1,510 个 episode × 5 方法 × 4 模型 = 30,200 个 episode，每个 episode 跑 1 次。
+- 1,510 个 episode × 5 方法 × 3 模型 = 22,650 个 episode，每个 episode 跑 1 次。
 - 闭源模型 API 费用粗估（按每个 episode 约 20 次 VLM 调用、每次约 8k 输入 token 和 500 输出 token，未计 prompt caching）：Claude Opus 5.5（$4 / $20 每百万 token）约 $0.85 / episode，5 个方法 × 1,510 个 episode ≈ $6,400。GPT 和 Gemini 按各自价格另算，三家合计大约是这个数的 2–3 倍。用 prompt caching 缓存技能说明和历史，预计能明显降低。实测前几十个 episode 后再更新。
 - 如果费用或时间不够：三个闭源模型只在测试任务上跑全部方法，30 个任务的完整表只用 Qwen3.5-4B + 一个闭源模型。
 - **第一件事是测单个 episode 的耗时**（Isaac + VLM），算出总时长后决定：全量跑，还是每个 variant 抽 3–5 个种子。
@@ -161,7 +167,7 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
 | 11/24–11/30 | 冻结 tag；预算统一为 60、全部改用 sticky/benchmark；`split.json`；共用组件；测耗时；Graph Manager 接入本仓库的技能库；ReAct 在 Control 上跑通 |
 | 12/1–12/7 | Open-loop、Code-as-Policies；Graph Manager 统一设置并接入；汇总脚本 |
 | 12/8–12/14 | 主表开跑（Qwen3.5-4B）；SayPlan 式 |
-| 12/15–12/21 | 主表闭源部分（Claude / GPT / Gemini）；第一版主表 |
+| 12/15–12/21 | 主表闭源部分（Claude / GPT-6）；第一版主表 |
 | 12/22 之后 | 消融（子集）、失败分析；结果交给 SFT/RL 使用 |
 
 ---
@@ -182,8 +188,8 @@ Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独�
 
 ## 10. 待定事项
 
-1. GPT 和 Gemini 的具体版本
+1. ~~GPT 和 Gemini 的具体版本~~（11-23：GPT-6 + Opus 5.5，Gemini 不跑）
 2. 测试任务具体是哪 8 个
 3. SFT / RL 的具体设置（数据、奖励、训练规模）：后面再定，复用本文的任务划分和共用组件
 
-已定（11-23）：Nominal / Oracle 暂不跑；调用预算 60 次；观察 profile 用 `sticky/benchmark`；每个 VLM 方法用 Qwen3.5-4B + Claude Opus 5.5 + GPT + Gemini；每个 episode 跑 1 次。
+已定（11-23）：Nominal / Oracle 暂不跑；调用预算 60 次；观察 profile 用 `sticky/benchmark`；每个 VLM 方法用 Qwen3.5-4B + Claude Opus 5.5 + GPT-6（Gemini 不跑）；每个 episode 跑 1 次。

@@ -270,5 +270,48 @@ class TestSayPlan(unittest.TestCase):
         self.assertTrue(s["stop_reason"].startswith("finish"))
 
 
+class TestRunHttp(unittest.TestCase):
+    def test_episode_over_http(self):
+        import base64
+        import json
+        import tempfile
+        import benchmark.planners as bp
+        import baseline.run_http as rh
+        png = base64.b64encode(b"\x89PNG fake").decode()
+        seen = []
+
+        def fake_post(server, path, body, timeout=0):
+            seen.append((path, body))
+            o = obs(visible=["mug_1"])
+            o["images"] = [{"camera": "head", "png_base64": png}]
+            if path == "/initial_task":
+                return {"exp_id": "e1", "task": {"task_id": "T", "name": "T", "description": "Bring the mug."},
+                        "profile": {"name": "sticky/benchmark", "max_calls": 5}, "observation": o}
+            if path == "/do_contract":
+                o["last_result"] = OK
+                return {"exp_id": "e1", "results": [OK], "observation": o}
+            return {"success": True, "score": {"score": 1.0, "tier": "ideal"}, "goal": [], "dropped": [],
+                    "episode": {"variant": "v"}}
+        fake = FakeClient(['{"skill": "pick", "args": {"object": "mug_1"}}', '{"finish": true}'])
+        old_post, old_load = rh.post, bp.load_policy
+        rh.post = fake_post
+        bp.load_policy = lambda spec: ReAct(model="fake", client=fake)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                r = rh.run_one("http://x", {"task": "T", "variant": "v", "seed": 10}, "baseline.react:ReAct",
+                               "sticky/benchmark", d, "fake", MENU)
+                out = Path(d) / "ReAct@fake" / "T" / "s10_v"
+                self.assertTrue((out / "result.json").exists())
+                self.assertEqual(len(list((out / "images").glob("*.png"))), 2)
+                self.assertEqual(json.loads((out / "calls.jsonl").read_text())["skill"], "pick")
+        finally:
+            rh.post, bp.load_policy = old_post, old_load
+        self.assertEqual([p for p, _ in seen], ["/initial_task", "/do_contract", "/check_task"])
+        self.assertEqual(seen[0][1]["profile"], "sticky/benchmark")
+        self.assertEqual(seen[1][1]["calls"], [{"contract": "pick", "args": {"object": "mug_1"}}])
+        self.assertEqual((r["score"]["score"], r["stop_reason"], r["max_calls"]), (1.0, "planner_done", 5))
+        self.assertTrue(fake.calls[0][2][0].endswith("_initial_head.png"))   # planner got a file path
+
+
 if __name__ == "__main__":
     unittest.main()

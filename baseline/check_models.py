@@ -1,7 +1,7 @@
 """Check which baseline models are configured and answer: one tiny text request per model.
 
-    $ISAACLAB_PYTHON -m baseline.check_models                       # the default four
-    $ISAACLAB_PYTHON -m baseline.check_models claude-opus-5-5 gpt-5.5
+    python -m baseline.check_models                       # the paper's three models
+    python -m baseline.check_models claude-opus-5-5 gpt-6
 
 A model whose key / server is missing is reported, not called.  Each real call is a few tokens.
 """
@@ -13,8 +13,7 @@ import sys
 
 from baseline.vlm import load_env, make_client
 
-DEFAULT = ["qwen3.5-4b", "claude-opus-5-5", os.environ.get("SHIFT_GPT_MODEL", "gpt-5.5"),
-           os.environ.get("SHIFT_GEMINI_MODEL", "gemini-3-pro")]
+DEFAULT = ["qwen3.5-4b", "claude-opus-5-5", os.environ.get("SHIFT_GPT_MODEL", "gpt-6")]
 NEEDS = {"claude": "ANTHROPIC_API_KEY", "gpt": "OPENAI_API_KEY", "gemini": "GEMINI_API_KEY"}
 
 

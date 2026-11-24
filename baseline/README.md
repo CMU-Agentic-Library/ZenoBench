@@ -15,28 +15,33 @@ SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_
 
 共用组件：`base.py`（技能菜单、调用历史、token 统计）、`vlm.py`（四家模型一个 `chat()`）、`prompt.py`（技能说明、观察、历史的文字）、`parse.py`（从回答里取出调用）。
 
-## 运行
+## 运行（模型和仿真分开，同 Graph Manager）
 
 ```bash
-# 依赖已装进 isaaclab 环境：anthropic 0.85、openai 1.109（11-23）。
-#   不要直接 pip install -U：新版要求 typing_extensions>=4.14，会和 Isaac Sim 锁的 4.12.2 / idna 3.10 冲突。
-#   需要重装时：pip install -c <(printf 'idna==3.10\ntyping_extensions==4.12.2\n') "anthropic<1" "openai<2"
-# key：cp baseline/.env.example baseline/.env 再填（已 gitignore），或在 shell 里 export。
-# 检查配置：$ISAACLAB_PYTHON -m baseline.check_models   （每个模型发一条几 token 的请求）
-# Qwen：要有一个 OpenAI 兼容的 vLLM 服务，地址写 SHIFT_VLLM_URL（默认 localhost:8001）。
-SHIFT_MODEL=claude-opus-5-5 $ISAACLAB_PYTHON benchmark/run_episode.py \
-    --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside --seed 10 \
-    --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark
+# 1. 仿真机：env_service（Isaac 环境）
+$ISAACLAB_PYTHON -m env_service.server --port 8800 --max-sims 2 \
+    --catalog benchmark/v6/tasks.json=sticky/benchmark
 
-#   其他方法：--policy baseline.open_loop:OpenLoop | baseline.code_policy:CodeAsPolicies | baseline.sayplan:SayPlan
-#   消融：--policy baseline.react:ReActHint
-#   上界：--policy baseline.react:ReAct --profile sticky/privileged
-#   人类：--policy baseline.human:Human（单个 episode 跑，不能用 --batch）
+# 2. Qwen（需要时）：vLLM 服务，端口 8001，和 Graph Manager 共用
+bash baseline/serve_qwen.sh
 
-python -m pytest baseline/tests -q          # 离线测试：假模型、假观察，不需要仿真和 API
+# 3. 规划器侧：不需要 Isaac，用 .venvs/shift-planner（最新 anthropic / openai）
+PY=../.venvs/shift-planner/bin/python
+$PY -m baseline.check_models                       # qwen3.5-4b / claude-opus-5-5 / gpt-6 是否可用
+$PY -m baseline.run_http --server http://localhost:8800 --model claude-opus-5-5 \
+    --policy baseline.react:ReAct --batch benchmark/v6/batches/category_control.json --limit 3
+#   --policy baseline.open_loop:OpenLoop | baseline.code_policy:CodeAsPolicies | baseline.sayplan:SayPlan
+#   消融 baseline.react:ReActHint；上界 --profile sticky/privileged；单个 episode：--task T --variant V --seed 10
+#   输出 baseline/runs/<方法>@<模型>/<任务>/s<seed>_<variant>/，已有 result.json 的会跳过（可断点续跑）
+
+$PY -m pytest baseline/tests -q                    # 离线测试：假模型、假观察、假 HTTP
 ```
 
-- 设置都从环境变量或 `baseline/.env` 读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。GPT / Gemini 的具体型号还没定，`check_models` 里的 `gpt-5.5`、`gemini-3-pro` 只是占位，可用 `SHIFT_GPT_MODEL` / `SHIFT_GEMINI_MODEL` 改。
+- 环境（都在 `physical_harnessing/` 下，仓库外）：`.venvs/vllm-qwen`（vLLM 0.32.0）、`.venvs/shift-planner`（规划器）、`models/Qwen3.5-4B`（权重）。
+- key：`cp baseline/.env.example baseline/.env` 后自己填（已 gitignore），或在 shell 里 export。
+- 调试也可以在进程内跑：`SHIFT_MODEL=... $ISAACLAB_PYTHON benchmark/run_episode.py --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark ...`。isaaclab 环境里装的是旧版 SDK（anthropic 0.85、openai 1.109）：新版要求 typing_extensions>=4.14，和 Isaac Sim 锁的 4.12.2 / idna 3.10 冲突，不要 `pip install -U`。人类参考只能用这条路径（要终端）。
+
+- 设置都从环境变量或 `baseline/.env` 读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。论文用 Qwen3.5-4B、Claude Opus 5.5、GPT-6 三个模型（Gemini 不跑）；GPT-6 的模型 id 暂写 `gpt-6`，有 key 后用 `check_models` 确认，可用 `SHIFT_GPT_MODEL` 改。
 - 四家模型拿到完全相同的文字和 JSON 回答格式，不用各家的原生工具调用。每次请求都是无状态的一问一答，历史由 planner 自己写进 prompt（最近 8 步完整，更早的压成一行）。
 - 回答解析不了时再问一次，最多 2 次；这算 VLM 查询，不算技能调用。
 - `calls.jsonl` 每行多了 `planner_usage`（这一步的 token），`result.json` 多了 `planner_summary`（整局的 VLM 查询数、token、停止原因，含最后 finish 那一问）。
@@ -61,4 +66,4 @@ python -m pytest baseline/tests -q          # 离线测试：假模型、假观�
 1. **技能库**：`graph_manager/vendor/zenobench/` 是旧快照（70 个技能，ZenoBench `eb4b3f0`），`graph-manager-run` 每次运行前还会从 git 拉最新 ZenoBench（`adapters/zenobench_sync.py`）。改为直接读本仓库的 `skill_library/`，保证和冻结 commit 一致。
 2. **调用预算**：已统一为 60。env_service 按请求的 profile 定预算（`sticky/benchmark` = 60；兜底默认 11-23 从 40 改为 60）。启动服务要加 `--catalog benchmark/v6/tasks.json=sticky/benchmark`（默认 catalog 不含 v6），请求里写 `profile: sticky/benchmark`，不要用 `gt`（40 次、给 GT 信息）。
 3. **观察**：env_service 返回物体位置和目标状态，`sticky/benchmark` 不给；要保证 Graph Manager 看到的和其他 baseline 一样。
-4. **模型后端**：现在是本地 vLLM 的 Qwen3.5-4B（`examples/vllm-qwen3.5-4b.compose.yml`）；要加 Claude Opus 5.5、GPT、Gemini。
+4. **模型后端**：现在是本地 vLLM 的 Qwen3.5-4B（`examples/vllm-qwen3.5-4b.compose.yml`）；要加 Claude Opus 5.5、GPT-6。
