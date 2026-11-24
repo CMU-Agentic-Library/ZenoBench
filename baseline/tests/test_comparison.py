@@ -1,5 +1,6 @@
 import json
 from unittest.mock import patch
+import pytest
 
 from baseline import run_http
 from baseline.comparison import MAIN, episodes, graph_library, representatives
@@ -47,13 +48,16 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path):
     for p in (planner, native):
         p.mkdir(parents=True)
     meta = {"profile": MAIN, "task_id": "test", "variant": "v", "seed": 10, "exp_id": "exp"}
+    runtime = {"isaacsim": "6.0.0.1", "lab_compat_sha256": "abc"}
     score = {"score": 0.6}
     run_http.write_report(planner / "result.json", {**meta, "model": "local", "policy": "baseline.react:ReAct",
-                          "max_calls": 60, "episode": {"episode_hash": "id", "config_hash": "layout"},
+                          "max_calls": 60, "episode": {"episode_hash": "id", "config_hash": "layout", "runtime": runtime},
                           "success": False, "score": score, "wall_s": 5, "planner_summary": {"vlm_queries": 2}})
     run_http.write_report(native / "result.json", {**meta, "episode_hash": "id", "incomplete": False,
-                          "task_success": False, "score": score, "skill_calls": 1,
+                          "task_success": False, "score": score, "skill_calls": 1, "runtime": runtime,
                           "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}}]})
-    status, r = read_outcome(planner, tmp_path / "native", "local", "ReAct", job)
+    status, r = read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "6.0.0.1")
     assert status == "scored"
     assert r["score"] == 0.6 and not r["success"] and r["execution"]
+    with pytest.raises(ValueError, match="simulator version mismatch"):
+        read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "5.1.0.0")

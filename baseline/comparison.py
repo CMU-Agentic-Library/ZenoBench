@@ -131,6 +131,7 @@ def main():
     ap.add_argument("--vlm-url", required=True, help="local model's OpenAI-compatible /v1 endpoint")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--native-dir", type=Path, required=True, help="env_service --log-dir")
+    ap.add_argument("--sim-version", default="5.1.0.0", help="Isaac Sim wheel version of this output root")
     ap.add_argument("--graph-bin", default="graph-manager-run")
     ap.add_argument("--shards", default=1, type=int)
     ap.add_argument("--shard", default=0, type=int, help="zero-based disjoint episode shard")
@@ -149,7 +150,8 @@ def main():
     settings.mkdir(parents=True, exist_ok=True)
     config = {"commit": code_version()["commit"], "model": args.model, "weights": MODELS[args.model][0],
               "revision": MODELS[args.model][1], "method": args.method, "profile": METHODS[args.method][1],
-              "max_calls": 60, "temperature": 0, "max_tokens": 4096, "qwen_thinking": False}
+              "max_calls": 60, "temperature": 0, "max_tokens": 4096, "qwen_thinking": False,
+              "isaacsim": args.sim_version}
     meta = settings / "protocol.json"
     if meta.exists() and read_json(meta) != config:
         raise ValueError(f"changed protocol in {settings}; start a new output root")
@@ -173,6 +175,8 @@ def main():
         if report.get("crash") or report.get("check_error"):
             raise RuntimeError(f"episode interrupted: {job}: {report.get('crash') or report['check_error']}")
         ep = report["episode"]
+        if ep["runtime"]["isaacsim"] != args.sim_version:
+            raise ValueError(f"expected Isaac Sim {args.sim_version}, received {ep['runtime']}")
         if (ep["task_id"], ep["variant"], ep["seed"], ep["profile"], report["max_calls"]) != (
                 job["task"], job["variant"], job["seed"], profile, 60):
             raise ValueError(f"episode or budget mismatch: {job}")

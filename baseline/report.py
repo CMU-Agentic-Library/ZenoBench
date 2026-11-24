@@ -14,7 +14,7 @@ def episode_key(j):
     return j["task"], j["variant"], j["seed"]
 
 
-def read_outcome(directory, native_dir, model, method, job):
+def read_outcome(directory, native_dir, model, method, job, sim_version=None):
     final = directory / "result.json"
     if not final.exists():
         return ("interrupted" if (directory / "failed.json").exists() else "outstanding"), None
@@ -27,6 +27,9 @@ def read_outcome(directory, native_dir, model, method, job):
         raise ValueError(f"planner result identity mismatch in {final}")
     native_path = native_dir / job["task"] / r["exp_id"] / "result.json"
     n = read_json(native_path)
+    if sim_version and (n.get("runtime", {}).get("isaacsim") != sim_version or
+                        n["runtime"] != r["episode"].get("runtime")):
+        raise ValueError(f"simulator version mismatch in {native_path}, expected {sim_version}")
     if n["incomplete"] or (n["task_id"], n["variant"], n["seed"], n["profile"]) != identity or (
             n["exp_id"], n["episode_hash"], n["score"], n["task_success"]) != (
             r["exp_id"], r["episode"]["episode_hash"], r["score"], r["success"]):
@@ -76,10 +79,13 @@ def mean_and_n(rows):
     return f"{mean(r['score'] for r in rows):.3f} ({len(rows)})" if rows else "—"
 
 
-def build_report(out, native_dir):
+def build_report(out, native_dir, sim_version):
     jobs = episodes()
     subset = representatives(jobs)
-    lines = ["# ZenoBench v6 本地 VLM 基线", "",
+    lines = [f"# ZenoBench v6 本地 VLM 基线 · Isaac Sim {sim_version}", "",
+             ("本表使用仓库指定的 Isaac Sim 5.1。 " if sim_version == "5.1.0.0" else
+              f"本表是在 Isaac Sim {sim_version} 上独立运行的版本适配实验。仓库原协议使用 Isaac Sim 5.1。"
+              "物理接触、相机渲染以及技能执行结果会受仿真版本影响。"), "",
              "主实验按公开 v6 批次覆盖 30 个任务、151 个设计、316 种布局，种子 10–19。"
              "每个方法和模型运行相同的 1,510 局，技能调用上限为 60。"
              "消融在每种布局首次出现的种子上运行，共 316 局，并与相同种子的 ReAct 配对。", "",
@@ -95,7 +101,7 @@ def build_report(out, native_dir):
             rows = {}
             interrupted = 0
             for j in expected:
-                status, r = read_outcome(result_path(out, model, method, j), native_dir, model, method, j)
+                status, r = read_outcome(result_path(out, model, method, j), native_dir, model, method, j, sim_version)
                 if r is not None:
                     rows[episode_key(j)] = r
                 interrupted += status == "interrupted"
@@ -155,10 +161,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", required=True, type=Path, help="comparison output root")
     ap.add_argument("--native-dir", required=True, type=Path, help="env_service --log-dir")
+    ap.add_argument("--sim-version", default="5.1.0.0")
     ap.add_argument("--markdown", required=True, type=Path)
     args = ap.parse_args()
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown.write_text(build_report(args.out, args.native_dir), encoding="utf-8")
+    args.markdown.write_text(build_report(args.out, args.native_dir, args.sim_version), encoding="utf-8")
 
 
 if __name__ == "__main__":

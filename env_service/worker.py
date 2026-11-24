@@ -22,6 +22,8 @@ of simulated time); it is not an observation.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import importlib.metadata as md
 import json
 import os
 import sys
@@ -70,11 +72,25 @@ def main():
         from failure_injection.runtime import install as install_failures
         install_failures(ep, cfg)                      # v5 declared failures; the HTTP planner sees only feedback
         meta = ep.metadata()
+        runtime = {}
+        for package in ("isaacsim", "torch", "nvidia-curobo"):
+            try:
+                runtime[package] = md.version(package)
+            except md.PackageNotFoundError:  # standalone Kit / source-only installations
+                pass
+        compat = os.environ.get("ZENO_LAB_COMPAT_MANIFEST")
+        if compat:
+            import torch
+            import warp
+            runtime["lab_compat_sha256"] = hashlib.sha256(Path(compat).read_bytes()).hexdigest()
+            runtime["torch_cuda"] = torch.version.cuda
+            runtime["warp"] = warp.__version__
+        meta["runtime"] = runtime
         (out / "config.json").write_text(json.dumps(
             {"task_id": task["task_id"], "exp_id": out.name, "seed": args.seed, "planner": "http", "route": None,
              "scene": cfg, "catalog": args.catalog, "benchmark_version": task.get("benchmark_version"),
              **{k: meta[k] for k in ("config_hash", "base_sha1", "profile", "profile_hash", "episode_hash")},
-             "profile_body": ep.profile, "started": time.strftime("%Y-%m-%d %H:%M:%S")}, indent=1))
+             "profile_body": ep.profile, "runtime": runtime, "started": time.strftime("%Y-%m-%d %H:%M:%S")}, indent=1))
         log = open(out / "calls.jsonl", "w")
         send({"type": "ready", "observation": ep.observation(), "episode": meta})
     except Exception as exc:
@@ -84,7 +100,7 @@ def main():
     report = {"task_id": task["task_id"], "exp_id": out.name, "seed": args.seed, "variant": cfg["variant"],
               "config_hash": cfg["config_hash"], "benchmark_version": task.get("benchmark_version"),
               "profile": meta["profile"], "profile_hash": meta["profile_hash"], "episode_hash": meta["episode_hash"],
-              "planner": "http", "route": None, "initial_positions": ep.initial_positions, "calls": [],
+              "planner": "http", "route": None, "runtime": runtime, "initial_positions": ep.initial_positions, "calls": [],
               "success": False, "incomplete": True, "stop_reason": "released", "eval_log_version": 2}
 
     def write_result():

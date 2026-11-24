@@ -14,7 +14,7 @@ Graph Manager 使用固定的子模块、当前 checkout 的 71 项技能和 v6 
 
 ## 运行
 
-先将 Git LFS 场景资产和 `baseline/graph_manager` 子模块取到本地。Isaac Sim 5.1、Isaac Lab 2.3.2 和 cuRobo 0.7.8 在仿真环境中运行，vLLM 和规划器各使用独立 Python 环境。下面是一个模型和一个方法的完整分片。其他方法和模型替换对应参数。
+先将 Git LFS 场景资产和 `baseline/graph_manager` 子模块取到本地。仓库原协议使用 Isaac Sim 5.1、Isaac Lab 2.3.2 和 cuRobo 0.7.8。vLLM 和规划器各使用独立 Python 环境。下面是一个模型和一个方法的完整分片。其他方法和模型替换对应参数。
 
 ```bash
 export ZB_RUN=/path/to/local-v6-run
@@ -44,3 +44,24 @@ python -m baseline.report --out "$ZB_RUN/planner" --native-dir "$ZB_RUN/native" 
 ```
 
 每个结果通过 exp_id 对应到仿真服务记录的最终状态和技能轨迹。分表使用各模型共同完成的相同局。任务成功、正分、满分和执行错误分别统计，保留中途服务失败的日志，重新运行同一分片会继续未完成的局。执行错误列记录技能叶节点报错的发生率。判断一个正确的替代动作是否被物理执行阻断，仍需结合具体动作和当时状态。
+
+## Isaac Sim 6 独立实验
+
+目标实例的驱动为 NVIDIA 595.91.07。Isaac Sim 5.1 在启用 RTX 相机时于 `librtx.scenedb.plugin.so` 崩溃。此实例使用单独的 Isaac Sim **6.0.0.1** 环境和输出目录。跨版本比较需要考虑接触动力学、渲染和执行器行为的变化。
+
+仿真环境使用 Python 3.12、PyTorch 2.11.0+cu130、Isaac Sim 6.0.0.1、Isaac Lab 2.3.2 的源码和按 sm_120 编译的 cuRobo 0.7.8。使用 `isaacsim[all,extscache]` 安装完整扩展。将 2.3.2 wheel 中含有 `apps/` 和 `source/` 的 `isaaclab/` 目录解包到 `LAB_SOURCE`。以下命令生成适配后的独立副本，并使每局原生记录包含版本和适配清单的 SHA-256。
+
+```bash
+"$ISAACLAB_PYTHON" baseline/sim6/prepare_lab.py "$LAB_SOURCE" "$LAB_SIM6"
+export PYTHONPATH="$LAB_SIM6/source/isaaclab${PYTHONPATH:+:$PYTHONPATH}"
+export ZENO_LAB_COMPAT_MANIFEST="$LAB_SIM6/compatibility.json"
+```
+
+用上面的环境启动 HTTP 服务，在评测和汇总两条命令中都传入 `--sim-version 6.0.0.1`。生成的表头显示实际版本，汇总器检查每个原生结果的版本号。用于相机和参考技能验证的局存放于规划器结果目录之外。
+
+以下例子给 8860、8861、8862 三个仿真服务各分配两个并发局，在不同模型和方法间轮转。各服务的 `--log-dir` 都指向 `$ZB_RUN/native`。端口 8101、8102、8103 分别对应 Qwen 4B、Qwen 27B 和 InternVL 8B。收到 SIGTERM 后，调度器等待正在运行的局结束。再次启动时继续剩余的局。
+
+```bash
+python -m baseline.launch_comparison --run-dir "$ZB_RUN" --sim-version 6.0.0.1 \
+  --servers 8860=2 8861=2 8862=2 --graph-bin /path/to/graph-env/bin/graph-manager-run
+```
