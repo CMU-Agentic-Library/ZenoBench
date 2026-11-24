@@ -93,17 +93,15 @@ def run_graph(args, job, directory, library, patch):
     # Each restart retains the pinned planner's raw decisions, subgraphs, tool errors and images.
     attempt = directory / "graph" / str(time.time_ns())
     attempt.mkdir(parents=True)
-    (attempt / "workspace").mkdir()
-    from baseline.graph_profile import configure
-    configure(patch, attempt)
+    from baseline.graph_profile import isolated_workspace
     command = [args.graph_bin, "--task", job["task"], "--variant", job["variant"], "--seed", str(job["seed"]),
                "--env-profile", MAIN, "--env-url", args.server, "--zenobench-root", str(library),
                "--provider", "lab-vlm", "--model", args.model, "--patch", str(patch),
                "--dsh-home", str(args.out / "harness" / args.model),
-               "--workspace", str(attempt / "workspace"), "--max-tokens", "4096",
+               "--max-tokens", "4096",
                "--out", str(attempt), "--concurrency", "1"]
-    with (attempt / "runner.log").open("w") as f:
-        proc = subprocess.run(command, stdout=f, stderr=subprocess.STDOUT,
+    with isolated_workspace(patch, attempt) as workspace, (attempt / "runner.log").open("w") as f:
+        proc = subprocess.run([*command, "--workspace", workspace], stdout=f, stderr=subprocess.STDOUT,
                               env={**os.environ, "LAB_VLM_API_KEY": "local"})
     path = attempt / job["task"] / MAIN / job["variant"] / f"seed_{job['seed']}" / "result.json"
     raw = read_json(path) if path.exists() else {}

@@ -1,5 +1,6 @@
 import fcntl
 import json
+from pathlib import Path
 import subprocess
 import sys
 import urllib.request
@@ -8,7 +9,7 @@ import pytest
 
 from baseline import run_http
 from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives
-from baseline.graph_profile import configure
+from baseline.graph_profile import isolated_workspace
 from baseline.launch_comparison import claim_episode, pending
 from baseline.report import read_outcome, reference_table
 from baseline.sim6.startup_queue import install
@@ -114,11 +115,29 @@ def test_harness_compacts_against_the_served_context_window(tmp_path):
     patch_file = tmp_path / "provider.yml"
     template = run_http.ROOT / "baseline/graph_manager/examples/harness-local-vlm.patch.yml"
     patch_file.write_text(template.read_text())
-    configure(patch_file, tmp_path)
+    attempt = tmp_path / "s10_block_put_away__gone_toy_block"
+    attempt.mkdir()
+    with isolated_workspace(patch_file, attempt) as workspace:
+        assert Path(workspace).is_dir() and Path(workspace).parent == Path("/tmp")
+        assert Path(workspace).name.startswith("zenobench-graph-")
+        assert attempt.name not in workspace
+        receipt = json.loads((attempt / "local-provider.json").read_text())
+        assert receipt["workspace"] == workspace
+    assert not Path(workspace).exists()
     config = yaml.safe_load(patch_file.read_text())[0]["config"]["providers"]["lab-vlm"]
     model, = config["models"]
     assert (model["contextWindow"], model["maxTokens"], model["input"]) == (32768, 4096, ["text", "image"])
-    assert json.loads((tmp_path / "local-provider.json").read_text())["model"] == "qwen3.5-4b"
+    assert receipt["model"] == "qwen3.5-4b"
+
+
+def test_graph_with_layout_name_in_model_workspace_is_unscored(tmp_path):
+    attempt = tmp_path / "graph" / "attempt"
+    attempt.mkdir(parents=True)
+    run_http.write_report(tmp_path / "result.json", {"graph_attempt": str(attempt)})
+    provider = {"model": "qwen3.5-4b", "max_tokens": 4096, "context_window": 32768}
+    for old in (provider, {**provider, "workspace": "/runs/s10_gone_toy_block/workspace"}):
+        run_http.write_report(attempt / "local-provider.json", old)
+        assert read_outcome(tmp_path, tmp_path, "qwen3.5-4b", "GraphManager", {}) == ("interrupted", None)
 
 
 def test_checked_after_model_crash_remains_retryable(tmp_path):

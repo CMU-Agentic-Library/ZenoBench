@@ -2,6 +2,8 @@
 
 SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_zh.md`](../docs/guides/BASELINE_PLAN_zh.md)。
 
+本分支在 Isaac Sim 6.0.0.1 上独立比较三个本地 VLM。表中列出已完成的局数、主实验、观测和提示消融，以及同一布局上的脚本参考结果。[本地 VLM 对比表](results/local_v6_sim6.md) · [实验设置和逐局证据](LOCAL_COMPARISON_zh.md)
+
 | 文件 / 目录 | 方法 | 状态 |
 |---|---|---|
 | `open_loop.py` `OpenLoop` | 1 VLM open-loop：开头一次查询写出整份调用列表，照着执行，第一次失败或列表用完就停 | 已写，离线测试通过 |

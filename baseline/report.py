@@ -29,6 +29,9 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
         provider = read_json(receipt)
         if (provider["model"], provider["context_window"], provider["max_tokens"]) != (model, 32768, 4096):
             raise ValueError(f"Graph Manager provider configuration mismatch in {receipt}")
+        workspace = Path(provider.get("workspace", ""))
+        if workspace.parent != Path("/tmp") or not workspace.name.startswith("zenobench-graph-"):
+            return "interrupted", None
     identity = job["task"], job["variant"], job["seed"], METHODS[method][1]
     if (r["task_id"], r["variant"], r["seed"], r["profile"]) != identity or (
             r["model"], r["policy"], r["max_calls"]) != (model, METHODS[method][0], 60):
@@ -155,6 +158,11 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
              "主实验按公开 v6 批次覆盖 30 个任务、151 个设计、316 种布局，种子 10–19。"
              "每个方法和模型计划运行相同的 1,510 局，技能调用上限为 60。"
              "消融在每种布局首次出现的种子上运行，共 316 局，并与相同种子的 ReAct 配对。", "",
+             "主实验沿用仓库 VLM 基线方案的 sticky/benchmark，物体在搬运时固定，抓放通过物理执行。"
+             "公开脚本批次在 Control 和 Action + Task 使用 benchmark，在 Task 使用带抓放修正的 sticky_snap/gt。"
+             "本表末尾的脚本参考路线也按 sticky/benchmark 重新执行。", "",
+             "Graph Manager 只计入使用独立随机工作目录的局。旧 Harness 消息曾包含带布局名的路径，"
+             "受影响的旧尝试已排除，重跑仍计入各模型原有的 1,510 局。", "",
              "计分需要规划器和 Isaac Sim 同时记录相同的任务、种子、episode hash 和最终判定。"
              "实际成功率使用环境的最终 success，得分大于零和满分率另列。"
              "仿真记录中的掉落规则可能使实际成功率低于正分率。", "",
