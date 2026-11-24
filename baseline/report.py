@@ -264,6 +264,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
     lines += table(["方法", "模型", "合理/可判定调用", "可判定/全部调用", "无法判定的调用",
                     "执行失败/合理调用"], planning)
     lines += ["## 推理与执行成本", "",
+              "技能调用数统计从规划器进入环境的顶层契约。一个 fetch 可以在内部依次执行导航、拾取、导航和放置。"
               "Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
               "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
               "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", "",
