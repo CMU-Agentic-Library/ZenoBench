@@ -102,7 +102,7 @@ def mean_and_n(rows):
     return f"{mean(r['score'] for r in rows):.3f} ({len(rows)})" if rows else "—"
 
 
-def reference_table(directories):
+def reference_table(directories, scores):
     catalog = {t["task_id"]: t for t in read_json(V6 / "tasks.json")["tasks"]}
     rows = []
     for directory in directories:
@@ -122,13 +122,27 @@ def reference_table(directories):
             code = config["code"]["commit"][:7] + (" +工作树" if config["code"]["dirty_files"] else "")
             score = (result.get("score") or {}).get("score")
             outcome = "中断" if result.get("crash") else ("成功" if result.get("task_success") else "失败")
+            key = task, result["variant"], result["seed"]
+            matched = []
+            for model in MODELS:
+                peer = scores["ReAct", model].get(key)
+                if peer is None:
+                    matched.append("—")
+                    continue
+                if outcome != "中断" and (peer["episode_hash"], peer["config_hash"]) != (
+                        result["episode_hash"], result["config_hash"]):
+                    raise ValueError(f"scripted/ReAct episode mismatch in {path} for {model}")
+                matched.append(f"{peer['score']:.1f} {'成功' if peer['success'] else '失败'}")
             rows.append([task, result["variant"], result["seed"], code, f"{len(calls)}/{expected}",
-                         outcome, score if score is not None and not result.get("crash") else "—",
-                         str(result.get("crash") or detail)])
+                         f"{score:.1f} {outcome}" if score is not None and not result.get("crash") else outcome,
+                         *matched, str(result.get("crash") or detail)])
     return ["## 脚本参考路线", "",
             "以下各局在 sticky/benchmark 下执行任务目录预写的动作和真实物体名。"
-            "报告记录原生分数及第一个本应成功却失败的技能。参考路线的覆盖数单独统计。", ""] + table(
-                ["任务", "布局", "种子", "代码", "已执行/路线步数", "任务结局", "原生分数", "执行错误"], rows)
+            "三个模型栏给出同一任务、布局、种子和初始局哈希下标准 ReAct 的原生分数及最终成功判定。"
+            "横线表示该模型尚无这局的判定。脚本执行错误列显示第一个本应成功却失败的技能，"
+            "一条脚本路线失败时，其他动作序列仍可能可行。脚本局单独计数。", ""] + table(
+                ["任务", "布局", "种子", "脚本代码", "脚本已执行/路线步数", "脚本分数与结局",
+                 *MODELS, "脚本执行错误"], rows)
 
 
 def build_report(out, native_dir, sim_version, reference_dirs=()):
@@ -257,7 +271,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
     lines += table(["方法", "模型", "技能调用/局", "模型查询/局",
                     "输入 token/局", "输出 token/局", "秒/局", "停止原因与局数"], traces)
     if reference_dirs:
-        lines += reference_table(reference_dirs)
+        lines += reference_table(reference_dirs, scores)
     return "\n".join(lines)
 
 

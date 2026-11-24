@@ -7,10 +7,10 @@ from unittest.mock import patch
 import pytest
 
 from baseline import run_http
-from baseline.comparison import MAIN, episodes, graph_library, representatives
+from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives
 from baseline.graph_profile import configure
 from baseline.launch_comparison import claim_episode, pending
-from baseline.report import read_outcome
+from baseline.report import read_outcome, reference_table
 from baseline.sim6.startup_queue import install
 
 
@@ -54,6 +54,24 @@ def test_resume_interrupted_ablation_keeps_the_original_rows(tmp_path):
     directory.mkdir(parents=True)
     (directory / "result.json").write_text("{}")
     assert next(pending(tmp_path, 1, [model], [method])) == jobs[1]
+
+
+def test_reference_table_matches_native_layout_and_distinguishes_missing_from_zero(tmp_path):
+    task, variant, seed = "T24_snack_for_kid", "apple_on_table", 10
+    directory = tmp_path / task / "scripted"
+    directory.mkdir(parents=True)
+    run_http.write_report(directory / "config.json", {"code": {"commit": "7846509", "dirty_files": []}})
+    run_http.write_report(directory / "result.json", {
+        "task_id": task, "variant": variant, "seed": seed, "route": "nominal", "planner": "scripted",
+        "profile": MAIN, "config_hash": "layout", "episode_hash": "initial", "calls": [],
+        "score": {"score": 1.0}, "task_success": True})
+    scores = {("ReAct", model): {} for model in MODELS}
+    peer = {"score": 0.0, "success": False, "config_hash": "layout", "episode_hash": "initial"}
+    scores["ReAct", "qwen3.5-27b"][task, variant, seed] = peer
+    assert "| 1.0 成功 | — | 0.0 失败 | — |" in "\n".join(reference_table([tmp_path], scores))
+    peer["episode_hash"] = "another initial state"
+    with pytest.raises(ValueError, match="scripted/ReAct episode mismatch"):
+        reference_table([tmp_path], scores)
 
 
 def test_first_layout_per_task_uses_existing_main_and_ablation_shards(tmp_path):
