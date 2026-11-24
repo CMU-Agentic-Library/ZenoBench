@@ -129,14 +129,19 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path, tier, val
                           "planner_summary": {"vlm_queries": 2, "stop_reason": "finish: the model says it is done"}})
     run_http.write_report(native / "result.json", {**meta, "episode_hash": "id", "incomplete": False,
                           "task_success": success, "score": score, "skill_calls": 3, "runtime": runtime,
-                          "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}},
-                                    {"eval": {"leaf_code": "NOT_OBSERVED"}},
-                                    {"feedback": {"success": True}, "eval": {"leaf_code": None}}]})
+                          "calls": [{"skill": "place", "feedback": {"success": False, "action": "place(apple, desk)"},
+                                     "eval": {"failed_substep": ["place(apple, desk)", "tuck()"],
+                                              "leaf_code": "POLICY_FAILED"}},
+                                    {"skill": "pick", "feedback": {"success": False, "action": "pick(apple)"},
+                                     "eval": {"failed_substep": ["pick(apple)"], "leaf_code": "NOT_OBSERVED"}},
+                                    {"skill": "navigate", "feedback": {"success": True}, "eval": {"leaf_code": None}}]})
     status, r = read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "6.0.0.1")
     assert status == "scored"
     assert r["score"] == value and r["success"] == success and r["execution"]
     assert r["best_success"] == best_success
     assert r["failure_classes"] == {"execution", "observation"}
+    assert r["plan_labels"] == {"valid": 2, "undetermined": 1}
+    assert r["valid_execution_failures"] == 1
     assert r["stop_reason"] == ("service_limit" if tier == "second" else "finish")
     with pytest.raises(ValueError, match="simulator version mismatch"):
         read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "5.1.0.0")

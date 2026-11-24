@@ -8,7 +8,7 @@ import random
 from statistics import mean
 
 from baseline.comparison import ABLATIONS, MAIN, METHODS, MODELS, V6, episodes, read_json, representatives, result_path
-from benchmark.metrics import failure_class
+from benchmark.metrics import call_records, failure_class
 
 
 def episode_key(j):
@@ -46,6 +46,7 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
         raise ValueError(f"native skill count mismatch in {native_path}")
     failure_classes = {failure_class(c["eval"].get("leaf_code")) for c in n["calls"]
                        if c["eval"].get("leaf_code") is not None or c.get("feedback", {}).get("success") is False}
+    calls = call_records(n, job)
     summary = r["planner_summary"]
     stop_reason = r.get("stop_reason")
     if stop_reason == "planner_done":
@@ -55,6 +56,8 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
                       "runtime": n.get("runtime", {}),
                       "success": n["task_success"], "best_success": n["task_success"] and n["score"]["tier"] == "best",
                       "execution": "execution" in failure_classes, "failure_classes": failure_classes,
+                      "plan_labels": Counter(c["plan"] for c in calls),
+                      "valid_execution_failures": sum(c["plan"] == "valid" and c["class"] == "execution" for c in calls),
                       "skills": n["skill_calls"],
                       "queries": summary.get("vlm_queries"), "input_tokens": summary.get("input_tokens"),
                       "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"],
@@ -83,7 +86,11 @@ def table(header, data):
 
 
 def ratio(rows, field):
-    return f"{sum(r[field] for r in rows)}/{len(rows)}" if rows else "—"
+    return count_ratio(sum(r[field] for r in rows), len(rows))
+
+
+def count_ratio(numerator, denominator):
+    return f"{numerator}/{denominator}" if denominator else "—"
 
 
 def average(rows, field, places=2):
@@ -138,7 +145,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
              "实际成功率使用环境的最终 success，得分大于零和满分率另列。"
              "仿真记录中的掉落规则可能使实际成功率低于正分率。", "",
              "## 主实验", ""]
-    main_rows, ablation_rows, traces, errors, slices, paired_ablation = [], [], [], [], [], []
+    main_rows, ablation_rows, traces, errors, planning, slices, paired_ablation = [], [], [], [], [], [], []
     scores = {}
     for method in METHODS:
         expected = subset if method in ABLATIONS else jobs
@@ -165,6 +172,14 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
             else:
                 counts = ["—"] * 6
             errors.append([method, model, *counts])
+            labels = Counter()
+            for row in values:
+                labels.update(row["plan_labels"])
+            judged = labels["valid"] + labels["invalid"]
+            valid_execution_failures = sum(r["valid_execution_failures"] for r in values)
+            planning.append([method, model, count_ratio(labels["valid"], judged),
+                             count_ratio(judged, sum(labels.values())), labels["undetermined"],
+                             count_ratio(valid_execution_failures, labels["valid"])])
             stops = Counter(r["stop_reason"] for r in values)
             traces.append([method, model, average(values, "skills"),
                            average(values, "queries"), average(values, "input_tokens", 0),
@@ -226,6 +241,12 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
               "分类沿用仓库对技能调用最内层错误码的定义，例如 NOT_OBSERVED 归入观测，NO_PATH 归入前置条件，"
               "POLICY_FAILED 归入执行。错误码描述技能的返回状态，判断失败原因还需要结合模型选的参数和当时的场景。", ""]
     lines += table(["方法", "模型", "执行", "观测", "前置条件", "无效调用", "其他错误", "全局零技能调用"], errors)
+    lines += ["## 逐次技能调用的规划正确性", "",
+              "使用仓库 Planning Correctness 的逐次调用判定。正确率和判定覆盖率均列出分子与分母。"
+              "成功执行的调用会判为合理，即使模型交付了错误物体。控制器报错时，接口与前置条件允许的调用也可以判为合理。"
+              "最后一列列出在这些合理调用中，仓库归类为底层执行失败的次数。整局是否完成任务见主实验和消融表。", ""]
+    lines += table(["方法", "模型", "合理/可判定调用", "可判定/全部调用", "无法判定的调用",
+                    "执行失败/合理调用"], planning)
     lines += ["## 推理与执行成本", "",
               "Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
               "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
