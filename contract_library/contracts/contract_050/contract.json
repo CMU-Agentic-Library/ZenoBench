@@ -174,31 +174,11 @@
     ],
     "steps": [
      {
-      "policy": "policy_027",
+      "policy": "policy_032",
       "args": [
        "@button.appliance"
       ],
-      "kwargs": {
-       "button": "start"
-      }
-     },
-     {
-      "policy": "policy_028",
-      "args": [
-       "@button.appliance"
-      ],
-      "kwargs": {
-       "button": "start"
-      }
-     },
-     {
-      "policy": "policy_029",
-      "args": [
-       "@button.appliance"
-      ],
-      "kwargs": {
-       "button": "start"
-      }
+      "kwargs": {}
      }
     ],
     "requires": [

@@ -18,6 +18,7 @@ from contextlib import contextmanager
 
 import numpy as np
 
+from . import scene_geometry as G
 from .tolerances import FOOTPRINT_MARGIN
 
 # The base in two layers, measured on base_link.STL's cross sections (11-09): a wide chassis up to
@@ -136,7 +137,7 @@ def static_triangles(cols, body_pose):
     parts are not static (WorldModel.base_only, moving_part_dist)."""
     out = []
     for c in cols.items:
-        if c.owner != "static":
+        if not G.is_static(c.owner):
             continue
         T = c.local if c.body is None else body_pose(c.body) @ c.local
         if c.kind == "cuboid":

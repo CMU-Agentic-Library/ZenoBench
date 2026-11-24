@@ -1,6 +1,6 @@
 """Appliance policies that work from the annotation, for any appliance.
 
-policy_094 PressButtonPolicy   park, align closed fingertips, press, retract (any annotated button)
+policy_094 PressButtonPolicy   press any annotated button (skills.press_button: run_skill press)
 policy_090 WaitHeatPolicy      wait until a food reaches a temperature on any heat source, then stop it
 policy_089 WaitCoolPolicy      wait until a food in the closed refrigerator cools below a temperature
 """
@@ -9,14 +9,9 @@ from __future__ import annotations
 
 import math
 
-import numpy as np
-
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import LEGACY
-from ..kinematics import gripper_rot
 from ..physics import PHYSICS_HZ
-from ..planner import find_park
 from ..predicates import entity_kind
 from ..rig import SkillFailure
 
@@ -29,11 +24,12 @@ def button_record(rig, button):
 
 
 class PressButtonPolicy(AtomicPolicy):
-    """Press an annotated button with the closed right fingertips.
+    """Press an annotated button with the closed right fingertips (skills.press_button: run_skill press,
+    one plan from a park whose search checks the press itself).
 
-    Microwave buttons go through the measured microwave stages (policy_027,
-    028, 029), which also start the heating cycle for the start key.  Other
-    buttons (the stove power key) toggle their appliance's heat source."""
+    The microwave's start key starts its cycle (door closed, food inside), its door key only records the
+    press (open drives the door); another key (the stove's power key) switches its appliance's heat
+    source: to ``state`` when given -- already there, nothing is pressed -- else to the other one."""
 
     def execute(self, button, *, state=None):
         rig = self.rig
@@ -42,46 +38,14 @@ class PressButtonPolicy(AtomicPolicy):
         if rig.held is not None:
             raise SkillFailure("press: release the held object first")
         if which in ("door_button", "start_button"):
-            kind = "door" if which == "door_button" else "start"
-            skills.approach_microwave_button(rig, app, kind)
-            skills.press_aligned_microwave_button(rig, app, kind)
-            skills.retract_microwave_button(rig, app, kind)
+            skills.press_button(rig, button)
             return True
         thermal = getattr(rig, "thermal", None)
         current = bool(thermal.on.get(app)) if thermal is not None else False
         if state is not None and bool(state) == current:
             rig.log("button_already", button=button, on=current)
             return current
-        c = np.asarray(rec["center"], float)
-        out = np.asarray(rec["outward"], float)
-        R = gripper_rot(-out, [1.0, 0.0, 0.0])
-        pre, contact = c + out * 0.12, c + out * 0.005
-        targets = [(pre + np.array([0, 0, 0.06]), R), (pre, R)]
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        # the press itself is part of the search: a park that only reaches the
-        # pre-pose can leave the last 11 cm forward without IK
-        park = find_park(rig.kin, rig.world, targets + [(contact + out * 0.01, R)], near=rig.base_pose(),
-                         max_tries=200, q_start=rig.q_cmd, travel_q=rig.kin.rest)
-        if park is None:
-            raise SkillFailure(f"press {button}: no collision-free reach")
-        skills._goto_park(rig, park)
-        rig.grip(0.0, 40)
-        rig.caption = f"PRESS {button}"
-        rig.move_to(*targets[0], label="button_pre", q_hint=park[3][0])
-        rig.move_to(*targets[1], step=0.005, label="button_align", allow=LEGACY)
-        rig.move_to(contact, R, step=0.003, label="button_press", allow=LEGACY)
-        rig.step(24)
-        tcp, _ = rig.kin.tcp(rig.q())
-        miss = float(np.linalg.norm(tcp - contact))
-        if miss > 0.035:
-            raise SkillFailure(f"press {button}: missed by {miss:.3f} m")
-        if thermal is not None and app in thermal.on:
-            thermal.on[app] = not current
-        rig.log("button_press", button=button, appliance=app, error_m=round(miss, 4),
-                on=bool(thermal.on.get(app)) if thermal is not None else None)
-        rig.move_to(pre, R, step=0.005, label="button_retract", allow=LEGACY)
-        return bool(thermal.on.get(app)) if thermal is not None else True
+        return skills.press_button(rig, button, on=not current if thermal is not None and app in thermal.on else None)
 
 
 class WaitHeatPolicy(AtomicPolicy):

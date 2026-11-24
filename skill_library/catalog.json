@@ -605,6 +605,16 @@
     "skill_id": "skill_038"
    },
    {
+    "name": "press",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:press_job",
+    "skill_id": "skill_042"
+   },
+   {
     "name": "crouch",
     "shape": "posture",
     "template": "plan_posture",

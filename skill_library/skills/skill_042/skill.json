@@ -192,14 +192,10 @@
     }
    ],
    "chain": [
-    "policy_027(@button.appliance, button=start)",
-    "policy_028(@button.appliance, button=start)",
-    "policy_029(@button.appliance, button=start)"
+    "policy_032(@button.appliance)"
    ],
    "policies": [
-    "policy_027",
-    "policy_028",
-    "policy_029"
+    "policy_032"
    ],
    "note": "Fails without moving the door when no task food is inside the cavity."
   },

@@ -134,6 +134,12 @@ RETIRED_POLICIES = {
                   "distances, heights and pitches: pick's floor_top path is the pick alone (policy_010), whose plan "
                   "lowers the torso and leans itself from a park it chooses (docs 9.3 step 5, 2026-11-16).",
     "policy_065": "Approach a floor item before policy_042: pick chooses its own park (see policy_042).",
+    "policy_027": "Align the fingertips in front of a microwave key as a step of its own: a press is one plan "
+                  "(skill_plans.plan_press, the reach, the press and the way back out; policy_032 / 033 / 094) from a "
+                  "park whose search checks the press itself -- the staged approach parked where only the aligned "
+                  "pose was reachable (T07 microwave_works, 2026-11-24).",
+    "policy_028": "Press a microwave key from policy_027's aligned pose: one plan with the approach (see policy_027).",
+    "policy_029": "Withdraw from a microwave key after policy_028: one plan with the press (see policy_027).",
 }
 
 NOUN_FIELDS = {

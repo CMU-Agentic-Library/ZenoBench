@@ -6,36 +6,8 @@ import numpy as np
 import pytest
 
 from zeno_skills import skills
-from zeno_skills.clearance import LEGACY
-from zeno_skills.policies import MicrowaveButtonPressPolicy, MicrowaveHingeDrivePolicy
+from zeno_skills.policies import MicrowaveHingeDrivePolicy
 from zeno_skills.rig import SkillFailure
-
-
-def test_button_press_requires_matching_alignment_and_checks_contact():
-    contact = np.array([1.0, 2.0, 3.0])
-    stage = {"name": "oven", "button": "door", "phase": "aligned", "contact": contact,
-             "pre": contact + [0, 0.12, 0], "R": np.eye(3)}
-    calls = []
-    current = [stage["pre"].copy()]
-
-    def move_to(*args, **kwargs):
-        calls.append((args, kwargs))
-        current[0] = np.asarray(args[0])
-
-    rig = SimpleNamespace(_microwave_button_stage=None, held=None,
-                          move_to=move_to, step=lambda n: None,
-                          kin=SimpleNamespace(tcp=lambda q: (current[0], np.eye(3))),
-                          q=lambda: np.zeros(9), log=lambda *a, **k: None)
-    with pytest.raises(SkillFailure, match="not aligned"):
-        MicrowaveButtonPressPolicy(rig).execute("oven", button="door")
-    rig._microwave_button_stage = stage
-    with pytest.raises(SkillFailure, match="not aligned"):
-        MicrowaveButtonPressPolicy(rig).execute("oven", button="start")
-    assert MicrowaveButtonPressPolicy(rig).execute("oven", button="door") == 0
-    assert stage["phase"] == "pressed"
-    assert calls[0][1]["allow"] is LEGACY
-    with pytest.raises(SkillFailure, match="not aligned"):
-        MicrowaveButtonPressPolicy(rig).execute("oven", button="door")
 
 
 def test_hinge_driver_requires_clearance_before_motor_motion(monkeypatch):

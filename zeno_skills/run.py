@@ -25,7 +25,7 @@ def observe(act):
 
 def execute(act, seg):
     """Run one segment through the Actuator, each declared to the contact monitor under its Allow
-    first: an action (the gripper); a drive (the base along its paths, the arms switched where the
+    first: an action (the gripper, a wait, the head, an appliance switched); a drive (the base along its paths, the arms switched where the
     planner put it); a task segment by its executor (docs 5.5: "follow" the arm's IK continuation
     open loop; "ride" the base at the script's function of the commanded s, closed on the measured
     part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
@@ -50,6 +50,11 @@ def execute(act, seg):
             act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
             _, yaw, pitch, steps = seg.action
             act.aim_head(yaw, pitch, steps)
+            return
+        if what == "toggle":                    # an appliance switched (a press's action): nothing moves
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
+            _, appliance, on = seg.action
+            act.toggle(appliance, on)
             return
         raise ValueError(f"unknown action {what}")
     if seg.kind == "drive":

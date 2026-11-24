@@ -471,9 +471,9 @@ Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives
 - `wait(ticks)`：物体停稳，什么都不动（`place_settle`）；
 - `head(yaw, pitch, steps)`：转头（`perceive.head_segment`，感知类和 `run_skill` 开头的头摆正都经它，11-16）；手臂、底盘、手里的东西都不动，所以不向接触监视声明，前一段的 `Allow` 照旧；
 - `drive_part(部件, 值)`：电机开关门〔待加，第 8 步〕；
-- `toggle(电器, on/off)`〔待加，第 8 步〕。
+- `toggle(电器, on/off)`：电器的热源开 / 关（`Actuator.toggle` → `Rig.toggle`，任务级的 `thermal.py`），按键计划在手按到按钮以后的一个动作（8a，11-24）。
 
-现在有 `grip`、`wait`、`head`；`run.execute` 遇到别的动作抛 `ValueError`。
+现在有 `grip`、`wait`、`head`、`toggle`；`run.execute` 遇到别的动作抛 `ValueError`。
 
 锚点不是动作，是单独的段种类（4.3、8.2）。
 
@@ -897,6 +897,8 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
    **stir（11-15，见第 6 节接触类和 `../skills/stir.md`）**：先加了 `tool_frame`（勺子两端 `bowl` / `handle`，`tools/prepare_assets.TOOL_FRAMES`）和它唯一的解析 `skill_jobs/tool.py` 的 `tool_in_tcp`，伸进锅里的是离手远的那一端（`free_end`：勺子捏在勺碗那头，搅的是勺柄，和旧代码一样）；`plan_stir` / `stir_job` 按接触类的形状：到达 → 自由段（勺子已倾斜）→ 下勺 `straight` → 画圈 `scripted`（`Still(锅)`，整圈要么全过要么失败，删了"到不了的点跳过"）→ 锚点 → 向上 `straight` → 回到进来时的姿态。两个自由段用 `FREE_HAND`，不保持倾角：4a48b66 的倾角规则在旧层由 `rig._carrying()` 对一切手里的东西打开，勺子转到 50° 的路上超过 1.02 rad，v6full_1115 的 T09 lid_off、tomato_elsewhere 因此失败；规则本身不改，按段的 `Spec` 不再套到工具上。勺子碰锅：`Spec.touch` 加了 `(名字, "held")`（手指和 held link 可碰，手臂其余部分照查）。圈数仍按勺尖实测（`Rig.tick_watchers`，每 4 个物理步一次）。`tooluse.py` 的 `old_entry` 17 → 11。
    **检查结果（11-15，`/data/zenobench/stir_1115`、`stir2_1115`，v6 sticky/gt，单测 462 个都过）**：第一轮只标了勺碗，勺尖离 TCP 3 cm（勺子捏在勺碗那头），T09 lid_off、tomato_elsewhere 停车点全部建不出来（画圈、下勺撞），pot_in_use 搅成了 1.25 圈。改成标两端、用离手远的一端（勺柄，`t_tool` 13.9 cm）以后：lid_off nominal、tomato_elsewhere dining 都在第一个停车点上一次建成，搅 1.25 圈，整集成功（1115 两集都是倾角失败）。没查到的：pot_in_use 第二轮被 30 分钟上限截在搅拌之前；tomato_in_fridge、pot_in_dining_room、lid_on_spoon_away 没跑；去掉的腰 0.3 rad 限制在这两集里没出问题。
 8. **微波炉和电器动作**：`drive_part`、`toggle`、电机开门前让开的检查。删 `withdraw_microwave_cavity` 记的 `microwave_retrieval_q`（pick 已经不读；`policies/embedded.py` 的 `PickFromCavity` 还在用）。
+   **8a 按键已迁（11-24）**：catalog `press`（形状 contact，`skill_jobs/press.py` 的 `press_job` + `skill_plans/contact.py` 的 `plan_press`）：到达锚点 → 自由段到按钮前 `PRESS_APPROACH`（10 cm）→ 在那里合爪（在原地合，刚放到灶上的锅被夹住，T07 microwave_holds_pot）→ 直线按进去，指尖压进按钮碰撞体正面 `PRESS_DEPTH`（3 mm）→ `toggle` 动作 → 锚点 → 按 `contact_extent` 量出来的直线退出 → 收臂。按钮的碰撞体有了自己的 owner（`scene_geometry.buttons`：`button:<电器>/<键>`，`Spec.touch` 只放开它；底盘占地、支撑面、监视仍把它当静态，`is_static`），监视还认按钮自己的标注障碍物盒（`kitchen_microwave/body/door_button`），不放开整台电器。停车点搜索：按的终点、手绕按的方向转 0 / 90 / -90 / 180° 四个目标；删了写死的首选站位（75°）和"首选站位不行就退到不查按的搜索"（T07 microwave_works 失败的原因，01ea02cc 的补丁随旧函数一起删）。微波炉开门键、启动键、灶的电源键（policy_032 / 033 / 094）都调 `skills.press_button`；分步的 027 / 028 / 029 退役，press 的启动键路径改成 policy_032。
+   检查（`/data/zenobench/press8a_1124/runs2`，v6 sticky/gt，单测 533）：T07 microwave_works、microwave_holds_pot（灶）、T09 lid_off（灶开、关）整集成功；按键 8 次，7 次一次成功，1 次在 `press_pressed` 锚点重做收臂时 cuRobo TRAJOPT_FAIL（和 T02 / T19 关柜门同一类，收臂每个锚点都重做）。T07 two_portions、vessel_decides_appliance 在按键之前、往灶上放东西时失败：两集的第一次停车点搜索计数和 v6full_1123 一样（占地、碰撞相同）、选中的停车点不同，是 cuRobo IK 历史（这次是进程里第一集），不是按键的改动。
 9. **两臂**：两手一起搬的物体进碰撞模型（闭链约束另议）；pick / place 选手（6a 末尾）。手臂对称、`q_body`、共用躯干的规则、另一只手的东西进查询已在第 6a 步做；两只手一起动时手里的东西对另一条手臂查不到（held link 只对躯干和头有自碰撞，4.4），两手搬要另想办法。
 10. **收尾**：删 `Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`、旧的 `planner.find_park`，以及旧的按用途分的碰撞上下文（`Motion.scope` / `hand_open` / `carrying` / `released`、`Rig._planning` / `_fingers_checked`；`Motion.query` 6a 起已经是直接实现，4.4）。
 

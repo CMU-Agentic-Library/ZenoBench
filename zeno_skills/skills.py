@@ -27,7 +27,7 @@ from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing,
 from .evaluator import quat_R
 from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
 from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
-from .planner import LAST_PARK_DIAG, find_park, find_park_set, joint_reachable, torque_ratio
+from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, clearing, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
@@ -1535,145 +1535,13 @@ def place_on(rig, name, support, hint=None, tries=4):
     return place(rig, name, support, spots=spots[:tries])
 
 
-def _microwave_start_food(rig, name):
-    """Check the closed door, thermal task state, and food inside the cavity."""
-    a = rig.ann.art(name)
-    if rig.thermal is None:
-        raise SkillFailure("microwave: thermal task state is not configured")
-    if abs(rig.joint(name) - a["closed_q"]) > 0.10:
-        raise SkillFailure("microwave: door must be closed before heating")
-    b = a["cavity_aabb"]
-    inside = []
-    for obj in rig.thermal.config:
-        p, _ = rig.obj_pose(obj)
-        if all(b[i] + 0.005 < p[i] < b[i + 3] - 0.005 for i in range(3)):
-            inside.append(obj)
-    if not inside:
-        raise SkillFailure("microwave: no task food is inside the cavity")
-    return inside
-
-
-def _microwave_button_targets(rig, name, button):
-    if button not in ("door", "start"):
-        raise ValueError(f"microwave: unknown button {button!r}")
-    spec = rig.ann.art(name).get(f"{button}_button")
-    if spec is None:
-        raise SkillFailure(f"microwave: no annotated {button} button")
-    p = np.asarray(spec["center"], float)
-    outward = np.asarray(spec["outward"], float)
-    R = gripper_rot(-outward, [1.0, 0.0, 0.0])
-    return p + outward * 0.12, p + outward * 0.005, R, p
-
-
-def approach_microwave_button(rig, name="kitchen_microwave", button="door"):
-    """Park and align closed fingertips in front of an annotated button."""
-    if rig.held is not None:
-        raise SkillFailure("microwave button: release the held object first")
-    if button == "start":
-        _microwave_start_food(rig, name)
-    pre, contact, R, center = _microwave_button_targets(rig, name, button)
-    targets = [(pre + np.array([0, 0, 0.06]), R), (pre, R)]
-    rig._microwave_button_stage = None
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-
-    def presses(x, y, yaw, qs):
-        """The press goes on from the aligned pose into the button (the world left out: it touches
-        it): the start press is checked at every park, the preferred one and the search's -- the
-        search alone once parked out of reach of the button (T07 microwave_works, 11-24)."""
-        scene, rig.kin.scene = rig.kin.scene, None
-        try:
-            return rig.kin.cart_path(qs[-1], contact, R, 0.005)[1]
-        finally:
-            rig.kin.scene = scene
-    check = presses if button == "start" else None
-    preferred = (float(center[0] - 0.1165), float(center[1] - 0.5163), 75.0)
-    park = find_park(rig.kin, rig.world, targets, near=preferred,
-                     max_tries=1, q_start=None, travel_q=rig.kin.rest, check=check)
-    if park is None:
-        rig.log("microwave_button_park", button=button, preferred=list(preferred), taken=False,
-                why={k: v for k, v in LAST_PARK_DIAG.items() if v})
-        park = find_park(rig.kin, rig.world, targets, near=rig.base_pose(),
-                         max_tries=160, q_start=rig.q_cmd, travel_q=rig.kin.rest, check=check)
-    if park is None:
-        raise SkillFailure(f"microwave: no collision-free reach to {button} button")
-    _goto_park(rig, park)
-    if button == "door":
-        rig.caption = "OPEN microwave: press door control"
-    rig.grip(0.0, 40)
-    prefix = "microwave_door_button" if button == "door" else "microwave_button"
-    rig.move_to(*targets[0], label=prefix + "_pre", q_hint=park[3][0])
-    rig.move_to(*targets[1], step=0.005, label=prefix + "_align", allow=LEGACY)
-    tcp, _ = rig.kin.tcp(rig.q())
-    error = float(np.linalg.norm(tcp - pre))
-    if error > 0.04:
-        raise SkillFailure(f"microwave: {button} button alignment missed by {error:.3f} m")
-    rig._microwave_button_stage = {"name": name, "button": button, "phase": "aligned",
-                                   "pre": pre, "contact": contact, "R": R}
-    rig.log("microwave_button_aligned", button=button, error_m=round(error, 4))
-    return error
-
-
-def press_aligned_microwave_button(rig, name="kitchen_microwave", button="door"):
-    """Move from an aligned pose into contact and check measured TCP error."""
-    stage = getattr(rig, "_microwave_button_stage", None)
-    if not stage or (stage["name"], stage["button"], stage["phase"]) != (name, button, "aligned"):
-        raise SkillFailure(f"microwave: {button} button is not aligned")
-    if rig.held is not None:
-        raise SkillFailure("microwave button: release the held object first")
-    tcp, _ = rig.kin.tcp(rig.q())
-    if np.linalg.norm(tcp - stage["pre"]) > 0.04:
-        raise SkillFailure(f"microwave: {button} button alignment is stale")
-    inside = _microwave_start_food(rig, name) if button == "start" else None
-    prefix = "microwave_door_button" if button == "door" else "microwave_button"
-    rig.move_to(stage["contact"], stage["R"], step=0.003, label=prefix + "_press", allow=LEGACY)
-    rig.step(24)
-    tcp, _ = rig.kin.tcp(rig.q())
-    distance = float(np.linalg.norm(tcp - stage["contact"]))
-    if distance > 0.035:
-        raise SkillFailure(f"microwave: {button} button press missed by {distance:.3f} m")
-    if button == "start":
-        rig.thermal.active = True
-        rig.log("microwave_start", food=inside, button_error_m=round(distance, 4))
-    else:
-        rig.log("microwave_door_button", button_error_m=round(distance, 4))
-    stage["phase"] = "pressed"
-    return distance
-
-
-def retract_microwave_button(rig, name="kitchen_microwave", button="door"):
-    """Withdraw fingertips from a pressed button and check the retreat pose."""
-    stage = getattr(rig, "_microwave_button_stage", None)
-    if not stage or (stage["name"], stage["button"], stage["phase"]) != (name, button, "pressed"):
-        raise SkillFailure(f"microwave: {button} button has not been pressed")
-    tcp, _ = rig.kin.tcp(rig.q())
-    if np.linalg.norm(tcp - stage["contact"]) > 0.04:
-        raise SkillFailure(f"microwave: {button} button press pose is stale")
-    prefix = "microwave_door_button" if button == "door" else "microwave_button"
-    rig.move_to(stage["pre"], stage["R"], step=0.005, label=prefix + "_release", allow=LEGACY)
-    tcp, _ = rig.kin.tcp(rig.q())
-    error = float(np.linalg.norm(tcp - stage["pre"]))
-    if error > 0.04:
-        raise SkillFailure(f"microwave: {button} button retreat missed by {error:.3f} m")
-    rig._microwave_button_stage = None
-    rig.log("microwave_button_retracted", button=button, error_m=round(error, 4))
-    return error
-
-
-def press_microwave_start(rig, name="kitchen_microwave"):
-    """Compose approach, physical start press, and fingertip withdrawal."""
-    approach_microwave_button(rig, name, "start")
-    press_aligned_microwave_button(rig, name, "start")
-    retract_microwave_button(rig, name, "start")
-    return True
-
-
-def _press_microwave_door_control(rig, name):
-    """Compose approach, physical door-control press, and withdrawal."""
-    approach_microwave_button(rig, name, "door")
-    press_aligned_microwave_button(rig, name, "door")
-    retract_microwave_button(rig, name, "door")
-    return True
+def press_button(rig, button, on=None):
+    """Press the annotated button ``button`` ("<appliance>/<key>") with the closed right fingertips:
+    run_skill of the catalog's press (skill_jobs.press, skill_plans.plan_press) -- the reach, the press and
+    the way back out one plan, from a park whose search checks the press itself.  ``on``: what the press
+    switches its appliance's heat source to (None: nothing; the microwave's start key: on)."""
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["press"], {"button": button, "on": on})
 
 
 def clear_microwave_door_sweep(rig, name="kitchen_microwave"):
@@ -1746,7 +1614,7 @@ def open_microwave_door(rig, name="kitchen_microwave"):
         return q
     if abs(q - a["closed_q"]) > 0.10:
         raise SkillFailure(f"microwave: door is neither closed nor open ({q:.3f})")
-    _press_microwave_door_control(rig, name)
+    press_button(rig, f"{name}/door_button")
     clear_microwave_door_sweep(rig, name)
     return _set_microwave_hinge(rig, name, a["open_q"], "OPEN microwave: powered door")
 

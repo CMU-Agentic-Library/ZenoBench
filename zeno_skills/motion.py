@@ -1228,6 +1228,11 @@ class Motion:
         P = np.vstack(P) if P else np.zeros((2, 3))
         return P.min(0), P.max(0)
 
+    def button_box(self, name):
+        """World AABB (lo, hi) of the annotated button ``name`` ("<appliance>/<key>")'s colliders, or None
+        (no collider owned by it: scene_geometry.buttons)."""
+        return self._owner_box(f"button:{name}") if self.by_owner.get(f"button:{name}") else None
+
     @staticmethod
     def _inside(a, b, pad=0.0):
         ca = (a[0] + a[1]) / 2
@@ -1406,12 +1411,15 @@ class Motion:
             return self._segments_free(arm, [np.asarray(q, float) for q in qs])
 
     def touch_owner(self, name):
-        """The collider owner of a Spec.touch name: the object, else the articulated part of that name."""
+        """The collider owner of a Spec.touch name: the object, else the articulated part of that name,
+        else the annotated button ("<appliance>/<key>": scene_geometry.buttons)."""
         if self.by_owner.get(f"object:{name}") or name in self.ann.objects:
             return f"object:{name}"
         if any(a["name"] == name for a in self.ann.articulated):
             return f"part:{name}"
-        raise KeyError(f"touch {name}: neither an object nor an articulated part")
+        if self.by_owner.get(f"button:{name}"):
+            return f"button:{name}"
+        raise KeyError(f"touch {name}: neither an object, an articulated part nor a button")
 
     @_timed("check_s")
     def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
@@ -1761,7 +1769,7 @@ class Motion:
         if getattr(self, "_static_boxes", None) is None:
             boxes = []
             for c in self.cols.items:
-                if c.owner == "static":
+                if G.is_static(c.owner):
                     T = G.world_pose(c, self.body_pose.get)
                     P = self._corners[c.name] @ T[:3, :3].T + T[:3, 3]
                     boxes.append(np.r_[P.min(0), P.max(0)])
@@ -1988,7 +1996,7 @@ class Motion:
                 gap = np.hypot(*(self._centre(c)[:2] - base)) - self._extent[c.name][1]
                 if c.owner not in held and gap < CULL:
                     self._mon_cols.append(c)
-                    if c.owner != "static" and gap < MONITOR_NEAR:
+                    if not G.is_static(c.owner) and gap < MONITOR_NEAR:
                         self._mon_near.add(c.owner)
         poses = self._live_poses(rig, record=False, owners=self._mon_near | {f"object:{n}" for n in carried})
         if carried:

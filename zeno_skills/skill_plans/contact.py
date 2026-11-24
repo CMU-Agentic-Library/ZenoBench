@@ -1,5 +1,6 @@
 """Contact skills (docs/motion/MOTION_ARCHITECTURE.md section 6, contact): an object pushed or dragged across its
-support by the closed fingers -- plan_slide; a held spoon stirred round inside a pot -- plan_stir.  Its trajectory is a task segment over the hand's travel
+support by the closed fingers -- plan_slide; a held spoon stirred round inside a pot -- plan_stir; an appliance's
+button pressed by the closed fingertips -- plan_press.  Its trajectory is a task segment over the hand's travel
 (primitives.Pushed: the object along n from where the fingers meet it, the hand rigid in its frame), checked
 whole with the object where each step of the push puts it, as far as the arm reaches from the park; where
 the object really went is read at the anchor after it."""
@@ -272,6 +273,93 @@ def _plan_stir(kin, state, stir, start, prior_plan, step):
             seg = free_leg(kin, s, FREE_HAND, JointSet((np.asarray(back, float),)), stage, q_from=q)
             if not isinstance(seg, Failure):
                 seg = _move(seg, steps_per_wp=4, smooth=True)
+        times[stage] = round(time.time() - t0, 3)
+        if isinstance(seg, Failure):
+            return Failure(seg.why, seg.segment, {"stage_s": times})
+        segs.append(seg)
+        q = seg.q_end
+    return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)
+
+
+PRESS_STAGES = ("press_arrive", "press_reach", "press_close_hand", "press_in", "press_toggle", "press_pressed",
+                "press_leave", "tuck")
+PRESS_ANCHORS = ("press_arrive", "press_pressed")   # the base as it stopped; the hand where the button stopped it
+PRESS_RELAY = "press_end"     # what the park search's ranking IK solves: the press's end (the tips on the button) --
+                              # a seed of press_reach's IK at the straight's start, as SLIDE_RELAY
+
+
+def plan_press(kin, state, press, rest_goals, start="press_arrive", prior=None, step=0.003):
+    """The button press["button"] ("<appliance>/<key>": a collider owner of its own, scene_geometry.buttons)
+    pressed by ``kin``'s closed fingertips from ``state``: press = {button, p, R (the TCP where the press ends:
+    the tips PRESS_DEPTH into the button's face, the hand turned R -- skill_jobs.press), u (the unit the press
+    goes in along: into the button), approach (m: it comes straight in from this far back along u), toggle
+    (None, or (appliance, on): what the press switches -- the heat source on / off, Actuator.toggle), seen_as
+    (the other names the contact monitor may report a touch of the button by: its annotated obstacle box)}:
+
+        press_arrive      anchor: the base as it stopped
+        press_reach       the free leg to ``approach`` in front of the press's end (decide_ik: _reach), the hand
+                          as it is
+        press_close_hand  close the fingers there, in free space: one blunt tip (closed where the arm stood, they
+                          closed on the pot it had just set on the stove: T07 microwave_holds_pot, 11-24)
+        press_in          the straight in: the fingertips onto the button and PRESS_DEPTH into its face (they
+                          may touch the button, nothing else of the appliance: Spec.touch)
+        press_toggle      the appliance switched (an action; none when press["toggle"] is None)
+        press_pressed     anchor: where the button stopped the hand
+        press_leave       out of the contact: straight back along -u as far as contact_extent measures
+                          (near_world: LEAVE_GAP clear, then LEAVE_MARGIN)
+        tuck              the first free of ``rest_goals`` (JointSet; never kept)
+
+    The button is static (the appliance's body): no Aim -- the press's end is a world pose.  From ``start``
+    on; ``prior`` as plan_slide's (a Plan: its motions that still hold kept, its decisions tried first; else
+    the park search's ranking solution of the press's end, PRESS_RELAY).  Plan or Failure."""
+    with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
+        return _plan_press(kin, state, press, rest_goals, start, prior, step)
+
+
+def _plan_press(kin, state, press, rest_goals, start, prior_plan, step):
+    i0 = PRESS_STAGES.index(start)
+    prior = decisions_of(prior_plan)
+    side, button = kin.side, press["button"]
+    p, R = np.asarray(press["p"], float), np.asarray(press["R"], float)
+    u = np.asarray(press["u"], float)
+    # the planner's button (Spec.touch); the monitor names a touch of it by the button's own annotated box as well
+    names = (button,) + tuple(n for n in press.get("seen_as", ()) if n != button)
+    on_it = Spec(allow=Allow(hand=side, links="fingers", touch=names, reason="the closed fingertips pressing the button"),
+                 fingers=True, exempt=False, touch=((button, "fingers"),))
+    q, s = state.q(side), state
+    segs, decided, times = [], {}, {}
+    for stage in PRESS_STAGES[i0:]:
+        t0 = time.time()
+        kept = _kept(kin, s, q, prior_plan, stage) if stage != "tuck" else None
+        if stage in PRESS_ANCHORS:
+            seg = anchor(stage, q, s, (), side)
+        elif stage == "press_close_hand":
+            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
+            s = with_width(s, side, 0.0)
+        elif stage == "press_reach":
+            seg = kept or _reach(kin, s, FREE_HAND, p, R, u, float(press["approach"]), q,
+                                 prior.get(stage, prior.get(PRESS_RELAY)), stage, step)
+            if not isinstance(seg, Failure) and seg.qs:     # the straight's start as the plan reaches it
+                decided[stage] = seg.q_end
+        elif stage == "press_in":
+            seg = kept or straight(kin, s, on_it, p, R, stage, step=step, q_from=q)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=4)
+        elif stage == "press_toggle":
+            if press.get("toggle") is None:
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            app, on = press["toggle"]
+            seg = Segment(stage, on_it, q, kind="action", action=("toggle", str(app), bool(on)))
+        elif stage == "press_leave":
+            seg = kept or _contact(kin, s, Spec(allow=LEAVE_CONTACT), -u, "near_world", stage, step, q,
+                                   steps_per_wp=3, smooth=True)
+            if not isinstance(seg, Failure) and not seg.qs:    # touching nothing: no exit
+                times[stage] = round(time.time() - t0, 3)
+                continue
+        else:                   # tuck: the first free of the fold, hanging -- chosen again whenever it is built
+            seg = free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)), stage,
+                           q_from=q)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
             return Failure(seg.why, seg.segment, {"stage_s": times})

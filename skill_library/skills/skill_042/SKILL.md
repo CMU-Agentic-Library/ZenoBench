@@ -52,9 +52,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `microwave_start_staged` — when button.button == 'start_button'
 
-1. `policy_027(@button.appliance, button=start)`
-2. `policy_028(@button.appliance, button=start)`
-3. `policy_029(@button.appliance, button=start)`
+1. `policy_032(@button.appliance)`
 - extra precondition `is_closed(articulated=@button.appliance)`
 - extra postcondition `heating(appliance=@button.appliance)`
 - Fails without moving the door when no task food is inside the cavity.

@@ -124,6 +124,14 @@ STIR_RADII = _t("STIR_RADII", (0.035, 0.022, 0.012), "m", "inherited, unmeasured
                 "a tighter circle needs less arm travel and still turns the tip round the pot's centre")
 STIR_ABOVE = _t("STIR_ABOVE", 0.06, "m", "inherited, unmeasured (old StirContainerPolicy's 'above'): the dip comes "
                 "straight down from where the tip is this far above the rim, and the leave goes back up to it")
+PRESS_DEPTH = _t("PRESS_DEPTH", 0.003, "m", "chosen: a press's fingertips go this far into the button's face (its "
+                 "collider's front, skill_jobs.press) -- a force's geometric stand-in (COLLISION_PLAN.md section 8): "
+                 "the button is rigid, the arm stops where the tips meet it, less than TARGET_TOL short.  The old "
+                 "press aimed the TCP 5 mm off the button's centre, the tips 22-29 mm inside it (stopped short, "
+                 "accepted up to 35 mm)")
+PRESS_APPROACH = _t("PRESS_APPROACH", 0.10, "m", "inherited (old microwave / stove press: the aligned pose 12 cm off "
+                    "the button's centre, the press to 5 mm off it): the press comes straight in from this far "
+                    "in front of where the tips touch")
 SLIDE_TOL = _t("SLIDE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = PLACE_TOL: an object pushed across its "
                "support is a coarse contact -- the push point less off only moves it a few mm otherwise; slide_1112 "
                "(11-12, 12 pushes): the reach, descent and push-in ended at most 0.02 mm further off than built and "

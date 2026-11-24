@@ -18,12 +18,13 @@ class ClickPolicy(AtomicPolicy):
         if button == "door":
             if "door_button" not in art:
                 raise SkillFailure(f"click {name}: no door button annotation")
-            skills._press_microwave_door_control(self.rig, name)
+            skills.press_button(self.rig, f"{name}/door_button")
             return True
         if button == "start":
             if "start_button" not in art:
                 raise SkillFailure(f"click {name}: no start button annotation")
-            return skills.press_microwave_start(self.rig, name)
+            skills.press_button(self.rig, f"{name}/start_button")
+            return True
         raise ValueError(f"click {name}: unknown button {button!r}")
 
 
@@ -31,28 +32,30 @@ class MicrowaveStartPolicy(AtomicPolicy):
     """Press start after checking door closure and food in the cavity."""
 
     def execute(self, name="kitchen_microwave"):
-        return skills.press_microwave_start(self.rig, name)
+        skills.press_button(self.rig, f"{name}/start_button")
+        return True
 
 
-class MicrowaveButtonApproachPolicy(AtomicPolicy):
-    """Align closed fingertips at the annotated door or start button."""
-
-    def execute(self, name="kitchen_microwave", *, button="door"):
-        return skills.approach_microwave_button(self.rig, name, button)
-
-
-class MicrowaveButtonPressPolicy(AtomicPolicy):
-    """Press only an aligned button, with measured TCP contact error."""
+class _RetiredStage(AtomicPolicy):
+    """A stage of the old staged press (approach, press, withdraw as three calls): a press is one plan now
+    (skills.press_button: run_skill press, skill_plans.plan_press) -- retired (skill_library/check.py
+    RETIRED_POLICIES), the id kept."""
 
     def execute(self, name="kitchen_microwave", *, button="door"):
-        return skills.press_aligned_microwave_button(self.rig, name, button)
+        raise SkillFailure(f"{type(self).__name__} is retired: press the {button} key with policy_032 / 033 / 094 "
+                           f"(one plan: the reach, the press and the way back out)")
 
 
-class MicrowaveButtonRetractPolicy(AtomicPolicy):
-    """Withdraw the hand from a pressed button and check its retreat pose."""
+class MicrowaveButtonApproachPolicy(_RetiredStage):
+    """Retired (policy_027): align closed fingertips at the annotated door or start button."""
 
-    def execute(self, name="kitchen_microwave", *, button="door"):
-        return skills.retract_microwave_button(self.rig, name, button)
+
+class MicrowaveButtonPressPolicy(_RetiredStage):
+    """Retired (policy_028): press only an aligned button."""
+
+
+class MicrowaveButtonRetractPolicy(_RetiredStage):
+    """Retired (policy_029): withdraw the hand from a pressed button."""
 
 
 class MicrowaveDoorClearPolicy(AtomicPolicy):

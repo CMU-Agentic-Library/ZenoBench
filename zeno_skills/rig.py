@@ -1005,6 +1005,14 @@ class Rig:
         """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""
         self.step(int(ticks))
 
+    def toggle(self, appliance, on):
+        """``appliance``'s heat source switched on / off (Actuator.toggle: a press's action) -- the task-level
+        thermal model (thermal.py: the microwave's cycle, the stove's burner)."""
+        if self.thermal is None or appliance not in self.thermal.on:
+            raise SkillFailure(f"toggle {appliance}: no heat source of that name")
+        self.thermal.on[appliance] = bool(on)
+        self.log("toggle", appliance=appliance, on=bool(on))
+
     def aim_head(self, yaw, pitch, steps=90):
         """The head to (yaw, pitch) rad (a head action segment): the command set, then at most ``steps``
         physics ticks, in tens, until both head joints are within HEAD_AT of it."""

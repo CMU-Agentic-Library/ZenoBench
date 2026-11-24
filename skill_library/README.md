@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**71 个 SkillNode**（`skill_001`–`skill_072`，`skill_002` 已退役不再使用，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_080`），共 **118 条按名词选择的 policy 路径**，覆盖 **101/117 个底层 policy**（16 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、48 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 47 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**71 个 SkillNode**（`skill_001`–`skill_072`，`skill_002` 已退役不再使用，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_080`），共 **118 条按名词选择的 policy 路径**，覆盖 **98/117 个底层 policy**（19 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、48 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 47 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
