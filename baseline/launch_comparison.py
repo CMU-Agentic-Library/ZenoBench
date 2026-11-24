@@ -12,10 +12,10 @@ from threading import Event, Lock
 from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_path
 
 
-def pending(out):
+def pending(out, first_row=0):
     jobs = episodes()
     subset = representatives(jobs)
-    for index in range(len(jobs)):
+    for index in range(first_row, len(jobs)):
         for method in METHODS:
             rows = subset if method in ABLATIONS else jobs
             if index >= len(rows):
@@ -33,7 +33,11 @@ def main():
     ap.add_argument("--vlm-ports", nargs=3, type=int, default=(8101, 8102, 8103),
                     help="Qwen 4B, Qwen 27B, InternVL 8B")
     ap.add_argument("--graph-bin", default="graph-manager-run")
+    ap.add_argument("--first-row", type=int, default=0,
+                    help="start at this zero-based index when earlier rows are dispatched separately")
     args = ap.parse_args()
+    if not 0 <= args.first_row < len(episodes()):
+        ap.error("--first-row must be a valid main-batch index")
     slots = []
     for spec in args.servers:
         port, count = map(int, spec.split("="))
@@ -45,7 +49,7 @@ def main():
     logs = root / "dispatch"
     logs.mkdir(parents=True, exist_ok=True)
     out = root / "planner"
-    jobs = pending(out)
+    jobs = pending(out, args.first_row)
     # A stopped dispatcher drains active episodes. A restart scans receipts again.
     stop = Event()
     for sig in (signal.SIGTERM, signal.SIGINT):

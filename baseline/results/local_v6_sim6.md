@@ -1,0 +1,114 @@
+# ZenoBench v6 本地 VLM 基线 · Isaac Sim 6.0.0.1
+
+**原生计分覆盖 7 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
+
+汇总时间为 2026-11-24 09:05 UTC。
+
+Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a684758db346189976a18a6c39`。cuRobo 0.7.8，Warp 1.13.0，PyTorch 2.11.0（CUDA 13.0）。
+
+本表是在 Isaac Sim 6.0.0.1 上独立运行的版本适配实验。仓库原协议使用 Isaac Sim 5.1。物理接触、相机渲染以及技能执行结果会受仿真版本影响。
+
+主实验按公开 v6 批次覆盖 30 个任务、151 个设计、316 种布局，种子 10–19。每个方法和模型计划运行相同的 1,510 局，技能调用上限为 60。消融在每种布局首次出现的种子上运行，共 316 局，并与相同种子的 ReAct 配对。
+
+计分需要规划器和 Isaac Sim 同时记录相同的任务、种子、episode hash 和最终判定。实际成功率使用环境的最终 success，得分大于零和满分率另列。仿真记录中的掉落规则可能使实际成功率低于正分率。
+
+## 主实验
+
+| 方法 | 模型 | 已计分/计划 | 中断待重跑 | 平均分 | 平均分 95% CI | 任务成功 | 正分 | 满分 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| OpenLoop | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| OpenLoop | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| OpenLoop | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| ReAct | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
+| ReAct | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
+| ReAct | internvl3.5-8b | 0/1510 | 0 | — | — | — | — | — |
+| CodeAsPolicies | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| CodeAsPolicies | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| CodeAsPolicies | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| SayPlan | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
+| SayPlan | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
+| SayPlan | internvl3.5-8b | 0/1510 | 0 | — | — | — | — | — |
+| GraphManager | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
+| GraphManager | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
+| GraphManager | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+
+置信区间按任务内的设计聚类，重采样 2,000 次。只有全量覆盖的行给出区间。
+
+## 按任务条件配对
+
+每种方法取三个模型都已计分的相同任务、布局和种子。单元格给出平均分及括号中的配对局数。前三列按任务类别划分，后两列按该布局的理想选择是否可用划分。
+
+| 方法 | 模型 | Control | Task | Action + Task | 理想选择可用 | 理想选择不可用 |
+| --- | --- | --- | --- | --- | --- | --- |
+| OpenLoop | qwen3.5-4b | 0.000 (1) | — | — | 0.000 (1) | — |
+| OpenLoop | qwen3.5-27b | 0.000 (1) | — | — | 0.000 (1) | — |
+| OpenLoop | internvl3.5-8b | 0.000 (1) | — | — | 0.000 (1) | — |
+| ReAct | qwen3.5-4b | — | — | — | — | — |
+| ReAct | qwen3.5-27b | — | — | — | — | — |
+| ReAct | internvl3.5-8b | — | — | — | — | — |
+| CodeAsPolicies | qwen3.5-4b | 0.000 (1) | — | — | 0.000 (1) | — |
+| CodeAsPolicies | qwen3.5-27b | 0.000 (1) | — | — | 0.000 (1) | — |
+| CodeAsPolicies | internvl3.5-8b | 0.000 (1) | — | — | 0.000 (1) | — |
+| SayPlan | qwen3.5-4b | — | — | — | — | — |
+| SayPlan | qwen3.5-27b | — | — | — | — | — |
+| SayPlan | internvl3.5-8b | — | — | — | — | — |
+| GraphManager | qwen3.5-4b | — | — | — | — | — |
+| GraphManager | qwen3.5-27b | — | — | — | — | — |
+| GraphManager | internvl3.5-8b | — | — | — | — | — |
+
+## 提示和观测消融
+
+| 方法 | 模型 | 已计分/计划 | 中断待重跑 | 平均分 | 平均分 95% CI | 任务成功 | 正分 | 满分 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ReActHint | qwen3.5-4b | 0/316 | 0 | — | — | — | — | — |
+| ReActHint | qwen3.5-27b | 0/316 | 0 | — | — | — | — | — |
+| ReActHint | internvl3.5-8b | 0/316 | 0 | — | — | — | — | — |
+| ReActPrivileged | qwen3.5-4b | 0/316 | 0 | — | — | — | — | — |
+| ReActPrivileged | qwen3.5-27b | 0/316 | 0 | — | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | 0/316 | 0 | — | — | — | — | — |
+
+| 消融 | 模型 | 配对数 | ReAct 平均分 | 消融平均分 | 差值 |
+| --- | --- | --- | --- | --- | --- |
+| ReActHint | qwen3.5-4b | 0 | — | — | — |
+| ReActHint | qwen3.5-27b | 0 | — | — | — |
+| ReActHint | internvl3.5-8b | 0 | — | — | — |
+| ReActPrivileged | qwen3.5-4b | 0 | — | — | — |
+| ReActPrivileged | qwen3.5-27b | 0 | — | — | — |
+| ReActPrivileged | internvl3.5-8b | 0 | — | — | — |
+
+## 执行与推理成本
+
+执行错误列统计至少一个技能叶节点被仓库归类为 execution 的局数，含后来恢复成功的局。同一局可能同时发生动作选择错误和执行错误。Graph Manager 的一个 Harness 回合可以向模型发多次请求，其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。
+
+| 方法 | 模型 | 出现执行错误/已计分 | 技能调用/局 | 模型查询/局 | 输入 token/局 | 输出 token/局 | 秒/局 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| OpenLoop | qwen3.5-4b | 1/1 | 1.00 | 1.00 | 10579 | 66 | 106.9 |
+| OpenLoop | qwen3.5-27b | 1/1 | 1.00 | 1.00 | 10579 | 228 | 334.8 |
+| OpenLoop | internvl3.5-8b | 0/1 | 1.00 | 1.00 | 13505 | 72 | 535.1 |
+| ReAct | qwen3.5-4b | — | — | — | — | — | — |
+| ReAct | qwen3.5-27b | — | — | — | — | — | — |
+| ReAct | internvl3.5-8b | — | — | — | — | — | — |
+| CodeAsPolicies | qwen3.5-4b | 1/1 | 1.00 | 1.00 | 10684 | 58 | 365.1 |
+| CodeAsPolicies | qwen3.5-27b | 1/1 | 2.00 | 1.00 | 10684 | 1856 | 213.2 |
+| CodeAsPolicies | internvl3.5-8b | 1/1 | 7.00 | 1.00 | 13610 | 243 | 183.9 |
+| SayPlan | qwen3.5-4b | — | — | — | — | — | — |
+| SayPlan | qwen3.5-27b | — | — | — | — | — | — |
+| SayPlan | internvl3.5-8b | — | — | — | — | — | — |
+| GraphManager | qwen3.5-4b | — | — | — | — | — | — |
+| GraphManager | qwen3.5-27b | — | — | — | — | — | — |
+| GraphManager | internvl3.5-8b | 1/1 | 2.00 | — | — | — | 428.3 |
+| ReActHint | qwen3.5-4b | — | — | — | — | — | — |
+| ReActHint | qwen3.5-27b | — | — | — | — | — | — |
+| ReActHint | internvl3.5-8b | — | — | — | — | — | — |
+| ReActPrivileged | qwen3.5-4b | — | — | — | — | — | — |
+| ReActPrivileged | qwen3.5-27b | — | — | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | — | — | — | — | — | — |
+
+## 脚本参考路线
+
+以下各局在 sticky/benchmark 下执行任务目录预写的动作和真实物体名。报告记录原生分数及第一个本应成功却失败的技能。参考路线的覆盖数单独统计。
+
+| 任务 | 布局 | 种子 | 代码 | 已执行/路线步数 | 任务结局 | 原生分数 | 执行错误 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| T01_book_to_dining_table | overhang_ready | 10 | 696211a +工作树 | 7/7 | 成功 | 1.0 | — |
+| T02_stack_blocks | block_put_away__gone_toy_block | 10 | 7846509 | 8/23 | 失败 | 0.0 | open · open kitchen_cabinet_4: no base pose can grasp the handle and ride the motion |

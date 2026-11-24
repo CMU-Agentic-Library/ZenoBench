@@ -2,11 +2,12 @@
 
 import argparse
 from collections import defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 import random
 from statistics import mean
 
-from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, read_json, representatives, result_path
+from baseline.comparison import ABLATIONS, MAIN, METHODS, MODELS, V6, episodes, read_json, representatives, result_path
 from benchmark.metrics import failure_class
 
 
@@ -40,6 +41,7 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
     summary = r["planner_summary"]
     return "scored", {**job, "exp_id": r["exp_id"], "config_hash": r["episode"]["config_hash"],
                       "episode_hash": n["episode_hash"], "score": n["score"]["score"],
+                      "runtime": n.get("runtime", {}),
                       "success": n["task_success"], "execution": execution, "skills": n["skill_calls"],
                       "queries": summary.get("vlm_queries"), "input_tokens": summary.get("input_tokens"),
                       "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"]}
@@ -79,7 +81,36 @@ def mean_and_n(rows):
     return f"{mean(r['score'] for r in rows):.3f} ({len(rows)})" if rows else "—"
 
 
-def build_report(out, native_dir, sim_version):
+def reference_table(directories):
+    catalog = {t["task_id"]: t for t in read_json(V6 / "tasks.json")["tasks"]}
+    rows = []
+    for directory in directories:
+        for path in sorted(directory.glob("*/*/result.json")):
+            result = read_json(path)
+            config = read_json(path.parent / "config.json")
+            if result["planner"] != "scripted" or result["profile"] != MAIN:
+                raise ValueError(f"expected a scripted {MAIN} reference in {path}")
+            task, route = result["task_id"], result["route"]
+            expected = len(catalog[task]["routes"][route]["steps"])
+            calls = result["calls"]
+            failure = next((c for c in calls if c["expect"] == "ok" and not c["feedback"]["success"]), None)
+            detail = "—"
+            if failure:
+                detail = (failure["eval"].get("leaf_error") or failure["feedback"].get("error") or "")
+                detail = f"{failure['skill']} · {detail}".replace("|", "\\|").replace("\n", " ")
+            code = config["code"]["commit"][:7] + (" +工作树" if config["code"]["dirty_files"] else "")
+            score = (result.get("score") or {}).get("score")
+            outcome = "中断" if result.get("crash") else ("成功" if result.get("task_success") else "失败")
+            rows.append([task, result["variant"], result["seed"], code, f"{len(calls)}/{expected}",
+                         outcome, score if score is not None and not result.get("crash") else "—",
+                         str(result.get("crash") or detail)])
+    return ["## 脚本参考路线", "",
+            "以下各局在 sticky/benchmark 下执行任务目录预写的动作和真实物体名。"
+            "报告记录原生分数及第一个本应成功却失败的技能。参考路线的覆盖数单独统计。", ""] + table(
+                ["任务", "布局", "种子", "代码", "已执行/路线步数", "任务结局", "原生分数", "执行错误"], rows)
+
+
+def build_report(out, native_dir, sim_version, reference_dirs=()):
     jobs = episodes()
     subset = representatives(jobs)
     lines = [f"# ZenoBench v6 本地 VLM 基线 · Isaac Sim {sim_version}", "",
@@ -87,7 +118,7 @@ def build_report(out, native_dir, sim_version):
               f"本表是在 Isaac Sim {sim_version} 上独立运行的版本适配实验。仓库原协议使用 Isaac Sim 5.1。"
               "物理接触、相机渲染以及技能执行结果会受仿真版本影响。"), "",
              "主实验按公开 v6 批次覆盖 30 个任务、151 个设计、316 种布局，种子 10–19。"
-             "每个方法和模型运行相同的 1,510 局，技能调用上限为 60。"
+             "每个方法和模型计划运行相同的 1,510 局，技能调用上限为 60。"
              "消融在每种布局首次出现的种子上运行，共 316 局，并与相同种子的 ReAct 配对。", "",
              "计分需要规划器和 Isaac Sim 同时记录相同的任务、种子、episode hash 和最终判定。"
              "实际成功率使用环境的最终 success，得分大于零和满分率另列。"
@@ -117,6 +148,22 @@ def build_report(out, native_dir, sim_version):
                            average(values, "queries"), average(values, "input_tokens", 0),
                            average(values, "output_tokens", 0), average(values, "wall_s", 1)])
     header = ["方法", "模型", "已计分/计划", "中断待重跑", "平均分", "平均分 95% CI", "任务成功", "正分", "满分"]
+    scored = sum(len(group) for group in scores.values())
+    planned = len(MODELS) * (len(jobs) * (len(METHODS) - len(ABLATIONS)) + len(subset) * len(ABLATIONS))
+    stacks = {tuple(sorted(row["runtime"].items())) for group in scores.values() for row in group.values()}
+    if len(stacks) > 1:
+        raise ValueError(f"multiple simulation runtime configurations in one comparison: {stacks}")
+    coverage = f"**原生计分覆盖 {scored:,} / {planned:,} 局。**"
+    if scored < planned:
+        coverage += " 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。"
+    provenance = [coverage, "", f"汇总时间为 {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}。", ""]
+    if stacks:
+        runtime = dict(next(iter(stacks)))
+        if runtime.get("lab_compat_sha256"):
+            provenance.extend([f"Isaac Lab 适配清单 SHA-256 为 `{runtime['lab_compat_sha256']}`。"
+                               f"cuRobo {runtime.get('nvidia-curobo')}，Warp {runtime.get('warp')}，"
+                               f"PyTorch {runtime.get('torch')}（CUDA {runtime.get('torch_cuda')}）。", ""])
+    lines[2:2] = provenance
     lines += table(header, main_rows)
     lines += ["置信区间按任务内的设计聚类，重采样 2,000 次。只有全量覆盖的行给出区间。", "",
               "## 按任务条件配对", "",
@@ -151,9 +198,12 @@ def build_report(out, native_dir, sim_version):
     lines += ["## 执行与推理成本", "",
               "执行错误列统计至少一个技能叶节点被仓库归类为 execution 的局数，含后来恢复成功的局。"
               "同一局可能同时发生动作选择错误和执行错误。Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
-              "其日志未给出可比的后端请求数和 token 数。", ""]
+              "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
+              "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", ""]
     lines += table(["方法", "模型", "出现执行错误/已计分", "技能调用/局", "模型查询/局",
                     "输入 token/局", "输出 token/局", "秒/局"], traces)
+    if reference_dirs:
+        lines += reference_table(reference_dirs)
     return "\n".join(lines)
 
 
@@ -163,9 +213,11 @@ def main():
     ap.add_argument("--native-dir", required=True, type=Path, help="env_service --log-dir")
     ap.add_argument("--sim-version", default="5.1.0.0")
     ap.add_argument("--markdown", required=True, type=Path)
+    ap.add_argument("--reference-dir", action="append", type=Path, default=[],
+                    help="additional same-version scripted run_episode output, repeatable")
     args = ap.parse_args()
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown.write_text(build_report(args.out, args.native_dir, args.sim_version), encoding="utf-8")
+    args.markdown.write_text(build_report(args.out, args.native_dir, args.sim_version, args.reference_dir), encoding="utf-8")
 
 
 if __name__ == "__main__":
