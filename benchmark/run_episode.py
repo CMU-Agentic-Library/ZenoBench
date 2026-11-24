@@ -192,7 +192,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 _, record = ep.call({"contract": act["skill"], "args": act.get("args", {})})
                 log_row({"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": record,
                          "planner_note": act.get("note", ""), "planner_s": planner_s,
-                         "planner_usage": act.get("usage"),
+                         "planner_usage": act.get("usage"), "planner_trace": act.get("trace"),
                          "wall_s": round(time.time() - t1, 1), "tick": rig.tick, "state_before": before,
                          "state": state_summary(rig, task), "eval": record.pop("eval")})
         else:

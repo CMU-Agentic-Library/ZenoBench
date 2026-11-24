@@ -4,6 +4,7 @@ Settings come from the environment, because run_episode builds the planner with 
 
 * SHIFT_MODEL      - model name for baseline.vlm.make_client (default claude-opus-5-5)
 * SHIFT_MAX_CALLS  - the call budget the planner is told (default 60, the benchmark budget)
+* SHIFT_REVEAL     - off | objects | full: registry facts in the prompt (baseline/reveal.py; default off)
 """
 
 from __future__ import annotations
@@ -47,6 +48,8 @@ class BaselinePlanner(Planner):
         self.usage = {"vlm_queries": 0, "input_tokens": 0, "output_tokens": 0, "cached_input_tokens": 0,
                       "latency_s": 0.0, "parse_errors": 0}
         self.stop_reason = None
+        self.trace = []                   # every VLM query since the last emitted call: prompt, raw answer, usage
+        self.system_logged = None
 
     def observe(self, obs):
         """Attach the last call's result (the observation's last_result) to the history."""
@@ -55,6 +58,10 @@ class BaselinePlanner(Planner):
 
     def ask(self, system, user, images=()):
         text, u = self.client.chat(system, user, images)
+        q = {"user": user, "images": [str(i) for i in images], "answer": text, "usage": u}
+        if system != self.system_logged:  # the system prompt is logged once, and again whenever it changes
+            q["system"], self.system_logged = system, system
+        self.trace.append(q)
         self.usage["vlm_queries"] += 1
         for k in ("input_tokens", "output_tokens", "cached_input_tokens"):
             self.usage[k] += int(u.get(k) or 0)
@@ -63,9 +70,12 @@ class BaselinePlanner(Planner):
 
     def emit(self, call, note="", usage=None):
         self.history.append({"skill": call["skill"], "args": call.get("args", {})})
-        return {"skill": call["skill"], "args": call.get("args", {}), "note": note, "usage": usage}
+        trace, self.trace = self.trace, []
+        return {"skill": call["skill"], "args": call.get("args", {}), "note": note, "usage": usage, "trace": trace}
 
     def summary(self) -> dict:
         """Written to result.json["planner"] by run_episode (totals include the finishing query)."""
-        return {"name": self.name, "model": self.model, "max_calls": self.max_calls,
-                "stop_reason": self.stop_reason, **self.usage}
+        from baseline.reveal import mode
+        return {"name": self.name, "model": self.model, "max_calls": self.max_calls, "reveal": mode(),
+                "stop_reason": self.stop_reason, **self.usage,
+                "final_trace": getattr(self, "trace", [])}   # queries after the last call (finish, parse errors)

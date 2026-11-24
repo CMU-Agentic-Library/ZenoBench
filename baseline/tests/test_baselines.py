@@ -98,7 +98,10 @@ class TestReAct(unittest.TestCase):
         a2 = p.next_call(obs(last={"success": True, "error_code": None, "outputs": {"base_pose": [5.5, 1.7, 0]},
                                    "now_visible": ["mug_1"]}, visible=["mug_1"]))
         self.assertEqual(a2, {"skill": "pick", "args": {"object": "mug_1"}, "note": "grab it.",
-                              "usage": a2["usage"]})
+                              "usage": a2["usage"], "trace": a2["trace"]})
+        self.assertEqual([q["answer"] for q in a2["trace"]], ["I am not sure", fake.calls and a2["trace"][1]["answer"]])
+        self.assertIn("system", a1["trace"][0])                                # system prompt logged once
+        self.assertNotIn("system", a2["trace"][0])
         self.assertIn("could not be used", fake.calls[2][1])                   # retry note in the prompt
         self.assertIn('1. navigate("destination":"kitchen_island/top") -> OK', fake.calls[2][1])
         self.assertIn("now visible: mug_1", fake.calls[2][1])

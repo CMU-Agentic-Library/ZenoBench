@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from baseline.base import BaselinePlanner
 from baseline.parse import ParseError, json_objects, parse_plan, thought
+from baseline.reveal import object_section, place_tags
 from baseline.prompt import _j, image_paths, render_history, system_prompt
 
 ANSWER = """\
@@ -64,7 +65,9 @@ class SceneGraph:
                 k = rec.get("kind")
                 if k == "support":
                     par = rec.get("furniture") if rec.get("furniture") in self.kind else rec.get("room") or ""
-                    self._add(name, par, "surface", f"{rec.get('category') or ''} z={rec.get('z', 0):.2f}")
+                    tags = place_tags(name)                      # SHIFT_REVEAL=full only
+                    self._add(name, par, "surface", f"{rec.get('category') or ''} z={rec.get('z', 0):.2f}"
+                              + (f"; {tags}" if tags else ""))
                 elif k == "button":
                     self._add(name, rec.get("appliance") or "", "button")
             for name, rec in places.items():
@@ -157,7 +160,8 @@ class SayPlan(BaselinePlanner):
                  "Calls so far:\n" + render_history(self.history),
                  f"Robot: {_j(robot)}" if robot else "",
                  "In view now: " + (", ".join(vis) if vis else "(nothing)"),
-                 "Scene graph:\n" + self.graph.render()]
+                 "Scene graph:\n" + self.graph.render(),
+                 object_section(observation)]                    # SHIFT_REVEAL=objects/full only
         if why:
             parts.append(f"Replanning because {why}.")
         if extra:
