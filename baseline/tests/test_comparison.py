@@ -54,7 +54,10 @@ def test_checked_after_model_crash_remains_retryable(tmp_path):
     assert len(list(directory.glob("attempts/*/failed.json"))) == 1
 
 
-def test_execution_failure_and_task_score_use_native_verdict(tmp_path):
+@pytest.mark.parametrize(("tier", "value", "success", "best_success"),
+                         [("second", 0.6, False, False), ("best", 1.0, False, False),
+                          ("second", 0.6, True, False), ("best", 1.0, True, True)])
+def test_execution_failure_and_task_score_use_native_verdict(tmp_path, tier, value, success, best_success):
     job = {"task": "test", "variant": "v", "seed": 10}
     planner = tmp_path / "planner"
     native = tmp_path / "native" / "test" / "exp"
@@ -62,15 +65,16 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path):
         p.mkdir(parents=True)
     meta = {"profile": MAIN, "task_id": "test", "variant": "v", "seed": 10, "exp_id": "exp"}
     runtime = {"isaacsim": "6.0.0.1", "lab_compat_sha256": "abc"}
-    score = {"score": 0.6}
+    score = {"score": value, "tier": tier}
     run_http.write_report(planner / "result.json", {**meta, "model": "local", "policy": "baseline.react:ReAct",
                           "max_calls": 60, "episode": {"episode_hash": "id", "config_hash": "layout", "runtime": runtime},
-                          "success": False, "score": score, "wall_s": 5, "planner_summary": {"vlm_queries": 2}})
+                          "success": success, "score": score, "wall_s": 5, "planner_summary": {"vlm_queries": 2}})
     run_http.write_report(native / "result.json", {**meta, "episode_hash": "id", "incomplete": False,
-                          "task_success": False, "score": score, "skill_calls": 1, "runtime": runtime,
+                          "task_success": success, "score": score, "skill_calls": 1, "runtime": runtime,
                           "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}}]})
     status, r = read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "6.0.0.1")
     assert status == "scored"
-    assert r["score"] == 0.6 and not r["success"] and r["execution"]
+    assert r["score"] == value and r["success"] == success and r["execution"]
+    assert r["best_success"] == best_success
     with pytest.raises(ValueError, match="simulator version mismatch"):
         read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "5.1.0.0")

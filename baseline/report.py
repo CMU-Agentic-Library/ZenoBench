@@ -49,7 +49,8 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
     return "scored", {**job, "exp_id": r["exp_id"], "config_hash": r["episode"]["config_hash"],
                       "episode_hash": n["episode_hash"], "score": n["score"]["score"],
                       "runtime": n.get("runtime", {}),
-                      "success": n["task_success"], "execution": execution, "skills": n["skill_calls"],
+                      "success": n["task_success"], "best_success": n["task_success"] and n["score"]["tier"] == "best",
+                      "execution": execution, "skills": n["skill_calls"],
                       "queries": summary.get("vlm_queries"), "input_tokens": summary.get("input_tokens"),
                       "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"]}
 
@@ -174,8 +175,9 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
     lines += table(header, main_rows)
     lines += ["置信区间按任务内的设计聚类，重采样 2,000 次。只有全量覆盖的行给出区间。", "",
               "## 按任务条件配对", "",
-              "每种方法取三个模型都已计分的相同任务、布局和种子。单元格给出平均分及括号中的配对局数。"
-              "前三列按任务类别划分，后两列按该布局的理想选择是否可用划分。", ""]
+              "每种方法取三个模型都已计分的相同任务、布局和种子。前三列按任务类别给出平均分和配对局数，"
+              "接下来两列按布局中的理想选项是否可用划分。理想选项不可用时，v6 给该布局的最佳替代结果记 1.0 分。"
+              "最后一列统计达到这一档且通过环境最终成功检查的局数，分母是理想选项不可用的配对局。", ""]
     for method in METHODS:
         if method in ABLATIONS:
             continue
@@ -188,8 +190,10 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
             slices.append([method, model, *(mean_and_n([r for r in vals if r["category"] == c])
                                            for c in ("control", "task", "action_task")),
                            *(mean_and_n([r for r in vals if r["ideal_present"] == present])
-                             for present in (True, False))])
-    lines += table(["方法", "模型", "Control", "Task", "Action + Task", "理想选择可用", "理想选择不可用"], slices)
+                             for present in (True, False)),
+                           ratio([r for r in vals if not r["ideal_present"]], "best_success")])
+    lines += table(["方法", "模型", "Control", "Task", "Action + Task", "理想选择可用", "理想选择不可用",
+                    "达成布局最佳替代/理想选择不可用"], slices)
     lines += ["## 提示和观测消融", ""] + table(header, ablation_rows)
     for method in ABLATIONS:
         for model in MODELS:
