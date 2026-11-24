@@ -69,8 +69,17 @@ def test_reference_table_matches_native_layout_and_distinguishes_missing_from_ze
         "score": {"score": 1.0}, "task_success": True})
     scores = {("ReAct", model): {} for model in MODELS}
     peer = {"score": 0.0, "success": False, "config_hash": "layout", "episode_hash": "initial"}
-    scores["ReAct", "qwen3.5-27b"][task, variant, seed] = peer
-    assert "| 1.0 成功 | — | 0.0 失败 | — |" in "\n".join(reference_table([tmp_path], scores))
+    key = task, variant, seed
+    jobs = [{"task": task, "variant": variant, "seed": seed}]
+    scores["ReAct", "qwen3.5-27b"][key] = peer
+    partial = "\n".join(reference_table([tmp_path], scores, jobs))
+    assert "| 1.0 成功 | — | 0.0 失败 | — |" in partial
+    assert "| 脚本至少一次成功 | 0 | — | — | — |" in partial
+    scores["ReAct", "qwen3.5-4b"][key] = {**peer, "score": 1.0, "success": True}
+    scores["ReAct", "internvl3.5-8b"][key] = peer.copy()
+    assert "| 脚本至少一次成功 | 1 | 1/1 | 0/1 | 0/1 |" in "\n".join(reference_table([tmp_path], scores, jobs))
+    other_layout_first = [{**jobs[0], "variant": "other_layout"}, *jobs]
+    assert "| 脚本至少一次成功 | 0 | — | — | — |" in "\n".join(reference_table([tmp_path], scores, other_layout_first))
     peer["episode_hash"] = "another initial state"
     with pytest.raises(ValueError, match="scripted/ReAct episode mismatch"):
         reference_table([tmp_path], scores)

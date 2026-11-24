@@ -99,8 +99,13 @@ def mean_and_n(rows):
     return f"{mean(r['score'] for r in rows):.3f} ({len(rows)})" if rows else "—"
 
 
-def reference_table(directories, scores):
+def reference_table(directories, scores, jobs=()):
     catalog = {t["task_id"]: t for t in read_json(V6 / "tasks.json")["tasks"]}
+    first_by_task = {}
+    for job in jobs:
+        first_by_task.setdefault(job["task"], episode_key(job))
+    panel = set(first_by_task.values())
+    scripted_success = {}
     rows = []
     for directory in directories:
         for path in sorted(directory.glob("*/*/result.json")):
@@ -120,6 +125,8 @@ def reference_table(directories, scores):
             score = (result.get("score") or {}).get("score")
             outcome = "中断" if result.get("crash") else ("成功" if result.get("task_success") else "失败")
             key = task, result["variant"], result["seed"]
+            if key in panel and score is not None and outcome != "中断":
+                scripted_success[key] = scripted_success.get(key, False) or result["task_success"]
             matched = []
             for model in MODELS:
                 peer = scores["ReAct", model].get(key)
@@ -133,8 +140,20 @@ def reference_table(directories, scores):
             rows.append([task, result["variant"], result["seed"], code, f"{len(calls)}/{expected}",
                          f"{score:.1f} {outcome}" if score is not None and not result.get("crash") else outcome,
                          *matched, str(result.get("crash") or detail)])
-    return ["## 脚本参考路线", "",
-            "以下各局在 sticky/benchmark 下执行任务目录预写的动作和真实物体名。"
+    lines = ["## 脚本参考路线", ""]
+    if panel:
+        paired = {key for key in scripted_success if all(key in scores["ReAct", m] for m in MODELS)}
+        lines += [f"每个任务取预先选定的第一个布局。脚本与三个标准 ReAct 均有终态的布局共 "
+                  f"{len(paired)} / {len(panel)} 个。每个布局只计一次，单列的校准局和诊断局不进入该分母。"
+                  "脚本成功给出同一初始条件下可行的一条路线。", ""]
+        matched_rows = []
+        for passed, label in [(True, "脚本至少一次成功"), (False, "脚本尝试均失败")]:
+            keys = [key for key in paired if scripted_success[key] == passed]
+            matched_rows.append([label, len(keys), *[
+                count_ratio(sum(scores["ReAct", model][k]["success"] for k in keys), len(keys))
+                for model in MODELS]])
+        lines += table(["脚本终态", "四方已配对布局数", *(f"{m} 成功/配对局" for m in MODELS)], matched_rows)
+    return lines + ["以下各局在 sticky/benchmark 下执行任务目录预写的动作和真实物体名。"
             "三个模型栏给出同一任务、布局、种子和初始局哈希下标准 ReAct 的原生分数及最终成功判定。"
             "横线表示该模型尚无这局的判定。脚本执行错误列显示第一个本应成功却失败的技能，"
             "一条脚本路线失败时，其他动作序列仍可能可行。脚本局单独计数。", ""] + table(
@@ -274,7 +293,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
     lines += table(["方法", "模型", "技能调用/局", "模型查询/局",
                     "输入 token/局", "输出 token/局", "秒/局", "停止原因与局数"], traces)
     if reference_dirs:
-        lines += reference_table(reference_dirs, scores)
+        lines += reference_table(reference_dirs, scores, jobs)
     return "\n".join(lines)
 
 
