@@ -1,0 +1,32 @@
+# sticky/benchmark plus the GT object list: the planner also sees every task object with its
+# position (observation.gt_objects), still anonymized, and nothing else extra (no goal status, same
+# camera, same gate, same budget).  For the "privileged ReAct" upper bound of the SHIFT baselines
+# (docs/guides/BASELINE_PLAN_zh.md): it separates "could not find it" from "did not substitute well".
+# The gate still refuses an object the robot has not observed itself, so the planner must still go
+# and look; it only no longer has to search.
+execution:
+  gate: true
+  nested_repair: false
+  auto_recovery: false
+  advisory: [grasp_clearance, edge_overhang]
+  mask_feedback: true
+  occlusion: true
+  static_explore: true
+  sticky_hands: carry
+observation:
+  cameras: [head]
+  image_size: [480, 640]
+  focal_length_mm: 10.0
+  gt_objects: true
+  visible_objects: true
+  observation_cache: true
+  known_places: true
+  robot: {base_pose: true, held: true, room: true, temperatures: observed}
+  task_status: false
+  last_result: true
+  anonymize_names: true
+evaluation:
+  drops_fail: true
+allow_leak: true               # deliberate: this profile exists to show the GT object list
+limits:
+  max_calls: task

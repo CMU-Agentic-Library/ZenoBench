@@ -2,10 +2,39 @@
 
 SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_zh.md`](../docs/guides/BASELINE_PLAN_zh.md)。
 
-| 目录 / 模块 | 方法 | 状态 |
+| 文件 / 目录 | 方法 | 状态 |
 |---|---|---|
+| `react.py` `ReAct` | ReAct / tool-use：每步把指令、观察和历史交给 VLM，简短思考后给一个调用或 finish | 已写，离线测试通过，未在仿真里跑过 |
+| `react.py` `ReActHint` | 消融：同上，system prompt 多一句"不可用时可以用合理替代，但能用原物就不换" | 已写 |
+| `react.py` `ReAct` + `--profile sticky/privileged` | 上界：同一个 ReAct，额外看到所有任务物体及位置（GT，仍匿名），不给目标状态 | 已写（profile 在 `episode/profiles/sticky/privileged.yaml`） |
+| `human.py` `Human` | 人类参考：人在终端里看到和 VLM 完全一样的文字和图片路径，输入调用 | 已写 |
 | `graph_manager/` | Graph Manager：子目标 + 每个子目标一个 skill DAG，子目标边界或失败时由 VLM 决定 continue / 重规划 / finish | submodule（`b766b66`），待接入本仓库的技能库和统一设置 |
-| （待写） | VLM open-loop、ReAct / tool-use、Code-as-Policies、SayPlan 式 | 见计划第 5 节 |
+| （待写） | VLM open-loop、Code-as-Policies、SayPlan 式 | 见计划第 5 节 |
+
+共用组件：`base.py`（技能菜单、调用历史、token 统计）、`vlm.py`（四家模型一个 `chat()`）、`prompt.py`（技能说明、观察、历史的文字）、`parse.py`（从回答里取出调用）。
+
+## 运行
+
+```bash
+# 依赖（按用到的模型装）：pip install anthropic openai
+# Claude: ANTHROPIC_API_KEY；GPT: OPENAI_API_KEY；Gemini: GEMINI_API_KEY；
+# Qwen: 本地 vLLM（baseline/graph_manager/examples/vllm-qwen3.5-4b.compose.yml，端口 8001），或设 SHIFT_VLLM_URL
+SHIFT_MODEL=claude-opus-5-5 $ISAACLAB_PYTHON benchmark/run_episode.py \
+    --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside --seed 10 \
+    --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark
+
+#   消融：--policy baseline.react:ReActHint
+#   上界：--policy baseline.react:ReAct --profile sticky/privileged
+#   人类：--policy baseline.human:Human（单个 episode 跑，不能用 --batch）
+
+python -m pytest baseline/tests -q          # 离线测试：假模型、假观察，不需要仿真和 API
+```
+
+- 设置都从环境变量读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。
+- 四家模型拿到完全相同的文字和 JSON 回答格式，不用各家的原生工具调用。每次请求都是无状态的一问一答，历史由 planner 自己写进 prompt（最近 8 步完整，更早的压成一行）。
+- 回答解析不了时再问一次，最多 2 次；这算 VLM 查询，不算技能调用。
+- `calls.jsonl` 每行多了 `planner_usage`（这一步的 token），`result.json` 多了 `planner_summary`（整局的 VLM 查询数、token、停止原因，含最后 finish 那一问）。
+- 人类 planner 会提前拦住拼错的技能名，不浪费调用；VLM 拼错会被环境拒绝并计入预算。
 
 ## graph_manager/
 

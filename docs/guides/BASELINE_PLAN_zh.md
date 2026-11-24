@@ -11,12 +11,22 @@
 | # | 方法 | 角色 | 计划何时改 | 模型 | 现状 |
 |---|---|---|---|---|---|
 | 1 | VLM open-loop | 证明闭环必要 | 从不：开头一次给出整份计划 | 4 个（见下） | 要写 |
-| 2 | ReAct / tool-use | 平铺、每步反馈 | 每次调用之后 | 4 个 | 要写 |
+| 2 | ReAct / tool-use | 平铺、每步反馈 | 每次调用之后 | 4 个 | 已写（`baseline/react.py`），未在仿真里跑过 |
 | 3 | Code-as-Policies | 用代码表示计划 | 程序里的分支 | 4 个 | 要写 |
 | 4 | SayPlan 式 | 场景图记忆 + 搜索 | 场景图搜索后重规划 | 4 个 | 要写 |
-| 5 | Graph Manager | skill graph 规划器（方法论文中作为 ours） | 每个子目标边界，以及失败时 | 4 个 | 代码已放进 `baseline/graph_manager/`，要在 v6 上统一设置后重跑 |
+| 5 | Graph Manager | skill graph 规划器（方法论文中作为 ours） | 每个子目标边界，以及失败时 | 4 个 | submodule `baseline/graph_manager/`，要在 v6 上统一设置后重跑 |
 
-暂不跑：Nominal script、Oracle（11-23 先删掉，之后需要上下界时再加回）、Retry-only、Reflexion、LLM+P、SayCan 式、相似度启发式。主表完成后再决定。
+参考行和消融（11-23 加）：
+
+| 行 | 做法 | 作用 | 范围 | 现状 |
+|---|---|---|---|---|
+| 人类参考 | 人用和 VLM 完全一样的接口玩（`baseline/human.py`） | 证明任务在这套接口下可完成，量出 VLM 和人的差距 | 测试任务，每个 variant 1 个 seed | 已写 |
+| GT 上界 | ReAct + `--profile sticky/privileged`（多给所有任务物体及位置，不给目标状态） | 把差距拆成"找不到"和"不会换" | 主表一行，模型同主表 | 已写 |
+| 替换提示（消融） | `ReActHint`：prompt 多一句"可以合理替代，但能用原物就不换" | 检验只靠 prompt 能不能解决 SHIFT，并看过度替换 | 消融表 | 已写 |
+
+Inner Monologue 归到 ReAct、ProgPrompt 归到 CaP，引用即可，不单独跑。
+
+暂不跑：Nominal script、Oracle（11-23 先删掉，之后需要上下界时再加回）、Retry-only、Reflexion（要跨 episode 多次尝试，和每 episode 1 次冲突）、LLM+P（71 个技能写 PDDL 成本高、替换语义难表达）、SayCan 式、相似度启发式。主表完成后再决定。
 
 模型：每个 VLM 方法用 4 个模型各跑一遍：
 
@@ -65,10 +75,10 @@
 | 组件 | 文件 | 内容 |
 |---|---|---|
 | Planner 基类 | `baseline/base.py` | 继承 `benchmark.planners.Planner`；负责 `reset` / `next_call`，记录每次 VLM 调用的 usage |
-| VLM 客户端 | `baseline/vlm.py` | 统一接口 `chat(messages, images) -> text, usage`；后端：本地 Qwen3.5-4B（vLLM 或 HF）和闭源 API；有重试和超时；temperature 可配置 |
+| VLM 客户端 | `baseline/vlm.py` | 统一接口 `chat(system, user_text, images) -> text, usage`；后端按模型名：Claude（Anthropic SDK，缓存 system）、GPT、Gemini（OpenAI 兼容）、Qwen（本地 vLLM）；有重试；用各家默认采样设置（已写） |
 | Prompt 构建 | `baseline/prompt.py` | 技能说明（来自 `skills`）、指令、观察序列化（文字 + 头部图像）、上一步结果和错误码。四个方法共用同一套写法，只在"输出格式"段不同 |
 | 输出解析 | `baseline/parse.py` | 把模型输出解析成 `{"skill", "args"}`；格式错了重试 1 次，还错就记为一次无效调用并结束 |
-| 日志 | runner 小改动 | `run_episode.py` 的 `log_row` 现在只记 `planner_note`，要加上 `act.get("usage")`（VLM 调用次数、输入/输出 token） |
+| 日志 | runner 小改动（已做，11-23） | `calls.jsonl` 每行记 `planner_usage`；`result.json` 记 `planner_summary`（整局 VLM 查询数、token、停止原因）；固定 track 下 runner 也把 71 个技能的菜单传给 planner |
 
 ---
 
@@ -101,7 +111,7 @@
 - 放在最后写。12/21 还没完成就放附录或砍掉。
 
 ### 5.5 Graph Manager（`baseline/graph_manager/`）
-- 来源：[CMU-Agentic-Library/Graph_manager](https://github.com/CMU-Agentic-Library/Graph_manager) main `b766b66`（2026-10-29），原样导出（不含 .venv / run / build），说明见 `baseline/README.md`。
+- 来源：git submodule，指向 [CMU-Agentic-Library/Graph_manager](https://github.com/CMU-Agentic-Library/Graph_manager) main `b766b66`（2026-10-29），说明见 `baseline/README.md`。
 - 做法：一次给出全部子目标，每个子目标一个 skill DAG；每执行完一个子目标（或失败）回到 VLM：continue、给出剩余部分的新 task_plan，或 finish。走 env_service HTTP 接口，模型通过 DeepSeek Harness 调用。
 - 要做的事：
   - 技能说明：现在 vendored 的是旧快照（70 个技能，ZenoBench `eb4b3f0`），而且 `graph-manager-run` 每次运行前会从 git 拉最新的 ZenoBench。放进本仓库后改成直接读本仓库的 `skill_library/`，和冻结 commit 一致
@@ -162,7 +172,7 @@
 - [x] 调用预算统一为 60，进程内和 HTTP 一致（11-23）
 - [ ] env_service 启动时加 `--catalog benchmark/v6/tasks.json=sticky/benchmark`，Graph Manager 请求写 `profile: sticky/benchmark`
 - [ ] 所有方法都用 `sticky/benchmark`（进程内 runner 用 `--profile sticky/benchmark`；Graph Manager 用 `--env-profile`）
-- [ ] `sticky/benchmark.yaml` 开头的注释写着"不是计分用的 benchmark，结果不能和 physical/benchmark 比"；论文以 sticky 为准，这条注释要改
+- [x] `sticky/benchmark.yaml` 开头的注释已改为"SHIFT 论文的 baseline 以此 profile 计分"（11-23）
 - [ ] Graph Manager 看不到物体位置和目标状态
 - [ ] `split.json` 已提交
 - [ ] 每个 VLM 方法在 3 个 Control variant 上跑通，日志里有 usage
