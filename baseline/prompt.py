@@ -11,11 +11,11 @@ import json
 
 SYSTEM_TEMPLATE = """\
 You control a household mobile robot with two arms through a fixed set of skills.
-You are given a household instruction. Carry it out by calling skills, one call at a time.
+You are given a household instruction. Carry it out by calling skills.
 
-Each turn you see: the instruction, the robot's current observation (a head-camera image, the \
-objects it can see now, the objects it has seen before and where, the static places it knows, \
-its own state) and the calls made so far with their results.
+You see: the instruction, the robot's current observation (a head-camera image, the objects it can \
+see now, the objects it has seen before and where, the static places it knows, its own state) and \
+the calls made so far with their results.
 
 Rules:
 - Objects you have observed are named <category>_<k> (for example mug_1). Use only names that \
@@ -25,16 +25,20 @@ used until it is found (move to or look at places to find things).
 - You have at most {max_calls} skill calls in total, failed and refused calls included.
 - When the instruction is done, or you decide it cannot be done, finish.
 {extra}
-Answer format: first one or two short sentences of reasoning starting with "Thought:", then a \
-single JSON object on its own, either
-{{"skill": "<skill name>", "args": {{"<parameter>": <value>, ...}}}}
-or
-{{"finish": true, "reason": "<short reason>"}}
+{answer}
 
 Skills (name(parameters) - description; pre: preconditions; eff: effects; "?" marks an optional \
 parameter):
 {menu}
 """
+
+# ReAct: one call per turn
+REACT_ANSWER = """\
+Answer format: first one or two short sentences of reasoning starting with "Thought:", then a \
+single JSON object on its own, either
+{"skill": "<skill name>", "args": {"<parameter>": <value>, ...}}
+or
+{"finish": true, "reason": "<short reason>"}"""
 
 SUBSTITUTION_HINT = """\
 - If something the instruction asks for is not available or cannot be done, you may complete the \
@@ -65,8 +69,8 @@ def render_menu(skills) -> str:
     return "\n".join(lines)
 
 
-def system_prompt(skills, max_calls, substitution_hint=False) -> str:
-    return SYSTEM_TEMPLATE.format(max_calls=max_calls, menu=render_menu(skills),
+def system_prompt(skills, max_calls, substitution_hint=False, answer=REACT_ANSWER) -> str:
+    return SYSTEM_TEMPLATE.format(max_calls=max_calls, menu=render_menu(skills), answer=answer,
                                   extra=SUBSTITUTION_HINT if substitution_hint else "")
 
 

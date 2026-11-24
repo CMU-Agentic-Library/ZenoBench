@@ -17,6 +17,9 @@ from baseline.human import Human, parse_line                                  # 
 from baseline.parse import ParseError, parse_call                             # noqa: E402
 from baseline.prompt import render_menu, system_prompt, user_prompt           # noqa: E402
 from baseline.react import ReAct, ReActHint                                   # noqa: E402
+from baseline.open_loop import OpenLoop                                       # noqa: E402
+from baseline.code_policy import CodeAsPolicies                               # noqa: E402
+from baseline.sayplan import SayPlan                                          # noqa: E402
 
 MENU = [
     {"name": "navigate", "description": "Drive to a place.",
@@ -146,6 +149,125 @@ class TestHuman(unittest.TestCase):
         self.assertIn("[image] /nonexistent/head.png", text)
         self.assertIn("? no skill 'fly'", text)
         self.assertEqual(h.stop_reason, "finish")
+
+
+OK = {"success": True, "error_code": None}
+FAIL = {"success": False, "error_code": "GRASP_FAILED", "error": "slipped"}
+
+
+class TestOpenLoop(unittest.TestCase):
+    def test_runs_list_then_stops_on_failure(self):
+        fake = FakeClient(['Thought: x. {"plan": [{"skill": "navigate", "args": {"destination": "kitchen_island/top"}},'
+                           ' {"skill": "pick", "args": {"object": "mug_1"}}, {"skill": "pick", "args": {"object": "cup_1"}}]}'])
+        p = OpenLoop(model="fake", client=fake)
+        p.reset("Bring the mug.", MENU)
+        self.assertEqual(p.next_call(obs())["skill"], "navigate")
+        self.assertEqual(p.next_call(obs(last=OK))["args"], {"object": "mug_1"})
+        self.assertIsNone(p.next_call(obs(last=FAIL)))                       # stop at the first failure
+        self.assertEqual((p.stop_reason, p.usage["vlm_queries"], p.usage["plan_length"]), ("call_failed", 1, 3))
+        self.assertIn("whole plan", fake.calls[0][1])
+
+    def test_plan_used_up(self):
+        p = OpenLoop(model="fake", client=FakeClient(['{"plan": [{"skill": "navigate", "args": {}}]}']))
+        p.reset("x", MENU)
+        p.next_call(obs())
+        self.assertIsNone(p.next_call(obs(last=OK)))
+        self.assertEqual(p.stop_reason, "plan_done")
+
+
+class TestCodeAsPolicies(unittest.TestCase):
+    PROG = """Thought: try the mug, else any cup.
+```python
+r = navigate(destination="kitchen_island/top")
+mugs = find("mug")
+if mugs and pick(object=mugs[0]):
+    pass
+else:
+    for c in find("cup"):
+        if pick(c):
+            break
+```"""
+
+    def test_branching_program(self):
+        fake = FakeClient([self.PROG])
+        p = CodeAsPolicies(model="fake", client=fake)
+        p.reset("Bring the mug.", MENU)
+        self.assertEqual(p.next_call(obs(visible=["mug_1"]))["skill"], "navigate")
+        a = p.next_call(obs(last=OK, visible=["mug_1", "cup_2"]))
+        self.assertEqual(a["args"], {"object": "mug_1"})
+        a = p.next_call(obs(last=FAIL, visible=["mug_1", "cup_2"]))      # the else branch, positional arg
+        self.assertEqual(a["args"], {"object": "cup_2"})
+        self.assertIsNone(p.next_call(obs(last=OK)))
+        self.assertEqual((p.stop_reason, p.usage["vlm_queries"]), ("program_done", 1))
+
+    def test_error_regenerates_once(self):
+        fake = FakeClient(["```python\nnavigate(destination='a')\nx = 1 / 0\n```",
+                           "```python\nimport os\n```"])
+        p = CodeAsPolicies(model="fake", client=fake)
+        p.reset("x", MENU)
+        self.assertEqual(p.next_call(obs())["skill"], "navigate")
+        self.assertIsNone(p.next_call(obs(last=OK)))                        # ZeroDivision -> new program -> import fails
+        self.assertIn("ZeroDivisionError", fake.calls[1][1])
+        self.assertIn('1. navigate("destination":"a") -> OK', fake.calls[1][1])
+        self.assertTrue(p.stop_reason.startswith("program_error: ImportError"), p.stop_reason)
+        self.assertEqual(len(p.summary()["programs"]), 2)
+
+    def test_runaway_loop_and_budget(self):
+        fake = FakeClient(["```python\nwhile True:\n    pass\n```"])
+        p = CodeAsPolicies(model="fake", client=fake)
+        p.regenerations_left = 0
+        p.reset("x", MENU)
+        p.regenerations_left = 0
+        self.assertIsNone(p.next_call(obs()))
+        self.assertIn("lines", p.stop_reason)
+        fake = FakeClient(["```python\nwhile True:\n    pick(object='mug_1')\n```"])
+        p = CodeAsPolicies(model="fake", max_calls=3, client=fake)
+        p.reset("x", MENU)
+        n = 0
+        while p.next_call(obs(last=FAIL) if n else obs()) is not None:
+            n += 1
+        self.assertEqual((n, p.stop_reason), (3, "budget"))
+
+
+class TestSayPlan(unittest.TestCase):
+    def places(self):
+        o = obs()
+        o["known_places"] = {"kitchen": {"kind": "room"}, "bedroom": {"kind": "room"},
+                             "kitchen_island": {"kind": "furniture", "category": "island", "room": "kitchen"},
+                             "kitchen_island/top": {"kind": "support", "category": "island", "z": 0.86,
+                                                    "room": "kitchen", "furniture": "kitchen_island"},
+                             "bedside_table/top": {"kind": "support", "category": "table", "z": 0.5, "room": "bedroom"}}
+        return o
+
+    def test_search_plan_replan(self):
+        fake = FakeClient(['Thought: look in the kitchen. {"expand": "kitchen"}',
+                           '{"expand": "kitchen_island"}',
+                           '{"plan": [{"skill": "pick", "args": {"object": "cup_9"}}]}',          # not in graph
+                           '{"plan": [{"skill": "navigate", "args": {"destination": "kitchen_island/top"}},'
+                           ' {"skill": "pick", "args": {"object": "mug_1"}}]}',
+                           '{"plan": [{"skill": "pick", "args": {"object": "mug_1", "hand": "left"}}]}',
+                           '{"finish": true}'])
+        p = SayPlan(model="fake", client=fake)
+        p.reset("Bring the mug.", MENU)
+        o = self.places()
+        o["visible_objects"] = obs(visible=["mug_1"])["visible_objects"]
+        self.assertEqual(p.next_call(o)["skill"], "navigate")
+        first = fake.calls[0][1]
+        self.assertIn("- kitchen [room] (+1 inside, 1 seen objects; collapsed)", first)
+        self.assertNotIn("kitchen_island/top", first)                       # collapsed: no flat place list
+        self.assertIn("    - kitchen_island/top [surface, island z=0.86]\n      - mug_1 [object, mug (in view)]",
+                      fake.calls[2][1])
+        self.assertIn("'cup_9' is not in the scene graph", fake.calls[3][1])
+        o2 = dict(o, last_result=OK)
+        self.assertEqual(p.next_call(o2)["args"], {"object": "mug_1"})          # plan continues, no query
+        self.assertEqual(p.usage["vlm_queries"], 4)
+        o3 = dict(o, last_result=FAIL)
+        self.assertEqual(p.next_call(o3)["args"], {"object": "mug_1", "hand": "left"})   # replan after failure
+        self.assertIn("Replanning because the last call failed", fake.calls[4][1])
+        self.assertIsNone(p.next_call(dict(o, last_result=OK)))
+        s = p.summary()
+        self.assertEqual((s["rounds"], s["expansions"]), (3, 2))
+        self.assertTrue(s["stop_reason"].startswith("finish"))
 
 
 if __name__ == "__main__":

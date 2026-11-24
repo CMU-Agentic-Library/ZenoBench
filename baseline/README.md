@@ -4,12 +4,14 @@ SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_
 
 | 文件 / 目录 | 方法 | 状态 |
 |---|---|---|
-| `react.py` `ReAct` | ReAct / tool-use：每步把指令、观察和历史交给 VLM，简短思考后给一个调用或 finish | 已写，离线测试通过，未在仿真里跑过 |
+| `open_loop.py` `OpenLoop` | 1 VLM open-loop：开头一次查询写出整份调用列表，照着执行，第一次失败或列表用完就停 | 已写，离线测试通过 |
+| `code_policy.py` `CodeAsPolicies` | 3 Code-as-Policies：VLM 写一段 Python，每个技能是一个函数（技能本身不变）；程序在线程里跑，每调一次技能暂停交给环境；出错时可重写一次程序 | 已写，离线测试通过 |
+| `sayplan.py` `SayPlan` | 4 SayPlan 式：折叠的场景图（房间 → 家具 → 台面，物体看到才加入）；先展开节点搜索，再写剩余计划；失败或看到新物体时重规划；计划里有未知技能或没见过的物体会退回改一次 | 已写，离线测试通过 |
+| `react.py` `ReAct` | 2 ReAct / tool-use：每步把指令、观察和历史交给 VLM，简短思考后给一个调用或 finish | 已写，离线测试通过，未在仿真里跑过 |
 | `react.py` `ReActHint` | 消融：同上，system prompt 多一句"不可用时可以用合理替代，但能用原物就不换" | 已写 |
 | `react.py` `ReAct` + `--profile sticky/privileged` | 上界：同一个 ReAct，额外看到所有任务物体及位置（GT，仍匿名），不给目标状态 | 已写（profile 在 `episode/profiles/sticky/privileged.yaml`） |
 | `human.py` `Human` | 人类参考：人在终端里看到和 VLM 完全一样的文字和图片路径，输入调用 | 已写 |
-| `graph_manager/` | Graph Manager：子目标 + 每个子目标一个 skill DAG，子目标边界或失败时由 VLM 决定 continue / 重规划 / finish | submodule（`b766b66`），待接入本仓库的技能库和统一设置 |
-| （待写） | VLM open-loop、Code-as-Policies、SayPlan 式 | 见计划第 5 节 |
+| `graph_manager/` | 5 Graph Manager：子目标 + 每个子目标一个 skill DAG，子目标边界或失败时由 VLM 决定 continue / 重规划 / finish | submodule（`b766b66`），待接入本仓库的技能库和统一设置 |
 
 共用组件：`base.py`（技能菜单、调用历史、token 统计）、`vlm.py`（四家模型一个 `chat()`）、`prompt.py`（技能说明、观察、历史的文字）、`parse.py`（从回答里取出调用）。
 
@@ -23,6 +25,7 @@ SHIFT_MODEL=claude-opus-5-5 $ISAACLAB_PYTHON benchmark/run_episode.py \
     --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside --seed 10 \
     --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark
 
+#   其他方法：--policy baseline.open_loop:OpenLoop | baseline.code_policy:CodeAsPolicies | baseline.sayplan:SayPlan
 #   消融：--policy baseline.react:ReActHint
 #   上界：--policy baseline.react:ReAct --profile sticky/privileged
 #   人类：--policy baseline.human:Human（单个 episode 跑，不能用 --batch）

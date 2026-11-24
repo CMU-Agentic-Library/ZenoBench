@@ -10,10 +10,10 @@
 
 | # | 方法 | 角色 | 计划何时改 | 模型 | 现状 |
 |---|---|---|---|---|---|
-| 1 | VLM open-loop | 证明闭环必要 | 从不：开头一次给出整份计划 | 4 个（见下） | 要写 |
+| 1 | VLM open-loop | 证明闭环必要 | 从不：开头一次给出整份计划 | 4 个（见下） | 已写（`baseline/open_loop.py`） |
 | 2 | ReAct / tool-use | 平铺、每步反馈 | 每次调用之后 | 4 个 | 已写（`baseline/react.py`），未在仿真里跑过 |
-| 3 | Code-as-Policies | 用代码表示计划 | 程序里的分支 | 4 个 | 要写 |
-| 4 | SayPlan 式 | 场景图记忆 + 搜索 | 场景图搜索后重规划 | 4 个 | 要写 |
+| 3 | Code-as-Policies | 用代码表示计划 | 程序里的分支 | 4 个 | 已写（`baseline/code_policy.py`） |
+| 4 | SayPlan 式 | 场景图记忆 + 搜索 | 场景图搜索后重规划 | 4 个 | 已写（`baseline/sayplan.py`） |
 | 5 | Graph Manager | skill graph 规划器（方法论文中作为 ours） | 每个子目标边界，以及失败时 | 4 个 | submodule `baseline/graph_manager/`，要在 v6 上统一设置后重跑 |
 
 参考行和消融（11-23 加）：
