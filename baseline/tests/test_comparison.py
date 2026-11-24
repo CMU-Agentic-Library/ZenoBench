@@ -70,11 +70,14 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path, tier, val
                           "max_calls": 60, "episode": {"episode_hash": "id", "config_hash": "layout", "runtime": runtime},
                           "success": success, "score": score, "wall_s": 5, "planner_summary": {"vlm_queries": 2}})
     run_http.write_report(native / "result.json", {**meta, "episode_hash": "id", "incomplete": False,
-                          "task_success": success, "score": score, "skill_calls": 1, "runtime": runtime,
-                          "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}}]})
+                          "task_success": success, "score": score, "skill_calls": 3, "runtime": runtime,
+                          "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}},
+                                    {"eval": {"leaf_code": "NOT_OBSERVED"}},
+                                    {"feedback": {"success": True}, "eval": {"leaf_code": None}}]})
     status, r = read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "6.0.0.1")
     assert status == "scored"
     assert r["score"] == value and r["success"] == success and r["execution"]
     assert r["best_success"] == best_success
+    assert r["failure_classes"] == {"execution", "observation"}
     with pytest.raises(ValueError, match="simulator version mismatch"):
         read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "5.1.0.0")

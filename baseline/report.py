@@ -44,13 +44,15 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
         raise ValueError(f"native verdict mismatch between {final} and {native_path}")
     if n["skill_calls"] != len(n["calls"]):
         raise ValueError(f"native skill count mismatch in {native_path}")
-    execution = any(failure_class(c["eval"].get("leaf_code")) == "execution" for c in n["calls"])
+    failure_classes = {failure_class(c["eval"].get("leaf_code")) for c in n["calls"]
+                       if c["eval"].get("leaf_code") is not None or c.get("feedback", {}).get("success") is False}
     summary = r["planner_summary"]
     return "scored", {**job, "exp_id": r["exp_id"], "config_hash": r["episode"]["config_hash"],
                       "episode_hash": n["episode_hash"], "score": n["score"]["score"],
                       "runtime": n.get("runtime", {}),
                       "success": n["task_success"], "best_success": n["task_success"] and n["score"]["tier"] == "best",
-                      "execution": execution, "skills": n["skill_calls"],
+                      "execution": "execution" in failure_classes, "failure_classes": failure_classes,
+                      "skills": n["skill_calls"],
                       "queries": summary.get("vlm_queries"), "input_tokens": summary.get("input_tokens"),
                       "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"]}
 
@@ -132,7 +134,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
              "实际成功率使用环境的最终 success，得分大于零和满分率另列。"
              "仿真记录中的掉落规则可能使实际成功率低于正分率。", "",
              "## 主实验", ""]
-    main_rows, ablation_rows, traces, slices, paired_ablation = [], [], [], [], []
+    main_rows, ablation_rows, traces, errors, slices, paired_ablation = [], [], [], [], [], []
     scores = {}
     for method in METHODS:
         expected = subset if method in ABLATIONS else jobs
@@ -152,7 +154,14 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
                       f"{sum(r['score'] > 0 for r in values)}/{len(values)}" if values else "—",
                       f"{sum(r['score'] == 1 for r in values)}/{len(values)}" if values else "—"]
             (ablation_rows if method in ABLATIONS else main_rows).append(result)
-            traces.append([method, model, ratio(values, "execution"), average(values, "skills"),
+            if values:
+                counts = [f"{sum(kind in r['failure_classes'] for r in values)}/{len(values)}"
+                          for kind in ("execution", "observation", "precondition", "invalid", "unknown")]
+                counts.append(f"{sum(r['skills'] == 0 for r in values)}/{len(values)}")
+            else:
+                counts = ["—"] * 6
+            errors.append([method, model, *counts])
+            traces.append([method, model, average(values, "skills"),
                            average(values, "queries"), average(values, "input_tokens", 0),
                            average(values, "output_tokens", 0), average(values, "wall_s", 1)])
     header = ["方法", "模型", "已计分/计划", "中断待重跑", "平均分", "平均分 95% CI", "任务成功", "正分", "满分"]
@@ -206,12 +215,16 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
                                     mean_and_n([alt[k] for k in keys]),
                                     f"{mean(alt[k]['score'] - base[k]['score'] for k in keys):+.3f}" if keys else "—"])
     lines += table(["消融", "模型", "配对数", "ReAct 平均分", "消融平均分", "差值"], paired_ablation)
-    lines += ["## 执行与推理成本", "",
-              "执行错误列统计至少一个技能叶节点被仓库归类为 execution 的局数，含后来恢复成功的局。"
-              "同一局可能同时发生动作选择错误和执行错误。Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
+    lines += ["## 技能调用和错误", "",
+              "每格为出现该情况的局数 / 已计分局数。一局可以遇到多类错误，随后仍可能成功。"
+              "分类沿用仓库对技能调用最内层错误码的定义，例如 NOT_OBSERVED 归入观测，NO_PATH 归入前置条件，"
+              "POLICY_FAILED 归入执行。错误码描述技能的返回状态，判断失败原因还需要结合模型选的参数和当时的场景。", ""]
+    lines += table(["方法", "模型", "执行", "观测", "前置条件", "无效调用", "其他错误", "全局零技能调用"], errors)
+    lines += ["## 推理与执行成本", "",
+              "Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
               "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
               "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", ""]
-    lines += table(["方法", "模型", "出现执行错误/已计分", "技能调用/局", "模型查询/局",
+    lines += table(["方法", "模型", "技能调用/局", "模型查询/局",
                     "输入 token/局", "输出 token/局", "秒/局"], traces)
     if reference_dirs:
         lines += reference_table(reference_dirs)
