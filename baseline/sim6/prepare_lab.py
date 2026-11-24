@@ -58,7 +58,10 @@ def main():
     ap.add_argument("output", type=Path)
     args = ap.parse_args()
     source, output = args.source.resolve(), args.output.resolve()
-    lab_version = tomllib.loads((source / "apps/isaaclab.python.headless.rendering.kit").read_text())["package"]["version"]
+    # Kit accepts settings tables that reopen dotted keys. Python TOML only
+    # needs the standard package header to identify the source release.
+    experience = (source / "apps/isaaclab.python.headless.rendering.kit").read_text()
+    lab_version = tomllib.loads(experience.partition("[dependencies]")[0])["package"]["version"]
     if lab_version != "2.3.2":
         raise ValueError(f"expected Isaac Lab 2.3.2, got {lab_version}")
     version = md.version("isaacsim")
