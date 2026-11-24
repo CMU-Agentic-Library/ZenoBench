@@ -1,6 +1,7 @@
 # benchmark with sticky carry (execution.sticky_hands: carry, zeno_skills/sticky.py): a held object is
-# welded to the gripper until the fingers open; pick and place stay physical.  An execution assist,
-# not the scored benchmark: results are not comparable with physical/benchmark.  Everything else
+# welded to the gripper until the fingers open; pick and place stay physical.  The SHIFT paper's
+# baselines are scored with this profile (decided 2026-11-23, docs/guides/BASELINE_PLAN_zh.md);
+# results are not comparable with physical/benchmark.  Everything else
 # (gate, masked feedback, limited observation, no automatic recovery) is benchmark's.
 execution:
   gate: true
