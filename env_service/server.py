@@ -137,7 +137,7 @@ class Worker:
 
 
 class Exp:
-    def __init__(self, exp_id, entry, variant=None, seed=0, difficulty=None, max_calls=40, profile=None):
+    def __init__(self, exp_id, entry, variant=None, seed=0, difficulty=None, max_calls=60, profile=None):
         self.exp_id, self.entry, self.task = exp_id, entry, entry["task"]
         self.profile = profile or entry["profile"]
         self.variant, self.seed, self.difficulty, self.max_calls = variant, seed, difficulty, max_calls

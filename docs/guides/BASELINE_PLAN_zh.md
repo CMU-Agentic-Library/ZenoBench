@@ -38,7 +38,7 @@
 | Commit | 冻结 tag 后的同一个 commit | 结果里记录 commit、profile hash、episode hash（runner 已经在记录） |
 | 观察 profile | **`sticky/benchmark`**（11-23 定） | 受限观察和 `physical/benchmark` 完全一样（门控、屏蔽反馈、只看头部相机、无自动恢复），只多了 `sticky_hands: carry`：拿起的物体在手指张开前焊在夹爪上，搬运时不会滑落；pick 和 place 仍是物理的，失败就是失败。目的是减少搬运滑落带来的执行噪声。`sticky/gt` 只用于观察消融 |
 | 观察内容 | 头部相机图像、看到的物体、观察缓存、已知地点、机器人状态、上一步结果 | 物体名字是匿名的 `<category>_<k>`（`anonymize_names: true`）；没有目标状态，没有 GT 物体位置 |
-| 调用预算 | **60 次技能调用**（失败和被拒绝的也算；VLM 思考不算） | 参考路线中位数 11 步、90% 分位 21 步、最长 34 步，60 约为最长的 1.8 倍。进程内默认已经是 60；HTTP 服务默认 40，要改成 60 |
+| 调用预算 | **60 次技能调用**（失败和被拒绝的也算；VLM 思考不算） | 参考路线中位数 11 步、90% 分位 21 步、最长 34 步，60 约为最长的 1.8 倍。`benchmark` 类 profile 本身就是 60（任务没写 `max_calls` 时）；env_service 的兜底默认 11-23 已从 40 改为 60。`gt` profile 仍是 40，不用于 baseline |
 | 技能列表 | `registry.menu(track)`，71 个动词 | 所有方法给相同的技能说明 |
 | 种子 | 10–19 | |
 | 采样 | **每个 episode 跑 1 次**；temperature 固定 | 不做多次采样（11-23 定） |
@@ -105,7 +105,7 @@
 - 做法：一次给出全部子目标，每个子目标一个 skill DAG；每执行完一个子目标（或失败）回到 VLM：continue、给出剩余部分的新 task_plan，或 finish。走 env_service HTTP 接口，模型通过 DeepSeek Harness 调用。
 - 要做的事：
   - 技能说明：现在 vendored 的是旧快照（70 个技能，ZenoBench `eb4b3f0`），而且 `graph-manager-run` 每次运行前会从 git 拉最新的 ZenoBench。放进本仓库后改成直接读本仓库的 `skill_library/`，和冻结 commit 一致
-  - 预算：HTTP 默认 40 次，改成 60
+  - 预算：已统一为 60（env_service 按请求的 profile 定预算，`sticky/benchmark` 即 60）；请求里必须写 `profile: sticky/benchmark`，并用 `--catalog benchmark/v6/tasks.json=sticky/benchmark` 启动服务（默认 catalog 只有 skill_library 和 v3）
   - 观察：HTTP 服务会给物体位置和目标状态，改成和 `sticky/benchmark` 一样（或接到进程内 runner）
   - 模型：现在支持本地 vLLM 的 Qwen3.5-4B；要加 Claude / GPT / Gemini 后端
   - 在 v6 的冻结 commit 上重跑
@@ -159,7 +159,8 @@
 ## 9. 开跑前检查
 
 - [ ] 冻结 tag，所有 run 的 commit 相同
-- [ ] 调用预算统一为 60，进程内和 HTTP 一致
+- [x] 调用预算统一为 60，进程内和 HTTP 一致（11-23）
+- [ ] env_service 启动时加 `--catalog benchmark/v6/tasks.json=sticky/benchmark`，Graph Manager 请求写 `profile: sticky/benchmark`
 - [ ] 所有方法都用 `sticky/benchmark`（进程内 runner 用 `--profile sticky/benchmark`；Graph Manager 用 `--env-profile`）
 - [ ] `sticky/benchmark.yaml` 开头的注释写着"不是计分用的 benchmark，结果不能和 physical/benchmark 比"；论文以 sticky 为准，这条注释要改
 - [ ] Graph Manager 看不到物体位置和目标状态
