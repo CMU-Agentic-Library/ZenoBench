@@ -1,0 +1,9543 @@
+{
+ "summary": {
+  "objects": 47,
+  "surfaces": 116,
+  "furniture": 45,
+  "roles": 34,
+  "layouts_checked": 154,
+  "flags": {
+   "illegal_scored": 21,
+   "order": 4,
+   "specific_partial": 17
+  },
+  "loosen_rows": 61,
+  "loosen_illegal": 0,
+  "loosen_uncovered": 0
+ },
+ "roles": [
+  {
+   "id": "tower_piece",
+   "kind": "object",
+   "why": "the third piece of the kid's tower: it must sit on top; a toy that also carries a piece is better",
+   "requires": [
+    "stack_top"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "play",
+    "stack_on"
+   ],
+   "ideal": [
+    "wooden_block"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "wooden_block",
+    "toy_block",
+    "foam_cube",
+    "rubber_duck",
+    "kitchen_sponge"
+   ],
+   "layouts": [
+    {
+     "task": "T02",
+     "design": "third_toy_elsewhere",
+     "layout": "third_toy_elsewhere__duck",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "rubber_duck",
+       "kind": "rubber_duck",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+play"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "third_toy_elsewhere",
+     "layout": "third_toy_elsewhere__toy_block",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "toy_block",
+       "kind": "toy_block",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+play",
+        "+stack_on"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "tower_for_kid_duck",
+     "layout": "tower_for_kid_duck__counter",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "rubber_duck",
+       "kind": "rubber_duck",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+play"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.3,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "tower_for_kid_duck",
+     "layout": "tower_for_kid_duck__study",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "rubber_duck",
+       "kind": "rubber_duck",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+play"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.3,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "block_put_away",
+     "layout": "block_put_away__in_4",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "floor_block",
+       "kind": "wooden_block",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "toy_block",
+       "kind": "toy_block",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+play",
+        "+stack_on"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.3,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "block_put_away",
+     "layout": "block_put_away__in_6",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "floor_block",
+       "kind": "wooden_block",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "toy_block",
+       "kind": "toy_block",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+play",
+        "+stack_on"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.3,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "block_put_away",
+     "layout": "block_put_away__gone_toy_block",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "toy_block",
+       "kind": "toy_block",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+play",
+        "+stack_on"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "block_put_away",
+     "layout": "block_put_away__gone_duck",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "rubber_duck",
+       "kind": "rubber_duck",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+play"
+       ]
+      },
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+stack_on"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "utensil_storage",
+   "kind": "object",
+   "why": "put the kitchen utensils away in a box they fit in; a storage box beats a fruit basket",
+   "requires": [
+    "contain_solid"
+   ],
+   "requires_any": [
+    "store_items",
+    "carry_multiple"
+   ],
+   "prefer": [
+    "store_items"
+   ],
+   "ideal": [
+    "wide_storage_bin"
+   ],
+   "constraints": {
+    "fits": "rolling_pin"
+   },
+   "legal_kinds": [
+    "fruit_basket",
+    "storage_basket",
+    "small_storage_bin",
+    "wide_storage_bin",
+    "toy_box",
+    "serving_tray",
+    "shallow_sorting_tray"
+   ],
+   "layouts": [
+    {
+     "task": "T03",
+     "design": "small_bin_or_bedroom_bin",
+     "layout": "small_bin_or_bedroom_bin__wide_in_bedroom",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "wide_storage_bin",
+       "kind": "wide_storage_bin",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "small_storage_bin",
+       "kind": "small_storage_bin",
+       "score": 0.3,
+       "level": 1,
+       "why": [
+        "holds small_bin_block_1"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "small_bin_or_bedroom_bin",
+     "layout": "small_bin_or_bedroom_bin__basket_in_bedroom",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "storage_basket",
+       "kind": "storage_basket",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      },
+      {
+       "name": "small_storage_bin",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds small_bin_block_1"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "no_bin_substitute",
+     "layout": "no_bin_substitute__basket",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "storage_basket",
+       "kind": "storage_basket",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      },
+      {
+       "name": "small_storage_bin",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds small_bin_block_1"
+       ]
+      },
+      {
+       "name": "fruit_basket",
+       "kind": "fruit_basket",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds apple"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "no_bin_substitute",
+     "layout": "no_bin_substitute__tray",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "serving_tray",
+       "kind": "serving_tray",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "small_storage_bin",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds small_bin_block_1"
+       ]
+      },
+      {
+       "name": "fruit_basket",
+       "kind": "fruit_basket",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds apple"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "utensils_apart",
+     "layout": "utensils_apart__bin_free",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "wide_storage_bin",
+       "kind": "wide_storage_bin",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "storage_basket",
+       "kind": "storage_basket",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      },
+      {
+       "name": "spare_tray",
+       "kind": "shallow_sorting_tray",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "utensils_apart",
+     "layout": "utensils_apart__bin_full_tray",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_tray",
+       "kind": "shallow_sorting_tray",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      },
+      {
+       "name": "wide_storage_bin",
+       "kind": "wide_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds bin_teddy"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "utensils_apart",
+     "layout": "utensils_apart__bin_full_basket",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "storage_basket",
+       "kind": "storage_basket",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_items"
+       ]
+      },
+      {
+       "name": "wide_storage_bin",
+       "kind": "wide_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds bin_teddy"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T03",
+     "design": "utensils_apart",
+     "layout": "utensils_apart__bin_full_fruit",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "fruit_basket",
+       "kind": "fruit_basket",
+       "score": 1.0,
+       "level": 1,
+       "why": [
+        "holds apple"
+       ]
+      },
+      {
+       "name": "wide_storage_bin",
+       "kind": "wide_storage_bin",
+       "score": 1.0,
+       "level": 1,
+       "why": [
+        "holds bin_teddy"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "guest_glass",
+   "kind": "object",
+   "why": "a glass for a grown-up guest: any drinking vessel, a child's plastic cup last",
+   "requires": [
+    "drink_from"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "not:for_kids"
+   ],
+   "ideal": [
+    "breakfast_cup"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup"
+   ],
+   "layouts": [
+    {
+     "task": "T04",
+     "design": "cup_available",
+     "layout": "cup_available",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "no_cup",
+     "layout": "no_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "no_cup",
+     "layout": "no_cup_mug_away",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "no_cup",
+     "layout": "no_cup_mug_away__alt_dining_table_2",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "no_cup",
+     "layout": "no_cup_kid",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "two_guests",
+     "layout": "two_guests__glass_in_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "glass_cup_2",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "two_guests",
+     "layout": "two_guests__mug",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "two_guests",
+     "layout": "two_guests__kid_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "x6_gd_cup_in_cabinets",
+     "layout": "x6_gd_cup_in_cabinets__cup_in_4",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T04",
+     "design": "x6_gd_cup_in_cabinets",
+     "layout": "x6_gd_cup_in_cabinets__plastic_only",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "order",
+       "higher": "mug",
+       "higher_level": 3,
+       "higher_score": 0.6,
+       "lower": "kid_cup",
+       "lower_level": 2,
+       "lower_score": 1.0
+      },
+      {
+       "type": "order",
+       "higher": "mug_dining_cabinet",
+       "higher_level": 3,
+       "higher_score": 0.6,
+       "lower": "kid_cup",
+       "lower_level": 2,
+       "lower_score": 1.0
+      },
+      {
+       "type": "order",
+       "higher": "mug_shelf",
+       "higher_level": 3,
+       "higher_score": 0.6,
+       "lower": "kid_cup",
+       "lower_level": 2,
+       "lower_score": 1.0
+      },
+      {
+       "type": "order",
+       "higher": "mug_counter",
+       "higher_level": 3,
+       "higher_score": 0.6,
+       "lower": "kid_cup",
+       "lower_level": 2,
+       "lower_score": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "writing_tool",
+   "kind": "object",
+   "why": "something to write with",
+   "requires": [
+    "write"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "pen",
+    "pencil"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "pen",
+    "pencil"
+   ],
+   "layouts": [
+    {
+     "task": "T05",
+     "design": "no_pen_pencil_away",
+     "layout": "no_pen_pencil_away",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "pencil",
+       "kind": "pencil",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_pen",
+       "kind": "pen",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T05",
+     "design": "no_pen_pencil_away",
+     "layout": "no_pen_pencil_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_pen",
+       "kind": "pen",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "pencil",
+       "kind": "pencil",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T05",
+     "design": "x6_gd_pen_or_pencil_cabinets",
+     "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "pen",
+       "kind": "pen",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "pencil",
+       "kind": "pencil",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T05",
+     "design": "x6_gd_pen_or_pencil_cabinets",
+     "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "pencil",
+       "kind": "pencil",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "pen",
+       "kind": "pen",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "wiper",
+   "kind": "object",
+   "why": "something that wipes the island; the foam cube looks like a sponge but does not wipe",
+   "requires": [
+    "wipe"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "kitchen_sponge"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "kitchen_sponge",
+    "tissue_box"
+   ],
+   "layouts": [
+    {
+     "task": "T08",
+     "design": "far_sponge_tv",
+     "layout": "far_sponge_tv",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "sits in/on sponge_tray"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T08",
+     "design": "far_sponge_tv",
+     "layout": "far_sponge_foam_cube",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_sponge",
+       "kind": "kitchen_sponge",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_sponge",
+       "kind": "kitchen_sponge",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "sits in/on sponge_tray"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T08",
+     "design": "far_sponge_tv",
+     "layout": "far_sponge_spare_only",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_sponge",
+       "kind": "kitchen_sponge",
+       "score": 1.0,
+       "level": 1,
+       "why": [
+        "sits in/on sponge_tray"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "pot_cover",
+   "kind": "object",
+   "why": "close the pot: a flat rigid piece wider than its opening; one safe on food is better",
+   "requires": [
+    "cover_opening"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "food_safe",
+    "not:breakable"
+   ],
+   "ideal": [
+    "pot_lid"
+   ],
+   "constraints": {
+    "covers": "handled_cooking_pot"
+   },
+   "legal_kinds": [
+    "breakfast_plate",
+    "pot_lid",
+    "serving_tray",
+    "shallow_sorting_tray",
+    "book_red",
+    "book_green",
+    "book_blue",
+    "paperback_book",
+    "notebook"
+   ],
+   "layouts": [
+    {
+     "task": "T09",
+     "design": "lid_on_spoon_away",
+     "layout": "lid_on_spoon_away",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "lid_plate",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "cover_book",
+       "kind": "book_blue",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "cover_book",
+       "score": 0.3,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T09",
+     "design": "lid_on_spoon_away",
+     "layout": "lid_missing",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "lid_plate",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "cover_book",
+       "kind": "book_blue",
+       "score": 0.6,
+       "level": 0,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "cover_book",
+       "score": 0.6,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T15",
+     "design": "lid_elsewhere",
+     "layout": "lid_elsewhere__dining",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "cover_book",
+       "kind": "book_blue",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "cover_book",
+       "score": 0.3,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T15",
+     "design": "lid_elsewhere",
+     "layout": "lid_elsewhere__covering_bowl",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "sits in/on covered_bowl"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T15",
+     "design": "no_lid",
+     "layout": "no_lid",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "cover_book",
+       "kind": "book_blue",
+       "score": 0.6,
+       "level": 0,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "cover_book",
+       "score": 0.6,
+       "why": [
+        "does not cover handled_cooking_pot"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T15",
+     "design": "lid_in_use",
+     "layout": "lid_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "sits in/on stew_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T17",
+     "design": "h_task_lid_elsewhere",
+     "layout": "h_task_lid_elsewhere",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T17",
+     "design": "h_task_lid_elsewhere",
+     "layout": "hide_lid_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "cover_plate",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_dining_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "plate_inside_kitchen_cabinet",
+       "kind": "breakfast_plate",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "pot_lid",
+       "kind": "pot_lid",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "sits in/on stew_pot"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "cooking_pot",
+   "kind": "object",
+   "why": "a pot the soup is cooked in on the stove",
+   "requires": [
+    "cook_in"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "handled_cooking_pot"
+   ],
+   "constraints": {
+    "fits": "cherry_tomato_1"
+   },
+   "legal_kinds": [
+    "handled_cooking_pot",
+    "soup_pot"
+   ],
+   "layouts": [
+    {
+     "task": "T09",
+     "design": "pot_in_use",
+     "layout": "pot_in_use__in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "handled_cooking_pot",
+       "kind": "handled_cooking_pot",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "soup_pot",
+       "kind": "soup_pot",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T09",
+     "design": "pot_in_use",
+     "layout": "pot_in_use__free",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "handled_cooking_pot",
+       "kind": "handled_cooking_pot",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "soup_pot",
+       "kind": "soup_pot",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T09",
+     "design": "pot_in_dining_room",
+     "layout": "pot_in_dining_room__pot_away",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "handled_cooking_pot",
+       "kind": "handled_cooking_pot",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_pot",
+       "kind": "handled_cooking_pot",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T09",
+     "design": "pot_in_dining_room",
+     "layout": "pot_in_dining_room__spare_pot",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_pot",
+       "kind": "handled_cooking_pot",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "soup_ingredient",
+   "kind": "object",
+   "why": "the third tomato for the soup: another tomato before any other food",
+   "requires": [
+    "edible"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "cherry_tomato"
+   ],
+   "constraints": {
+    "taxonomy_any": [
+     "vegetable"
+    ]
+   },
+   "legal_kinds": [
+    "cherry_tomato",
+    "big_tomato"
+   ],
+   "layouts": [
+    {
+     "task": "T09",
+     "design": "tomato_in_fridge",
+     "layout": "tomato_in_fridge__in_fridge",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "fridge_tomato",
+       "kind": "cherry_tomato",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "big_tomato",
+       "kind": "big_tomato",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T09",
+     "design": "tomato_in_fridge",
+     "layout": "tomato_in_fridge__big_tomato",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "big_tomato",
+       "kind": "big_tomato",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "rubbish_bin",
+   "kind": "object",
+   "why": "a bin the empty can is thrown into",
+   "requires": [
+    "dispose"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "trash_can"
+   ],
+   "constraints": {
+    "fits": "soda_can"
+   },
+   "legal_kinds": [
+    "trash_can",
+    "big_trash_can"
+   ],
+   "layouts": [
+    {
+     "task": "T10",
+     "design": "trash_moved",
+     "layout": "trash_moved__dining",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "trash_can",
+       "kind": "trash_can",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bathroom_trash",
+       "kind": "trash_can",
+       "score": 0.6,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T10",
+     "design": "trash_moved",
+     "layout": "trash_moved__trash_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "bathroom_trash",
+       "kind": "trash_can",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "fruit_holder",
+   "kind": "object",
+   "why": "something the fruit is kept in; one meant to hold several things and safe on food is better",
+   "requires": [
+    "contain_solid"
+   ],
+   "requires_any": [
+    "carry_multiple",
+    "serve_food",
+    "store_items"
+   ],
+   "prefer": [
+    "carry_multiple",
+    "food_safe"
+   ],
+   "ideal": [
+    "fruit_basket"
+   ],
+   "constraints": {
+    "fits": "apple"
+   },
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "glass_food_container",
+    "fruit_basket",
+    "storage_basket",
+    "small_storage_bin",
+    "wide_storage_bin",
+    "toy_box",
+    "serving_tray",
+    "shallow_sorting_tray"
+   ],
+   "layouts": [
+    {
+     "task": "T11",
+     "design": "fruits_on_table",
+     "layout": "fruits_on_table",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "fruit_basket",
+       "kind": "fruit_basket",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "serving_tray",
+       "kind": "serving_tray",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+carry_multiple",
+        "+food_safe"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T11",
+     "design": "basket_missing",
+     "layout": "basket_missing",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "serving_tray",
+       "kind": "serving_tray",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+carry_multiple",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "used_bowl",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "named in use"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T11",
+     "design": "basket_missing",
+     "layout": "basket_gone_bowl_there",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "serving_tray",
+       "kind": "serving_tray",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+carry_multiple",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "level": 3,
+       "why": [
+        "+food_safe"
+       ]
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "table_drink_vessel",
+   "kind": "object",
+   "why": "the drink at a grown-up's place setting",
+   "requires": [
+    "drink_from"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "not:for_kids"
+   ],
+   "ideal": [
+    "breakfast_cup"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup"
+   ],
+   "layouts": [
+    {
+     "task": "T13",
+     "design": "dishes_on_tv_stand",
+     "layout": "dishes_on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "cup",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T13",
+     "design": "no_cup",
+     "layout": "no_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+not:for_kids"
+       ]
+      },
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "table_bowl",
+   "kind": "object",
+   "why": "the bowl of a place setting",
+   "requires": [
+    "serve_food",
+    "contain_solid"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "breakfast_bowl"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "glass_food_container"
+   ],
+   "layouts": [
+    {
+     "task": "T13",
+     "design": "dishes_on_tv_stand",
+     "layout": "dishes_on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bowl",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T13",
+     "design": "no_cup",
+     "layout": "no_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "bowl",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "lunch_container",
+   "kind": "object",
+   "why": "a container the apple goes to school in: small enough to carry, safe on food",
+   "requires": [
+    "contain_solid"
+   ],
+   "requires_any": [
+    "store_items",
+    "serve_food"
+   ],
+   "prefer": [
+    "portable",
+    "food_safe"
+   ],
+   "ideal": [
+    "small_storage_bin"
+   ],
+   "constraints": {
+    "fits": "school_apple"
+   },
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "glass_food_container",
+    "storage_basket",
+    "small_storage_bin",
+    "wide_storage_bin",
+    "toy_box",
+    "shallow_sorting_tray"
+   ],
+   "layouts": [
+    {
+     "task": "T16",
+     "design": "box_in_cabinet",
+     "layout": "box_in_cabinet__in_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "snack_box",
+       "kind": "small_storage_bin",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_bowl",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 0.6,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T16",
+     "design": "box_in_cabinet",
+     "layout": "box_in_cabinet__box_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_bowl",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "snack_box",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds box_banana"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T16",
+     "design": "no_box",
+     "layout": "no_box",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_bowl",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "big_bin",
+       "kind": "wide_storage_bin",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T16",
+     "design": "box_in_use",
+     "layout": "box_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_bowl",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+portable",
+        "+food_safe"
+       ]
+      },
+      {
+       "name": "snack_box",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "holds box_crayon_1"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "soup_vessel",
+   "kind": "object",
+   "why": "a second vessel for soup: it must hold liquid; a dish one eats from is better",
+   "requires": [
+    "hold_liquid"
+   ],
+   "requires_any": [
+    "serve_food",
+    "drink_from"
+   ],
+   "prefer": [
+    "serve_food",
+    "taxonomy:dish"
+   ],
+   "ideal": [
+    "breakfast_bowl"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup",
+    "glass_food_container"
+   ],
+   "layouts": [
+    {
+     "task": "T18",
+     "design": "one_bowl",
+     "layout": "one_bowl__glass_box",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "glass_box",
+       "kind": "glass_food_container",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+serve_food"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.6,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T18",
+     "design": "one_bowl",
+     "layout": "one_bowl__mug",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.6,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T18",
+     "design": "bowl_in_use",
+     "layout": "bowl_in_use__tomatoes",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dinner_bowl_2",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 1,
+       "why": [
+        "holds left_tomato_1"
+       ]
+      },
+      {
+       "name": "glass_box",
+       "kind": "glass_food_container",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+serve_food"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "bowl_in_use",
+     "layout": "bowl_in_use__oatmeal",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dinner_bowl_2",
+       "kind": "oatmeal_bowl",
+       "score": 1.0,
+       "level": 4,
+       "why": [
+        "+serve_food",
+        "+taxonomy:dish"
+       ]
+      },
+      {
+       "name": "glass_box",
+       "kind": "glass_food_container",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+serve_food"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "soup_bowl_extra",
+   "kind": "object",
+   "why": "the extra soup vessel: it must hold liquid; a dish is better",
+   "requires": [
+    "hold_liquid"
+   ],
+   "requires_any": [
+    "serve_food",
+    "drink_from"
+   ],
+   "prefer": [
+    "serve_food",
+    "taxonomy:dish"
+   ],
+   "ideal": [
+    "breakfast_bowl"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup",
+    "glass_food_container"
+   ],
+   "layouts": [
+    {
+     "task": "T30",
+     "design": "how_many",
+     "layout": "how_many__three_bowls",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "how_many",
+     "layout": "how_many__two_bowls",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "bowls_in_cabinet",
+     "layout": "bowls_in_cabinet__two_inside",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "bowls_in_cabinet",
+     "layout": "bowls_in_cabinet__one_inside",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soup_bowl_one",
+   "kind": "object",
+   "why": "a vessel for soup: it must hold liquid; a dish is better",
+   "requires": [
+    "hold_liquid"
+   ],
+   "requires_any": [
+    "serve_food",
+    "drink_from"
+   ],
+   "prefer": [
+    "serve_food",
+    "taxonomy:dish"
+   ],
+   "ideal": [
+    "breakfast_bowl"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_bowl",
+    "oatmeal_bowl",
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup",
+    "glass_food_container"
+   ],
+   "layouts": [
+    {
+     "task": "T30",
+     "design": "bowl_not_plate",
+     "layout": "clean_one",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "soup_bowl_1",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "full_bowl",
+       "kind": "oatmeal_bowl",
+       "score": 0.3,
+       "level": 1,
+       "why": [
+        "named in use"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowl_put_away",
+     "layout": "bowl_put_away__bowl_inside",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "soup_bowl_1",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "stored_mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "bowl_put_away",
+     "layout": "bowl_put_away__mug_inside",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "stored_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "stored_plate",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_a",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "name": "plate_counter_b",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "stored_plate",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_a",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      },
+      {
+       "type": "illegal_scored",
+       "name": "plate_counter_b",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "no_bowl",
+     "layout": "no_bowl",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "spare_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "spare_plate",
+       "kind": "breakfast_plate",
+       "score": 0.6,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "spare_plate",
+       "score": 0.6,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    },
+    {
+     "task": "T30",
+     "design": "bowl_not_plate",
+     "layout": "bowl_not_plate",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "soup_bowl_1",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_dining_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_side_table",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bowl_inside_kitchen_cabinet",
+       "kind": "breakfast_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "spare_plate",
+       "kind": "breakfast_plate",
+       "score": 0.3,
+       "level": 0,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": [
+      {
+       "type": "illegal_scored",
+       "name": "spare_plate",
+       "score": 0.3,
+       "why": [
+        "lacks hold_liquid"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "snack",
+   "kind": "object",
+   "why": "a snack before dinner: fruit before a packaged snack",
+   "requires": [
+    "edible"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "taxonomy:fruit"
+   ],
+   "ideal": [
+    "apple"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "apple",
+    "banana",
+    "orange",
+    "cherry_tomato",
+    "big_tomato",
+    "cereal_box",
+    "snack_carton"
+   ],
+   "layouts": [
+    {
+     "task": "T24",
+     "design": "no_apples_for_him",
+     "layout": "no_apples_for_him__apple_free",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "snack_apple",
+       "kind": "apple",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "snack_banana",
+       "kind": "banana",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+taxonomy:fruit"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T24",
+     "design": "no_apples_for_him",
+     "layout": "no_apples_for_him__apple_in_use",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "snack_banana",
+       "kind": "banana",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+taxonomy:fruit"
+       ]
+      },
+      {
+       "name": "snack_apple",
+       "kind": "apple",
+       "score": 0.3,
+       "level": 1,
+       "why": [
+        "sits in/on seat_plate"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T24",
+     "design": "dinner_soon",
+     "layout": "dinner_soon__apple",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "snack_apple",
+       "kind": "apple",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "snack_box",
+       "kind": "snack_carton",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T24",
+     "design": "dinner_soon",
+     "layout": "dinner_soon__banana",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "snack_banana",
+       "kind": "banana",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+taxonomy:fruit"
+       ]
+      },
+      {
+       "name": "snack_box",
+       "kind": "snack_carton",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "kid_drink_vessel",
+   "kind": "object",
+   "why": "a cup for a small child: one that does not break",
+   "requires": [
+    "drink_from"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "not:breakable"
+   ],
+   "ideal": [
+    "plastic_cup"
+   ],
+   "constraints": {},
+   "legal_kinds": [
+    "breakfast_cup",
+    "breakfast_mug",
+    "plastic_cup"
+   ],
+   "layouts": [
+    {
+     "task": "T25",
+     "design": "little_guest",
+     "layout": "little_guest",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "guest_cup",
+       "kind": "breakfast_cup",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_counter",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_dining_cabinet",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "mug_shelf",
+       "kind": "breakfast_mug",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "toy_storage",
+   "kind": "object",
+   "why": "a box or basket the toys are put away in",
+   "requires": [
+    "store_items"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "storage_basket"
+   ],
+   "constraints": {
+    "fits": "living_car"
+   },
+   "legal_kinds": [
+    "storage_basket",
+    "small_storage_bin",
+    "wide_storage_bin",
+    "toy_box",
+    "shallow_sorting_tray"
+   ],
+   "layouts": [
+    {
+     "task": "T26",
+     "design": "scattered",
+     "layout": "scattered__basket",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kids_basket",
+       "kind": "storage_basket",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "kids_toy_bin",
+       "kind": "small_storage_bin",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T26",
+     "design": "scattered",
+     "layout": "scattered__no_basket",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kids_toy_bin",
+       "kind": "small_storage_bin",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "dining_place",
+   "kind": "place",
+   "why": "'the dining table': either dining table",
+   "requires": [
+    "dining_surface"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T02",
+     "design": "tower_for_kid",
+     "layout": "tower_for_kid__counter",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "tower_for_kid",
+     "layout": "tower_for_kid__study",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T02",
+     "design": "tower_for_kid",
+     "layout": "tower_for_kid__near_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T13",
+     "design": "dishes_on_tv_stand",
+     "layout": "dishes_on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T13",
+     "design": "no_cup",
+     "layout": "no_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T20",
+     "design": "bottle_on_cabinet",
+     "layout": "bottle_on_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T20",
+     "design": "m_bottle_on_tv_stand",
+     "layout": "m_bottle_on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T20",
+     "design": "m_bottle_on_tv_stand",
+     "layout": "bottle_in_use",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T20",
+     "design": "x6_gd_bottle_put_away",
+     "layout": "x6_gd_bottle_put_away__on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T20",
+     "design": "x6_gd_bottle_put_away",
+     "layout": "x6_gd_bottle_put_away__in_bedroom",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T21",
+     "design": "tissue_on_tv_stand",
+     "layout": "tissue_on_tv_stand",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T21",
+     "design": "no_tissue",
+     "layout": "no_tissue",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "soup_table",
+   "kind": "place",
+   "why": "the soup is served at the dining table: either dining table",
+   "requires": [
+    "dining_surface"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T18",
+     "design": "bowls_in_cabinet",
+     "layout": "bowls_in_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "bowls_apart",
+     "layout": "bowls_apart",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "one_bowl",
+     "layout": "one_bowl__glass_box",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "one_bowl",
+     "layout": "one_bowl__mug",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "bowl_in_use",
+     "layout": "bowl_in_use__tomatoes",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "bowl_in_use",
+     "layout": "bowl_in_use__oatmeal",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T18",
+     "design": "door_stuck",
+     "layout": "door_stuck",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "soup_serving_place",
+   "kind": "place",
+   "why": "bring a bowl over for the soup: the island where the pot is or a dining table",
+   "requires": [
+    "serve_meal"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "kitchen_island/top"
+   ],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T30",
+     "design": "bowl_on_cabinet",
+     "layout": "bowl_on_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "how_many",
+     "layout": "how_many__three_bowls",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "how_many",
+     "layout": "how_many__two_bowls",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowls_in_cabinet",
+     "layout": "bowls_in_cabinet__two_inside",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowls_in_cabinet",
+     "layout": "bowls_in_cabinet__one_inside",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowl_not_plate",
+     "layout": "clean_one",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowl_put_away",
+     "layout": "bowl_put_away__bowl_inside",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowl_put_away",
+     "layout": "bowl_put_away__mug_inside",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "no_bowl",
+     "layout": "no_bowl",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T30",
+     "design": "bowl_not_plate",
+     "layout": "bowl_not_plate",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "dining_table_2/top",
+       "kind": "table",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "dining_table_1/top",
+       "kind": "table",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "guest_drink_place",
+   "kind": "place",
+   "why": "within reach of the seated guest: either TV stand",
+   "requires": [
+    "living_serve"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T25",
+     "design": "drink_on_island",
+     "layout": "drink_on_island",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "cup_elsewhere",
+     "layout": "cup_elsewhere__counter_cup",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "cup_elsewhere",
+     "layout": "cup_elsewhere__only_mugs",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "cup_elsewhere",
+     "layout": "cup_elsewhere__blocks_in_cup",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "cold_one",
+     "layout": "cold_one__cold_juice",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "cold_one",
+     "layout": "cold_one__cold_soda",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "drink_in_fridge",
+     "layout": "drink_in_fridge__juice",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "drink_in_fridge",
+     "layout": "drink_in_fridge__soda_only",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "two_guests",
+     "layout": "two_guests__two_cups",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "two_guests",
+     "layout": "two_guests__one_cup",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    },
+    {
+     "task": "T25",
+     "design": "little_guest",
+     "layout": "little_guest",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_1/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "fruit_put_away",
+   "kind": "place",
+   "why": "fruit put away: kitchen storage or the fridge",
+   "requires": [],
+   "requires_any": [
+    "kitchen_storage",
+    "store_food_cold"
+   ],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T11",
+     "design": "fruits_on_table",
+     "layout": "fruits_on_table",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T11",
+     "design": "basket_missing",
+     "layout": "basket_missing",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T11",
+     "design": "basket_missing",
+     "layout": "basket_gone_bowl_there",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T22",
+     "design": "tray_elsewhere",
+     "layout": "basket_missing",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T22",
+     "design": "tray_elsewhere",
+     "layout": "tray_elsewhere__orange_in_it",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T22",
+     "design": "tray_elsewhere",
+     "layout": "tray_elsewhere__books_on_it",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "breakfast_fridge/inside_shelf",
+       "kind": "fridge",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "display_spot",
+   "kind": "place",
+   "why": "on show, seen from the room the low cabinet is in",
+   "requires": [
+    "display"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {
+    "room_of": "kitchen_cabinet_4/top"
+   },
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T06",
+     "design": "display_row",
+     "layout": "display_row__cab_free",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "display_row",
+     "layout": "display_row__cab_short",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "display_spot_or_tv",
+     "layout": "display_spot_or_tv__front_taken",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "display_spot_or_tv",
+     "layout": "display_spot_or_tv__front_free",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "display_spot_or_tv",
+     "layout": "display_spot_or_tv__front_taken_tv_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "display_spot_or_tv",
+     "layout": "display_spot_or_tv__front_free_block_away",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "tv_stand_2/top",
+       "kind": "tv_stand",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cabinet_2/top",
+       "kind": "cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "bedside_spot",
+   "kind": "place",
+   "why": "where the kid finds it from bed: in the bedroom, seen best on a top",
+   "requires": [],
+   "requires_any": [
+    "support_items",
+    "store_open"
+   ],
+   "prefer": [
+    "display"
+   ],
+   "ideal": [
+    "bookcase_3/top"
+   ],
+   "constraints": {
+    "near": [
+     "bookcase_3/top",
+     3.2
+    ]
+   },
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T06",
+     "design": "seen_from_bed",
+     "layout": "seen_from_bed__boxes_middle",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "desk_1/top",
+       "kind": "desk",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "score": 0.3,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T06",
+     "design": "seen_from_bed",
+     "layout": "seen_from_bed__bookcase_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "desk_1/top",
+       "kind": "desk",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "kid_shelf",
+   "kind": "place",
+   "why": "put away on a book shelf; one the child reaches on his own is better",
+   "requires": [
+    "store_books"
+   ],
+   "requires_any": [],
+   "prefer": [
+    "kid_reach"
+   ],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T14",
+     "design": "within_kids_reach",
+     "layout": "within_kids_reach__set_on_large_shelf_4",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bookcase_2/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_0",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_1",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/top",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/top",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_1/shelf_4",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_2/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_3/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_5/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_6/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_6/top",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cell_shelf_1/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_1/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_2/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_2/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_2",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_3/top",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_4/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_4/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_4/top",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_5/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_5/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T14",
+     "design": "within_kids_reach",
+     "layout": "within_kids_reach__set_on_large_shelf_5",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bookcase_2/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_0",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_1",
+       "kind": "shelf",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/top",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_1/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/top",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "bookcase_4/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_1/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_1/shelf_4",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_2/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_2/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_3/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_3/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_5/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_6/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "large_shelf_6/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_6/top",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cell_shelf_1/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_1/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_2/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_2/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_3/shelf_2",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_3/top",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_4/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_4/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_4/top",
+       "kind": "shelf",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "cell_shelf_5/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      },
+      {
+       "name": "cell_shelf_5/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+kid_reach"
+       ]
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "kitchen_top_return",
+   "kind": "place",
+   "why": "back on a kitchen work top",
+   "requires": [
+    "food_prep"
+   ],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "kitchen_counter_2/top"
+   ],
+   "constraints": {
+    "ideal_unavailable": [
+     "counter_full",
+     "no_room_for_bowl"
+    ]
+   },
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T23",
+     "design": "dropped_out_of_view",
+     "layout": "dropped_out_of_view__counter_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_counter_1/top",
+       "kind": "kitchen_counter",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_counter_2/top",
+       "kind": "kitchen_counter",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "the ideal place, full or taken in this layout"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "cup_return",
+   "kind": "place",
+   "why": "where cups belong in the kitchen: on his cabinet, else a kitchen top or cabinet",
+   "requires": [],
+   "requires_any": [
+    "food_prep",
+    "kitchen_storage"
+   ],
+   "prefer": [],
+   "ideal": [
+    "kitchen_cabinet_4/top"
+   ],
+   "constraints": {
+    "ideal_unavailable": [
+     "cabinet_full"
+    ]
+   },
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T23",
+     "design": "only_this_room",
+     "layout": "only_this_room__cabinet_room",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_counter_2/top",
+       "kind": "kitchen_counter",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_counter_1/top",
+       "kind": "kitchen_counter",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T23",
+     "design": "only_this_room",
+     "layout": "only_this_room__cabinet_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "kitchen_cabinet_4/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/top",
+       "kind": "kitchen_cabinet",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_counter_2/top",
+       "kind": "kitchen_counter",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_counter_1/top",
+       "kind": "kitchen_counter",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_island/top",
+       "kind": "kitchen_island",
+       "score": 1.0,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/top",
+       "kind": "kitchen_cabinet",
+       "score": 0.6,
+       "level": 1,
+       "why": [
+        "the ideal place, full or taken in this layout"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "kitchen_cabinet_1/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_1/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_2/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_3/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_4/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/inside_shelf",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_5/top",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "kitchen_cabinet_6/inside_bottom",
+       "kind": "kitchen_cabinet",
+       "level": 2,
+       "why": []
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "kid_book_shelf",
+   "kind": "place",
+   "why": "a bookshelf in the kid's room",
+   "requires": [],
+   "requires_any": [
+    "store_books",
+    "work_surface"
+   ],
+   "prefer": [
+    "store_books"
+   ],
+   "ideal": [
+    "bookcase_2/top"
+   ],
+   "constraints": {
+    "room_of": "bookcase_2/top"
+   },
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T26",
+     "design": "whose",
+     "layout": "whose__shelf_room",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "bookcase_2/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "cell_shelf_5/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "cell_shelf_5/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "desk_3/top",
+       "kind": "desk",
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_1",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_2",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_3",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      }
+     ],
+     "flags": []
+    },
+    {
+     "task": "T26",
+     "design": "whose",
+     "layout": "whose__shelf_full",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "bookcase_3/top",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_1",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_3/shelf_0",
+       "kind": "bookcase",
+       "score": 1.0,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "desk_3/top",
+       "kind": "desk",
+       "score": 0.6,
+       "level": 2,
+       "why": []
+      },
+      {
+       "name": "large_shelf_4/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_4/shelf_4",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_0",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_1",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_2",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "large_shelf_5/shelf_3",
+       "kind": "shelf",
+       "score": 0.6,
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      }
+     ],
+     "proposals": [
+      {
+       "name": "bookcase_2/shelf_0",
+       "kind": "bookcase",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_2/shelf_1",
+       "kind": "bookcase",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "bookcase_2/top",
+       "kind": "bookcase",
+       "level": 10,
+       "why": [
+        "ideal"
+       ]
+      },
+      {
+       "name": "cell_shelf_5/shelf_0",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      },
+      {
+       "name": "cell_shelf_5/top",
+       "kind": "shelf",
+       "level": 3,
+       "why": [
+        "+store_books"
+       ]
+      }
+     ],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "heating_appliance",
+   "kind": "appliance",
+   "why": "heat the dish in an appliance it may go into: no metal in the microwave, no glass or ceramic on the stove",
+   "requires": [],
+   "requires_any": [
+    "heat_microwave",
+    "heat_stove"
+   ],
+   "prefer": [],
+   "ideal": [],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T07",
+     "design": "vessel_decides_appliance",
+     "layout": "vessel_decides_appliance__in_ceramic_bowl",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_microwave",
+       "kind": "oatmeal_bowl",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "oatmeal_bowl may go into kitchen_microwave"
+       ]
+      },
+      {
+       "name": "kitchen_stove",
+       "kind": "oatmeal_bowl",
+       "score": 0.0,
+       "level": 0,
+       "why": [
+        "oatmeal_bowl may not go into kitchen_stove"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [],
+     "vessel": "oatmeal_bowl"
+    },
+    {
+     "task": "T07",
+     "design": "vessel_decides_appliance",
+     "layout": "vessel_decides_appliance__in_glass_box",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_microwave",
+       "kind": "glass_food_container",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "glass_food_container may go into kitchen_microwave"
+       ]
+      },
+      {
+       "name": "kitchen_stove",
+       "kind": "glass_food_container",
+       "score": 0.0,
+       "level": 0,
+       "why": [
+        "glass_food_container may not go into kitchen_stove"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [],
+     "vessel": "glass_food_container"
+    },
+    {
+     "task": "T07",
+     "design": "vessel_decides_appliance",
+     "layout": "vessel_decides_appliance__in_pot",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_microwave",
+       "kind": "soup_pot",
+       "score": 0.0,
+       "level": 0,
+       "why": [
+        "soup_pot may not go into kitchen_microwave"
+       ]
+      },
+      {
+       "name": "kitchen_stove",
+       "kind": "soup_pot",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "soup_pot may go into kitchen_stove"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [],
+     "vessel": "soup_pot"
+    },
+    {
+     "task": "T07",
+     "design": "vessel_decides_appliance",
+     "layout": "vessel_decides_appliance__in_steel_box",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_microwave",
+       "kind": "steel_lunch_box",
+       "score": 0.0,
+       "level": 0,
+       "why": [
+        "steel_lunch_box may not go into kitchen_microwave"
+       ]
+      },
+      {
+       "name": "kitchen_stove",
+       "kind": "steel_lunch_box",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "steel_lunch_box may go into kitchen_stove"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [],
+     "vessel": "steel_lunch_box"
+    },
+    {
+     "task": "T07",
+     "design": "vessel_decides_appliance",
+     "layout": "vessel_decides_appliance__in_foil_tray",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kitchen_microwave",
+       "kind": "foil_takeout_tray",
+       "score": 0.0,
+       "level": 0,
+       "why": [
+        "foil_takeout_tray may not go into kitchen_microwave"
+       ]
+      },
+      {
+       "name": "kitchen_stove",
+       "kind": "foil_takeout_tray",
+       "score": 1.0,
+       "level": 10,
+       "why": [
+        "foil_takeout_tray may go into kitchen_stove"
+       ]
+      }
+     ],
+     "proposals": [],
+     "flags": [],
+     "vessel": "foil_takeout_tray"
+    }
+   ]
+  },
+  {
+   "id": "asked_book",
+   "kind": "specific",
+   "why": "the book the guest asked for; another book is not it",
+   "requires": [],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "paperback_book"
+   ],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T01",
+     "design": "which_book",
+     "layout": "which_book__living",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "paperback_book",
+       "kind": "paperback_book",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "book_island",
+       "kind": "book_red",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "book_other",
+       "kind": "book_blue",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "book_island",
+       "score": 0.6
+      },
+      {
+       "type": "specific_partial",
+       "name": "book_other",
+       "score": 0.6
+      }
+     ]
+    },
+    {
+     "task": "T01",
+     "design": "which_book",
+     "layout": "which_book__bedroom",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "paperback_book",
+       "kind": "paperback_book",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "book_island",
+       "kind": "book_green",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "book_other",
+       "kind": "book_blue",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "book_island",
+       "score": 0.6
+      },
+      {
+       "type": "specific_partial",
+       "name": "book_other",
+       "score": 0.6
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "his_cup",
+   "kind": "specific",
+   "why": "the kid's own cup",
+   "requires": [],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "plastic_cup"
+   ],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T28",
+     "design": "where_his_cup_is",
+     "layout": "where_his_cup_is__on_counter",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "counter_mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "cup_counter_b",
+       "score": 0.6
+      },
+      {
+       "type": "specific_partial",
+       "name": "counter_mug",
+       "score": 0.6
+      }
+     ]
+    },
+    {
+     "task": "T28",
+     "design": "where_his_cup_is",
+     "layout": "where_his_cup_is__in_cabinet",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "kid_cup",
+       "kind": "plastic_cup",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "counter_mug",
+       "kind": "breakfast_mug",
+       "score": 0.6,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "cup_counter_b",
+       "score": 0.6
+      },
+      {
+       "type": "specific_partial",
+       "name": "counter_mug",
+       "score": 0.6
+      }
+     ]
+    },
+    {
+     "task": "T28",
+     "design": "where_his_cup_is",
+     "layout": "where_his_cup_is__no_kid_cup",
+     "ideal_present": false,
+     "items": [
+      {
+       "name": "cup_counter_b",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "counter_mug",
+       "kind": "breakfast_mug",
+       "score": 1.0,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "cup_kitchen_cabinet",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "cup_side_table",
+       "kind": "breakfast_cup",
+       "score": 1.0,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "next_book",
+   "kind": "specific",
+   "why": "the next book of the same series",
+   "requires": [],
+   "requires_any": [],
+   "prefer": [],
+   "ideal": [
+    "book_red"
+   ],
+   "constraints": {},
+   "legal_kinds": [],
+   "layouts": [
+    {
+     "task": "T14",
+     "design": "next_in_series",
+     "layout": "next_in_series__on_bookcase",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "red_book_2",
+       "kind": "book_red",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "blue_book_case",
+       "kind": "book_blue",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "green_book_case",
+       "kind": "book_green",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "paperback_shelf",
+       "kind": "paperback_book",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "blue_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "green_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "paperback_shelf",
+       "score": 0.3
+      }
+     ]
+    },
+    {
+     "task": "T14",
+     "design": "next_in_series",
+     "layout": "next_in_series__on_other_bookcase",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "red_book_2",
+       "kind": "book_red",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "blue_book_case",
+       "kind": "book_blue",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "green_book_case",
+       "kind": "book_green",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "paperback_shelf",
+       "kind": "paperback_book",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "blue_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "green_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "paperback_shelf",
+       "score": 0.3
+      }
+     ]
+    },
+    {
+     "task": "T14",
+     "design": "next_in_series",
+     "layout": "next_in_series__on_tall_shelf",
+     "ideal_present": true,
+     "items": [
+      {
+       "name": "red_book_2",
+       "kind": "book_red",
+       "score": 1.0,
+       "level": 10,
+       "why": []
+      },
+      {
+       "name": "blue_book_case",
+       "kind": "book_blue",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "green_book_case",
+       "kind": "book_green",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      },
+      {
+       "name": "paperback_shelf",
+       "kind": "paperback_book",
+       "score": 0.3,
+       "level": 0,
+       "why": []
+      }
+     ],
+     "proposals": [],
+     "flags": [
+      {
+       "type": "specific_partial",
+       "name": "blue_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "green_book_case",
+       "score": 0.3
+      },
+      {
+       "type": "specific_partial",
+       "name": "paperback_shelf",
+       "score": 0.3
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "loosen_tables": [
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T09",
+   "from": "lid_plate",
+   "to": "breakfast_plate",
+   "role": "pot_cover",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T13",
+   "from": "bowl",
+   "to": "breakfast_bowl",
+   "role": "table_bowl",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T13",
+   "from": "cup",
+   "to": "breakfast_cup",
+   "role": "table_drink_vessel",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T13",
+   "from": "mug",
+   "to": "breakfast_mug",
+   "role": "table_drink_vessel",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T15",
+   "from": "plate_counter_a",
+   "to": "breakfast_plate",
+   "role": "pot_cover",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T15",
+   "from": "plate_counter_b",
+   "to": "breakfast_plate",
+   "role": "pot_cover",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T16",
+   "from": "spare_bowl",
+   "to": "breakfast_bowl",
+   "role": "lunch_container",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T17",
+   "from": "cover_plate",
+   "to": "breakfast_plate",
+   "role": "pot_cover",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T18",
+   "from": "spare_mug",
+   "to": "breakfast_mug",
+   "role": "soup_vessel",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T18",
+   "from": "spare_mug",
+   "to": "breakfast_bowl",
+   "role": "soup_vessel",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "SUBSTITUTE_KINDS",
+   "task": "T18",
+   "from": "glass_box",
+   "to": "breakfast_bowl",
+   "role": "soup_vessel",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T13",
+   "design": "dishes_on_tv_stand",
+   "to": "dining_table_1/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T13",
+   "design": "dishes_on_tv_stand",
+   "to": "dining_table_2/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T13",
+   "design": "no_cup",
+   "to": "dining_table_1/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T13",
+   "design": "no_cup",
+   "to": "dining_table_2/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T18",
+   "design": "*",
+   "to": "dining_table_1/top",
+   "role": "soup_table",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T18",
+   "design": "*",
+   "to": "dining_table_2/top",
+   "role": "soup_table",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T20",
+   "design": "*",
+   "to": "dining_table_1/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T20",
+   "design": "*",
+   "to": "dining_table_2/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T21",
+   "design": "tissue_on_tv_stand",
+   "to": "dining_table_1/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T21",
+   "design": "tissue_on_tv_stand",
+   "to": "dining_table_2/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T21",
+   "design": "no_tissue",
+   "to": "dining_table_1/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T21",
+   "design": "no_tissue",
+   "to": "dining_table_2/top",
+   "role": "dining_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T30",
+   "design": "*",
+   "to": "dining_table_1/top",
+   "role": "soup_serving_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T30",
+   "design": "*",
+   "to": "dining_table_2/top",
+   "role": "soup_serving_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T30",
+   "design": "*",
+   "to": "kitchen_island/top",
+   "role": "soup_serving_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "drink_on_island",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "drink_on_island",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "cup_elsewhere",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "cup_elsewhere",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "cold_one",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "cold_one",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "drink_in_fridge",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "drink_in_fridge",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "two_guests",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "two_guests",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "little_guest",
+   "to": "tv_stand_1/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "PLACES",
+   "task": "T25",
+   "design": "little_guest",
+   "to": "tv_stand_2/top",
+   "role": "guest_drink_place",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_1/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_1/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_2/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_2/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_4/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_4/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_5/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_5/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_6/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "fruits_on_table",
+   "to": "kitchen_cabinet_6/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_1/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_1/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_2/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_2/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_4/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_4/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_5/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_5/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_6/inside_bottom",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T11",
+   "design": "basket_missing",
+   "to": "kitchen_cabinet_6/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T22",
+   "design": "tray_elsewhere",
+   "to": "breakfast_fridge/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T22",
+   "design": "tray_elsewhere",
+   "to": "kitchen_cabinet_4/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  },
+  {
+   "table": "ATOM_ALTERNATIVES",
+   "task": "T22",
+   "design": "tray_elsewhere",
+   "to": "kitchen_cabinet_6/inside_shelf",
+   "role": "fruit_put_away",
+   "ok": true,
+   "why": []
+  }
+ ]
+}

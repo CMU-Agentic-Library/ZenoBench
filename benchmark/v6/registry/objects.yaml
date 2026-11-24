@@ -1,0 +1,248 @@
+# ZenoBench object registry (11-24, after Katia's suggestion): every movable asset kind of v6.
+#
+# taxonomy: category -> subcategory -> type (the asset kind, the key) -> instance (scene object names).
+# affordances: what the kind can do; each one names the goal atom that checks it in the simulator (vocabulary
+#   below).  Only affordances the benchmark can verify from object state are listed: no liquid, no temperature
+#   tolerance as a number, no capacity in ml.  "hold_liquid" is a semantic property of the vessel (watertight,
+#   open top), used to decide which stand-ins are legal; the simulator never pours.
+# attributes: hand-labelled facts.  Geometry (size, opening, depth, mass, graspability) is not written here:
+#   object_registry.py reads it from annotations/assets.json, the same source the simulator spawns from.
+#
+# Vocabulary, kept closed (object_registry.check_vocab):
+vocabulary:
+  affordances:
+    contain_solid: "small solids stay inside it (inside / fully_inside)"
+    hold_liquid: "open watertight vessel; semantic only, nothing is poured"
+    serve_food: "a person eats from it at the table"
+    drink_from: "a person drinks from it"
+    cover_opening: "flat rigid piece that can rest on a rim and close an opening (covered)"
+    support_items: "flat top that other things rest on (on)"
+    carry_multiple: "carries several items at once, moved as one"
+    store_items: "a storage box or basket for putting things away"
+    dispose: "rubbish goes into it"
+    cook_in: "goes on the stove and heats food in it"
+    scoop: "eats or stirs with it"
+    wipe: "absorbs and wipes a spill (wiped)"
+    write: "writes or draws"
+    write_on: "is written in"
+    read: "is read"
+    stack_on: "something can stand on top of it in a tower (on_top_of, lower piece)"
+    stack_top: "can sit on top of a tower (on_top_of, upper piece)"
+    play: "a child plays with it"
+    edible: "is eaten"
+    drinkable: "is drunk"
+    wipe_tissue: "tissues to wipe hands or a spill"
+  attributes:
+    material: "ceramic | glass | plastic | metal | wood | paper | fabric | food | foam | rubber | wicker | sponge"
+    breakable: "breaks when dropped (glass, ceramic)"
+    food_safe: "may touch food that is eaten"
+    microwave_safe: "may go into the microwave (no metal)"
+    stove_safe: "may sit on a hot stove"
+    for_kids: "made for a child (plastic cup, toys)"
+    has_handle: "has a handle"
+    lidded: "comes with its own lid"
+
+objects:
+  # -- tableware ---------------------------------------------------------------------------------------------
+  breakfast_bowl:
+    taxonomy: {category: tableware, subcategory: dish}
+    affordances: [contain_solid, hold_liquid, serve_food]
+    attributes: {material: ceramic, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false}
+  oatmeal_bowl:
+    taxonomy: {category: tableware, subcategory: dish}
+    affordances: [contain_solid, hold_liquid, serve_food]
+    attributes: {material: ceramic, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false}
+  breakfast_plate:
+    taxonomy: {category: tableware, subcategory: dish}
+    affordances: [serve_food, support_items, cover_opening]
+    attributes: {material: ceramic, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false}
+  breakfast_cup:
+    taxonomy: {category: tableware, subcategory: drinkware}
+    affordances: [drink_from, hold_liquid, contain_solid]
+    attributes: {material: glass, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false}
+  breakfast_mug:
+    taxonomy: {category: tableware, subcategory: drinkware}
+    affordances: [drink_from, hold_liquid, contain_solid]
+    attributes: {material: ceramic, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false, has_handle: true}
+  plastic_cup:
+    taxonomy: {category: tableware, subcategory: drinkware}
+    affordances: [drink_from, hold_liquid, contain_solid]
+    attributes: {material: plastic, breakable: false, food_safe: true, microwave_safe: false, stove_safe: false, for_kids: true}
+  breakfast_spoon:
+    taxonomy: {category: tableware, subcategory: cutlery}
+    affordances: [scoop]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true}
+
+  # -- cookware ----------------------------------------------------------------------------------------------
+  handled_cooking_pot:
+    taxonomy: {category: cookware, subcategory: pot}
+    affordances: [cook_in, contain_solid, hold_liquid]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true, has_handle: true}
+  soup_pot:
+    taxonomy: {category: cookware, subcategory: pot}
+    affordances: [cook_in, contain_solid, hold_liquid]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true, has_handle: true}
+  pot_lid:
+    taxonomy: {category: cookware, subcategory: lid}
+    affordances: [cover_opening]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true, has_handle: true}
+  rolling_pin:
+    taxonomy: {category: cookware, subcategory: utensil}
+    affordances: []
+    attributes: {material: wood, breakable: false, food_safe: true, microwave_safe: false, stove_safe: false}
+
+  # -- food containers ---------------------------------------------------------------------------------------
+  glass_food_container:
+    taxonomy: {category: food_container, subcategory: storage_box}
+    affordances: [contain_solid, hold_liquid, serve_food]
+    attributes: {material: glass, breakable: true, food_safe: true, microwave_safe: true, stove_safe: false, lidded: true}
+  steel_lunch_box:
+    taxonomy: {category: food_container, subcategory: storage_box}
+    affordances: [contain_solid, hold_liquid]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true, lidded: true}
+  foil_takeout_tray:
+    taxonomy: {category: food_container, subcategory: takeout}
+    affordances: [contain_solid, hold_liquid]
+    attributes: {material: metal, breakable: false, food_safe: true, microwave_safe: false, stove_safe: true}
+
+  # -- containers --------------------------------------------------------------------------------------------
+  fruit_basket:
+    taxonomy: {category: container, subcategory: basket}
+    affordances: [contain_solid, carry_multiple]
+    attributes: {material: wicker, breakable: false, food_safe: true}
+  storage_basket:
+    taxonomy: {category: container, subcategory: basket}
+    affordances: [contain_solid, carry_multiple, store_items]
+    attributes: {material: wicker, breakable: false, food_safe: false}
+  small_storage_bin:
+    taxonomy: {category: container, subcategory: bin}
+    affordances: [contain_solid, store_items, carry_multiple]
+    attributes: {material: plastic, breakable: false, food_safe: true}
+  wide_storage_bin:
+    taxonomy: {category: container, subcategory: bin}
+    affordances: [contain_solid, store_items, carry_multiple]
+    attributes: {material: plastic, breakable: false, food_safe: false}
+  toy_box:
+    taxonomy: {category: container, subcategory: bin}
+    affordances: [contain_solid, store_items]
+    attributes: {material: wood, breakable: false, food_safe: false, for_kids: true}
+  serving_tray:
+    taxonomy: {category: container, subcategory: tray}
+    affordances: [contain_solid, carry_multiple, support_items, cover_opening]
+    attributes: {material: wood, breakable: false, food_safe: true}
+  shallow_sorting_tray:
+    taxonomy: {category: container, subcategory: tray}
+    affordances: [contain_solid, carry_multiple, support_items, store_items, cover_opening]
+    attributes: {material: plastic, breakable: false, food_safe: true}
+  trash_can:
+    taxonomy: {category: container, subcategory: waste_bin}
+    affordances: [dispose, contain_solid]
+    attributes: {material: plastic, breakable: false, food_safe: false}
+  big_trash_can:
+    taxonomy: {category: container, subcategory: waste_bin}
+    affordances: [dispose, contain_solid]
+    attributes: {material: plastic, breakable: false, food_safe: false}
+
+  # -- food --------------------------------------------------------------------------------------------------
+  apple:
+    taxonomy: {category: food, subcategory: fruit}
+    affordances: [edible]
+    attributes: {material: food}
+  banana:
+    taxonomy: {category: food, subcategory: fruit}
+    affordances: [edible]
+    attributes: {material: food}
+  orange:
+    taxonomy: {category: food, subcategory: fruit}
+    affordances: [edible]
+    attributes: {material: food}
+  cherry_tomato:
+    taxonomy: {category: food, subcategory: vegetable}
+    affordances: [edible]
+    attributes: {material: food}
+  big_tomato:
+    taxonomy: {category: food, subcategory: vegetable}
+    affordances: [edible]
+    attributes: {material: food}
+  cereal_box:
+    taxonomy: {category: food, subcategory: packaged}
+    affordances: [edible]
+    attributes: {material: paper}
+  snack_carton:
+    taxonomy: {category: food, subcategory: packaged}
+    affordances: [edible]
+    attributes: {material: paper}
+  juice_bottle:
+    taxonomy: {category: food, subcategory: beverage}
+    affordances: [drinkable]
+    attributes: {material: plastic, breakable: false}
+  soda_can:
+    taxonomy: {category: food, subcategory: beverage}
+    affordances: [drinkable]
+    attributes: {material: metal, breakable: false}
+
+  # -- stationery --------------------------------------------------------------------------------------------
+  book_red:
+    taxonomy: {category: stationery, subcategory: book}
+    affordances: [read, cover_opening, support_items]
+    attributes: {material: paper}
+  book_green:
+    taxonomy: {category: stationery, subcategory: book}
+    affordances: [read, cover_opening, support_items]
+    attributes: {material: paper}
+  book_blue:
+    taxonomy: {category: stationery, subcategory: book}
+    affordances: [read, cover_opening, support_items]
+    attributes: {material: paper}
+  paperback_book:
+    taxonomy: {category: stationery, subcategory: book}
+    affordances: [read, cover_opening]
+    attributes: {material: paper}
+  notebook:
+    taxonomy: {category: stationery, subcategory: notebook}
+    affordances: [write_on, cover_opening]
+    attributes: {material: paper}
+  pen:
+    taxonomy: {category: stationery, subcategory: writing_tool}
+    affordances: [write]
+    attributes: {material: plastic}
+  pencil:
+    taxonomy: {category: stationery, subcategory: writing_tool}
+    affordances: [write]
+    attributes: {material: wood}
+
+  # -- toys --------------------------------------------------------------------------------------------------
+  wooden_block:
+    taxonomy: {category: toy, subcategory: block}
+    affordances: [play, stack_on, stack_top]
+    attributes: {material: wood, for_kids: true}
+  toy_block:
+    taxonomy: {category: toy, subcategory: block}
+    affordances: [play, stack_on, stack_top]
+    attributes: {material: plastic, for_kids: true}
+  foam_cube:
+    taxonomy: {category: toy, subcategory: block}
+    affordances: [play, stack_on, stack_top]
+    attributes: {material: foam, for_kids: true}
+  rubber_duck:
+    taxonomy: {category: toy, subcategory: figure}
+    affordances: [play, stack_top]
+    attributes: {material: rubber, for_kids: true}
+  teddy_bear:
+    taxonomy: {category: toy, subcategory: plush}
+    affordances: [play]
+    attributes: {material: fabric, for_kids: true}
+  toy_car:
+    taxonomy: {category: toy, subcategory: vehicle}
+    affordances: [play]
+    attributes: {material: plastic, for_kids: true}
+
+  # -- household ---------------------------------------------------------------------------------------------
+  kitchen_sponge:
+    taxonomy: {category: cleaning, subcategory: sponge}
+    affordances: [wipe, stack_on, stack_top]
+    attributes: {material: sponge}
+  tissue_box:
+    taxonomy: {category: cleaning, subcategory: tissue}
+    affordances: [wipe_tissue, wipe]
+    attributes: {material: paper}
