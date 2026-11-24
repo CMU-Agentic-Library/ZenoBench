@@ -13,15 +13,15 @@ from threading import Event, Lock
 from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_path
 
 
-def pending(out, first_row=0):
+def pending(out, first_row=0, models=MODELS, methods=METHODS):
     jobs = episodes()
     subset = representatives(jobs)
     for index in range(first_row, len(jobs)):
-        for method in METHODS:
+        for method in methods:
             rows = subset if method in ABLATIONS else jobs
             if index >= len(rows):
                 continue
-            for model in MODELS:
+            for model in models:
                 directory = result_path(out, model, method, rows[index])
                 if not (directory / "result.json").exists():
                     yield model, method, index, len(rows), directory
@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--servers", nargs="+", required=True, metavar="PORT=SLOTS")
     ap.add_argument("--dispatch-dir", type=Path,
                     help="per-dispatcher log directory when adding concurrent workers to the same run")
+    ap.add_argument("--model", choices=MODELS, action="append", help="limit this worker group to the named model(s)")
+    ap.add_argument("--method", choices=METHODS, action="append", help="limit this worker group to the named method(s)")
     ap.add_argument("--vlm-ports", nargs=3, type=int, default=(8101, 8102, 8103),
                     help="Qwen 4B, Qwen 27B, InternVL 8B")
     ap.add_argument("--graph-bin", default="graph-manager-run")
@@ -65,7 +67,7 @@ def main():
     logs = args.dispatch_dir.resolve() if args.dispatch_dir else root / "dispatch"
     logs.mkdir(parents=True, exist_ok=True)
     out = root / "planner"
-    jobs = pending(out, args.first_row)
+    jobs = pending(out, args.first_row, args.model or MODELS, args.method or METHODS)
     # A stopped dispatcher drains active episodes. A restart scans receipts again.
     stop = Event()
     for sig in (signal.SIGTERM, signal.SIGINT):

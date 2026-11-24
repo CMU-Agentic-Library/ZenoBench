@@ -1,14 +1,17 @@
+import fcntl
 import json
 import subprocess
 import sys
+import urllib.request
 from unittest.mock import patch
 import pytest
 
 from baseline import run_http
 from baseline.comparison import MAIN, episodes, graph_library, representatives
 from baseline.graph_profile import configure
-from baseline.launch_comparison import claim_episode
+from baseline.launch_comparison import claim_episode, pending
 from baseline.report import read_outcome
+from baseline.sim6.startup_queue import install
 
 
 def test_paired_catalog_and_local_graph_library(tmp_path):
@@ -40,6 +43,38 @@ def test_dispatchers_share_episode_ownership_while_a_child_is_alive(tmp_path):
         (directory / "result.json").write_text("{}")
     with claim_episode(directory) as completed:
         assert completed is None
+
+
+def test_resume_interrupted_ablation_keeps_the_original_rows(tmp_path):
+    model, method = "internvl3.5-8b", "ReActPrivileged"
+    jobs = list(pending(tmp_path, first_row=1, models=[model], methods=[method]))
+    assert [(m, policy, i, total) for m, policy, i, total, _ in jobs] == [
+        (model, method, i, 316) for i in range(1, 316)]
+    directory = jobs[0][-1]
+    directory.mkdir(parents=True)
+    (directory / "result.json").write_text("{}")
+    assert next(pending(tmp_path, 1, [model], [method])) == jobs[1]
+
+
+def test_start_queue_applies_only_until_initial_task_returns(tmp_path, monkeypatch):
+    def probe(url, timeout):
+        assert timeout == 42
+        with (tmp_path / "gpu-1.lock").open("a") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                return "queued"
+        return "immediate"
+
+    monkeypatch.setattr(urllib.request, "urlopen", probe)
+    install(tmp_path, {8871: 1})
+    install(tmp_path, {8871: 1})
+    base = "http://127.0.0.1:8871/"
+    post = urllib.request.Request(base + "initial_task", data=b"{}")
+    assert urllib.request.urlopen(post, timeout=42) == "queued"
+    assert urllib.request.urlopen(urllib.request.Request(base + "do_contract", data=b"{}"), timeout=42) == "immediate"
+    assert urllib.request.urlopen(urllib.request.Request(base + "initial_task"), timeout=42) == "immediate"
+    assert urllib.request.urlopen(url="http://127.0.0.1:8101/v1/models", timeout=42) == "immediate"
 
 
 def test_harness_compacts_against_the_served_context_window(tmp_path):

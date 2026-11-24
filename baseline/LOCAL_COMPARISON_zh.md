@@ -86,6 +86,24 @@ export ZENO_LAB_COMPAT_MANIFEST="$LAB_SIM6/compatibility.json"
 
 用上面的环境启动 HTTP 服务，在评测和汇总两条命令中都传入 `--sim-version 6.0.0.1`。生成的表头显示实际版本，汇总器检查每个原生结果的版本号。用于相机和参考技能验证的局存放于规划器结果目录之外。
 
+同一张 GPU 上有多局同时请求 `/initial_task` 时，原服务会串行启动模拟器，等待前一局启动也计入 780 秒的启动限时。本轮出现过两次尚未拿到初始观测的超时，剩给实际启动的时间分别为 323 秒和 49 秒。多个规划器共用 GPU 时，可在发出请求前排队。以下命令仅在本轮的两个专用规划器环境中注册启动队列。端口映射应与实际运行环境服务的物理 GPU 对应。计分、模型请求、执行中的技能和从环境就绪起算的时限沿用原实现。
+
+```bash
+mkdir -p "$ZB_RUN/startup_queue"
+cp baseline/sim6/startup_queue.py "$ZB_RUN/startup_queue/zenobench_startup_queue.py"
+for py in "$PLANNER_PYTHON" "$GRAPH_PYTHON"; do
+  "$py" - "$ZB_RUN" <<'PY'
+from pathlib import Path
+import sys, sysconfig
+root = Path(sys.argv[1]).resolve()
+directory = root / "startup_queue"
+ports = {8870 + device: device for device in range(6)}
+setup = f"import zenobench_startup_queue; zenobench_startup_queue.install({str(directory)!r}, {ports!r})"
+(Path(sysconfig.get_path("purelib")) / "zenobench_startup.pth").write_text(f"{directory}\n{setup}\n")
+PY
+done
+```
+
 以下例子给 8860、8861、8862 三个仿真服务各分配两个并发局，在不同模型和方法间轮转。各服务的 `--log-dir` 都指向 `$ZB_RUN/native`。端口 8101、8102、8103 分别对应 Qwen 4B、Qwen 27B 和 InternVL 8B。收到 SIGTERM 后，调度器等待正在运行的局结束。再次启动时继续剩余的局。
 
 ```bash
@@ -93,4 +111,4 @@ python -m baseline.launch_comparison --run-dir "$ZB_RUN" --sim-version 6.0.0.1 \
   --servers 8860=2 8861=2 8862=2 --graph-bin /path/to/graph-env/bin/graph-manager-run
 ```
 
-运行期间增加空闲的仿真槽位时，可使用相同的 `--run-dir`，另给新调度器指定 `--dispatch-dir "$ZB_RUN/dispatch-extra"` 和新分配的 `--servers`。调度器按模型、方法、布局和种子锁定每一局。其他调度器可以继续领取剩余的局，已计分的局会自动跳过。
+运行期间增加空闲的仿真槽位时，可使用相同的 `--run-dir`，另给新调度器指定 `--dispatch-dir "$ZB_RUN/dispatch-extra"` 和新分配的 `--servers`。调度器按模型、方法、布局和种子锁定每一局。其他调度器可以继续领取剩余的局，已计分的局会自动跳过。补跑受服务中断影响的一个组合时，再指定 `--model` 和 `--method`，它会沿用原分片编号和输出目录。
