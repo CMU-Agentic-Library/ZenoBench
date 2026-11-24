@@ -89,7 +89,9 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path, tier, val
     score = {"score": value, "tier": tier}
     run_http.write_report(planner / "result.json", {**meta, "model": "local", "policy": "baseline.react:ReAct",
                           "max_calls": 60, "episode": {"episode_hash": "id", "config_hash": "layout", "runtime": runtime},
-                          "success": success, "score": score, "wall_s": 5, "planner_summary": {"vlm_queries": 2}})
+                          "success": success, "score": score, "wall_s": 5,
+                          "stop_reason": "service_limit" if tier == "second" else "planner_done",
+                          "planner_summary": {"vlm_queries": 2, "stop_reason": "finish: the model says it is done"}})
     run_http.write_report(native / "result.json", {**meta, "episode_hash": "id", "incomplete": False,
                           "task_success": success, "score": score, "skill_calls": 3, "runtime": runtime,
                           "calls": [{"eval": {"leaf_code": "POLICY_FAILED"}},
@@ -100,5 +102,6 @@ def test_execution_failure_and_task_score_use_native_verdict(tmp_path, tier, val
     assert r["score"] == value and r["success"] == success and r["execution"]
     assert r["best_success"] == best_success
     assert r["failure_classes"] == {"execution", "observation"}
+    assert r["stop_reason"] == ("service_limit" if tier == "second" else "finish")
     with pytest.raises(ValueError, match="simulator version mismatch"):
         read_outcome(planner, tmp_path / "native", "local", "ReAct", job, "5.1.0.0")

@@ -1,8 +1,8 @@
 # ZenoBench v6 本地 VLM 基线 · Isaac Sim 6.0.0.1
 
-**原生计分覆盖 33 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
+**原生计分覆盖 34 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
 
-汇总时间为 2026-11-24 10:10 UTC。
+汇总时间为 2026-11-24 10:13 UTC。
 
 Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a684758db346189976a18a6c39`。cuRobo 0.7.8，Warp 1.13.0，PyTorch 2.11.0（CUDA 13.0）。
 
@@ -26,7 +26,7 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 | CodeAsPolicies | qwen3.5-27b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | CodeAsPolicies | internvl3.5-8b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | SayPlan | qwen3.5-4b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
-| SayPlan | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| SayPlan | qwen3.5-27b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | SayPlan | internvl3.5-8b | 2/1510 | 0 | 0.000 | — | 0/2 | 0/2 | 0/2 |
 | GraphManager | qwen3.5-4b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
 | GraphManager | qwen3.5-27b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
@@ -49,9 +49,9 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 | CodeAsPolicies | qwen3.5-4b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
 | CodeAsPolicies | qwen3.5-27b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
 | CodeAsPolicies | internvl3.5-8b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
-| SayPlan | qwen3.5-4b | — | 0.000 (1) | — | 0.000 (1) | — | — |
-| SayPlan | qwen3.5-27b | — | 0.000 (1) | — | 0.000 (1) | — | — |
-| SayPlan | internvl3.5-8b | — | 0.000 (1) | — | 0.000 (1) | — | — |
+| SayPlan | qwen3.5-4b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
+| SayPlan | qwen3.5-27b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
+| SayPlan | internvl3.5-8b | 0.000 (1) | 0.000 (1) | — | 0.000 (2) | — | — |
 | GraphManager | qwen3.5-4b | 0.000 (1) | — | — | 0.000 (1) | — | — |
 | GraphManager | qwen3.5-27b | 0.000 (1) | — | — | 0.000 (1) | — | — |
 | GraphManager | internvl3.5-8b | 0.000 (1) | — | — | 0.000 (1) | — | — |
@@ -92,7 +92,7 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 | CodeAsPolicies | qwen3.5-27b | 2/2 | 0/2 | 0/2 | 0/2 | 0/2 | 0/2 |
 | CodeAsPolicies | internvl3.5-8b | 1/2 | 1/2 | 0/2 | 0/2 | 0/2 | 1/2 |
 | SayPlan | qwen3.5-4b | 2/2 | 1/2 | 0/2 | 1/2 | 0/2 | 0/2 |
-| SayPlan | qwen3.5-27b | 1/1 | 1/1 | 1/1 | 1/1 | 0/1 | 0/1 |
+| SayPlan | qwen3.5-27b | 2/2 | 2/2 | 1/2 | 1/2 | 0/2 | 0/2 |
 | SayPlan | internvl3.5-8b | 2/2 | 0/2 | 2/2 | 2/2 | 0/2 | 0/2 |
 | GraphManager | qwen3.5-4b | 1/1 | 0/1 | 0/1 | 0/1 | 0/1 | 0/1 |
 | GraphManager | qwen3.5-27b | 1/1 | 0/1 | 1/1 | 0/1 | 0/1 | 0/1 |
@@ -108,29 +108,31 @@ Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a68475
 
 Graph Manager 的一个 Harness 回合可以向模型发多次请求，其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。
 
-| 方法 | 模型 | 技能调用/局 | 模型查询/局 | 输入 token/局 | 输出 token/局 | 秒/局 |
-| --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 1.75 | 1.00 | 10561 | 154 | 269.4 |
-| OpenLoop | qwen3.5-27b | 1.33 | 1.00 | 10599 | 252 | 482.0 |
-| OpenLoop | internvl3.5-8b | 1.25 | 1.00 | 13487 | 113 | 361.1 |
-| ReAct | qwen3.5-4b | 9.50 | 13.50 | 147976 | 10991 | 2505.6 |
-| ReAct | qwen3.5-27b | 14.00 | 15.00 | 164001 | 1086 | 2742.7 |
-| ReAct | internvl3.5-8b | 60.00 | 60.00 | 867266 | 4336 | 2300.7 |
-| CodeAsPolicies | qwen3.5-4b | 0.67 | 1.00 | 10645 | 56 | 348.0 |
-| CodeAsPolicies | qwen3.5-27b | 2.50 | 1.00 | 10691 | 1272 | 984.6 |
-| CodeAsPolicies | internvl3.5-8b | 3.50 | 1.50 | 20436 | 4218 | 175.2 |
-| SayPlan | qwen3.5-4b | 12.00 | 18.50 | 150680 | 2029 | 2208.6 |
-| SayPlan | qwen3.5-27b | 56.00 | 55.00 | 471343 | 6420 | 3390.1 |
-| SayPlan | internvl3.5-8b | 60.00 | 67.50 | 781163 | 6202 | 3866.8 |
-| GraphManager | qwen3.5-4b | 6.00 | — | — | — | 757.0 |
-| GraphManager | qwen3.5-27b | 9.00 | — | — | — | 958.6 |
-| GraphManager | internvl3.5-8b | 0.00 | — | — | — | 186.1 |
-| ReActHint | qwen3.5-4b | 7.00 | 12.00 | 131430 | 5824 | 349.0 |
-| ReActHint | qwen3.5-27b | — | — | — | — | — |
-| ReActHint | internvl3.5-8b | — | — | — | — | — |
-| ReActPrivileged | qwen3.5-4b | 6.00 | 10.00 | 112022 | 6948 | 1882.6 |
-| ReActPrivileged | qwen3.5-27b | — | — | — | — | — |
-| ReActPrivileged | internvl3.5-8b | — | — | — | — | — |
+停止原因保留方法或服务的原始分类。budget 表示用尽调用预算，service_limit 表示达到环境服务限制，time_budget 和 replan_limit 分别表示 Graph Manager 的计时或重规划上限。finish 表示模型主动报告完成，实际任务成功仍以环境判定为准。
+
+| 方法 | 模型 | 技能调用/局 | 模型查询/局 | 输入 token/局 | 输出 token/局 | 秒/局 | 停止原因与局数 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| OpenLoop | qwen3.5-4b | 1.75 | 1.00 | 10561 | 154 | 269.4 | `call_failed` × 3，`plan_done` × 1 |
+| OpenLoop | qwen3.5-27b | 1.33 | 1.00 | 10599 | 252 | 482.0 | `call_failed` × 2，`plan_done` × 1 |
+| OpenLoop | internvl3.5-8b | 1.25 | 1.00 | 13487 | 113 | 361.1 | `plan_done` × 3，`call_failed` × 1 |
+| ReAct | qwen3.5-4b | 9.50 | 13.50 | 147976 | 10991 | 2505.6 | `parse_error` × 2 |
+| ReAct | qwen3.5-27b | 14.00 | 15.00 | 164001 | 1086 | 2742.7 | `finish` × 1 |
+| ReAct | internvl3.5-8b | 60.00 | 60.00 | 867266 | 4336 | 2300.7 | `budget` × 2 |
+| CodeAsPolicies | qwen3.5-4b | 0.67 | 1.00 | 10645 | 56 | 348.0 | `program_done` × 3 |
+| CodeAsPolicies | qwen3.5-27b | 2.50 | 1.00 | 10691 | 1272 | 984.6 | `program_done` × 2 |
+| CodeAsPolicies | internvl3.5-8b | 3.50 | 1.50 | 20436 | 4218 | 175.2 | `program_done` × 1，`parse_error` × 1 |
+| SayPlan | qwen3.5-4b | 12.00 | 18.50 | 150680 | 2029 | 2208.6 | `parse_error` × 1，`service_limit` × 1 |
+| SayPlan | qwen3.5-27b | 35.50 | 46.00 | 388799 | 4878 | 3860.8 | `service_limit` × 1，`finish` × 1 |
+| SayPlan | internvl3.5-8b | 60.00 | 67.50 | 781163 | 6202 | 3866.8 | `budget` × 2 |
+| GraphManager | qwen3.5-4b | 6.00 | — | — | — | 757.0 | `replan_limit` × 1 |
+| GraphManager | qwen3.5-27b | 9.00 | — | — | — | 958.6 | `replan_limit` × 1 |
+| GraphManager | internvl3.5-8b | 0.00 | — | — | — | 186.1 | `model_gave_up` × 1 |
+| ReActHint | qwen3.5-4b | 7.00 | 12.00 | 131430 | 5824 | 349.0 | `parse_error` × 1 |
+| ReActHint | qwen3.5-27b | — | — | — | — | — | — |
+| ReActHint | internvl3.5-8b | — | — | — | — | — | — |
+| ReActPrivileged | qwen3.5-4b | 6.00 | 10.00 | 112022 | 6948 | 1882.6 | `parse_error` × 1 |
+| ReActPrivileged | qwen3.5-27b | — | — | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | — | — | — | — | — | — |
 
 ## 脚本参考路线
 

@@ -1,7 +1,7 @@
 """Summarize the local v6 comparison from paired planner and native simulator receipts."""
 
 import argparse
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 import random
@@ -47,6 +47,9 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
     failure_classes = {failure_class(c["eval"].get("leaf_code")) for c in n["calls"]
                        if c["eval"].get("leaf_code") is not None or c.get("feedback", {}).get("success") is False}
     summary = r["planner_summary"]
+    stop_reason = r.get("stop_reason")
+    if stop_reason == "planner_done":
+        stop_reason = summary.get("stop_reason") or stop_reason
     return "scored", {**job, "exp_id": r["exp_id"], "config_hash": r["episode"]["config_hash"],
                       "episode_hash": n["episode_hash"], "score": n["score"]["score"],
                       "runtime": n.get("runtime", {}),
@@ -54,7 +57,8 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
                       "execution": "execution" in failure_classes, "failure_classes": failure_classes,
                       "skills": n["skill_calls"],
                       "queries": summary.get("vlm_queries"), "input_tokens": summary.get("input_tokens"),
-                      "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"]}
+                      "output_tokens": summary.get("output_tokens"), "wall_s": r["wall_s"],
+                      "stop_reason": stop_reason.partition(":")[0] if stop_reason else "未记录"}
 
 
 def clustered_interval(rows):
@@ -161,9 +165,11 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
             else:
                 counts = ["—"] * 6
             errors.append([method, model, *counts])
+            stops = Counter(r["stop_reason"] for r in values)
             traces.append([method, model, average(values, "skills"),
                            average(values, "queries"), average(values, "input_tokens", 0),
-                           average(values, "output_tokens", 0), average(values, "wall_s", 1)])
+                           average(values, "output_tokens", 0), average(values, "wall_s", 1),
+                           "，".join(f"`{s}` × {count}" for s, count in stops.most_common()) or "—"])
     header = ["方法", "模型", "已计分/计划", "中断待重跑", "平均分", "平均分 95% CI", "任务成功", "正分", "满分"]
     scored = sum(len(group) for group in scores.values())
     planned = len(MODELS) * (len(jobs) * (len(METHODS) - len(ABLATIONS)) + len(subset) * len(ABLATIONS))
@@ -223,9 +229,12 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
     lines += ["## 推理与执行成本", "",
               "Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
               "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
-              "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", ""]
+              "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", "",
+              "停止原因保留方法或服务的原始分类。budget 表示用尽调用预算，service_limit 表示达到环境服务限制，"
+              "time_budget 和 replan_limit 分别表示 Graph Manager 的计时或重规划上限。"
+              "finish 表示模型主动报告完成，实际任务成功仍以环境判定为准。", ""]
     lines += table(["方法", "模型", "技能调用/局", "模型查询/局",
-                    "输入 token/局", "输出 token/局", "秒/局"], traces)
+                    "输入 token/局", "输出 token/局", "秒/局", "停止原因与局数"], traces)
     if reference_dirs:
         lines += reference_table(reference_dirs)
     return "\n".join(lines)
