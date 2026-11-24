@@ -18,9 +18,12 @@ SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_
 ## 运行
 
 ```bash
-# 依赖（按用到的模型装）：pip install anthropic openai
-# Claude: ANTHROPIC_API_KEY；GPT: OPENAI_API_KEY；Gemini: GEMINI_API_KEY；
-# Qwen: 本地 vLLM（baseline/graph_manager/examples/vllm-qwen3.5-4b.compose.yml，端口 8001），或设 SHIFT_VLLM_URL
+# 依赖已装进 isaaclab 环境：anthropic 0.85、openai 1.109（11-23）。
+#   不要直接 pip install -U：新版要求 typing_extensions>=4.14，会和 Isaac Sim 锁的 4.12.2 / idna 3.10 冲突。
+#   需要重装时：pip install -c <(printf 'idna==3.10\ntyping_extensions==4.12.2\n') "anthropic<1" "openai<2"
+# key：cp baseline/.env.example baseline/.env 再填（已 gitignore），或在 shell 里 export。
+# 检查配置：$ISAACLAB_PYTHON -m baseline.check_models   （每个模型发一条几 token 的请求）
+# Qwen：要有一个 OpenAI 兼容的 vLLM 服务，地址写 SHIFT_VLLM_URL（默认 localhost:8001）。
 SHIFT_MODEL=claude-opus-5-5 $ISAACLAB_PYTHON benchmark/run_episode.py \
     --tasks benchmark/v6/tasks.json --task T28_cup_to_bedside --seed 10 \
     --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark
@@ -33,7 +36,7 @@ SHIFT_MODEL=claude-opus-5-5 $ISAACLAB_PYTHON benchmark/run_episode.py \
 python -m pytest baseline/tests -q          # 离线测试：假模型、假观察，不需要仿真和 API
 ```
 
-- 设置都从环境变量读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。
+- 设置都从环境变量或 `baseline/.env` 读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。GPT / Gemini 的具体型号还没定，`check_models` 里的 `gpt-5.5`、`gemini-3-pro` 只是占位，可用 `SHIFT_GPT_MODEL` / `SHIFT_GEMINI_MODEL` 改。
 - 四家模型拿到完全相同的文字和 JSON 回答格式，不用各家的原生工具调用。每次请求都是无状态的一问一答，历史由 planner 自己写进 prompt（最近 8 步完整，更早的压成一行）。
 - 回答解析不了时再问一次，最多 2 次；这算 VLM 查询，不算技能调用。
 - `calls.jsonl` 每行多了 `planner_usage`（这一步的 token），`result.json` 多了 `planner_summary`（整局的 VLM 查询数、token、停止原因，含最后 finish 那一问）。

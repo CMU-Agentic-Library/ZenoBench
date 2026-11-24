@@ -9,6 +9,8 @@ The backend follows the model name:
   (skill menu) is cached.
 * ``gpt-*``, ``o<digit>*`` - OpenAI SDK (``pip install openai``, OPENAI_API_KEY).
 * ``gemini-*``  - Gemini's OpenAI-compatible endpoint through the OpenAI SDK (GEMINI_API_KEY).
+Keys can also come from baseline/.env (template baseline/.env.example, git-ignored).
+
 * anything else (``qwen3.5-4b``) - a local vLLM server through the OpenAI SDK, at SHIFT_VLLM_URL
   (default http://localhost:8001/v1, the port of baseline/graph_manager/examples/vllm-qwen3.5-4b.compose.yml).
 
@@ -24,6 +26,7 @@ import os
 from pathlib import Path
 import time
 
+ENV_FILE = Path(__file__).with_name(".env")          # git-ignored; template: baseline/.env.example
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 VLLM_URL = "http://localhost:8001/v1"
 
@@ -99,7 +102,22 @@ class OpenAICompatClient:
             "stop_reason": choice.finish_reason}
 
 
+def load_env(path=ENV_FILE):
+    """KEY=VALUE lines of baseline/.env into os.environ (the shell's own values win; empty ones skipped)."""
+    if not Path(path).exists():
+        return
+    for line in Path(path).read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        if v and k not in os.environ:
+            os.environ[k] = v
+
+
 def make_client(model: str):
+    load_env()
     m = model.lower()
     if m.startswith("claude"):
         return AnthropicClient(model)

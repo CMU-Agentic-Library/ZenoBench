@@ -26,6 +26,8 @@ class BaselinePlanner(Planner):
     name = "baseline"
 
     def __init__(self, model=None, max_calls=None, client=None):
+        from baseline.vlm import load_env
+        load_env()                        # SHIFT_MODEL / SHIFT_MAX_CALLS may live in baseline/.env
         self.model = model or os.environ.get("SHIFT_MODEL", DEFAULT_MODEL)
         self.max_calls = int(max_calls or os.environ.get("SHIFT_MAX_CALLS", DEFAULT_MAX_CALLS))
         self._client = client

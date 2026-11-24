@@ -3,3 +3,6 @@ __pycache__/
 runs/
 *.facts.jsonl
 .claude/stop_check_ok
+
+# baseline API keys (baseline/.env.example is the template)
+baseline/.env
