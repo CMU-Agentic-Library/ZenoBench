@@ -31,6 +31,8 @@ def test_v5_designs_unchanged():
     """A v5 variant keeps its design (conditions, goal, instruction, failures other than the injected action ones);
     where things stand and where the robot starts are the seed's (layout.py)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
+    from benchmark.v6.tests.conftest import pre_loosen
+    PRE = {t["task_id"]: t for t in pre_loosen()["tasks"]}
     for tid, t in TASKS.items():
         if tid not in v5:                               # T21-T30: base tasks of v6's own (new_tasks_v6.py)
             continue
@@ -39,7 +41,7 @@ def test_v5_designs_unchanged():
                 assert vid not in t["variants"]
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
-            assert old.get("goal") == new.get("goal"), vid
+            assert old.get("goal") == PRE[tid]["variants"][vid].get("goal"), vid   # before the 11-24 loosening
             if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
                 assert "instruction" not in new, vid
             elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose

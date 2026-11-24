@@ -3906,7 +3906,8 @@ def gt_sequence_fixes(task: dict) -> list:
     return out
 
 
-def build() -> dict:
+def build(loosen: bool = True) -> dict:
+    """The v6 catalog; ``loosen=False`` stops before the 11-24 loosening (tests compare that stage)."""
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
     new = [t for t, _ in new_base_tasks()]       # T21-T30: base tasks of v6's own, built like the v5 ones
@@ -3963,6 +3964,9 @@ def build() -> dict:
     apply_tracks(out)
     from benchmark.v6.scoring import attach_scoring
     attach_scoring(out)                          # graded outcomes of the designs reviewed so far (D, tiers)
+    if loosen:
+        from benchmark.v6.loosen_1124 import apply as loosen_1124
+        loosen_1124(out)                         # 11-24 (user): object state decides, every fitting reading counts
     from benchmark.v6.scoring import IDEAL_CONFLICTS
     for c in IDEAL_CONFLICTS:
         print("ideal there but the best tier is not the ideal:", *c)
