@@ -15,7 +15,7 @@ def episode_key(j):
     return j["task"], j["variant"], j["seed"]
 
 
-def read_outcome(directory, native_dir, model, method, job, sim_version=None):
+def read_outcome(directory, native_dir, model, method, job, sim_version=None, harness_dir=None, usage_cache=None):
     final = directory / "result.json"
     if not final.exists():
         return ("interrupted" if (directory / "failed.json").exists() else "outstanding"), None
@@ -45,6 +45,11 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
                        if c["eval"].get("leaf_code") is not None or c.get("feedback", {}).get("success") is False}
     calls = call_records(n, job)
     summary = r["planner_summary"]
+    if method == "GraphManager" and harness_dir:
+        from baseline.harness_usage import graph_usage
+        measured = graph_usage(harness_dir, directory, model, job, r, usage_cache)
+        if measured is not None:
+            summary = {**summary, **measured}
     stop_reason = r.get("stop_reason")
     if stop_reason == "planner_done":
         stop_reason = summary.get("stop_reason") or stop_reason
@@ -97,6 +102,53 @@ def average(rows, field, places=2):
 
 def mean_and_n(rows):
     return f"{mean(r['score'] for r in rows):.3f} ({len(rows)})" if rows else "—"
+
+
+def graph_attempt_table(out, jobs, scores):
+    from baseline.graph_profile import matches_local_protocol
+    rows = []
+    for model in MODELS:
+        cases = first_verdicts = recovered = finished_attempts = 0
+        error_codes = Counter()
+        for job in jobs:
+            directory = result_path(out, model, "GraphManager", job)
+            published = []
+            for filename in ("result.json", "failed.json"):
+                try:
+                    wrapper = read_json(directory / filename)
+                except FileNotFoundError:
+                    continue
+                if wrapper.get("graph_attempt"):
+                    published.append(Path(wrapper["graph_attempt"]).name)
+            if not published:
+                continue
+            # The pinned manager writes its nested JSON before the wrapper publishes an atomic receipt.
+            last_attempt = max(published)
+            history = []
+            for attempt in sorted((directory / "graph").glob("*")):
+                path = attempt / job["task"] / MAIN / job["variant"] / f"seed_{job['seed']}" / "result.json"
+                if attempt.name > last_attempt or not path.is_file():
+                    continue
+                if not matches_local_protocol(directory, {"graph_attempt": attempt}, model):
+                    continue
+                raw = read_json(path)
+                history.append(raw["status"])
+                error_codes.update(error["error_code"] for error in raw.get("attempts", []))
+            if history:
+                cases += 1
+                finished_attempts += len(history)
+                first_verdicts += history[0] in ("success", "failure")
+                recovered += history[0] == "error" and episode_key(job) in scores["GraphManager", model]
+        codes = "，".join(f"`{c}` × {count}" for c, count in sorted(error_codes.items()))
+        rows.append([model, cases, count_ratio(first_verdicts, cases), cases - first_verdicts, recovered,
+                     finished_attempts, codes or "—"])
+    return ["## Graph Manager 首次结局与重试", "",
+            "统计使用随机工作目录并已写出 Graph Manager 结果的尝试。首次结局按每个布局和种子的首次尝试统计。"
+            "管理器返回 error 时仍保留该次记录，补跑后取得原生判定的局另列。"
+            "错误码计入管理器内部的重启，例如一次 CLIENT_TIMEOUT 后同次启动仍可给出结局。"
+            "MODEL_ERROR 表示管理器没有收到完整决策，Harness 中可能已有模型输出和被拒绝的工具调用。", ""] + table(
+                ["模型", "已返回的局", "首次有结局/已返回的局", "首次返回 error", "首次 error 后已计分",
+                 "已返回的启动次数", "全部尝试记录的错误码"], rows)
 
 
 def reference_table(directories, scores, jobs=()):
@@ -161,7 +213,7 @@ def reference_table(directories, scores, jobs=()):
                  *MODELS, "脚本执行错误"], rows)
 
 
-def build_report(out, native_dir, sim_version, reference_dirs=()):
+def build_report(out, native_dir, sim_version, reference_dirs=(), usage_cache=None):
     jobs = episodes()
     subset = representatives(jobs)
     lines = [f"# ZenoBench v6 本地 VLM 基线 · Isaac Sim {sim_version}", "",
@@ -188,7 +240,8 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
             rows = {}
             interrupted = 0
             for j in expected:
-                status, r = read_outcome(result_path(out, model, method, j), native_dir, model, method, j, sim_version)
+                status, r = read_outcome(result_path(out, model, method, j), native_dir, model, method, j,
+                                         sim_version, out / "harness", usage_cache)
                 if r is not None:
                     rows[episode_key(j)] = r
                 interrupted += status == "interrupted"
@@ -216,9 +269,10 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
                              count_ratio(judged, sum(labels.values())), labels["undetermined"],
                              count_ratio(valid_execution_failures, labels["valid"])])
             stops = Counter(r["stop_reason"] for r in values)
+            metered = [r for r in values if all(r[k] is not None for k in ("queries", "input_tokens", "output_tokens"))]
             traces.append([method, model, average(values, "skills"),
-                           average(values, "queries"), average(values, "input_tokens", 0),
-                           average(values, "output_tokens", 0), average(values, "wall_s", 1),
+                           count_ratio(len(metered), len(values)), average(metered, "queries"), average(metered, "input_tokens", 0),
+                           average(metered, "output_tokens", 0), average(values, "wall_s", 1),
                            "，".join(f"`{s}` × {count}" for s, count in stops.most_common()) or "—"])
     header = ["方法", "模型", "已计分/计划", "中断待重跑", "平均分", "平均分 95% CI", "任务成功", "正分", "满分"]
     scored = sum(len(group) for group in scores.values())
@@ -271,6 +325,7 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
                                     mean_and_n([alt[k] for k in keys]),
                                     f"{mean(alt[k]['score'] - base[k]['score'] for k in keys):+.3f}" if keys else "—"])
     lines += table(["消融", "模型", "配对数", "ReAct 平均分", "消融平均分", "差值"], paired_ablation)
+    lines += graph_attempt_table(out, jobs, scores)
     lines += ["## 技能调用和错误", "",
               "每格为出现该情况的局数 / 已计分局数。一局可以遇到多类错误，随后仍可能成功。"
               "分类沿用仓库对技能调用最内层错误码的定义，例如 NOT_OBSERVED 归入观测，NO_PATH 归入前置条件，"
@@ -284,13 +339,14 @@ def build_report(out, native_dir, sim_version, reference_dirs=()):
                     "执行失败/合理调用"], planning)
     lines += ["## 推理与执行成本", "",
               "技能调用数统计从规划器进入环境的顶层契约。一个 fetch 可以在内部依次执行导航、拾取、导航和放置。"
-              "Graph Manager 的一个 Harness 回合可以向模型发多次请求，"
-              "其日志未给出可比的后端请求数和 token 数。前四种方法的墙钟耗时包含环境启动和排队，"
+              "模型用量取自有完整用量记录的计分局。Graph Manager 按该原生局对应的 Harness 会话统计每次模型响应，"
+              "包括用于压缩历史的生成。一个 Harness 回合可以包含多次响应。"
+              "表中用量不含重跑前的尝试。前四种方法的墙钟耗时包含环境启动和排队，"
               "Graph Manager 从环境就绪起算。物理执行和同机并发都会影响这些时间。", "",
               "停止原因保留方法或服务的原始分类。budget 表示用尽调用预算，service_limit 表示达到环境服务限制，"
               "time_budget 和 replan_limit 分别表示 Graph Manager 的计时或重规划上限。"
               "finish 表示模型主动报告完成，实际任务成功仍以环境判定为准。", ""]
-    lines += table(["方法", "模型", "技能调用/局", "模型查询/局",
+    lines += table(["方法", "模型", "技能调用/局", "模型用量完整/已计分局", "模型响应/局",
                     "输入 token/局", "输出 token/局", "秒/局", "停止原因与局数"], traces)
     if reference_dirs:
         lines += reference_table(reference_dirs, scores, jobs)
@@ -305,9 +361,11 @@ def main():
     ap.add_argument("--markdown", required=True, type=Path)
     ap.add_argument("--reference-dir", action="append", type=Path, default=[],
                     help="additional same-version scripted run_episode output, repeatable")
+    ap.add_argument("--usage-cache", type=Path, help="cache token counts from completed Harness sessions")
     args = ap.parse_args()
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown.write_text(build_report(args.out, args.native_dir, args.sim_version, args.reference_dir), encoding="utf-8")
+    args.markdown.write_text(build_report(args.out, args.native_dir, args.sim_version, args.reference_dir,
+                                          args.usage_cache), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -9,10 +9,11 @@ from unittest.mock import patch
 import pytest
 
 from baseline import run_http
-from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives, result_is_current, run_graph
+from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives, result_is_current, result_path, run_graph
 from baseline.graph_profile import isolated_workspace
+from baseline.harness_usage import recorded_usage
 from baseline.launch_comparison import claim_episode, pending
-from baseline.report import read_outcome, reference_table
+from baseline.report import graph_attempt_table, read_outcome, reference_table
 from baseline.sim6.startup_queue import install
 
 
@@ -85,6 +86,41 @@ def test_reference_table_matches_native_layout_and_distinguishes_missing_from_ze
         reference_table([tmp_path], scores)
 
 
+def test_graph_first_error_survives_a_scored_retry(tmp_path):
+    model = "qwen3.5-4b"
+    job = {"task": "T28_cup_to_bedside", "variant": "already_there__wrong_cup", "seed": 10}
+    directory = result_path(tmp_path, model, "GraphManager", job)
+    for name, status, code in [("100", "failure", None), ("200", "error", "MODEL_ERROR"),
+                               ("300", "failure", "CLIENT_TIMEOUT"), ("400", "error", "PLANNER_ERROR")]:
+        attempt = directory / "graph" / name
+        raw_dir = attempt / job["task"] / MAIN / job["variant"] / "seed_10"
+        raw_dir.mkdir(parents=True)
+        run_http.write_report(raw_dir / "result.json", {
+            "status": status, "attempts": [{"error_code": code}] if code else []})
+        run_http.write_report(attempt / "local-provider.json", {
+            "model": model, "context_window": 32768, "max_tokens": 4096,
+            "workspace": "/tmp/zenobench-graph-neutral" if name != "100" else str(directory)})
+    run_http.write_report(directory / "result.json", {"graph_attempt": str(directory / "graph/300")})
+    scores = {("GraphManager", m): {} for m in MODELS}
+    scores["GraphManager", model][job["task"], job["variant"], job["seed"]] = {"score": 0}
+    lines = graph_attempt_table(tmp_path, [job], scores)
+    assert "| qwen3.5-4b | 1 | 0/1 | 1 | 1 | 2 | `CLIENT_TIMEOUT` × 1，`MODEL_ERROR` × 1 |" in lines
+
+
+def test_model_usage_includes_harness_compaction_and_excludes_partial_sessions():
+    directory = "/tmp/zenobench-graph-example"
+    events = [{"type": "session", "id": "s", "cwd": directory},
+              {"type": "assistant/message", "data": {"usage": {"totalTokens": 100, "outputTokens": 10}}},
+              {"type": "tool/result", "data": {}},
+              {"type": "compaction/summary", "data": {"usage": {"totalTokens": 1100, "outputTokens": 100}}}]
+    assert recorded_usage(map(json.dumps, events), "s", directory) == {
+        "vlm_queries": 2, "input_tokens": 1090, "output_tokens": 110}
+    events.append({"type": "assistant/message", "data": {"interrupted": True}})
+    assert recorded_usage(map(json.dumps, events), "s", directory) is None
+    with pytest.raises(ValueError, match="identity mismatch"):
+        recorded_usage(map(json.dumps, events), "another", directory)
+
+
 def test_first_layout_per_task_uses_existing_main_and_ablation_shards(tmp_path):
     main = episodes()
     subset = representatives(main)
@@ -154,13 +190,32 @@ def test_graph_with_layout_name_in_model_workspace_is_unscored(tmp_path):
         patch_file = tmp_path / "provider.yml"
         template = run_http.ROOT / "baseline/graph_manager/examples/harness-local-vlm.patch.yml"
         patch_file.write_text(template.read_text())
-        args = SimpleNamespace(model="qwen3.5-4b", graph_bin="graph-manager-run", server="localhost", out=tmp_path)
+        args = SimpleNamespace(model="qwen3.5-4b", graph_bin="graph-manager-run", server="localhost",
+                               out=tmp_path, native_dir=tmp_path / "native")
         job = {"task": "test", "variant": "gone_toy_block", "seed": 10}
         with patch("baseline.comparison.subprocess.run", return_value=SimpleNamespace(returncode=1)) as run:
             run_graph(args, job, tmp_path, tmp_path, patch_file)
         command = run.call_args.args[0]
         assert command[command.index("--workspace") + 1].startswith("/tmp/zenobench-graph-")
     assert json.loads(next((tmp_path / "excluded").glob("*/result.json")).read_text())["graph_attempt"] == str(attempt)
+    failed = json.loads((tmp_path / "failed.json").read_text())
+    native = args.native_dir / "test" / "exp"
+    native.mkdir(parents=True)
+    run_http.write_report(native / "result.json", {"incomplete": False, "episode_hash": "initial",
+                                                  "score": {"score": 0}, "task_success": False, "dropped": []})
+
+    def finish(command, **kwargs):
+        raw = Path(command[command.index("--out") + 1]) / "test" / MAIN / "gone_toy_block" / "seed_10"
+        raw.mkdir(parents=True)
+        run_http.write_report(raw / "result.json", {"status": "failure", "episode": {
+            "exp_id": "exp", "profile": {"max_calls": 60}, "env_episode": {"episode_hash": "initial"},
+            "contract_calls": 0, "elapsed_s": 5, "reason": "model_gave_up", "model_turns": 3, "invalid_replies": 3}})
+        return SimpleNamespace(returncode=0)
+
+    with patch("baseline.comparison.subprocess.run", finish):
+        assert run_graph(args, job, tmp_path, tmp_path, patch_file)["exp_id"] == "exp"
+    assert not (tmp_path / "failed.json").exists()
+    assert json.loads((Path(failed["graph_attempt"]) / "comparison-interruption.json").read_text()) == failed
 
 
 def test_checked_after_model_crash_remains_retryable(tmp_path):

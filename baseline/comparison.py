@@ -106,6 +106,12 @@ def run_graph(args, job, directory, library, patch):
         excluded.mkdir(parents=True)
         result_file.rename(excluded / "result.json")
     directory.mkdir(parents=True, exist_ok=True)
+    failed_file = directory / "failed.json"
+    if failed_file.is_file():
+        previous_failure = read_json(failed_file)
+        old_attempt = directory / "graph" / Path(previous_failure["graph_attempt"]).name
+        old_attempt.mkdir(parents=True, exist_ok=True)
+        write_report(old_attempt / "comparison-interruption.json", previous_failure)
     # Each restart retains the pinned planner's raw decisions, subgraphs, tool errors and images.
     attempt = directory / "graph" / str(time.time_ns())
     attempt.mkdir(parents=True)
@@ -124,7 +130,7 @@ def run_graph(args, job, directory, library, patch):
               "policy": "GraphManager", "profile": MAIN, "graph_attempt": str(attempt)}
     if proc.returncode or raw.get("status") not in ("success", "failure"):
         record["crash"] = raw.get("attempts") or f"graph-manager-run exited {proc.returncode}; see {attempt}/runner.log"
-        write_report(directory / "failed.json", record)
+        write_report(failed_file, record)
         return record
     ep = raw["episode"]
     native = read_json(args.native_dir / job["task"] / ep["exp_id"] / "result.json")
@@ -135,6 +141,7 @@ def run_graph(args, job, directory, library, patch):
                   skill_calls=ep["contract_calls"], wall_s=ep["elapsed_s"], stop_reason=ep["reason"],
                   planner_summary={"model_turns": ep["model_turns"], "invalid_replies": ep["invalid_replies"]})
     write_report(result_file, record)
+    failed_file.unlink(missing_ok=True)
     return record
 
 

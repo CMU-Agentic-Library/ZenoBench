@@ -1,6 +1,6 @@
 # v6 本地 VLM 对比协议
 
-本轮在 Isaac Sim 6.0.0.1 上运行，原生执行和规划方法沿用 `7846509`。Graph Manager 的本地服务配置另记录在每次尝试的 `local-provider.json` 中。结果表列出每个模型和方法已计分的局数、相同布局上的得分，以及脚本参考路线的原生判定。[本轮结果表](results/local_v6_sim6.md)
+本轮已于 2026-11-24 22:18（北京时间）按要求停止，共保留 253 局原生得分。实验在 Isaac Sim 6.0.0.1 上运行，原生执行和规划方法沿用 `7846509`。Graph Manager 的本地服务配置另记录在每次尝试的 `local-provider.json` 中。结果表列出每个模型和方法已计分的局数、相同布局上的得分，以及脚本参考路线的原生判定。[本轮结果表](results/local_v6_sim6.md)
 
 同一组任务用于比较三个本地模型。Qwen3.5-4B 与 Qwen3.5-27B 给出同一家族的规模对照，InternVL3.5-8B 加入另一种视觉语言架构。精确的权重 revision 在 `baseline/comparison.py` 中。vLLM 0.32.0 使用 BF16，温度为 0，单次最多生成 4,096 token，上下文长度 32,768。Qwen 关闭显式思考。所有模型端点绑定在实验机的回环地址上。
 
@@ -61,14 +61,22 @@ python -m baseline.comparison --model "$MODEL" --method ReAct \
   --vlm-url http://127.0.0.1:8101/v1 --server http://127.0.0.1:8800 \
   --out "$ZB_RUN/planner" --native-dir "$ZB_RUN/native"
 python -m baseline.report --out "$ZB_RUN/planner" --native-dir "$ZB_RUN/native" \
-  --markdown "$ZB_RUN/comparison.md"
+  --markdown "$ZB_RUN/comparison.md" --usage-cache "$ZB_RUN/harness-usage-cache"
 ```
 
 每个结果通过 exp_id 对应到仿真服务记录的最终状态和技能轨迹。分表使用各模型共同完成的相同局。任务成功、正分和满分分别统计，保留中途服务失败的日志，重新运行同一分片会继续未完成的局。技能错误表按原生错误码统计出现过执行、观测、前置条件或参数错误的局，同时列出整局没有调用任何技能的情况。判断一个正确的替代动作是否被物理执行阻断，仍需结合具体动作和当时状态。
 
+汇总器使用 `zstd` 读取每个已计分 Graph Manager 局对应的 Harness 会话。响应次数和输入、输出 token 包括正常模型响应及压缩历史的生成。只有会话编号、工作目录匹配且每次生成都有用量记录时，该局才进入这三项均值。表内列出用量覆盖的分母。`--usage-cache` 可缓存完整会话的统计，加速反复汇总。
+
 环境服务在接受下一次技能调用前检查从就绪起算的 60 分钟上限。以 T10 餐后清理、种子 10 的 Qwen3.5-4B / SayPlan 为例，环境实际执行了 18 次技能，第 19 次请求因超时被拒绝。规划器随后调用原生评分器，得 0 分。成本表记录 `service_limit`，技能数按实际执行的 18 次统计。
 
 在 450 个理想选项不可用的布局与种子组合中，v6 给该布局的最佳可用方案记 1.0 分。其中 373 局有多个可计分档位（`D=1`），77 局只有一个可计分档位（`D=0`）。配对分表另列达到最佳档且最终成功的比例。例如积木任务 `block_put_away__gone_toy_block` 的理想第三块木块缺失，用玩具积木搭成三层可得满分。种子 10 的参考脚本先把木块 A 叠到木块 B 上，第 8 步开柜时失败，未执行第 19 步起的寻找、拾取和堆叠玩具积木。仅凭路线里的 `role: alternative` 标签无法确认机器人已使用替代物。
+
+### Graph Manager 的中断是怎样产生的
+
+在 T28 的 `already_there__wrong_cup`、种子 10 上，Qwen3.5-4B 首次使用随机工作目录的尝试由管理器记为 `MODEL_ERROR`。原生环境编号为 `T28_cup_to_bedside-b8366225`。Harness 会话 `T28_cup_to_bedside-e7cbe84f` 中，模型查了 3 次技能文档，提交 61 次计划。每次都为同一 `find_cup` 子目标重复提交子图，被校验器拒绝。300 秒回合时限到达，机器人实际执行 0 次技能。这个错误码只表示外层管理器没有拿到有效决策，内部记录保留了模型反复提交无效图的过程。本局补跑在整轮实验停止时尚未产生有效终态，两次尝试分别保留。
+
+T02 的 `block_put_away__gone_toy_block`、种子 10 上，Qwen3.5-27B 遇到了另一种中断。一次搜索实际执行 2,177 秒，超过图规划器 HTTP 客户端的 1,800 秒等待上限。管理器按原协议重新开局，第二次运行完成 4 次技能调用后达到规划时间预算，原生编号 `T02_stack_blocks-99659ec7`，得 0 分。表中保留首次客户端超时，任务得分取自第二局。
 
 ### 同一个零分如何产生
 
@@ -138,7 +146,7 @@ T30 的 `bowl_on_cabinet`、种子 10 属于理想物体在场的 Control 局。
 
 Qwen3.5-27B 的程序还写了手动导航和抓放的备用分支，本局没有触发。它执行的 `fetch` 在仿真器内部依次完成了导航、拾取、导航和放置，这四步见 `worker.log`。InternVL 则在生成的程序中明确写出了四步。两者的终态得分相同，逐步分解动作的证据不同。Qwen3.5-4B 的四步也都成功，失分来自交付方式。指令没有明说厨房岛台或放下碗，评分却要求两者同时满足。解释这个零分时，需要把模型对交付意图的理解和技能执行能力分开。
 
-在同一个初始局上，使用随机工作目录的 Qwen3.5-4B / Graph Manager 得 1.0 分。它最先指定把碗取到橱柜顶。橱柜顶没有空位，其间另一次放置被距离前置条件拒绝。第 6、7 次调用才导航到岛台并把碗放下，原生记录为 `T30_bowls_for_soup-15a083a3`。
+在同一个初始局上，使用随机工作目录的 Qwen3.5-4B / Graph Manager 得 1.0 分。它最先指定把碗取到橱柜顶。橱柜顶没有空位，其间另一次放置被距离前置条件拒绝。第 6、7 次调用才导航到岛台并把碗放下，原生记录为 `T30_bowls_for_soup-15a083a3`。Graph Manager 记为 6 个 Harness 回合，原始会话有 13 次模型响应，总计 212,995 个输入 token、2,990 个输出 token。
 
 CodeAsPolicies 的固定格式示例恰好写着 `navigate(destination="kitchen_island/top")`，与 T30 的指定落点相同。为检验模型首步生成的程序是否对这一示例敏感，在三个模型各自归档的同一首帧、同一观测和同一技能菜单上，各回放了两次生成。一次使用原提示，另一次只删除该示例短语。每格只有一次查询，温度均为 0。[基线提示](code_policy.py#L27)
 
@@ -154,7 +162,7 @@ CodeAsPolicies 的固定格式示例恰好写着 `navigate(destination="kitchen_
 
 目标实例的驱动为 NVIDIA 595.91.07。Isaac Sim 5.1 在启用 RTX 相机时于 `librtx.scenedb.plugin.so` 崩溃。此实例使用单独的 Isaac Sim **6.0.0.1** 环境和输出目录。跨版本比较需要考虑接触动力学、渲染和执行器行为的变化。
 
-实例有 6 张 96 GB 的 RTX PRO 6000 Blackwell Server Edition。Qwen 4B、Qwen 27B 和 InternVL 8B 分别常驻 GPU 5、3、4，仿真服务分布在全部六张卡上。全量队列扩容后由 16 个和 6 个并发槽组成，另有同局对照和补跑。表中的墙钟时间及触发一小时时限的次数受这一同机负载影响。
+实例有 6 张 96 GB 的 RTX PRO 6000 Blackwell Server Edition。Qwen 4B、Qwen 27B 和 InternVL 8B 分别常驻 GPU 5、3、4，仿真服务分布在全部六张卡上。全量队列扩容后由 16 个和 6 个并发槽组成，另有同局对照和补跑。Graph Manager 补跑与 30 任务 ReAct 对照各占三个槽。停机时两个队列及其后续调度均已终止。表中的墙钟时间及触发一小时时限的次数受这一同机负载影响。
 
 仿真环境使用 Python 3.12、PyTorch 2.11.0+cu130、Isaac Sim 6.0.0.1、Isaac Lab 2.3.2 的源码和按 sm_120 编译的 cuRobo 0.7.8。使用 `isaacsim[all,extscache]` 安装完整扩展。将 2.3.2 wheel 中含有 `apps/` 和 `source/` 的 `isaaclab/` 目录解包到 `LAB_SOURCE`。以下命令生成适配后的独立副本，并使每局原生记录包含版本和适配清单的 SHA-256。
 
