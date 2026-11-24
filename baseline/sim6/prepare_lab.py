@@ -70,9 +70,7 @@ def main():
     curobo = md.distribution("nvidia-curobo")
     if curobo.version != "0.7.8":
         raise ValueError(f"expected cuRobo 0.7.8, got {curobo.version}")
-    if output.exists() and not (output / "compatibility.json").is_file():
-        raise ValueError(f"output already exists and is not a generated Lab checkout: {output}")
-    shutil.copytree(source, output, dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copytree(source, output, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     changes = {}
     for path in [*output.glob("apps/**/*.kit"), *output.glob("source/**/*.py")]:
         original = path.read_text()
@@ -84,7 +82,7 @@ def main():
     # device conversion entry point and the same cuRobo CUDA libraries.
     overlay = output / "source/isaaclab/curobo"
     original_curobo = Path(curobo.locate_file("curobo"))
-    shutil.copytree(original_curobo, overlay, dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copytree(original_curobo, overlay, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     path = overlay / "geom/sdf/world_mesh.py"
     updated = path.read_text().replace("wp.torch.device_from_torch(", "wp.device_from_torch(")
     path.write_text(updated)
