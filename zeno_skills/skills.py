@@ -27,7 +27,7 @@ from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing,
 from .evaluator import quat_R
 from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
 from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
-from .planner import find_park, find_park_set, joint_reachable, torque_ratio
+from .planner import LAST_PARK_DIAG, find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, clearing, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
@@ -1576,21 +1576,25 @@ def approach_microwave_button(rig, name="kitchen_microwave", button="door"):
     rig._microwave_button_stage = None
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
-    preferred = (float(center[0] - 0.1165), float(center[1] - 0.5163), 75.0)
-    park = find_park(rig.kin, rig.world, targets, near=preferred,
-                     max_tries=1, q_start=None, travel_q=rig.kin.rest)
-    if park is not None and button == "start":
-        rig.kin.set_base((park[0], park[1], 0.0), math.radians(park[2]))
+
+    def presses(x, y, yaw, qs):
+        """The press goes on from the aligned pose into the button (the world left out: it touches
+        it): the start press is checked at every park, the preferred one and the search's -- the
+        search alone once parked out of reach of the button (T07 microwave_works, 11-24)."""
         scene, rig.kin.scene = rig.kin.scene, None
         try:
-            _, contact_ok = rig.kin.cart_path(park[3][-1], contact, R, 0.005)
+            return rig.kin.cart_path(qs[-1], contact, R, 0.005)[1]
         finally:
             rig.kin.scene = scene
-        if not contact_ok:
-            park = None
+    check = presses if button == "start" else None
+    preferred = (float(center[0] - 0.1165), float(center[1] - 0.5163), 75.0)
+    park = find_park(rig.kin, rig.world, targets, near=preferred,
+                     max_tries=1, q_start=None, travel_q=rig.kin.rest, check=check)
     if park is None:
+        rig.log("microwave_button_park", button=button, preferred=list(preferred), taken=False,
+                why={k: v for k, v in LAST_PARK_DIAG.items() if v})
         park = find_park(rig.kin, rig.world, targets, near=rig.base_pose(),
-                         max_tries=160, q_start=rig.q_cmd, travel_q=rig.kin.rest)
+                         max_tries=160, q_start=rig.q_cmd, travel_q=rig.kin.rest, check=check)
     if park is None:
         raise SkillFailure(f"microwave: no collision-free reach to {button} button")
     _goto_park(rig, park)
