@@ -30,3 +30,17 @@ def isolated_workspace(patch_path, attempt):
     with TemporaryDirectory(prefix="zenobench-graph-", dir="/tmp") as workspace:
         configure(patch_path, attempt, workspace)
         yield workspace
+
+
+def matches_local_protocol(directory, result, model):
+    """Whether this attempt used both the served capacity and a layout-independent cwd."""
+    if not result.get("graph_attempt"):
+        return False
+    receipt = directory / "graph" / Path(result["graph_attempt"]).name / "local-provider.json"
+    if not receipt.is_file():
+        return False
+    provider = json.loads(receipt.read_text())
+    if (provider["model"], provider["context_window"], provider["max_tokens"]) != (model, 32768, 4096):
+        raise ValueError(f"Graph Manager provider configuration mismatch in {receipt}")
+    workspace = Path(provider.get("workspace", ""))
+    return workspace.parent == Path("/tmp") and workspace.name.startswith("zenobench-graph-")

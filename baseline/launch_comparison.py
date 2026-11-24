@@ -10,7 +10,7 @@ import subprocess
 import sys
 from threading import Event, Lock
 
-from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_path
+from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_is_current, result_path
 
 
 def pending(out, first_row=0, models=MODELS, methods=METHODS, first_layout_per_task=False):
@@ -30,12 +30,12 @@ def pending(out, first_row=0, models=MODELS, methods=METHODS, first_layout_per_t
                 continue
             for model in models:
                 directory = result_path(out, model, method, row)
-                if not (directory / "result.json").exists():
+                if not result_is_current(directory, model, method):
                     yield model, method, index, len(rows), directory
 
 
 @contextmanager
-def claim_episode(directory):
+def claim_episode(directory, model=None, method=None):
     directory.mkdir(parents=True, exist_ok=True)
     with (directory / ".dispatch.lock").open("a") as claim:
         try:
@@ -43,7 +43,7 @@ def claim_episode(directory):
         except BlockingIOError:
             yield None
             return
-        yield None if (directory / "result.json").is_file() else claim
+        yield None if result_is_current(directory, model, method) else claim
 
 
 def main():
@@ -97,7 +97,7 @@ def main():
                        "--native-dir", str(root / "native"), "--sim-version", args.sim_version,
                        "--vlm-url", f"http://127.0.0.1:{endpoints[model]}/v1",
                        "--server", f"http://127.0.0.1:{port}", "--graph-bin", args.graph_bin]
-                with claim_episode(directory) as claim:
+                with claim_episode(directory, model, method) as claim:
                     if claim is None:
                         continue
                     print(f"START {model} {method} [{index}/{total}] sim={port}", file=log)

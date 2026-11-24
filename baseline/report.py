@@ -23,14 +23,8 @@ def read_outcome(directory, native_dir, model, method, job, sim_version=None):
     if r.get("crash") or r.get("check_error"):
         return "interrupted", None
     if method == "GraphManager":
-        receipt = directory / "graph" / Path(r["graph_attempt"]).name / "local-provider.json"
-        if not receipt.is_file():
-            return "interrupted", None
-        provider = read_json(receipt)
-        if (provider["model"], provider["context_window"], provider["max_tokens"]) != (model, 32768, 4096):
-            raise ValueError(f"Graph Manager provider configuration mismatch in {receipt}")
-        workspace = Path(provider.get("workspace", ""))
-        if workspace.parent != Path("/tmp") or not workspace.name.startswith("zenobench-graph-"):
+        from baseline.graph_profile import matches_local_protocol
+        if not matches_local_protocol(directory, r, model):
             return "interrupted", None
     identity = job["task"], job["variant"], job["seed"], METHODS[method][1]
     if (r["task_id"], r["variant"], r["seed"], r["profile"]) != identity or (

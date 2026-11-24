@@ -3,12 +3,13 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 import urllib.request
 from unittest.mock import patch
 import pytest
 
 from baseline import run_http
-from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives
+from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives, result_is_current, run_graph
 from baseline.graph_profile import isolated_workspace
 from baseline.launch_comparison import claim_episode, pending
 from baseline.report import read_outcome, reference_table
@@ -138,6 +139,19 @@ def test_graph_with_layout_name_in_model_workspace_is_unscored(tmp_path):
     for old in (provider, {**provider, "workspace": "/runs/s10_gone_toy_block/workspace"}):
         run_http.write_report(attempt / "local-provider.json", old)
         assert read_outcome(tmp_path, tmp_path, "qwen3.5-4b", "GraphManager", {}) == ("interrupted", None)
+        assert not result_is_current(tmp_path, "qwen3.5-4b", "GraphManager")
+    with claim_episode(tmp_path, "qwen3.5-4b", "GraphManager") as owner:
+        assert owner is not None
+        patch_file = tmp_path / "provider.yml"
+        template = run_http.ROOT / "baseline/graph_manager/examples/harness-local-vlm.patch.yml"
+        patch_file.write_text(template.read_text())
+        args = SimpleNamespace(model="qwen3.5-4b", graph_bin="graph-manager-run", server="localhost", out=tmp_path)
+        job = {"task": "test", "variant": "gone_toy_block", "seed": 10}
+        with patch("baseline.comparison.subprocess.run", return_value=SimpleNamespace(returncode=1)) as run:
+            run_graph(args, job, tmp_path, tmp_path, patch_file)
+        command = run.call_args.args[0]
+        assert command[command.index("--workspace") + 1].startswith("/tmp/zenobench-graph-")
+    assert json.loads(next((tmp_path / "excluded").glob("*/result.json")).read_text())["graph_attempt"] == str(attempt)
 
 
 def test_checked_after_model_crash_remains_retryable(tmp_path):

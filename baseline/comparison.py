@@ -72,6 +72,16 @@ def result_path(out, model, method, job):
     return run_dir(Path(out) / profile, policy, model, job)
 
 
+def result_is_current(directory, model, method):
+    path = directory / "result.json"
+    if not path.is_file():
+        return False
+    if method != "GraphManager":
+        return True
+    from baseline.graph_profile import matches_local_protocol
+    return matches_local_protocol(directory, read_json(path), model)
+
+
 def graph_library(path):
     from episode.catalog import difficulty_of
     path.mkdir(parents=True, exist_ok=True)
@@ -86,14 +96,19 @@ def graph_library(path):
 
 
 def run_graph(args, job, directory, library, patch):
+    from baseline.graph_profile import isolated_workspace, matches_local_protocol
     result_file = directory / "result.json"
     if result_file.is_file():
-        return read_json(result_file)
+        previous = read_json(result_file)
+        if matches_local_protocol(directory, previous, args.model):
+            return previous
+        excluded = directory / "excluded" / str(time.time_ns())
+        excluded.mkdir(parents=True)
+        result_file.rename(excluded / "result.json")
     directory.mkdir(parents=True, exist_ok=True)
     # Each restart retains the pinned planner's raw decisions, subgraphs, tool errors and images.
     attempt = directory / "graph" / str(time.time_ns())
     attempt.mkdir(parents=True)
-    from baseline.graph_profile import isolated_workspace
     command = [args.graph_bin, "--task", job["task"], "--variant", job["variant"], "--seed", str(job["seed"]),
                "--env-profile", MAIN, "--env-url", args.server, "--zenobench-root", str(library),
                "--provider", "lab-vlm", "--model", args.model, "--patch", str(patch),
