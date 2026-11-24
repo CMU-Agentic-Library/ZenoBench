@@ -1,8 +1,8 @@
 # ZenoBench v6 本地 VLM 基线 · Isaac Sim 6.0.0.1
 
-**原生计分覆盖 122 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
+**原生计分覆盖 164 / 24,546 局。** 当前为阶段性结果。各行先完成的布局可能不同，跨模型比较请看配对分表。
 
-汇总时间为 2026-11-24 12:22 UTC。
+汇总时间为 2026-11-24 12:56 UTC。
 
 Isaac Lab 适配清单 SHA-256 为 `5e09ce356754c98e3f02eeb3b5d7f931cf78d4a684758db346189976a18a6c39`。cuRobo 0.7.8，Warp 1.13.0，PyTorch 2.11.0（CUDA 13.0）。
 
@@ -20,21 +20,21 @@ Graph Manager 只计入使用独立随机工作目录的局。旧 Harness 消息
 
 | 方法 | 模型 | 已计分/计划 | 中断待重跑 | 平均分 | 平均分 95% CI | 任务成功 | 正分 | 满分 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| OpenLoop | qwen3.5-27b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| OpenLoop | internvl3.5-8b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| ReAct | qwen3.5-4b | 8/1510 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
-| ReAct | qwen3.5-27b | 8/1510 | 0 | 0.125 | — | 1/8 | 1/8 | 1/8 |
-| ReAct | internvl3.5-8b | 8/1510 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
-| CodeAsPolicies | qwen3.5-4b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| CodeAsPolicies | qwen3.5-27b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| CodeAsPolicies | internvl3.5-8b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| SayPlan | qwen3.5-4b | 5/1510 | 0 | 0.000 | — | 0/5 | 0/5 | 0/5 |
-| SayPlan | qwen3.5-27b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
-| SayPlan | internvl3.5-8b | 6/1510 | 0 | 0.000 | — | 0/6 | 0/6 | 0/6 |
-| GraphManager | qwen3.5-4b | 0/1510 | 0 | — | — | — | — | — |
-| GraphManager | qwen3.5-27b | 0/1510 | 0 | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | 1/1510 | 0 | 0.000 | — | 0/1 | 0/1 | 0/1 |
+| OpenLoop | qwen3.5-4b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| OpenLoop | qwen3.5-27b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| OpenLoop | internvl3.5-8b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| ReAct | qwen3.5-4b | 10/1510 | 0 | 0.000 | — | 0/10 | 0/10 | 0/10 |
+| ReAct | qwen3.5-27b | 11/1510 | 0 | 0.091 | — | 1/11 | 1/11 | 1/11 |
+| ReAct | internvl3.5-8b | 10/1510 | 0 | 0.000 | — | 0/10 | 0/10 | 0/10 |
+| CodeAsPolicies | qwen3.5-4b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| CodeAsPolicies | qwen3.5-27b | 8/1510 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
+| CodeAsPolicies | internvl3.5-8b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| SayPlan | qwen3.5-4b | 7/1510 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
+| SayPlan | qwen3.5-27b | 8/1510 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
+| SayPlan | internvl3.5-8b | 9/1510 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| GraphManager | qwen3.5-4b | 3/1510 | 3 | 0.000 | — | 0/3 | 0/3 | 0/3 |
+| GraphManager | qwen3.5-27b | 2/1510 | 1 | 0.000 | — | 0/2 | 0/2 | 0/2 |
+| GraphManager | internvl3.5-8b | 3/1510 | 1 | 0.000 | — | 0/3 | 0/3 | 0/3 |
 
 置信区间按任务内的设计聚类，重采样 2,000 次。只有全量覆盖的行给出区间。
 
@@ -44,41 +44,41 @@ Graph Manager 只计入使用独立随机工作目录的局。旧 Harness 消息
 
 | 方法 | 模型 | Control | Task | Action + Task | 理想选择可用 | 理想选择不可用 | 达成布局最佳替代/理想选择不可用 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| OpenLoop | qwen3.5-27b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| OpenLoop | internvl3.5-8b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| ReAct | qwen3.5-4b | 0.000 (3) | 0.000 (3) | 0.000 (1) | 0.000 (5) | 0.000 (2) | 0/2 |
-| ReAct | qwen3.5-27b | 0.333 (3) | 0.000 (3) | 0.000 (1) | 0.200 (5) | 0.000 (2) | 0/2 |
-| ReAct | internvl3.5-8b | 0.000 (3) | 0.000 (3) | 0.000 (1) | 0.000 (5) | 0.000 (2) | 0/2 |
-| CodeAsPolicies | qwen3.5-4b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| CodeAsPolicies | qwen3.5-27b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| CodeAsPolicies | internvl3.5-8b | 0.000 (3) | 0.000 (2) | 0.000 (2) | 0.000 (6) | 0.000 (1) | 0/1 |
-| SayPlan | qwen3.5-4b | 0.000 (2) | 0.000 (2) | 0.000 (1) | 0.000 (4) | 0.000 (1) | 0/1 |
-| SayPlan | qwen3.5-27b | 0.000 (2) | 0.000 (2) | 0.000 (1) | 0.000 (4) | 0.000 (1) | 0/1 |
-| SayPlan | internvl3.5-8b | 0.000 (2) | 0.000 (2) | 0.000 (1) | 0.000 (4) | 0.000 (1) | 0/1 |
-| GraphManager | qwen3.5-4b | — | — | — | — | — | — |
-| GraphManager | qwen3.5-27b | — | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | — | — | — | — | — | — |
+| OpenLoop | qwen3.5-4b | 0.000 (3) | 0.000 (3) | 0.000 (3) | 0.000 (7) | 0.000 (2) | 0/2 |
+| OpenLoop | qwen3.5-27b | 0.000 (3) | 0.000 (3) | 0.000 (3) | 0.000 (7) | 0.000 (2) | 0/2 |
+| OpenLoop | internvl3.5-8b | 0.000 (3) | 0.000 (3) | 0.000 (3) | 0.000 (7) | 0.000 (2) | 0/2 |
+| ReAct | qwen3.5-4b | 0.000 (4) | 0.000 (3) | 0.000 (2) | 0.000 (7) | 0.000 (2) | 0/2 |
+| ReAct | qwen3.5-27b | 0.250 (4) | 0.000 (3) | 0.000 (2) | 0.143 (7) | 0.000 (2) | 0/2 |
+| ReAct | internvl3.5-8b | 0.000 (4) | 0.000 (3) | 0.000 (2) | 0.000 (7) | 0.000 (2) | 0/2 |
+| CodeAsPolicies | qwen3.5-4b | 0.000 (3) | 0.000 (3) | 0.000 (2) | 0.000 (6) | 0.000 (2) | 0/2 |
+| CodeAsPolicies | qwen3.5-27b | 0.000 (3) | 0.000 (3) | 0.000 (2) | 0.000 (6) | 0.000 (2) | 0/2 |
+| CodeAsPolicies | internvl3.5-8b | 0.000 (3) | 0.000 (3) | 0.000 (2) | 0.000 (6) | 0.000 (2) | 0/2 |
+| SayPlan | qwen3.5-4b | 0.000 (2) | 0.000 (3) | 0.000 (2) | 0.000 (5) | 0.000 (2) | 0/2 |
+| SayPlan | qwen3.5-27b | 0.000 (2) | 0.000 (3) | 0.000 (2) | 0.000 (5) | 0.000 (2) | 0/2 |
+| SayPlan | internvl3.5-8b | 0.000 (2) | 0.000 (3) | 0.000 (2) | 0.000 (5) | 0.000 (2) | 0/2 |
+| GraphManager | qwen3.5-4b | 0.000 (1) | 0.000 (1) | — | 0.000 (1) | 0.000 (1) | 0/1 |
+| GraphManager | qwen3.5-27b | 0.000 (1) | 0.000 (1) | — | 0.000 (1) | 0.000 (1) | 0/1 |
+| GraphManager | internvl3.5-8b | 0.000 (1) | 0.000 (1) | — | 0.000 (1) | 0.000 (1) | 0/1 |
 
 ## 提示和观测消融
 
 | 方法 | 模型 | 已计分/计划 | 中断待重跑 | 平均分 | 平均分 95% CI | 任务成功 | 正分 | 满分 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ReActHint | qwen3.5-4b | 8/316 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
-| ReActHint | qwen3.5-27b | 5/316 | 0 | 0.000 | — | 0/5 | 0/5 | 0/5 |
-| ReActHint | internvl3.5-8b | 6/316 | 0 | 0.000 | — | 0/6 | 0/6 | 0/6 |
-| ReActPrivileged | qwen3.5-4b | 6/316 | 0 | 0.000 | — | 0/6 | 0/6 | 0/6 |
-| ReActPrivileged | qwen3.5-27b | 5/316 | 0 | 0.200 | — | 1/5 | 1/5 | 1/5 |
-| ReActPrivileged | internvl3.5-8b | 7/316 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
+| ReActHint | qwen3.5-4b | 9/316 | 0 | 0.000 | — | 0/9 | 0/9 | 0/9 |
+| ReActHint | qwen3.5-27b | 8/316 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
+| ReActHint | internvl3.5-8b | 7/316 | 0 | 0.000 | — | 0/7 | 0/7 | 0/7 |
+| ReActPrivileged | qwen3.5-4b | 8/316 | 0 | 0.000 | — | 0/8 | 0/8 | 0/8 |
+| ReActPrivileged | qwen3.5-27b | 8/316 | 0 | 0.250 | — | 2/8 | 2/8 | 2/8 |
+| ReActPrivileged | internvl3.5-8b | 8/316 | 0 | 0.125 | — | 1/8 | 1/8 | 1/8 |
 
 | 消融 | 模型 | 配对数 | ReAct 平均分 | 消融平均分 | 差值 |
 | --- | --- | --- | --- | --- | --- |
-| ReActHint | qwen3.5-4b | 7 | 0.000 (7) | 0.000 (7) | +0.000 |
-| ReActHint | qwen3.5-27b | 5 | 0.000 (5) | 0.000 (5) | +0.000 |
-| ReActHint | internvl3.5-8b | 6 | 0.000 (6) | 0.000 (6) | +0.000 |
-| ReActPrivileged | qwen3.5-4b | 6 | 0.000 (6) | 0.000 (6) | +0.000 |
-| ReActPrivileged | qwen3.5-27b | 5 | 0.000 (5) | 0.200 (5) | +0.200 |
-| ReActPrivileged | internvl3.5-8b | 7 | 0.000 (7) | 0.000 (7) | +0.000 |
+| ReActHint | qwen3.5-4b | 9 | 0.000 (9) | 0.000 (9) | +0.000 |
+| ReActHint | qwen3.5-27b | 8 | 0.000 (8) | 0.000 (8) | +0.000 |
+| ReActHint | internvl3.5-8b | 7 | 0.000 (7) | 0.000 (7) | +0.000 |
+| ReActPrivileged | qwen3.5-4b | 8 | 0.000 (8) | 0.000 (8) | +0.000 |
+| ReActPrivileged | qwen3.5-27b | 8 | 0.000 (8) | 0.250 (8) | +0.250 |
+| ReActPrivileged | internvl3.5-8b | 8 | 0.000 (8) | 0.125 (8) | +0.125 |
 
 ## 技能调用和错误
 
@@ -86,27 +86,27 @@ Graph Manager 只计入使用独立随机工作目录的局。旧 Harness 消息
 
 | 方法 | 模型 | 执行 | 观测 | 前置条件 | 无效调用 | 其他错误 | 全局零技能调用 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 6/7 | 0/7 | 0/7 | 0/7 | 0/7 | 0/7 |
-| OpenLoop | qwen3.5-27b | 5/7 | 0/7 | 0/7 | 1/7 | 0/7 | 0/7 |
-| OpenLoop | internvl3.5-8b | 0/7 | 1/7 | 1/7 | 0/7 | 0/7 | 0/7 |
-| ReAct | qwen3.5-4b | 6/8 | 1/8 | 6/8 | 0/8 | 0/8 | 0/8 |
-| ReAct | qwen3.5-27b | 7/8 | 0/8 | 5/8 | 1/8 | 0/8 | 0/8 |
-| ReAct | internvl3.5-8b | 3/8 | 3/8 | 5/8 | 0/8 | 0/8 | 0/8 |
-| CodeAsPolicies | qwen3.5-4b | 4/7 | 0/7 | 0/7 | 0/7 | 0/7 | 1/7 |
-| CodeAsPolicies | qwen3.5-27b | 5/7 | 0/7 | 0/7 | 1/7 | 0/7 | 0/7 |
-| CodeAsPolicies | internvl3.5-8b | 3/7 | 4/7 | 3/7 | 1/7 | 0/7 | 2/7 |
-| SayPlan | qwen3.5-4b | 5/5 | 2/5 | 2/5 | 3/5 | 0/5 | 0/5 |
-| SayPlan | qwen3.5-27b | 6/7 | 3/7 | 4/7 | 3/7 | 0/7 | 0/7 |
-| SayPlan | internvl3.5-8b | 4/6 | 1/6 | 3/6 | 3/6 | 0/6 | 0/6 |
-| GraphManager | qwen3.5-4b | — | — | — | — | — | — |
-| GraphManager | qwen3.5-27b | — | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | 0/1 | 0/1 | 0/1 | 0/1 | 0/1 | 1/1 |
-| ReActHint | qwen3.5-4b | 4/8 | 0/8 | 4/8 | 1/8 | 1/8 | 3/8 |
-| ReActHint | qwen3.5-27b | 5/5 | 2/5 | 2/5 | 0/5 | 0/5 | 0/5 |
-| ReActHint | internvl3.5-8b | 3/6 | 2/6 | 4/6 | 1/6 | 0/6 | 0/6 |
-| ReActPrivileged | qwen3.5-4b | 2/6 | 3/6 | 2/6 | 0/6 | 0/6 | 1/6 |
-| ReActPrivileged | qwen3.5-27b | 5/5 | 0/5 | 1/5 | 0/5 | 0/5 | 0/5 |
-| ReActPrivileged | internvl3.5-8b | 5/7 | 6/7 | 5/7 | 0/7 | 0/7 | 0/7 |
+| OpenLoop | qwen3.5-4b | 7/9 | 0/9 | 0/9 | 1/9 | 0/9 | 0/9 |
+| OpenLoop | qwen3.5-27b | 6/9 | 0/9 | 0/9 | 2/9 | 0/9 | 0/9 |
+| OpenLoop | internvl3.5-8b | 0/9 | 1/9 | 1/9 | 0/9 | 0/9 | 0/9 |
+| ReAct | qwen3.5-4b | 7/10 | 1/10 | 6/10 | 1/10 | 0/10 | 0/10 |
+| ReAct | qwen3.5-27b | 10/11 | 0/11 | 7/11 | 2/11 | 0/11 | 0/11 |
+| ReAct | internvl3.5-8b | 5/10 | 3/10 | 7/10 | 0/10 | 0/10 | 0/10 |
+| CodeAsPolicies | qwen3.5-4b | 4/9 | 1/9 | 0/9 | 0/9 | 0/9 | 1/9 |
+| CodeAsPolicies | qwen3.5-27b | 5/8 | 0/8 | 0/8 | 2/8 | 0/8 | 0/8 |
+| CodeAsPolicies | internvl3.5-8b | 3/9 | 4/9 | 3/9 | 1/9 | 0/9 | 3/9 |
+| SayPlan | qwen3.5-4b | 6/7 | 3/7 | 3/7 | 5/7 | 0/7 | 0/7 |
+| SayPlan | qwen3.5-27b | 6/8 | 3/8 | 4/8 | 3/8 | 0/8 | 0/8 |
+| SayPlan | internvl3.5-8b | 5/9 | 2/9 | 3/9 | 3/9 | 0/9 | 0/9 |
+| GraphManager | qwen3.5-4b | 2/3 | 1/3 | 1/3 | 2/3 | 0/3 | 0/3 |
+| GraphManager | qwen3.5-27b | 2/2 | 0/2 | 2/2 | 1/2 | 0/2 | 0/2 |
+| GraphManager | internvl3.5-8b | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 | 3/3 |
+| ReActHint | qwen3.5-4b | 4/9 | 0/9 | 4/9 | 1/9 | 1/9 | 3/9 |
+| ReActHint | qwen3.5-27b | 7/8 | 2/8 | 4/8 | 2/8 | 0/8 | 0/8 |
+| ReActHint | internvl3.5-8b | 4/7 | 2/7 | 4/7 | 1/7 | 0/7 | 0/7 |
+| ReActPrivileged | qwen3.5-4b | 4/8 | 5/8 | 3/8 | 1/8 | 0/8 | 1/8 |
+| ReActPrivileged | qwen3.5-27b | 7/8 | 2/8 | 3/8 | 0/8 | 0/8 | 0/8 |
+| ReActPrivileged | internvl3.5-8b | 5/8 | 6/8 | 6/8 | 0/8 | 0/8 | 0/8 |
 
 ## 逐次技能调用的规划正确性
 
@@ -114,27 +114,27 @@ Graph Manager 只计入使用独立随机工作目录的局。旧 Harness 消息
 
 | 方法 | 模型 | 合理/可判定调用 | 可判定/全部调用 | 无法判定的调用 | 执行失败/合理调用 |
 | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 11/11 | 11/11 | 0 | 4/11 |
-| OpenLoop | qwen3.5-27b | 9/10 | 10/10 | 0 | 0/9 |
-| OpenLoop | internvl3.5-8b | 7/7 | 7/9 | 2 | 0/7 |
-| ReAct | qwen3.5-4b | 69/70 | 70/78 | 8 | 12/69 |
-| ReAct | qwen3.5-27b | 133/134 | 134/155 | 21 | 30/133 |
-| ReAct | internvl3.5-8b | 308/308 | 308/410 | 102 | 40/308 |
-| CodeAsPolicies | qwen3.5-4b | 7/7 | 7/7 | 0 | 3/7 |
-| CodeAsPolicies | qwen3.5-27b | 17/21 | 21/21 | 0 | 3/17 |
-| CodeAsPolicies | internvl3.5-8b | 17/20 | 20/42 | 22 | 2/17 |
-| SayPlan | qwen3.5-4b | 117/126 | 126/153 | 27 | 35/117 |
-| SayPlan | qwen3.5-27b | 101/105 | 105/129 | 24 | 33/101 |
-| SayPlan | internvl3.5-8b | 170/176 | 176/182 | 6 | 60/170 |
-| GraphManager | qwen3.5-4b | — | — | 0 | — |
-| GraphManager | qwen3.5-27b | — | — | 0 | — |
+| OpenLoop | qwen3.5-4b | 16/17 | 17/17 | 0 | 4/16 |
+| OpenLoop | qwen3.5-27b | 13/15 | 15/15 | 0 | 0/13 |
+| OpenLoop | internvl3.5-8b | 9/9 | 9/11 | 2 | 0/9 |
+| ReAct | qwen3.5-4b | 106/113 | 113/121 | 8 | 16/106 |
+| ReAct | qwen3.5-27b | 173/183 | 183/206 | 23 | 33/173 |
+| ReAct | internvl3.5-8b | 403/403 | 403/528 | 125 | 42/403 |
+| CodeAsPolicies | qwen3.5-4b | 8/8 | 8/9 | 1 | 3/8 |
+| CodeAsPolicies | qwen3.5-27b | 20/25 | 25/25 | 0 | 3/20 |
+| CodeAsPolicies | internvl3.5-8b | 18/21 | 21/43 | 22 | 2/18 |
+| SayPlan | qwen3.5-4b | 145/168 | 168/198 | 30 | 38/145 |
+| SayPlan | qwen3.5-27b | 102/106 | 106/130 | 24 | 33/102 |
+| SayPlan | internvl3.5-8b | 202/208 | 208/215 | 7 | 72/202 |
+| GraphManager | qwen3.5-4b | 42/49 | 49/51 | 2 | 5/42 |
+| GraphManager | qwen3.5-27b | 13/14 | 14/16 | 2 | 3/13 |
 | GraphManager | internvl3.5-8b | — | — | 0 | — |
-| ReActHint | qwen3.5-4b | 81/85 | 85/95 | 10 | 8/81 |
-| ReActHint | qwen3.5-27b | 69/69 | 69/81 | 12 | 8/69 |
-| ReActHint | internvl3.5-8b | 238/240 | 240/274 | 34 | 44/238 |
-| ReActPrivileged | qwen3.5-4b | 29/29 | 29/40 | 11 | 1/29 |
-| ReActPrivileged | qwen3.5-27b | 44/44 | 44/71 | 27 | 3/44 |
-| ReActPrivileged | internvl3.5-8b | 192/193 | 193/296 | 103 | 18/192 |
+| ReActHint | qwen3.5-4b | 82/86 | 86/96 | 10 | 8/82 |
+| ReActHint | qwen3.5-27b | 85/90 | 90/104 | 14 | 9/85 |
+| ReActHint | internvl3.5-8b | 256/258 | 258/292 | 34 | 44/256 |
+| ReActPrivileged | qwen3.5-4b | 63/65 | 65/82 | 17 | 7/63 |
+| ReActPrivileged | qwen3.5-27b | 83/84 | 84/118 | 34 | 5/83 |
+| ReActPrivileged | internvl3.5-8b | 202/203 | 203/310 | 107 | 18/202 |
 
 ## 推理与执行成本
 
@@ -144,27 +144,27 @@ Graph Manager 的一个 Harness 回合可以向模型发多次请求，其日志
 
 | 方法 | 模型 | 技能调用/局 | 模型查询/局 | 输入 token/局 | 输出 token/局 | 秒/局 | 停止原因与局数 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 1.57 | 1.00 | 10586 | 204 | 379.5 | `call_failed` × 6，`plan_done` × 1 |
-| OpenLoop | qwen3.5-27b | 1.43 | 1.14 | 12133 | 835 | 762.9 | `call_failed` × 6，`plan_done` × 1 |
-| OpenLoop | internvl3.5-8b | 1.29 | 1.00 | 13512 | 97 | 334.3 | `plan_done` × 5，`call_failed` × 2 |
-| ReAct | qwen3.5-4b | 9.75 | 13.12 | 143369 | 7843 | 2275.2 | `parse_error` × 6，`service_limit` × 1，`finish` × 1 |
-| ReAct | qwen3.5-27b | 19.38 | 20.38 | 227953 | 2028 | 3371.9 | `service_limit` × 5，`finish` × 3 |
-| ReAct | internvl3.5-8b | 51.25 | 51.62 | 738686 | 3474 | 2324.7 | `budget` × 5，`service_limit` × 3 |
-| CodeAsPolicies | qwen3.5-4b | 1.00 | 1.00 | 10691 | 92 | 322.4 | `program_done` × 7 |
-| CodeAsPolicies | qwen3.5-27b | 3.00 | 1.00 | 10691 | 818 | 1174.0 | `program_done` × 6，`service_limit` × 1 |
-| CodeAsPolicies | internvl3.5-8b | 6.00 | 1.86 | 25413 | 2018 | 318.8 | `program_done` × 4，`parse_error` × 3 |
-| SayPlan | qwen3.5-4b | 30.60 | 46.20 | 393598 | 5413 | 2957.6 | `service_limit` × 2，`budget` × 2，`parse_error` × 1 |
-| SayPlan | qwen3.5-27b | 18.43 | 25.86 | 215718 | 2699 | 2114.8 | `finish` × 3，`parse_error` × 3，`service_limit` × 1 |
-| SayPlan | internvl3.5-8b | 30.33 | 47.50 | 540744 | 3516 | 2411.9 | `budget` × 2，`parse_error` × 2，`service_limit` × 1，`search_budget` × 1 |
-| GraphManager | qwen3.5-4b | — | — | — | — | — | — |
-| GraphManager | qwen3.5-27b | — | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | 0.00 | — | — | — | 266.6 | `model_gave_up` × 1 |
-| ReActHint | qwen3.5-4b | 11.88 | 15.50 | 172113 | 5103 | 1149.8 | `parse_error` × 5，`finish` × 2，`service_limit` × 1 |
-| ReActHint | qwen3.5-27b | 16.20 | 17.20 | 192711 | 1720 | 3329.6 | `service_limit` × 3，`finish` × 2 |
-| ReActHint | internvl3.5-8b | 45.67 | 46.50 | 667014 | 3012 | 3127.5 | `service_limit` × 3，`finish` × 2，`budget` × 1 |
-| ReActPrivileged | qwen3.5-4b | 6.67 | 9.67 | 106511 | 4872 | 1408.8 | `parse_error` × 4，`service_limit` × 1，`finish` × 1 |
-| ReActPrivileged | qwen3.5-27b | 14.20 | 15.40 | 176608 | 1657 | 3380.4 | `service_limit` × 3，`finish` × 2 |
-| ReActPrivileged | internvl3.5-8b | 42.29 | 42.86 | 620850 | 2797 | 2862.0 | `service_limit` × 4，`budget` × 3 |
+| OpenLoop | qwen3.5-4b | 1.89 | 1.00 | 10574 | 227 | 387.9 | `call_failed` × 8，`plan_done` × 1 |
+| OpenLoop | qwen3.5-27b | 1.67 | 1.11 | 11777 | 684 | 670.6 | `call_failed` × 8，`plan_done` × 1 |
+| OpenLoop | internvl3.5-8b | 1.22 | 1.00 | 13500 | 90 | 303.8 | `plan_done` × 7，`call_failed` × 2 |
+| ReAct | qwen3.5-4b | 12.10 | 16.30 | 179412 | 11563 | 2215.6 | `parse_error` × 7，`service_limit` × 2，`finish` × 1 |
+| ReAct | qwen3.5-27b | 18.73 | 19.73 | 220566 | 1879 | 2954.4 | `finish` × 6，`service_limit` × 5 |
+| ReAct | internvl3.5-8b | 52.80 | 53.20 | 761395 | 3590 | 2306.1 | `budget` × 6，`service_limit` × 3，`finish` × 1 |
+| CodeAsPolicies | qwen3.5-4b | 1.00 | 1.00 | 10679 | 85 | 355.3 | `program_done` × 9 |
+| CodeAsPolicies | qwen3.5-27b | 3.12 | 1.12 | 12022 | 814 | 1131.5 | `program_done` × 6，`service_limit` × 1，`program_error` × 1 |
+| CodeAsPolicies | internvl3.5-8b | 4.78 | 1.78 | 24297 | 2489 | 384.1 | `program_done` × 5，`parse_error` × 4 |
+| SayPlan | qwen3.5-4b | 28.29 | 41.71 | 353357 | 4846 | 2824.0 | `service_limit` × 3，`budget` × 2，`parse_error` × 1，`finish` × 1 |
+| SayPlan | qwen3.5-27b | 16.25 | 23.88 | 198576 | 2420 | 1902.0 | `finish` × 3，`parse_error` × 3，`service_limit` × 1，`search_budget` × 1 |
+| SayPlan | internvl3.5-8b | 23.89 | 37.56 | 425806 | 2719 | 2186.1 | `parse_error` × 3，`budget` × 2，`service_limit` × 2，`search_budget` × 2 |
+| GraphManager | qwen3.5-4b | 17.00 | — | — | — | 776.6 | `replan_limit` × 3 |
+| GraphManager | qwen3.5-27b | 8.00 | — | — | — | 1068.7 | `replan_limit` × 2 |
+| GraphManager | internvl3.5-8b | 0.00 | — | — | — | 342.6 | `model_gave_up` × 3 |
+| ReActHint | qwen3.5-4b | 10.67 | 14.22 | 157665 | 4567 | 1046.7 | `parse_error` × 6，`finish` × 2，`service_limit` × 1 |
+| ReActHint | qwen3.5-27b | 13.00 | 14.00 | 155696 | 1395 | 2825.3 | `finish` × 4，`service_limit` × 4 |
+| ReActHint | internvl3.5-8b | 41.71 | 42.57 | 609910 | 2798 | 3216.1 | `service_limit` × 4，`finish` × 2，`budget` × 1 |
+| ReActPrivileged | qwen3.5-4b | 10.25 | 13.00 | 144557 | 6246 | 1913.1 | `parse_error` × 4，`service_limit` × 2，`finish` × 2 |
+| ReActPrivileged | qwen3.5-27b | 14.75 | 15.88 | 181842 | 1566 | 3202.9 | `finish` × 4，`service_limit` × 4 |
+| ReActPrivileged | internvl3.5-8b | 38.75 | 39.38 | 569247 | 2572 | 2575.6 | `service_limit` × 4，`budget` × 3，`finish` × 1 |
 
 ## 脚本参考路线
 
@@ -178,3 +178,4 @@ Graph Manager 的一个 Harness 回合可以向模型发多次请求，其日志
 | T12_tidy_toys | bins_capacity__half_bin_and_tray_duck_dining | 19 | 7846509 | 15/15 | 1.0 成功 | 0.0 失败 | 0.0 失败 | 0.0 失败 | — |
 | T19_recycling | bin_on_bookcase | 10 | 7846509 | 14/14 | 1.0 成功 | 0.0 失败 | 0.0 失败 | 0.0 失败 | drop · tuck: the arm stopped 0.066 m short of where it was sent |
 | T24_snack_for_kid | apple_on_table | 10 | 7846509 | 6/6 | 1.0 成功 | 0.0 失败 | 0.0 失败 | 0.0 失败 | — |
+| T28_cup_to_bedside | already_there__wrong_cup | 10 | 7846509 | 8/8 | 1.0 成功 | 0.0 失败 | 0.0 失败 | 0.0 失败 | — |
