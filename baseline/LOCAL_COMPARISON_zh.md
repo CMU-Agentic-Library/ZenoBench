@@ -88,3 +88,5 @@ export ZENO_LAB_COMPAT_MANIFEST="$LAB_SIM6/compatibility.json"
 python -m baseline.launch_comparison --run-dir "$ZB_RUN" --sim-version 6.0.0.1 \
   --servers 8860=2 8861=2 8862=2 --graph-bin /path/to/graph-env/bin/graph-manager-run
 ```
+
+运行期间增加空闲的仿真槽位时，可使用相同的 `--run-dir`，另给新调度器指定 `--dispatch-dir "$ZB_RUN/dispatch-extra"` 和新分配的 `--servers`。调度器按模型、方法、布局和种子锁定每一局。其他调度器可以继续领取剩余的局，已计分的局会自动跳过。

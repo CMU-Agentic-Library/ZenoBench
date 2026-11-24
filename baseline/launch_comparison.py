@@ -2,6 +2,7 @@
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 import fcntl
 from pathlib import Path
 import signal
@@ -21,8 +22,21 @@ def pending(out, first_row=0):
             if index >= len(rows):
                 continue
             for model in MODELS:
-                if not (result_path(out, model, method, rows[index]) / "result.json").exists():
-                    yield model, method, index, len(rows)
+                directory = result_path(out, model, method, rows[index])
+                if not (directory / "result.json").exists():
+                    yield model, method, index, len(rows), directory
+
+
+@contextmanager
+def claim_episode(directory):
+    directory.mkdir(parents=True, exist_ok=True)
+    with (directory / ".dispatch.lock").open("a") as claim:
+        try:
+            fcntl.flock(claim, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            yield None
+            return
+        yield None if (directory / "result.json").is_file() else claim
 
 
 def main():
@@ -30,6 +44,8 @@ def main():
     ap.add_argument("--run-dir", type=Path, required=True, help="contains native/ and planner/")
     ap.add_argument("--sim-version", required=True)
     ap.add_argument("--servers", nargs="+", required=True, metavar="PORT=SLOTS")
+    ap.add_argument("--dispatch-dir", type=Path,
+                    help="per-dispatcher log directory when adding concurrent workers to the same run")
     ap.add_argument("--vlm-ports", nargs=3, type=int, default=(8101, 8102, 8103),
                     help="Qwen 4B, Qwen 27B, InternVL 8B")
     ap.add_argument("--graph-bin", default="graph-manager-run")
@@ -46,7 +62,7 @@ def main():
         slots.extend([port] * count)
     endpoints = dict(zip(MODELS, args.vlm_ports))
     root = args.run_dir.resolve()
-    logs = root / "dispatch"
+    logs = args.dispatch_dir.resolve() if args.dispatch_dir else root / "dispatch"
     logs.mkdir(parents=True, exist_ok=True)
     out = root / "planner"
     jobs = pending(out, args.first_row)
@@ -64,14 +80,19 @@ def main():
                     job = next((j for j in jobs if j[:2] not in interrupted), None)
                 if job is None:
                     return
-                model, method, index, total = job
+                model, method, index, total, directory = job
                 cmd = [sys.executable, "-m", "baseline.comparison", "--model", model, "--method", method,
                        "--shards", str(total), "--shard", str(index), "--out", str(out),
                        "--native-dir", str(root / "native"), "--sim-version", args.sim_version,
                        "--vlm-url", f"http://127.0.0.1:{endpoints[model]}/v1",
                        "--server", f"http://127.0.0.1:{port}", "--graph-bin", args.graph_bin]
-                print(f"START {model} {method} [{index}/{total}] sim={port}", file=log)
-                rc = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT).returncode
+                with claim_episode(directory) as claim:
+                    if claim is None:
+                        continue
+                    print(f"START {model} {method} [{index}/{total}] sim={port}", file=log)
+                    # The running child keeps the episode locked even if its dispatcher exits.
+                    rc = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT,
+                                        pass_fds=(claim.fileno(),)).returncode
                 print(f"EXIT {rc} {model} {method} [{index}/{total}]", file=log)
                 if rc:
                     # Preserve the first infrastructure failure and continue unrelated cells.

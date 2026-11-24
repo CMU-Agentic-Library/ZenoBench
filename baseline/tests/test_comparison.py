@@ -1,10 +1,13 @@
 import json
+import subprocess
+import sys
 from unittest.mock import patch
 import pytest
 
 from baseline import run_http
 from baseline.comparison import MAIN, episodes, graph_library, representatives
 from baseline.graph_profile import configure
+from baseline.launch_comparison import claim_episode
 from baseline.report import read_outcome
 
 
@@ -19,6 +22,24 @@ def test_paired_catalog_and_local_graph_library(tmp_path):
     assert set(index[0]) == {"task_id", "variants", "catalog", "default_profile"}
     assert set(index[0]["variants"]) >= {j["variant"] for j in jobs if j["task"] == index[0]["task_id"]}
     assert len(list((tmp_path / "skills").glob("*/skill.json"))) == 71
+
+
+def test_dispatchers_share_episode_ownership_while_a_child_is_alive(tmp_path):
+    directory = tmp_path / "episode"
+    with claim_episode(directory) as first:
+        assert first is not None
+        child = subprocess.Popen([sys.executable, "-c", "import sys; sys.stdin.read()"],
+                                 stdin=subprocess.PIPE, pass_fds=(first.fileno(),))
+    try:
+        with claim_episode(directory) as duplicate:
+            assert duplicate is None
+    finally:
+        child.communicate()
+    with claim_episode(directory) as retry:
+        assert retry is not None
+        (directory / "result.json").write_text("{}")
+    with claim_episode(directory) as completed:
+        assert completed is None
 
 
 def test_harness_compacts_against_the_served_context_window(tmp_path):
