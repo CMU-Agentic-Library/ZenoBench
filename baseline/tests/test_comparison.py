@@ -56,6 +56,20 @@ def test_resume_interrupted_ablation_keeps_the_original_rows(tmp_path):
     assert next(pending(tmp_path, 1, [model], [method])) == jobs[1]
 
 
+def test_first_layout_per_task_uses_existing_main_and_ablation_shards(tmp_path):
+    main = episodes()
+    subset = representatives(main)
+    first = {}
+    for row in main:
+        first.setdefault(row["task"], row)
+    assert len(first) == 30
+    for method, catalog in [("ReAct", main), ("ReActHint", subset)]:
+        jobs = list(pending(tmp_path, models=["qwen3.5-4b"], methods=[method], first_layout_per_task=True))
+        assert len(jobs) == 30
+        assert all(total == len(catalog) for _, _, _, total, _ in jobs)
+        assert {catalog[index]["task"]: catalog[index] for _, _, index, _, _ in jobs} == first
+
+
 def test_start_queue_applies_only_until_initial_task_returns(tmp_path, monkeypatch):
     def probe(url, timeout):
         assert timeout == 42

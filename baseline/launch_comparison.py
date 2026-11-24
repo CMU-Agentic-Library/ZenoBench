@@ -13,16 +13,23 @@ from threading import Event, Lock
 from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_path
 
 
-def pending(out, first_row=0, models=MODELS, methods=METHODS):
+def pending(out, first_row=0, models=MODELS, methods=METHODS, first_layout_per_task=False):
     jobs = episodes()
     subset = representatives(jobs)
+    first = {}
+    if first_layout_per_task:
+        for job in jobs:
+            first.setdefault(job["task"], job)
     for index in range(first_row, len(jobs)):
         for method in methods:
             rows = subset if method in ABLATIONS else jobs
             if index >= len(rows):
                 continue
+            row = rows[index]
+            if first_layout_per_task and row != first[row["task"]]:
+                continue
             for model in models:
-                directory = result_path(out, model, method, rows[index])
+                directory = result_path(out, model, method, row)
                 if not (directory / "result.json").exists():
                     yield model, method, index, len(rows), directory
 
@@ -53,6 +60,8 @@ def main():
     ap.add_argument("--graph-bin", default="graph-manager-run")
     ap.add_argument("--first-row", type=int, default=0,
                     help="start at this zero-based index when earlier rows are dispatched separately")
+    ap.add_argument("--first-layout-per-task", action="store_true",
+                    help="run only the first declared episode of each task, retaining its full-batch shard index")
     args = ap.parse_args()
     if not 0 <= args.first_row < len(episodes()):
         ap.error("--first-row must be a valid main-batch index")
@@ -67,7 +76,7 @@ def main():
     logs = args.dispatch_dir.resolve() if args.dispatch_dir else root / "dispatch"
     logs.mkdir(parents=True, exist_ok=True)
     out = root / "planner"
-    jobs = pending(out, args.first_row, args.model or MODELS, args.method or METHODS)
+    jobs = pending(out, args.first_row, args.model or MODELS, args.method or METHODS, args.first_layout_per_task)
     # A stopped dispatcher drains active episodes. A restart scans receipts again.
     stop = Event()
     for sig in (signal.SIGTERM, signal.SIGINT):
