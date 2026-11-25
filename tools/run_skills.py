@@ -174,7 +174,7 @@ def main():
             elif tok[0] == "place_container":
                 policies.place_container.execute(tok[1], tok[2])
             elif tok[0] == "place_microwave":
-                policies.place_microwave.execute(tok[1], tok[2] if len(tok) > 2 else "kitchen_microwave/inside_floor")
+                policies.place_surface.execute(tok[1], tok[2] if len(tok) > 2 else "kitchen_microwave/inside_floor")
             elif tok[0] == "place" and tok[2].startswith("in:"):
                 policies.place.execute(tok[1], tok[2])
             elif tok[0] == "place":

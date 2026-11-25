@@ -4,7 +4,8 @@
   "tags": [
    "dish",
    "plate",
-   "flat"
+   "flat",
+   "lid"
   ],
   "mass": 0.35,
   "collider": "solid",

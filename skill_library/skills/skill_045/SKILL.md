@@ -21,29 +21,29 @@ A container must be closed with its lid.
 ## Inputs
 
 - `container` (`container_ref`): The pot or box to cover.
-- `lid` (`lid_ref`): The held lid.
+- `lid` (`lid_ref`): The held lid: an object tagged lid (a pot lid, or a plate set on the rim).
 
 ## Applicability
 
-Requires holding(hand=right, object=$lid); base_near(place=$container); uncovered(container=$container).
+Requires holding(hand=any, object=$lid); base_near(place=$container); uncovered(container=$container).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$lid)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$lid)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
 ## Postconditions (verified on live GT state)
 
 - `covered(container=$container, lid=$lid)` — The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt). GT: object_pose, container_profile.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `not holding(hand=any, object=$lid)` — Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `covered(container=$container, lid=$lid)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `not holding(hand=any, object=$lid)` (all paths)
 
 ## May invalidate
 
@@ -58,7 +58,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `stir` (`skill_038`) (enables) — the pot is covered again
-- Next step: `heat` (`skill_043`) (enables) — the pot is heated with its lid on (heat itself needs no lid)
+- Next step: `heat` (`skill_043`) (then) — the pot is heated with its lid on (heat itself needs no lid)
 - Alternative: `uncover` (`skill_046`) — opposite effect
 
 ## Failure

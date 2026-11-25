@@ -15,7 +15,7 @@ import numpy as np
 from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below the layers; re-exported here)
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
-from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
+from .physics import ASSET, BASE_JOINTS, OBJECT_SLEEP, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
 from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
 
@@ -156,7 +156,16 @@ class Rig:
         for name, o in ann.objects.items():
             b = SingleRigidPrim(o["body"], name=f"obj_{name}")
             b.initialize()
+            b.set_sleep_threshold(OBJECT_SLEEP)          # resting objects sleep (physics.OBJECT_SLEEP)
             self._bodies[name] = b
+        # the gripper links' rigid views (sticky hands weld to them), built now: a view built mid-episode
+        # puts every object that slept and has moved since back where it fell asleep (physics.OBJECT_SLEEP)
+        from .sticky import LINKS
+        self.gripper_links = {}
+        for hand, path in LINKS.items():
+            g = SingleRigidPrim(path, name=f"gripper_link_{hand}")
+            g.initialize()
+            self.gripper_links[hand] = g
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
         self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
@@ -218,6 +227,22 @@ class Rig:
 
     def chain_q(self, side="right"):
         return _chain_q(self, side)
+
+    def held_by(self, side="right"):
+        """What ``side``'s hand holds (the grasp's dict), or None."""
+        return _held_of(self, side)
+
+    def set_held(self, side, value):
+        """Register (a grasp's dict) or clear (None) what ``side``'s hand holds."""
+        setattr(self, "held" if side == "right" else "left_held", value)
+
+    def hand_of(self, name):
+        """The hand that holds ``name`` ("right" / "left"), or None."""
+        for side in ("right", "left"):
+            h = _held_of(self, side)
+            if h is not None and h["name"] == name:
+                return side
+        return None
 
     def chain_cmd(self, side="right"):
         return _chain_cmd(self, side)
@@ -353,16 +378,16 @@ class Rig:
             if abs(yaw) > math.pi:
                 yaw = (yaw + math.pi) % (2 * math.pi) - math.pi
                 self.robot.set_joint_positions(t.tensor([yaw], dtype=t.float32), joint_indices=self.base[2:])
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.q_cmd, dtype=t.float32),
-                                                       joint_indices=self.arm))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.grip_cmd)),
-                                                       joint_indices=self.fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.left_q_cmd, dtype=t.float32),
-                                                       joint_indices=self.left))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.left_grip_cmd)),
-                                                       joint_indices=self.left_fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
-                                                       joint_indices=self.head))
+            # both arms, both hands and the head: one action (their joints are disjoint; one call per
+            # group was 5 of the 6 apply_action calls a tick)
+            pos_idx = self.__dict__.get("_pos_idx")
+            if pos_idx is None:
+                pos_idx = self._pos_idx = t.cat([self.arm, self.fing, self.left, self.left_fing, self.head])
+                assert len(set(pos_idx.tolist())) == len(pos_idx), "arm / hand / head joints overlap"
+            self.robot.apply_action(ArticulationAction(joint_positions=t.cat([
+                t.tensor(self.q_cmd, dtype=t.float32), t.full((2,), float(self.grip_cmd)),
+                t.tensor(self.left_q_cmd, dtype=t.float32), t.full((2,), float(self.left_grip_cmd)),
+                t.tensor(self.head_cmd, dtype=t.float32)]), joint_indices=pos_idx))
             # the yaw target within half a turn of the joint's reading
             base_q = self.base_cmd.copy()
             base_q[2] = yaw + (base_q[2] - yaw + math.pi) % (2 * math.pi) - math.pi
@@ -388,6 +413,19 @@ class Rig:
                     cam.update(1 / PHYSICS_HZ)
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
+
+    def wake(self, name):
+        """Wake object ``name``'s body: a pose or velocity written into a sleeping body need not wake
+        it, and asleep it would hang where it was put (sticky's snap and place teleport objects)."""
+        w = self.__dict__.get("_waker")
+        if w is None:
+            import omni.usd
+            from omni.physx import get_physx_simulation_interface
+            from pxr import PhysicsSchemaTools
+            sim, sid, to_int = (get_physx_simulation_interface(), omni.usd.get_context().get_stage_id(),
+                                PhysicsSchemaTools.sdfPathToInt)
+            w = self._waker = lambda body: sim.wake_up(sid, to_int(body))
+        w(self.ann.objects[name]["body"])
 
     def _payload_mass(self, name):
         """(kg, centre of mass in the body frame) of object ``name`` as PhysX has it (cached)."""
@@ -886,7 +924,7 @@ class Rig:
     # ---------------------------------------------------- motion_state.Actuator (run.py's only door)
     def snapshot(self):
         """The State now (motion_state.State): the base, the commanded arm postures, the head, each
-        hand's finger opening (the wider finger, as Motion.live_locks) and what it holds (its box
+        hand's finger opening (the wider finger; each finger as it stands, Hand.fingers) and what it holds (its box
         frame in the TCP frame, Motion.held_in_tcp, both as they really stand: the hand at the arm's
         measured joints, not its command -- a load sags the arm and a contact pushes it off its
         command, and a hold read against the commanded TCP would take that for the load moving in the
@@ -901,7 +939,8 @@ class Rig:
         for side, kin, q, held, fingers in (
                 ("right", self.kin, self.q, self.held, self.fingers),
                 ("left", self.left_kin, self.left_q, self.left_held, self.left_fingers)):
-            width = float(np.clip(np.asarray(fingers(), float)[:2].max(), 0.0, FINGER_OPEN))
+            f = np.clip(np.asarray(fingers(), float)[:2], 0.0, FINGER_OPEN)
+            width = float(f.max())
             h = None
             if held is not None:
                 name = held["name"]
@@ -917,7 +956,7 @@ class Rig:
                 T_tcp[:3, :3], T_tcp[:3, 3] = R, p
                 h = Held(handle["name"], np.linalg.inv(T_tcp) @ self.ann.part_pose(a, self.joint(handle["name"])),
                          "part")
-            hands[side] = Hand(width=width, held=h)
+            hands[side] = Hand(width=width, held=h, fingers=(float(f[0]), float(f[1])))
         return State(base=tuple(self.base_pose()), body=np.asarray(self.q_cmd, float)[:2].copy(),
                      arms={"right": np.asarray(self.q_cmd, float)[2:].copy(),
                            "left": np.asarray(self.left_q_cmd, float).copy()}, head=dict(self.head_q()), hands=hands,
@@ -982,6 +1021,34 @@ class Rig:
     def wait(self, ticks):
         """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""
         self.step(int(ticks))
+
+    def toggle(self, appliance, on):
+        """``appliance``'s heat source switched on / off (Actuator.toggle: a press's action) -- the task-level
+        thermal model (thermal.py: the microwave's cycle, the stove's burner)."""
+        if self.thermal is None or appliance not in self.thermal.on:
+            raise SkillFailure(f"toggle {appliance}: no heat source of that name")
+        self.thermal.on[appliance] = bool(on)
+        self.log("toggle", appliance=appliance, on=bool(on))
+
+    def drive_part(self, part, value, ticks=300):
+        """``part`` (a powered articulated part: the microwave's door) driven by its own motor to ``value``
+        (Actuator.drive_part: the door key's action) -- its joint target ramped over ``ticks`` physics ticks
+        (the old _set_microwave_hinge's 300), a second to settle, then judged: further than DOOR_OPEN_TOL off
+        ``value`` fails the skill.  The robot does not move (the plan checked it clear of the swing)."""
+        from isaacsim.core.utils.types import ArticulationAction
+        from .tolerances import DOOR_OPEN_TOL
+        motor, start = self._arts[part], self.joint(part)
+        for i in range(1, int(ticks) + 1):
+            q = start + (float(value) - start) * i / int(ticks)
+            motor.apply_action(ArticulationAction(joint_positions=self.torch.tensor([q], dtype=self.torch.float32),
+                                                  joint_indices=self.torch.tensor([self._dof[part]])))
+            self.step(1)
+        self.step(PHYSICS_HZ)
+        actual = self.joint(part)
+        self.log("drive_part", part=part, target=round(float(value), 3), actual=round(actual, 3))
+        if abs(actual - float(value)) > DOOR_OPEN_TOL:
+            raise SkillFailure(f"{part}: its motor stopped it at {actual:.3f}, sent to {float(value):.3f}")
+        return actual
 
     def aim_head(self, yaw, pitch, steps=90):
         """The head to (yaw, pitch) rad (a head action segment): the command set, then at most ``steps``

@@ -13,9 +13,10 @@ from ..park_search import VARIANT_COST, Problem
 from ..rig import SkillFailure
 from ..skill_plans import SLIDE_RELAY, SLIDE_STEP, slide_travel
 from ..tolerances import (DRAG_PRESS, DRAG_RIM, DRAG_SKID, LEAVE_MARGIN, PUSH_DONE_TOL, PUSH_MOVED_MIN, SLIDE_GAP,
-                          SLIDE_PAD_GAP)
+                          SLIDE_PAD_GAP, TIP_HEIGHT)
 
 MODES = ("push", "drag")  # the ways to move it, the order a caller prefers them in by default
+ALL_MODES = MODES + ("poke",)   # ... and the tip's poke (HAND_PLAN 9h), asked for by name only
 
 
 def _reach_along(R, n, box):
@@ -59,6 +60,19 @@ def slide_ways(rig, name, T_obj, n, d, modes=MODES):
     above, least = pick_approach(), min(float(d), PUSH_MOVED_MIN[0])
     out = []
     for m in modes:
+        if m == "poke":
+            # the tip's poke (HAND_PLAN 9h): the closed fingertips pointing along n, SLIDE_GAP off the back face at
+            # TIP_HEIGHT of its height (the TCP PAD_TIP behind them), the fingers closing vertically or across n
+            for i, c in enumerate(([0.0, 0.0, 1.0], [lat[0], lat[1], 0.0])):
+                R = gripper_rot([n[0], n[1], 0.0], c)
+                tips = np.r_[b[:2] - n * (h + SLIDE_GAP), b[2] + TIP_HEIGHT * float(size[2])]
+                p = tips - PAD_TIP * np.r_[n, 0.0]
+                W = np.eye(4)
+                W[:3, :3], W[:3, 3] = R, p
+                out.append((m, i, {"obj": name, "T_obj_tcp": np.linalg.inv(T_obj) @ W, "n": np.r_[n, 0.0],
+                                   "d": float(d) + SLIDE_GAP, "lag": SLIDE_GAP, "least": least, "back": LEAVE_MARGIN,
+                                   "above": above}))
+            continue
         for i, c in enumerate((lat, -lat, n, -n)):
             R = gripper_rot([0, 0, -1.0], [c[0], c[1], 0.0])
             if m == "push":
@@ -84,7 +98,7 @@ def slide_job(rig, args, state, skill=None):
     """motion_skills.Job of one leg: ``args`` {name, support (the annotated support it rests on), dirs
     [(n: a horizontal unit, d: m it is still to go that way, cost: m -- what going that way costs)],
     modes (the ways, preferred first; default MODES), label}.  Every way to touch it in every direction
-    one goal of the park search (the whole leg planned there: skill_plans.plan_slide, the right hand):
+    one goal of the park search (the whole leg planned there: skill_plans.plan_slide, the empty hand -- the right first):
     the goal's cost is its direction's plus VARIANT_COST per rank of the turn, and every way of a mode
     comes before any of the next (Problem.tiers).  The leg goes as far as the arm gets from the park
     (plan_slide measures it); the ranking solves the push's end, and where no park reaches any end, how
@@ -95,13 +109,14 @@ def slide_job(rig, args, state, skill=None):
     name, support, label = args["name"], args["support"], args.get("label", "PUSH")
     modes = tuple(args.get("modes") or MODES)
     dirs = [(np.asarray(n, float)[:2], float(d), float(cost)) for n, d, cost in args["dirs"]]
-    if rig.held is not None:
-        raise SkillFailure(f"push {name}: the right hand must be empty")
+    side = next((sd for sd in ("right", "left") if rig.held_by(sd) is None), None)   # the empty hand, the right first
+    if side is None:
+        raise SkillFailure(f"push {name}: both hands hold something")
     T_obj = (getattr(state, "objects", None) or {}).get(name)
     if T_obj is None:
         raise SkillFailure(f"push {name}: not in the collision model")
     rig.sync_world()
-    kin = rig.kin
+    kin = rig.arm_kin(side)
     rests = (kin.rest, kin.drive)
     build_with = skill.build if skill is not None else None
     if build_with is None:
@@ -126,7 +141,7 @@ def slide_job(rig, args, state, skill=None):
     # the arm's manipulability chose a drag where a push would do, and a drag threw the object (T01
     # paperback 4.5 cm asked, 40 cm moved; T29 table_book, 11-12); VARIANT_COST alone is a weak preference
     problem = Problem(tuple(goals), build, SLIDE_RELAY, near=rig.base_pose(), label=f"{label.lower()} {name}",
-                      tiers=tuple(tiers), relay_from=tuple(starts), reach_step=SLIDE_STEP)
+                      tiers=tuple(tiers), relay_from=tuple(starts), reach_step=SLIDE_STEP, hand=side)
     ctx = {"b0": np.asarray(rig.geo.bottom(name, rig.state()), float)}
 
     def no_park(diag):
@@ -138,7 +153,7 @@ def slide_job(rig, args, state, skill=None):
     def found_park(found):
         j, m, _ = ways[found.k]
         ctx["j"], ctx["mode"], ctx["planned"] = j, m, slide_travel(found.plan) or 0.0
-        rig.log("push_park", obj=name, mode=m, dir=np.round(dirs[j][0], 3).tolist(), d=round(dirs[j][1], 3),
+        rig.log("push_park", obj=name, mode=m, hand=side, dir=np.round(dirs[j][0], 3).tolist(), d=round(dirs[j][1], 3),
                 leg=round(ctx["planned"], 3), park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)])
         rig.caption = f"{label} {name}: " + ("go behind it" if m == "push" else "press on it to drag")
         rig.focus_z = float(support["z"])
@@ -173,7 +188,7 @@ def push_object(rig, name, s, ways, label="PUSH", modes=MODES):
     (the direction n it went, the distance moved along it, measured)."""
     from ..motion_skills import SKILLS, run_skill
     modes = tuple(modes)
-    if not modes or any(m not in MODES for m in modes):
+    if not modes or any(m not in ALL_MODES for m in modes):
         raise ValueError(f"unknown contact mode: {modes}")
     least, frac = PUSH_MOVED_MIN
     ways = [(np.asarray(n, float)[:2], float(dist), enough) for n, dist, enough in ways]

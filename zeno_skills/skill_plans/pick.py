@@ -11,7 +11,7 @@ from ..clearance import LEAVE_CONTACT, closing
 from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
 from ..primitives import sided, free_leg, query, straight
 from ..tolerances import HELD_POSE_MARGIN, PICK_TOL  # noqa: F401  (skill_plans re-exports)
-from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach, anchor
+from ._common import FREE_HAND, built_so_far, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach, anchor
 
 PICK_STAGES = ("pick_arrive", "pick_open", "pick_reach", "pick_grasp", "pick_close", "pick_held", "pick_lift", "carry_in")
 PICK_ANCHORS = ("pick_arrive", "pick_held")   # the base and the object as they are; the hold measured (docs 8.2)
@@ -24,7 +24,7 @@ PICK_RELAY = "pick_reach"     # the decision the park search's ranking IK solves
 # lift measures the contact with the hold as assumed).  Values and sources: tolerances.py
 
 
-def plan_pick(kin, state, grasp, carry_goals, start="pick_arrive", prior=None, step=0.003):
+def plan_pick(kin, state, grasp, carry_goals, start="pick_arrive", prior=None, step=0.003, stop=None):
     """The pick of grasp = {name, T_obj_tcp, u, L, pre_open, kind} from ``state``: the grasp pose
     the TCP at T_obj_tcp in the box frame of ``name`` as the State has it (Aim, aim_pose: the object
     where it stands now, in the search and every rebuild alike), ``u`` the reach-in's direction
@@ -40,12 +40,13 @@ def plan_pick(kin, state, grasp, carry_goals, start="pick_arrive", prior=None, s
     first for the rest; else the decisions to keep (decisions_of: the park search's ranking
     solution) -- pick_reach, the reach-in start's solution (where a plan's reach leg ends);
     carry_in, the carry goal chosen ((index, set size): free_leg's first).  Plan (its decisions) or
-    Failure."""
+    Failure.  ``stop``: the last stage built ("pick_held": hold it where it stands -- brace, a handover's
+    taking hand -- no lift, no carry; HAND_PLAN 9i)."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_pick(kin, state, grasp, carry_goals, start, prior, step)
+        return _plan_pick(kin, state, grasp, carry_goals, start, prior, step, stop)
 
 
-def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
+def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step, stop=None):
     i0 = PICK_STAGES.index(start)
     prior = decisions_of(prior_plan)
     name = grasp["name"]
@@ -63,7 +64,8 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
     # one built after the real close (run's rebuild from pick_lift / carry_in) on the measured one
     assumed = ("carry_in",) if i0 <= PICK_STAGES.index("pick_close") else ()
     times = {}
-    for stage in PICK_STAGES[i0:]:
+    last = PICK_STAGES.index(stop) + 1 if stop else len(PICK_STAGES)
+    for stage in PICK_STAGES[i0:last]:
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "carry_in" else None
         if stage in PICK_ANCHORS:
@@ -105,7 +107,7 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
                 decided[stage] = (seg.info["chosen"], seg.info["goals"])
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, kin.side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)

@@ -94,6 +94,8 @@ SLIDE_GAP = _t("SLIDE_GAP", 0.005, "m", "chosen, unmeasured: the planner's close
                "where the push-in ends -- with the finger box's excess over the real pads along n (2.7 / 4.2 mm by "
                "the gripper's turn) the hand's lag before the object moves (primitives.Pushed): 7.7 / 9.2 mm; "
                "slide_1112 (11-12) measured 10.7 mm on average (18 pushes, 9-14 mm), the rest unexplained")
+TIP_HEIGHT = _t("TIP_HEIGHT", 0.80, "1", "inherited (the old TipOverPolicy's): a tip pokes a standing object at this "
+                "fraction of its height -- high enough that it falls rather than slides (HAND_PLAN 9h)")
 DRAG_RIM = _t("DRAG_RIM", 0.03, "m", "inherited (skills' old push): a drag presses this far inside the leading rim")
 DRAG_PRESS = _t("DRAG_PRESS", 0.006, "m", "inherited (skills' old push: top - 4 mm + 10 mm): a drag's TCP this far "
                 "above the top, the fingertips pressed into it (higher only brushes it)")
@@ -124,6 +126,22 @@ STIR_RADII = _t("STIR_RADII", (0.035, 0.022, 0.012), "m", "inherited, unmeasured
                 "a tighter circle needs less arm travel and still turns the tip round the pot's centre")
 STIR_ABOVE = _t("STIR_ABOVE", 0.06, "m", "inherited, unmeasured (old StirContainerPolicy's 'above'): the dip comes "
                 "straight down from where the tip is this far above the rim, and the leave goes back up to it")
+PRESS_DEPTH = _t("PRESS_DEPTH", 0.003, "m", "chosen: a press's fingertips go this far into the button's face (its "
+                 "collider's front, skill_jobs.press) -- a force's geometric stand-in (COLLISION_PLAN.md section 8): "
+                 "the button is rigid, the arm stops where the tips meet it, less than TARGET_TOL short.  The old "
+                 "press aimed the TCP 5 mm off the button's centre, the tips 22-29 mm inside it (stopped short, "
+                 "accepted up to 35 mm)")
+WIPE_PRESS = _t("WIPE_PRESS", 0.001, "m", "inherited: a wipe presses the sponge's bottom this far into the support (the "
+                "old WipeSurfacePolicy's light press: a 3 mm press dragged the sponge out of the pinch) -- a force's "
+                "geometric stand-in (COLLISION_PLAN.md section 8), HAND_PLAN 9g")
+TOUCH_DEPTH = _t("TOUCH_DEPTH", 0.002, "m", "chosen: a touch's / knock's closed fingertips go this far into the touched "
+                 "face (an object's top, a door's panel) -- a force's geometric stand-in (COLLISION_PLAN.md section 8), "
+                 "as PRESS_DEPTH: the arm stops where the tips meet it.  The old touch aimed the TCP 1.6 cm over the "
+                 "top with the pad tips ~1.8 cm below it (2 mm in, unchecked); the old knock aimed the TCP itself "
+                 "4 mm off the panel (the tips well inside it, unchecked) -- HAND_PLAN 9g")
+PRESS_APPROACH = _t("PRESS_APPROACH", 0.10, "m", "inherited (old microwave / stove press: the aligned pose 12 cm off "
+                    "the button's centre, the press to 5 mm off it): the press comes straight in from this far "
+                    "in front of where the tips touch")
 SLIDE_TOL = _t("SLIDE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = PLACE_TOL: an object pushed across its "
                "support is a coarse contact -- the push point less off only moves it a few mm otherwise; slide_1112 "
                "(11-12, 12 pushes): the reach, descent and push-in ended at most 0.02 mm further off than built and "

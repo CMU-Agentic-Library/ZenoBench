@@ -47,18 +47,18 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object); base_near(place=$support)."
+  "summary": "Requires holding(hand=any, object=$object); base_near(place=$support)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -86,14 +86,14 @@
  ],
  "postconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -108,14 +108,14 @@
   "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
   "checks": [
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",

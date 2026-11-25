@@ -275,13 +275,12 @@ class Clearance:
 
     def _physx_tick(self):
         rig = self.rig
-        pairs = self.physx.touching()
         objects = getattr(rig.ann, "objects", {})
         hands = {h["name"] for h in (getattr(rig, "held", None), getattr(rig, "left_held", None))
                  if h and h.get("name") in objects and objects[h["name"]].get("body")}
         # what the hands hold touching the world: link held:<name>, judged by Allow.held_on
         body_of = {objects[n]["body"]: n for n in hands}
-        carried = self.physx.held_touching(body_of) if body_of and hasattr(self.physx, "held_touching") else {}
+        pairs, carried = self.physx.read(body_of)
         if not pairs and not carried and not self._px_live:
             return
         motion = getattr(rig.kin, "motion", None)

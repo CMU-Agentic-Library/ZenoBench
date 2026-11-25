@@ -24,11 +24,11 @@ An appliance that is heating must be switched off.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$appliance).
+Requires hand_empty(hand=any); base_near(place=$appliance).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)

@@ -2,6 +2,7 @@
 its top and legs, so the chassis may go under the top while the column stays out."""
 
 import math
+from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
@@ -112,3 +113,26 @@ def test_a_carcass_is_posed_by_its_body():
     T[:3, 3] = (2.0, 0.0, 0.0)
     tris = static_triangles(SimpleNamespace(items=[part]), {"/cabinet": T}.get)
     assert np.allclose(tris[..., 0].min(), 1.9) and np.allclose(tris[..., 0].max(), 2.1)
+
+
+def test_far_door_leaves_are_skipped_with_the_same_answers():
+    # moving_part_dist(within=...) skips the part boxes whose xy bounds are farther than that from
+    # every point; footprints_clear / circles_clear must answer as with every part, doors half open,
+    # around each door (where they do block) and across the house
+    from zeno_skills import collision as CO
+    from zeno_skills.annotations import SceneAnnotations
+    ann = SceneAnnotations(Path(__file__).resolve().parents[1] / "tasks/kitchen_skills/annotation.json")
+    w = CO.WorldModel(ann)
+    rng = np.random.default_rng(3)
+    poses = []
+    for a in ann.articulated:
+        w.set_joint(a["name"], 0.5 * (a["closed_q"] + a.get("open_q", a["closed_q"])))
+        c = ann.part_pose(a, w.joint_q[a["name"]])[:2, 3]
+        poses.append(np.c_[c + rng.uniform(-0.8, 0.8, (60, 2)), rng.uniform(-math.pi, math.pi, 60)])
+    poses = np.vstack(poses)
+    full = CO.WorldModel.moving_part_dist
+    new, newc = w.footprints_clear(poses), w.circles_clear(poses[:, :2])
+    w.moving_part_dist = lambda pts, span=None, within=None: full(w, pts, span)
+    assert np.array_equal(new, w.footprints_clear(poses)) and np.array_equal(newc, w.circles_clear(poses[:, :2]))
+    w.moving_part_dist = lambda pts, span=None, within=None: np.full(len(pts), np.inf)
+    assert (w.footprints_clear(poses) & ~new).sum() > 20          # the doors do block some of them

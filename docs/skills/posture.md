@@ -1,4 +1,4 @@
-# 姿态：下蹲、站起、弯腰、直腰、收臂
+# 姿态：下蹲、站起、弯腰、直腰、收臂；举高、放低、举到头前、转向、竖起、松手
 
 2026-11-16 起走运动分层（`skill_plans/posture.py` 的 `plan_posture`，job 在 `skill_jobs/posture.py`；`../motion/MOTION_ARCHITECTURE.md` 第 6 节、9.3 第 5 步）：在机器人现在站的地方做一段关节运动，不选停车点，不挪底盘。
 
@@ -17,6 +17,43 @@
 3. 左臂：先张开左手，再只动左臂到它的收起姿态，身体不动。
 4. 收起姿态在这里会碰、或者走不过去：失败。旧代码挪底盘再收（`fold_where_possible`），左臂是不查碰撞的关节直线，都删了。下垂不算收好：技能保证的 `arm_stowed` 要求收起姿态。
 5. 结果：手臂关节离收起姿态 0.10 rad 以内（`STOWED_TOL`）。
+
+## lift / lower（手里的东西竖直上下）
+
+HAND_PLAN 9e（11-25）：`CarryHeightAdjustPolicy` / `SetHeldHeightPolicy` → `run_skill(SKILLS["lift" / "lower"])`，job 是 `skill_jobs/held.py`，计划是 `plan_held_move`。
+
+1. 拿着这个物体的手（哪只都行）；物体底面已经够高（lift）/ 够低（lower，2 cm 以内，`HEIGHT_TOL`）就不动。
+2. **一条直线**：TCP 从现在的位置竖直走到让物体底面到达给定高度的那个高度，手的朝向不变（物体倾角保持），`FREE_LOAD` 查碰撞。
+3. **做不出来就失败**：旧代码 `held_vertical_move` 在直线没 IK 时先把物体往身体拉 8–30 cm 的 5 个中间点再抬，`CarryHeightAdjustPolicy` 还按实测底面闭环重试 3 次，都删了（规则 3）。物体被卡住跟不上手，结果判定失败。
+4. 结果：实测底面 ≥ 目标 − 2 cm（lift）/ ≤ 目标 + 2 cm（lower）。
+
+## present（把手里的东西举到头前）
+
+HAND_PLAN 9e：`PresentHeldPolicy` → `run_skill(SKILLS["present"])`，job 是 `skill_jobs/held.py` 的 `present_job`，计划是 `plan_posture` 加一个转头段。
+
+1. 物体中心在身前的 4 个位置（`PRESENT_AT`，左手的横向镜像）组成**一个目标集合**，手的朝向不变；自由段到第一个能到的（旧代码是 4 个依次 `move_to` 重试）。
+2. 头转向自由段终点处的物体（`present_look`），再记录视野（`record_view`）。
+
+## rotate / upright（手里的东西原地转向）
+
+HAND_PLAN 9f（11-25）：`RotateHeldPolicy` / `UprightObjectPolicy` → `run_skill(SKILLS["rotate" / "upright"])`，job 在 `skill_jobs/held.py`，计划是 `plan_posture`（一个自由段到一个目标集合），用拿着东西的那只手。square 不再用 rotate：路线是 pick → place(square=True)，摆正的转角在 place 的目标集合里（见 [place](place.md)）。
+
+- **rotate**：手的朝向绕竖直轴转给定角度；位置是现在的 TCP，或往底盘拉回、抬高的 4 个点（`ROTATE_AT`，旧代码的中间点），都在一个目标集合里。保持物体倾角（绕竖直轴转不改倾角）。结果：物体朝向变化和要求差 10° 以内（`ROTATE_TOL_DEG`），握法重新记下。旧代码按 15° 一步、每个中间点依次试，删了。
+- **upright**：倾角已在 `max_tilt_deg` 内就不动。否则目标集合 = 让物体竖起来的手的朝向（绕竖直轴 8 个朝向，`UPRIGHT_YAWS`）× 位置（原地抬高 12 cm 或半个最长边，或胸前 8 个点，`UPRIGHT_FRONT`，左手镜像）；自由段**不保持倾角**（`plan_posture(hold_tilt=False)`），物体照样在碰撞模型里。结果：倾角在限内。旧代码约 100 个中间点的网格、IK 连续性搜索、以及"放下再撬起"/"挂直"两级退路都删了。
+
+## release（原地松手）
+
+HAND_PLAN 9f：`ReleaseInPlacePolicy` → `run_skill(SKILLS["release"])`，计划 `plan_release`：张开到抓取时的宽度（手指可以碰它放开的东西），再沿夹爪轴退一个手指长度。两段都在动之前建好：退不出来就失败，手还没张开（旧代码先张开、退不出来只记一笔）。
+
+regrasp（`RegraspPolicy`）现在是 place（支撑面上离底盘最近、往里 12 cm 的点）加 pick，都走运动分层；旧的"已经在空地上方就直接竖直放下"分支删了。
+
+## wave / point / shake（手势）
+
+HAND_PLAN 9h（11-25）：`WaveHandPolicy` / `PointAtPolicy` / `ShakeHeldPolicy` → `run_skill(SKILLS["wave" / "point" / "shake"])`，job 在 `skill_jobs/held.py`，计划是 `plan_gesture`：[张手] → [自由段到一个目标集合] → [摆动任务段：TCP 沿水平方向 `amp · sin(s)`，世界坐标系 `Still`，`carry="arm"`] → [收回]。
+
+- **wave**：空着的手（右手优先）张开，举到身前、手那一侧 0.35 / 0.25 m、三个高度之一（一个目标集合，旧代码依次试），横向 ±10 cm 摆 `swings` 次，收臂。
+- **point**：从手那一侧的"肩"（身前 0.09、侧 0.18、高 1.05 m）到目标的射线上，离肩 0.30–0.52 m 四个位置组成一个目标集合，合拢的手指沿射线；结果：手指轴离目标 8° 以内。目标不在前方时 `PointAtPolicy` 先转身（任务层）。技能的两条路径都调它；旧的原语串（policy_041 → 101 → 038）退役。
+- **shake**：拿着东西的手沿合爪轴的水平方向摆 `cycles` 次、幅度 `amplitude`，保持倾角，回到起点；结果：合爪宽度收窄不超过 8 mm（物体没在手里转）。
 
 ## 谁在用
 

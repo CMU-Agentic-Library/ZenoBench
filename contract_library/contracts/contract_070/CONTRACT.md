@@ -6,12 +6,12 @@ Paired SkillNode: `skill_062` (`shake-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Verifier
 
 - [all paths] `shaken(object=$object)` — GT: robot_memory (TCP oscillation + hold checks)
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

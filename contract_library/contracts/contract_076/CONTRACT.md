@@ -6,7 +6,7 @@ Paired SkillNode: `skill_068` (`stop-appliance`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$appliance)` — GT: base_pose, scene_annotation
 
 ## Verifier

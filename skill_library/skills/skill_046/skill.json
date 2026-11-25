@@ -39,17 +39,17 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$container)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$container)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -90,13 +90,13 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -125,13 +125,13 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"

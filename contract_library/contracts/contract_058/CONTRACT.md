@@ -6,7 +6,7 @@ Paired SkillNode: `skill_050` (`clear-support`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Verifier
 

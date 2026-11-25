@@ -1,13 +1,13 @@
 ---
 name: open-articulated
-description: "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load."
+description: "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load."
 ---
 
 # Open a door or drawer (`skill_040`)
 
 `open(articulated: articulated_ref)`
 
-Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
+Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
 
 ## When to use
 
@@ -27,7 +27,7 @@ A door, drawer or appliance must be opened before reaching inside.
 
 ## Applicability
 
-Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=right); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right).
+Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=any); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -52,7 +52,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `powered_microwave` — when articulated.powered
 
 1. `policy_024($articulated)`
-- extra precondition `hand_empty(hand=right)`
+- extra precondition `hand_empty(hand=any)`
 
 ### `refrigerator_loaded` — when articulated.category == 'refrigerator' and robot.right_held
 

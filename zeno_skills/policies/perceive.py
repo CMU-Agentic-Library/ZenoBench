@@ -33,6 +33,7 @@ from ..tolerances import (COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z
 # (inherited, unmeasured: docs/motion/COLLISION_PLAN.md §8).  Every head motion here is a look (run_skill: the look
 # skill's plan of head segments, skill_plans/look.py); these policies are the task layer that chooses where
 # to stand and what to aim at, and judges what was seen.
+DRIVE_TRIES = 3            # stand-offs of one piece viewpoints.drivable is asked about (each plans a drive): a budget
 SWEEP = tuple(("head", y, SWEEP_PITCH, SWEEP_STEPS) for y in SWEEP_YAWS)
 HEAD_HOME = (("head", 0.0, 0.0, LOOK_STEPS),)
 
@@ -94,7 +95,10 @@ class ExploreRoomPolicy(AtomicPolicy):
     the targets predicted in view from it; then a greedy cover (viewpoints.cover_views) -- the viewpoint that adds the
     most targets not covered yet, the nearer on a tie -- up to ``max_views``.  At each: navigate there, a
     look at the targets it was chosen for and a sweep (SWEEP), and a look the other way (VIEW_TURNS: the
-    base turned, a sweep).  A drive or a turn that fails fails the exploration (no next viewpoint)."""
+    base turned, a sweep).  Before each drive and each turn, viewpoints.drivable: a viewpoint navigate cannot
+    get to is replaced, for the targets only it was to see, by the best other one of the goal set (cover_views
+    again, the rest excluded); a turn it cannot make is not looked from (the coverage decides).  A drive or a
+    turn that fails fails the exploration."""
 
     def execute(self, room, *, max_views=6):
         rig = self.rig
@@ -153,18 +157,40 @@ class ExploreRoomPolicy(AtomicPolicy):
                 if k not in seen and any(project_to_head_camera(r, p, exclude=n)[0] for p, n in pts):
                     seen.add(k)
 
-        for i, pose in enumerate(chosen):
+        queue, visited, skipped = list(chosen), [], []
+        while queue and len(visited) < max_views:
+            pose = queue.pop(0)
+            if not viewpoints.drivable(rig, pose):
+                # another viewpoint of the goal set for what only this one was to see (rule 3: not a fallback)
+                skipped.append(pose)
+                later = set().union(*(set(pred[q]) for q in queue))
+                missing = {k: targets[k] for k in pred[pose] if k not in seen and k not in later}
+                rest = [q for q in reach if q not in skipped and q not in visited and q not in queue]
+                budget = max_views - len(visited) - len(queue)
+                alt, apred = viewpoints.cover_views(rig, rest, missing, budget) \
+                    if missing and budget > 0 and len(skipped) <= 2 * max_views else ([], {})
+                rig.log("explore_skip", room=room, pose=[round(v, 2) for v in pose], reason="no base path",
+                        instead=[[round(v, 2) for v in q] for q in alt])
+                pred.update(apred)
+                queue[:0] = alt
+                continue
+            i = len(visited)
+            visited.append(pose)
             skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
             aims = [aim_at(k, p) for k, p in pred[pose].items() if k not in seen]
             look(rig, aims + list(SWEEP), label=f"explore_{room}_{i}", on_view=mark)
-            heading = rig.base_pose()[2]
+            x, y, heading = rig.base_pose()
             for t, turn in enumerate(VIEW_TURNS[1:]):
+                if not viewpoints.drivable(rig, (x, y, heading + turn)):
+                    rig.log("explore_skip", room=room, pose=[round(x, 2), round(y, 2), round(heading + turn, 1)],
+                            reason="no base path to turn round")
+                    continue
                 look(rig, SWEEP, face=heading + turn, label=f"explore_{room}_{i}_back{t}", on_view=mark)
         look(rig, HEAD_HOME, label=f"explore_{room}_home")
         cov = len(seen) / len(targets)
         memory(rig)["explored"][room] = max(cov, memory(rig)["explored"].get(room, 0.0))
         furniture = sorted(k.split(":", 1)[1] for k in seen if k.startswith("furniture:"))
-        rig.log("explore_result", room=room, coverage=round(cov, 3), views=len(chosen), targets=len(targets),
+        rig.log("explore_result", room=room, coverage=round(cov, 3), views=len(visited), targets=len(targets),
                 furniture=furniture)
         if cov < COVER_OK:
             raise SkillFailure(f"explore {room}: coverage {cov:.2f}")
@@ -198,7 +224,8 @@ class ExploreFurniturePolicy(AtomicPolicy):
     again with the torso lowered (empty hand only) for the layers still hidden, e.g. a bottom shelf behind
     the front edge of the shelf above it.  A layer is seen when the space just above its board is in the
     head camera and no board of the furniture is in the way.  Succeeds only when every layer was seen; a
-    closed cabinet door hides its inside layers.  A drive that fails fails it (no next stand-off)."""
+    closed cabinet door hides its inside layers.  A stand-off viewpoints.drivable rejects is passed over for the
+    next (rule 3: another goal of the set); a drive that fails fails it."""
 
     def execute(self, furniture, *, max_views=3, min_spacing=0.4):
         rig = self.rig
@@ -259,10 +286,18 @@ class ExploreFurniturePolicy(AtomicPolicy):
                     in_view=len(cands))
         else:
             cands = []
+        skipped = 0
         for pose in cands:
             if len(seen) == len(targets) or len(views) - here >= max_views:
                 break
             if any(math.hypot(pose[0] - vx, pose[1] - vy) < min_spacing for vx, vy in views):
+                continue
+            if skipped >= 2 * max_views:
+                break
+            if not viewpoints.drivable(rig, pose):
+                # the next stand-off of the goal set (rule 3: not a fallback)
+                skipped += 1
+                rig.log("explore_skip", furniture=furniture, pose=[round(v, 2) for v in pose], reason="no base path")
                 continue
             skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=rig.held is None)
             views.append(tuple(rig.base_pose()[:2]))
@@ -369,8 +404,10 @@ class SearchObjectPolicy(AtomicPolicy):
     first, as one goal set: per piece, the first stand-off navigate_place would take -- one the base can get
     to the furniture is in view from (viewpoints.reachable_in_view: one base_reachable field over all of them);
     a piece with none is not driven to and the failure names it.  At each piece a look per aim point (every
-    support, highest first; along a long one several points, _search_aims), until the object is seen.  A
-    stand-off the whole-body base planner finds no path to is skipped; a drive that fails fails the search.  A piece counts as visited when some aim point was in the head camera
+    support, highest first; along a long one several points, _search_aims), until the object is seen.  Before
+    the drive, viewpoints.drivable: the first of the piece's seeing stand-offs (at most DRIVE_TRIES) navigate
+    can get to; a piece with none is skipped and the failure names it (another goal of the set, rule 3).  A
+    drive that fails fails the search.  A piece counts as visited when some aim point was in the head camera
     there (walls and furniture boxes, no dynamic occluders)."""
 
     def execute(self, name, region=None):
@@ -378,8 +415,6 @@ class SearchObjectPolicy(AtomicPolicy):
         from ..evaluator import room_of
         from ..perception import project_from
         from .base_motion import standoff_poses
-        from ..run import observe
-        from ..skill_jobs.base import RigBase
         x, y, _ = rig.base_pose()
         room = region or room_of(rig.ann.rooms, (x, y))
         furniture = {}
@@ -412,15 +447,16 @@ class SearchObjectPolicy(AtomicPolicy):
             if f not in goal:
                 continue
             rig.caption = f"SEARCH {name}: {f}"
-            # 11-23 (user): the reachability field is the cheap test; a stand-off it takes that the whole-body base
-            # planner finds no path to (v6 dining room: kitchen_cabinet_3's from the west, "search limit", 0 of 4)
-            # is not driven to, as one with no stand-off (the drive check park_search makes, RigBase.drivable)
-            if not RigBase(rig).drivable(observe(rig), tuple(goal[f])):
+            # the field passes stand-offs navigate has no path to (v6 dining room: kitchen_cabinet_3's from the
+            # west, "search limit", 0 of 4): the next one that sees the piece, else the next piece
+            tries = seen_from[place[f]][1][:DRIVE_TRIES]
+            pose = next((p for p in tries if viewpoints.drivable(rig, p)), None)
+            if pose is None:
                 undriven.append(f)
-                rig.log("search_skip", place=f, reason="no base path to the stand-off",
-                        pose=[round(v, 2) for v in goal[f]])
+                rig.log("search_skip", place=f, reason="no base path to a stand-off that sees it",
+                        poses=[[round(v, 2) for v in p] for p in tries])
                 continue
-            skills.navigate(rig, goal[f], label=f"search_{f}", raise_load=rig.held is None)
+            skills.navigate(rig, pose, label=f"search_{f}", raise_load=rig.held is None)
             in_view, found = [False], [None]
 
             def check(r, p):
@@ -452,7 +488,7 @@ class SearchObjectPolicy(AtomicPolicy):
         if unreachable:
             why += f"; no stand-off the base can get to sees: {unreachable}"
         if undriven:
-            why += f"; no base path to the stand-off of: {undriven}"
+            why += f"; no base path to a stand-off of: {undriven}"
         raise SkillFailure(why)
 
 

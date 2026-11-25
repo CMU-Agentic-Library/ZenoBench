@@ -16,6 +16,6 @@ Paired SkillNode: `skill_030` (`pull-object`).
 
 ## Policy paths
 
-- `top_drag` when always: `policy_041()` -> `policy_079($object, $distance_m)`
+- `top_drag` when always: `policy_079($object, $distance_m)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

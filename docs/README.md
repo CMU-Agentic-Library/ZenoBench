@@ -19,7 +19,8 @@
 1. [MOTION_ARCHITECTURE.md](motion/MOTION_ARCHITECTURE.md)：运动规划的分层设计。规则、各层职责、9.3 迁移步骤。**先读这篇。**
 2. [COLLISION_PLAN.md](motion/COLLISION_PLAN.md)：碰撞与运动规划的执行计划：做什么、按什么顺序、做到什么算完；第 5 节基线、第 9 节"试过、不要再做的"。
 3. [COLLISION_CLEANUP.md](motion/COLLISION_CLEANUP.md)：代码里还没删、没改的特殊实现，逐条标类别和归属步骤。
-4. [CONTAINER_COLLIDERS.md](motion/CONTAINER_COLLIDERS.md)：容器碰撞体和真实网格对不上（未改，改了动基线）。
+4. [HAND_PLAN.md](motion/HAND_PLAN.md)：选手（pick / place 用哪只手是目标集合的一个维度）和剩下的旧技能迁移的计划（9.3 第 9 步起，11-24）。
+5. [CONTAINER_COLLIDERS.md](motion/CONTAINER_COLLIDERS.md)：容器碰撞体和真实网格对不上（未改，改了动基线）。
 
 ## 技能（skills/）
 

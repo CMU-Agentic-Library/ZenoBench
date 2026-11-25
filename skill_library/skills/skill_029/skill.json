@@ -59,17 +59,17 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$object)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -147,11 +147,9 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_041()",
     "policy_044($object, @object.support, $direction_xy, $distance_m)"
    ],
    "policies": [
-    "policy_041",
     "policy_044"
    ],
    "note": ""
@@ -179,11 +177,9 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_041()",
     "policy_043($object, @object.support, $direction_xy, $distance_m)"
    ],
    "policies": [
-    "policy_041",
     "policy_043"
    ],
    "note": ""

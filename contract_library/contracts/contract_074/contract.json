@@ -20,7 +20,7 @@
   {
    "pred": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    }
   },
   {
@@ -53,13 +53,13 @@
  "invalidates": [],
  "precheck": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"

@@ -25,23 +25,23 @@ A held object must be brought down to a height without releasing it.
 
 ## Applicability
 
-Requires holding(hand=right, object=$object).
+Requires holding(hand=any, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 
-- `held_below(object=$object, height_m=$height_m)` — Right-held object's bottom at or below the given world height (2 cm tolerance). GT: object_pose, gripper_state.
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `held_below(object=$object, height_m=$height_m)` — Held object's bottom (either hand) at or below the given world height (2 cm tolerance). GT: object_pose, gripper_state.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `held_below(object=$object, height_m=$height_m)` (all paths)
-- `holding(hand=right, object=$object)` (all paths)
+- `holding(hand=any, object=$object)` (all paths)
 
 ## May invalidate
 

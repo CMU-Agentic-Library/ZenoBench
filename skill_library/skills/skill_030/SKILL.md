@@ -28,7 +28,7 @@ Requires hand_empty(hand=right); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
@@ -51,8 +51,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `top_drag` — when always (default path)
 
-1. `policy_041()`
-2. `policy_079($object, $distance_m)`
+1. `policy_079($object, $distance_m)`
 
 ## Relations
 

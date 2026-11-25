@@ -1,6 +1,6 @@
 # contract_049 — Close a door or drawer
 
-Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
+Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), also while the right hand carries a load.
 
 Paired SkillNode: `skill_041` (`close-articulated`).
 
@@ -17,7 +17,6 @@ Paired SkillNode: `skill_041` (`close-articulated`).
 
 ## Policy paths
 
-- `powered_loaded` when articulated.powered and robot.right_held: `policy_030($articulated)` -> `policy_031($articulated, target=close)`
 - `powered` when articulated.powered: `policy_025($articulated)`
 - `loaded` when articulated.has_handle and robot.right_held: `policy_023($articulated)`
 - `handle_push` when articulated.has_handle: `policy_023($articulated)`

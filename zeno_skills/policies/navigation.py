@@ -43,32 +43,19 @@ class CarryNavigatePolicy(AtomicPolicy):
 
 
 class CarryHeightAdjustPolicy(AtomicPolicy):
-    """Lift a held object vertically to a measured minimum bottom height."""
+    """Lift a held object straight up until its bottom is at least ``min_bottom_z``: the lift skill
+    (skill_jobs.held.lift_job, HAND_PLAN 9e) with the hand that holds it.  ``name``: the object (default:
+    what a hand holds -- the right's first)."""
 
-    def execute(self, min_bottom_z=skills.CARRY_Z, *, tolerance=0.02):
-        held = self.rig.held
-        if held is None:
-            raise SkillFailure("carry height adjust: no held object")
-        target = float(min_bottom_z)
-        if not np.isfinite(target) or target < 0 or tolerance <= 0:
-            raise ValueError("carry height target must be finite and nonnegative")
-        name = held["name"]
-        bottom = float(self.rig.geo.bottom(name, self.rig.state())[2])
-        # closed loop on the measured bottom: a load whose end is caught (a rolling pin
-        # tilted into a mug) lags the hand by 4-5 cm, so one move fell short (4/4)
-        for _ in range(3):
-            if bottom >= target - tolerance:
-                break
-            skills.held_vertical_move(self.rig, target - bottom, "carry_height_adjust")
-            skills.check_held(self.rig, "carry_height_adjust")
-            prev, bottom = bottom, float(self.rig.geo.bottom(name, self.rig.state())[2])
-            if bottom - prev < 0.005:
-                break
-        skills.check_held(self.rig, "carry_height_adjust")
-        actual = float(self.rig.geo.bottom(name, self.rig.state())[2])
-        if actual < target - tolerance:
-            raise SkillFailure(f"carry height adjust: object bottom {actual:.3f} m below {target:.3f} m")
-        return actual
+    def execute(self, min_bottom_z=skills.CARRY_Z, *, name=None):
+        from ..motion_skills import SKILLS, run_skill
+        rig = self.rig
+        if name is None:
+            held = rig.held_by("right") or rig.held_by("left")
+            if held is None:
+                raise SkillFailure("carry height adjust: no held object")
+            name = held["name"]
+        return run_skill(rig, SKILLS["lift"], {"name": name, "height": float(min_bottom_z)})
 
 
 class BackOffWithLoadPolicy(AtomicPolicy):

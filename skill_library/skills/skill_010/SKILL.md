@@ -1,13 +1,13 @@
 ---
 name: reset-posture
-description: "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state."
+description: "Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state."
 ---
 
 # Reset the posture (`skill_010`)
 
 `reset()`
 
-Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.
+Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state.
 
 ## When to use
 
@@ -27,7 +27,7 @@ Requires hand_empty(hand=right).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
@@ -51,10 +51,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `joint_home` — when always (default path)
 
-1. `policy_040()`
-2. `policy_003()`
-3. `policy_095() as home`
-4. `policy_039(#home.target)`
+1. `policy_003()`
+2. `policy_006()`
+3. `policy_009()`
+- Each step a skill on the motion layers (HAND_PLAN 9j); the old chain of primitives (open the fingers, plan the home joints, a joint move) is gone.
 
 ## Relations
 

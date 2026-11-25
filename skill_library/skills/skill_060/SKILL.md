@@ -23,23 +23,23 @@ Greeting or getting attention.
 
 ## Applicability
 
-Requires hand_empty(hand=right).
+Requires hand_empty(hand=any).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
-- `waved()` — The right hand performed a measured wave (>= 2 lateral swings at head height). GT: robot_memory (TCP swing samples).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `waved()` — A hand performed a measured wave (>= 2 lateral swings at head height). GT: robot_memory (TCP swing samples).
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `waved()` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 

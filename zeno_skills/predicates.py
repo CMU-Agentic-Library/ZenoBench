@@ -31,7 +31,8 @@ import numpy as np
 
 from .physics import PHYSICS_HZ
 
-HANDS = ("right", "left")
+HANDS = ("right", "left", "any", "both")   # a hand; "any": either (holding: the one that holds; hand_empty: one is
+#                                            free); "both": hand_empty of both (HAND_PLAN 9b)
 
 # --------------------------------------------------------------------- types
 # Argument types of SkillNode inputs/outputs and predicate arguments.  A value of
@@ -264,8 +265,13 @@ def _box_dist(box, xy):
 
 
 def held_name(rig, hand):
-    h = rig.held if hand == "right" else rig.left_held
+    h = rig.held if hand == "right" else getattr(rig, "left_held", None)
     return None if h is None else h.get("name")
+
+
+def in_a_hand(rig, name):
+    """``name`` held in either hand (HAND_PLAN 9e: lift / lower / hover / present take the hand that holds it)."""
+    return any(held_name(rig, side) == name for side in ("right", "left"))
 
 
 def reach_targets(rig, name, st=None):
@@ -314,15 +320,24 @@ def ik_reachable(rig, targets):
 
 
 # --------------------------------------------------------------------- robot body
-@predicate("hand_empty", [("hand", "hand")], "fluent", "The given gripper holds nothing.")
+@predicate("hand_empty", [("hand", "hand")], "fluent",
+           "The given gripper holds nothing (any: at least one does not; both: neither does).")
 def _hand_empty(rig, ctx, hand):
+    if hand in ("any", "both"):
+        held = {sd: held_name(rig, sd) for sd in ("right", "left")}
+        empty = [sd for sd, n in held.items() if n is None]
+        ok = bool(empty) if hand == "any" else len(empty) == 2
+        return ok, ", ".join(f"{sd} holds {n}" for sd, n in held.items())
     name = held_name(rig, hand)
     return name is None, f"{hand} holds {name}"
 
 
 @predicate("holding", [("hand", "hand"), ("object", "object_ref")], "fluent",
-           "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.")
+           "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged "
+           "since the grasp.")
 def _holding(rig, ctx, hand, object):
+    if hand in ("any", "both"):
+        hand = next((sd for sd in ("right", "left") if held_name(rig, sd) == object), "right")
     name = held_name(rig, hand)
     if name != object:
         return False, f"{hand} holds {name}"
@@ -439,19 +454,24 @@ def _observed(rig, ctx, target):
 
 
 @predicate("pointing_at", [("target", "entity_ref")], "fluent",
-           "The right finger axis points at the target within 8 deg.")
+           "Either hand's finger axis points at the target within 8 deg.")
 def _pointing_at(rig, ctx, target):
-    tcp, R = rig.kin.tcp(rig.q())
-    d = entity_point(rig, target, _state(rig, ctx)) - tcp
-    ang = math.degrees(math.acos(max(-1.0, min(1.0, float((-R[:, 2]) @ d / max(1e-9, np.linalg.norm(d)))))))
-    return ang <= 8.0, f"angle {ang:.1f} deg"
+    best = None
+    for kin, q in ((rig.kin, rig.q()), (getattr(rig, "left_kin", None), getattr(rig, "left_q", lambda: None)())):
+        if kin is None or q is None:
+            continue
+        tcp, R = kin.tcp(q)
+        d = entity_point(rig, target, _state(rig, ctx)) - tcp
+        ang = math.degrees(math.acos(max(-1.0, min(1.0, float((-R[:, 2]) @ d / max(1e-9, np.linalg.norm(d)))))))
+        best = ang if best is None else min(best, ang)
+    return best is not None and best <= 8.0, f"angle {best:.1f} deg"
 
 
 @predicate("presenting", [("object", "object_ref")], "fluent",
-           "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.")
+           "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.")
 def _presenting(rig, ctx, object):
-    if held_name(rig, "right") != object:
-        return False, "not right-held"
+    if not in_a_hand(rig, object):
+        return False, "not held"
     x, y, yaw = rig.base_pose()
     c = rig.geo.centre(object, _state(rig, ctx))
     fwd = (c[0] - x) * math.cos(math.radians(yaw)) + (c[1] - y) * math.sin(math.radians(yaw))
@@ -594,17 +614,17 @@ def _lying(rig, ctx, object):
 
 
 @predicate("held_above", [("object", "object_ref"), ("height_m", "positive_number")], "fluent",
-           "Right-held object's bottom at or above the given world height (2 cm tolerance).")
+           "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).")
 def _held_above(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return held_name(rig, "right") == object and z >= float(height_m) - 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z >= float(height_m) - 0.02, f"bottom z {z:.3f} m"
 
 
 @predicate("held_below", [("object", "object_ref"), ("height_m", "positive_number")], "fluent",
-           "Right-held object's bottom at or below the given world height (2 cm tolerance).")
+           "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).")
 def _held_below(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return held_name(rig, "right") == object and z <= float(height_m) + 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z <= float(height_m) + 0.02, f"bottom z {z:.3f} m"
 
 
 def edge_overhang(rig, name, st):
@@ -1074,7 +1094,7 @@ def _waited(rig, ctx, seconds):
     return dt >= float(seconds) - 0.05, f"{dt:.2f} s elapsed"
 
 
-@predicate("waved", [], "memory", "The right hand performed a measured wave (>= 2 lateral swings at head height).")
+@predicate("waved", [], "memory", "A hand performed a measured wave (>= 2 lateral swings at head height).")
 def _waved(rig, ctx):
     n = _mem(rig, "gestures").get("wave", 0)
     return n >= 2, f"{n} swings"
@@ -1186,10 +1206,10 @@ def _sidestepped(rig, ctx, distance_m):
 
 
 @predicate("hovering_over", [("object", "object_ref"), ("target", "entity_ref")], "fluent",
-           "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.")
+           "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.")
 def _hovering_over(rig, ctx, object, target):
-    if held_name(rig, "right") != object:
-        return False, "not right-held"
+    if not in_a_hand(rig, object):
+        return False, "not held"
     st = _state(rig, ctx)
     b = rig.geo.bottom(object, st)
     kind, rec = entity_kind(rig.ann, target)

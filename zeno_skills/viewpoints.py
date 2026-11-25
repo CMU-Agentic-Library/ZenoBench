@@ -11,6 +11,10 @@ observation-limited benchmark has not shown the robot.
   explore_furniture stand only there);
 * reachable_in_view: the same for several places at once, the stand-offs first filtered by one
   base_reachable field;
+* drivable: whether navigate can get to a pose from the state now -- the whole-body base plan of its drive,
+  the expensive test after the field, asked of the stand-off about to be driven to and of the heading about
+  to be turned to (search, explore_room, explore_furniture take the next pose of their goal set when it says
+  no: rule 3, not a fallback);
 * predicted / cover_views: which targets a viewpoint sees, and the fewest viewpoints that see them all
   (explore_room);
 * support_views / view_resolution: the one or two views that see a support's top clearly, and how finely
@@ -79,6 +83,18 @@ def reachable_in_view(rig, stand):
         reach = [p for (q, p), o in zip(flat, ok) if o and q == place]
         out[place] = (reach, in_view_poses(rig, place, reach))
     return out
+
+
+def drivable(rig, pose):
+    """Whether navigate can drive to ``pose`` (x, y, yaw_deg) from the state now: the whole-body base plan of
+    its drive, in the postures it drives and arrives in (skill_jobs.base.RigBase.drivable, the check
+    park_search makes of a park).  base_reachable's field is the cheap test and passes poses this rejects:
+    the dining room's kitchen_cabinet_3 stand-offs from the west ("search limit", 0 of 4, v6 11-22); a
+    viewpoint's turn round to look back, where the turned pose collides in the arrival posture (T05 errand,
+    T27 fridge_out_of_view, v6full_1119).  Asked lazily, of the next pose only: it plans the drive."""
+    from .run import observe
+    from .skill_jobs.base import RigBase
+    return RigBase(rig).drivable(observe(rig), tuple(float(v) for v in pose))
 
 
 def predicted(rig, pose, targets, tw):

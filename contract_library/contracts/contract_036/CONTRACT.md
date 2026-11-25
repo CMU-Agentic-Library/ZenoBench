@@ -6,13 +6,13 @@ Paired SkillNode: `skill_028` (`flip-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
 ## Verifier
 
 - [all paths] `flipped(object=$object)` — GT: object_pose (before/after)
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Policy paths
 

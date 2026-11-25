@@ -24,17 +24,17 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right)."
+  "summary": "Requires hand_empty(hand=any)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -48,7 +48,7 @@
    "name": "waved",
    "args": {},
    "negated": false,
-   "meaning": "The right hand performed a measured wave (>= 2 lateral swings at head height).",
+   "meaning": "A hand performed a measured wave (>= 2 lateral swings at head height).",
    "kind": "memory",
    "gt_sources": [
     "robot_memory (TCP swing samples)"
@@ -56,13 +56,13 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -78,7 +78,7 @@
     "name": "waved",
     "args": {},
     "negated": false,
-    "meaning": "The right hand performed a measured wave (>= 2 lateral swings at head height).",
+    "meaning": "A hand performed a measured wave (>= 2 lateral swings at head height).",
     "kind": "memory",
     "gt_sources": [
      "robot_memory (TCP swing samples)"
@@ -87,13 +87,13 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"

@@ -6,12 +6,12 @@ Paired SkillNode: `skill_053` (`restore-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Verifier
 
 - [all paths] `at_initial_place(object=$object)` — GT: object_pose, initial_scene_annotation
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Policy paths
 

@@ -35,17 +35,17 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=@button.appliance). Depending on the bound nouns, the chosen path also needs: microwave_start_staged (button.button == 'start_button'): is_closed(articulated=@button.appliance)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=@button.appliance). Depending on the bound nouns, the chosen path also needs: microwave_start_staged (button.button == 'start_button'): is_closed(articulated=@button.appliance)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -84,13 +84,13 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -117,13 +117,13 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"
@@ -192,14 +192,10 @@
     }
    ],
    "chain": [
-    "policy_027(@button.appliance, button=start)",
-    "policy_028(@button.appliance, button=start)",
-    "policy_029(@button.appliance, button=start)"
+    "policy_032(@button.appliance)"
    ],
    "policies": [
-    "policy_027",
-    "policy_028",
-    "policy_029"
+    "policy_032"
    ],
    "note": "Fails without moving the door when no task food is inside the cavity."
   },
@@ -252,7 +248,7 @@
     "bind": {
      "hand": "right"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [

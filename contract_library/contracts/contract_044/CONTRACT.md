@@ -6,14 +6,14 @@ Paired SkillNode: `skill_036` (`upright-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 - [all paths] `lying(object=$object)` — GT: object_pose, asset_annotation
 
 ## Verifier
 
 - [all paths] `upright(object=$object)` — GT: object_pose
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path pick_orient_place] `on(object=$object, support=@object.support)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths

@@ -33,7 +33,7 @@ ANN = ROOT / "annotations" / "assets.json"
 #   collider: solid | round_container | rect_container
 SPECS = {
     # breakfast set (already real-scale from the earlier V2 run)
-    "breakfast_plate": (None, 0.35, ["dish", "plate", "flat"], "solid", None),
+    "breakfast_plate": (None, 0.35, ["dish", "plate", "flat", "lid"], "solid", None),   # lid: it covers a pot (T09, T15, T17)
     "breakfast_bowl": (None, 0.20, ["dish", "bowl", "container"], "round_container", None),
     "breakfast_cup": (None, 0.03, ["dish", "cup", "drinking_container", "container"], "round_container", None),
     "breakfast_mug": (None, 0.25, ["dish", "mug", "drinking_container", "container"], "round_container", None),

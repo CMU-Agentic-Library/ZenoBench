@@ -23,24 +23,24 @@ A flat object must be turned upside down.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object).
+Requires hand_empty(hand=any); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `flipped(object=$object)` — Object's local z axis now points opposite to its direction at the start (dot <= -0.7). GT: object_pose (before/after).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `flipped(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -53,7 +53,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `expose` (`skill_031`) (then) — turn the object over
-- Next step: `center` (`skill_033`) (enables) — the object is left overhanging the edge
+- Next step: `center` (`skill_033`) (then) — the object is left overhanging the edge
 - Fallback on failure: `center` (`skill_033`) (recover) — the flipped object landed too close to the edge
 
 ## Failure

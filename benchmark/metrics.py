@@ -243,7 +243,7 @@ def _selection_indices(opt, rows, task):
     before, _ = _states({}, rows)
     targets = [a for g in option_groups(opt, task) for a in g
                if a[0] in ("on", "inside", "on_top_of") and a[-1] in opt.get("destinations", [])]
-    targets += [["holding", hand, n] for n in opt.get("entities", []) for hand in ("right", "left")]
+    targets += [["holding", hand, n] for n in opt.get("entities", []) for hand in ("right", "left", "any")]   # any: HAND_PLAN 9c
     for i, row in enumerate(rows):
         if not row.get("feedback", {}).get("success"):
             continue

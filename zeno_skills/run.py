@@ -25,7 +25,7 @@ def observe(act):
 
 def execute(act, seg):
     """Run one segment through the Actuator, each declared to the contact monitor under its Allow
-    first: an action (the gripper); a drive (the base along its paths, the arms switched where the
+    first: an action (the gripper, a wait, the head, an appliance switched, a powered part driven); a drive (the base along its paths, the arms switched where the
     planner put it); a task segment by its executor (docs 5.5: "follow" the arm's IK continuation
     open loop; "ride" the base at the script's function of the commanded s, closed on the measured
     part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
@@ -50,6 +50,16 @@ def execute(act, seg):
             act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
             _, yaw, pitch, steps = seg.action
             act.aim_head(yaw, pitch, steps)
+            return
+        if what == "toggle":                    # an appliance switched (a press's action): nothing moves
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
+            _, appliance, on = seg.action
+            act.toggle(appliance, on)
+            return
+        if what == "drive_part":                # a powered part moved by its motor (the door key's): the robot stays
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
+            _, part, value = seg.action
+            act.drive_part(part, value)
             return
         raise ValueError(f"unknown action {what}")
     if seg.kind == "drive":
@@ -134,6 +144,26 @@ def _same_motion(a, b):
     return (sa is None) == (sb is None) and (sa is None or np.allclose((sa.s0, sa.s1), (sb.s0, sb.s1)))
 
 
+LATE = ("tuck",)     # the segments whose trajectory is made when the arm gets there (docs 1, rule 8): a tuck binds
+#                     nothing after it -- where it goes was decided by the search, which built it whole
+
+
+def _late_tuck(act, new, rest, at):
+    """The rest of a plan rebuilt at ``at`` (an anchor, or a segment that no longer held) failed only at a
+    LATE segment: the segments rebuilt before it (Failure.info["partial"]), then the old plan's from that
+    segment on -- it no longer holds from where the new ones end, so it is built again from the State then,
+    when the arm gets there (and a failure then fails the skill: rule 3).  None when the failure is
+    elsewhere or the old rest has no such segment (the rebuild's failure stands)."""
+    if not isinstance(new, Failure) or new.segment not in LATE or new.info.get("partial") is None:
+        return None
+    names = [sg.name for sg in rest]
+    if new.segment not in names:
+        return None
+    later = rest[names.index(new.segment):]
+    act.log("late", at=at, segment=new.segment, why=new.why[:200], kept=[sg.name for sg in new.info["partial"].segments])
+    return replace(new.info["partial"], segments=tuple(new.info["partial"].segments) + tuple(later))
+
+
 def run_clear(act, clear, exc):
     """A skill's failure exit (docs 8.6), when ``exc`` asks for one (motion_state.clearing): the
     plan ``clear(state, exc.clear)`` makes from the State now (skill_plans.plan_clear: the hand
@@ -187,6 +217,8 @@ def _run(act, plan, rebuild, hooks):
             # the plan as it stands: a copy, the decisions as of now (run's own dict goes on changing)
             name = seg.name
             new = rebuild(state, name, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
+            if isinstance(new, Failure) and new.segment != name:     # not the one to run now
+                new = _late_tuck(act, new, segs[i:], name) or new
             if isinstance(new, Failure):
                 act.log("segment", target=name, reused=False, why=why, rebuilt=None)
                 raise SkillFailure(f"{name}: {why}; built again from here: {new.why}")
@@ -211,6 +243,8 @@ def _run(act, plan, rebuild, hooks):
                 # still holds as it is and builds the others again
                 nxt, t0 = segs[i + 1].name, time.time()
                 new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
+                if isinstance(new, Failure) and new.segment != nxt:    # the one next: made now, or the skill fails
+                    new = _late_tuck(act, new, segs[i + 1:], seg.name) or new
                 if isinstance(new, Failure):
                     act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, seconds=round(time.time() - t0, 3))
                     raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")

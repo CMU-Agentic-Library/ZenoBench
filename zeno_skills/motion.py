@@ -670,7 +670,13 @@ class Motion:
         for c in self.cols.items:
             ctr = self._centre(c)
             near = np.hypot(*(ctr[:2] - self.cull_at)) - self._extent[c.name][1] < CULL
-            self._set_enabled(c, near and c.owner not in held and c.owner not in allow)
+            self._set_enabled(c, near and c.owner not in held and self._touch_key(c) not in allow)
+
+    def _touch_key(self, c):
+        """What a Spec.touch names collider ``c`` by: its owner -- a static one by the furniture it belongs to,
+        "furniture:<name>" (_entity, the name the contact monitor reports it under): a sponge pressed on the
+        island may touch the island's colliders, not every static one (HAND_PLAN 9g)."""
+        return c.owner if c.owner != "static" else f"furniture:{self._entity(c)}"
 
     def _live_poses(self, rig, record=True, owners=None):
         """{body: 4x4} of the object and part bodies whose simulator pose differs from the synced
@@ -703,8 +709,9 @@ class Motion:
                     out[c.body] = T_b
         return out
 
-    def _put_poses(self, poses):
-        """cuRobo obstacles of the bodies in ``poses`` to those poses (the rest unchanged)."""
+    def _put_poses(self, poses, only=None):
+        """cuRobo obstacles of the bodies in ``poses`` to those poses (the rest unchanged); ``only``:
+        just the colliders of these names."""
         from curobo.types.math import Pose
         if not poses:
             return
@@ -715,7 +722,8 @@ class Motion:
         at = lambda b: poses[b] if b in poses else self.body_pose.get(b)
         for b in poses:
             for c in self._cols_of_body.get(b, ()):
-                self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(G.world_pose(c, at))))
+                if only is None or c.name in only:
+                    self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(G.world_pose(c, at))))
 
     @_timed("sync_s")
     def sync(self, rig):
@@ -758,8 +766,10 @@ class Motion:
         """{locked joint: value} of the head and the fingers as the robot has them now: a hand
         closed on a load is not the open hand of the robot config (the planner had the fingers
         at FINGER_OPEN, 2.5 cm wider each side than a pinched spoon, and the tilt-held carry of
-        T03 ran that phantom finger into the island).  The second finger mimics the first; the
-        wider of the two is taken."""
+        T03 ran that phantom finger into the island).  Each finger at its own value (the second
+        mimics the first only where a width is given alone, hand_open / a planned opening): the
+        wider of the two taken for both put a phantom finger 4 mm into the book a left edge place
+        had just let go of, and the tuck could not start (v6full 1125)."""
         from .kinematics import FINGER_OPEN
         rig = getattr(self, "rig", None)
         vals = {}
@@ -770,11 +780,13 @@ class Motion:
         elif hasattr(rig, "head_q"):
             vals.update(rig.head_q())
         for side, read in (("right", "fingers"), ("left", "left_fingers")):
-            if side in self.hand_width:
-                vals[f"{side}_gripper_left_finger_axis"] = self.hand_width[side]
-            elif hasattr(rig, read):
-                f = np.asarray(getattr(rig, read)(), float)[:2]
-                vals[f"{side}_gripper_left_finger_axis"] = float(np.clip(f.max(), 0.0, FINGER_OPEN))
+            w = self.hand_width.get(side)
+            if w is None and hasattr(rig, read):
+                w = tuple(float(x) for x in np.clip(np.asarray(getattr(rig, read)(), float)[:2], 0.0, FINGER_OPEN))
+            if isinstance(w, tuple):
+                vals[f"{side}_gripper_left_finger_axis"], vals[f"{side}_gripper_right_finger_axis"] = w
+            elif w is not None:
+                vals[f"{side}_gripper_left_finger_axis"] = vals[f"{side}_gripper_right_finger_axis"] = float(w)
         return vals
 
     @contextmanager
@@ -965,7 +977,7 @@ class Motion:
             kin.set_base((x, y, 0.0), math.radians(yaw))
             if scene is not None:
                 setattr(scene, other_attr, state.q(other))
-            self.hand_width = {s_: h.width for s_, h in state.hands.items()}
+            self.hand_width = {s_: (h.fingers if h.fingers is not None else h.width) for s_, h in state.hands.items()}
             self.head_override = dict(state.head) if state.head else None
             kw = {k: v for k, v in (kin.coll_kw or {}).items() if k not in ("ignore_fingers", "exempt_targets")}
             kw["ignore_fingers"] = not spec.fingers
@@ -1226,6 +1238,11 @@ class Motion:
         P = np.vstack(P) if P else np.zeros((2, 3))
         return P.min(0), P.max(0)
 
+    def button_box(self, name):
+        """World AABB (lo, hi) of the annotated button ``name`` ("<appliance>/<key>")'s colliders, or None
+        (no collider owned by it: scene_geometry.buttons)."""
+        return self._owner_box(f"button:{name}") if self.by_owner.get(f"button:{name}") else None
+
     @staticmethod
     def _inside(a, b, pad=0.0):
         ca = (a[0] + a[1]) / 2
@@ -1404,12 +1421,18 @@ class Motion:
             return self._segments_free(arm, [np.asarray(q, float) for q in qs])
 
     def touch_owner(self, name):
-        """The collider owner of a Spec.touch name: the object, else the articulated part of that name."""
+        """The collider owner of a Spec.touch name: the object, else the articulated part of that name,
+        else the annotated button ("<appliance>/<key>": scene_geometry.buttons), else the static furniture of that
+        name (_touch_key)."""
         if self.by_owner.get(f"object:{name}") or name in self.ann.objects:
             return f"object:{name}"
         if any(a["name"] == name for a in self.ann.articulated):
             return f"part:{name}"
-        raise KeyError(f"touch {name}: neither an object nor an articulated part")
+        if self.by_owner.get(f"button:{name}"):
+            return f"button:{name}"
+        if any(self._entity(c) == name for c in self.by_owner.get("static", ())):
+            return f"furniture:{name}"
+        raise KeyError(f"touch {name}: neither an object, an articulated part, a button nor static furniture")
 
     @_timed("check_s")
     def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
@@ -1435,13 +1458,13 @@ class Motion:
                         for c in on:
                             self._set_enabled(c, False)
                         for c in self.cols.items:
-                            if c.owner in owners:
+                            if self._touch_key(c) in owners:
                                 self._set_enabled(c, True)
                         if not self._segments_free(arm, [np.asarray(q, float) for q in qs]):
                             return False
                     finally:
                         for c in self.cols.items:
-                            if c.owner in owners:
+                            if self._touch_key(c) in owners:
                                 self._set_enabled(c, False)
                         for c in on:
                             self._set_enabled(c, True)
@@ -1759,7 +1782,7 @@ class Motion:
         if getattr(self, "_static_boxes", None) is None:
             boxes = []
             for c in self.cols.items:
-                if c.owner == "static":
+                if G.is_static(c.owner):
                     T = G.world_pose(c, self.body_pose.get)
                     P = self._corners[c.name] @ T[:3, :3].T + T[:3, 3]
                     boxes.append(np.r_[P.min(0), P.max(0)])
@@ -1986,7 +2009,7 @@ class Motion:
                 gap = np.hypot(*(self._centre(c)[:2] - base)) - self._extent[c.name][1]
                 if c.owner not in held and gap < CULL:
                     self._mon_cols.append(c)
-                    if c.owner != "static" and gap < MONITOR_NEAR:
+                    if not G.is_static(c.owner) and gap < MONITOR_NEAR:
                         self._mon_near.add(c.owner)
         poses = self._live_poses(rig, record=False, owners=self._mon_near | {f"object:{n}" for n in carried})
         if carried:
@@ -2003,7 +2026,9 @@ class Motion:
         use = {c.name for c in self._mon_cols}
         flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
         try:
-            self._put_poses(poses)
+            # only the colliders the check uses move (and move back): a held object's are off in it, and
+            # putting its convex pieces at the hand and back was 3/4 of a check while carrying (11-23)
+            self._put_poses(poses, use)
             for c in flip:
                 self._set_enabled(c, c.name in use)
             buf = CollisionQueryBuffer.initialize_from_shape(sph.shape, self.arms["right"].mg.tensor_args,
@@ -2019,5 +2044,5 @@ class Motion:
         finally:
             for c in flip:
                 self._set_enabled(c, c.name not in use)
-            self._put_poses({b: self.body_pose.get(b) for b in poses})
+            self._put_poses({b: self.body_pose.get(b) for b in poses}, use)
         return [(l, e, v) for (l, e), v in sorted(out.items())]

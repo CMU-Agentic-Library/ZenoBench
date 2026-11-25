@@ -6,14 +6,14 @@ Paired SkillNode: `skill_020` (`stack-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$base)` — GT: base_pose, scene_annotation
 - [all paths] `top_clear(object=$base)` — GT: object_pose, asset_annotation
 
 ## Verifier
 
 - [all paths] `on_top_of(object=$object, base=$base)` — GT: object_pose, asset_annotation
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `not holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

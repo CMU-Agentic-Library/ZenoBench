@@ -53,7 +53,7 @@
   {
    "pred": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    }
   },
   {
@@ -67,7 +67,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -88,13 +88,13 @@
  ],
  "precheck": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -117,22 +117,6 @@
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "all paths"
-  },
-  {
-   "predicate": "is_open(articulated=@object.appliance)",
-   "name": "is_open",
-   "args": {
-    "articulated": "@object.appliance"
-   },
-   "negated": false,
-   "meaning": "Joint at least 60 % of the way from closed to its annotated open value.",
-   "kind": "fluent",
-   "gt_sources": [
-    "articulation_joint",
-    "articulation_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "path microwave_cavity"
   },
   {
    "predicate": "is_open(articulated=@object.appliance)",
@@ -189,7 +173,7 @@
     "hand": "left"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -204,7 +188,7 @@
     "hand": "left"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -280,14 +264,14 @@
  ],
  "verifier": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -306,7 +290,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -325,7 +309,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -359,37 +343,6 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
-    "path_id": "microwave_cavity",
-    "when": [
-     {
-      "noun": "object",
-      "field": "location",
-      "op": "equals",
-      "value": "microwave_cavity"
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_048",
-      "args": [
-       "$object",
-       "@object.appliance"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [
-     {
-      "pred": "is_open",
-      "args": {
-       "articulated": "@object.appliance"
-      }
-     }
-    ],
-    "ensures": [],
-    "note": "Front withdrawal through the open door."
-   },
-   {
     "path_id": "inside_cabinet_or_fridge",
     "when": [
      {
@@ -398,7 +351,8 @@
       "op": "in",
       "value": [
        "refrigerator",
-       "cabinet"
+       "cabinet",
+       "microwave_cavity"
       ]
      }
     ],

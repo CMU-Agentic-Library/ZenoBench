@@ -16,6 +16,13 @@ ANCHOR = ROBOT + "/base_anchor"
 GRIP_MATERIAL = "/World/PhysicsMaterials/rubber_pad"
 OBJECT_MATERIAL = "/World/PhysicsMaterials/household"
 PHYSICS_HZ = 120            # physics steps per simulated second (CPU PhysX; sticky.py was checked at this rate)
+OBJECT_SLEEP = 5e-5         # PhysX sleep threshold (mass-normalised kinetic energy, m^2/s^2) of the loose
+                            # objects, set at runtime (Rig): the assets author 0, so nothing ever slept and
+                            # PhysX took 3.5 ms a tick, 0.6 with them asleep (T16 500 -> 235 s,
+                            # 2026-11-23).  At rest they creep ~0.1 mm/s; a touch or a weld wakes them.
+                            # Asleep, Fabric's copy of an object's pose stops; a physics view built later
+                            # puts the object back there (T07 bowl flung by the first weld, 11-23): build
+                            # views with the rig, never mid-episode (Rig.gripper_links).
 
 
 def deinstance(stage, root_path):

@@ -27,7 +27,7 @@
   "object": {
    "type": "object_ref",
    "required": true,
-   "description": "The right-held object."
+   "description": "The held object (either hand)."
   },
   "target": {
    "type": "entity_ref",
@@ -42,18 +42,18 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object); base_near(place=$target)."
+  "summary": "Requires holding(hand=any, object=$object); base_near(place=$target)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -88,7 +88,7 @@
     "target": "$target"
    },
    "negated": false,
-   "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+   "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -98,14 +98,14 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -127,7 +127,7 @@
      "target": "$target"
     },
     "negated": false,
-    "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+    "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
     "kind": "fluent",
     "gt_sources": [
      "object_pose",
@@ -138,14 +138,14 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",

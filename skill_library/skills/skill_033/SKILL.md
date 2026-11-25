@@ -28,7 +28,7 @@ Requires hand_empty(hand=right); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
@@ -53,7 +53,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `flip` (`skill_028`) (enables) — the object is left overhanging the edge
+- Previous step: `flip` (`skill_028`) (then) — the object is left overhanging the edge
 - Next step: `pick` (`skill_017`) (then) — the secured object is grasped later
 - Is a fallback for: `flip` (`skill_028`) (recover) — the flipped object landed too close to the edge
 - Alternative: `push` (`skill_029`) — a specific direction is wanted

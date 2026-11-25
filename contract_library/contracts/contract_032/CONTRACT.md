@@ -6,12 +6,12 @@ Paired SkillNode: `skill_024` (`lower-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Verifier
 
 - [all paths] `held_below(object=$object, height_m=$height_m)` — GT: object_pose, gripper_state
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

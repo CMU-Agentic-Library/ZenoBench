@@ -32,23 +32,23 @@ Runs these Skill Contracts inside one call: `navigate`, `pick`, `place`.
 
 ## Applicability
 
-Requires hand_empty(hand=right).
+Requires hand_empty(hand=any).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
 - `positions_swapped(a=$a, b=$b)` — Each object now rests within 6 cm of the other's starting position on its starting support. GT: object_pose (before/after).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `positions_swapped(a=$a, b=$b)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -68,7 +68,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `tuck` (`skill_009`) (enables) — the robot drives on
+- Next step: `tuck` (`skill_009`) (then) — the robot drives on
 - Alternative: `fetch` (`skill_047`) — only one object needs to move
 
 ## Failure

@@ -6,7 +6,7 @@
  "verb": "point",
  "noun": "target",
  "name": "Point at a target",
- "description": "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
+ "description": "Point the closed fingers at a target (finger axis within 8 deg) to indicate it.",
  "group": "perception_and_gesture",
  "inputs": {
   "target": {
@@ -20,7 +20,7 @@
   {
    "pred": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    }
   }
  ],
@@ -34,7 +34,7 @@
   {
    "pred": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    }
   }
  ],
@@ -44,13 +44,13 @@
  ],
  "precheck": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -67,7 +67,7 @@
     "target": "$target"
    },
    "negated": false,
-   "meaning": "The right finger axis points at the target within 8 deg.",
+   "meaning": "Either hand's finger axis points at the target within 8 deg.",
    "kind": "fluent",
    "gt_sources": [
     "arm_fk",
@@ -77,13 +77,13 @@
    "scope": "all paths"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -122,33 +122,16 @@
     ],
     "steps": [
      {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_101",
+      "policy": "policy_071",
       "args": [
        "$target"
       ],
-      "kwargs": {},
-      "as": "aim"
-     },
-     {
-      "policy": "policy_038",
-      "args": [
-       "#aim.position",
-       "#aim.rotation"
-      ],
-      "kwargs": {
-       "position_tolerance": 0.04,
-       "rotation_tolerance": 0.2
-      }
+      "kwargs": {}
      }
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "The point skill on the motion layers (HAND_PLAN 9h); the old chain of primitives (close, aim, right_tcp_move) is gone."
    },
    {
     "path_id": "turn_and_point",
@@ -178,7 +161,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_009",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   },
   {
    "kind": "alternative",

@@ -24,8 +24,9 @@ CARRY_FRONT_Y = (-0.40, 0.00) # m: ...and y (CARRY_SPOTS' -0.30 - -0.10, 0.10 ei
 CARRY_LOW_COST = 1.0          # m-equivalent cost of a carry goal below the height a destination asks for
 
 
-def _carry(rig, name, min_bottom_z=None):
-    """skill_plans.Carry for ``name`` in the right hand: the constraints a posture to drive in meets
+def _carry(rig, name, min_bottom_z=None, side=None):
+    """skill_plans.Carry for ``name`` in the ``side`` hand (default: the one that holds it; the left's
+    front band mirrored, HAND_PLAN 9c): the constraints a posture to drive in meets
     (docs/motion/MOTION_ARCHITECTURE.md 6, navigate) -- the load in front of the body near its centre line
     (CARRY_FRONT_*: held out to the side, objects caught on door frames), its bottom no lower than
     CARRY_Z, the whole robot clear where it stands in that posture (poses_clear) -- and the carry
@@ -36,7 +37,10 @@ def _carry(rig, name, min_bottom_z=None):
     from ..skill_plans import Carry, held_frame
     from ..primitives import PoseSet
     from .. import base_planner
-    kin, base = rig.kin, RigBase(rig)
+    from ..skills import _hand_of
+    side = side or _hand_of(rig, name) or "right"
+    kin, base = (rig.kin if side == "right" else rig.left_kin), RigBase(rig)
+    front_y = CARRY_FRONT_Y if side == "right" else (-CARRY_FRONT_Y[1], -CARRY_FRONT_Y[0])
     floor = _carry_floor(rig, name, min_bottom_z)
     frame, lo, hi = kin.motion._box_of(name) if kin.motion is not None else (None, None, None)
     corners = None if lo is None else \
@@ -48,7 +52,7 @@ def _carry(rig, name, min_bottom_z=None):
         x, y, yaw = state.base
         c, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
         lx, ly = c * (tcp[0] - x) + s_ * (tcp[1] - y), -s_ * (tcp[0] - x) + c * (tcp[1] - y)
-        if not (CARRY_FRONT_X[0] <= lx <= CARRY_FRONT_X[1] and CARRY_FRONT_Y[0] <= ly <= CARRY_FRONT_Y[1]):
+        if not (CARRY_FRONT_X[0] <= lx <= CARRY_FRONT_X[1] and front_y[0] <= ly <= front_y[1]):
             return f"the load is not in front of the body (TCP at {lx:.2f}, {ly:.2f} m in the base frame)"
         held = state.held(kin.side)
         bottom = _bottom(state, q)
@@ -71,7 +75,7 @@ def _carry(rig, name, min_bottom_z=None):
             return None
         return f"the load's bottom at {bottom:.3f} m is below the {floor:.3f} m asked"
 
-    low, high = _carry_goal_set(rig, name), _carry_goal_set(rig, name, min_bottom_z)
+    low, high = _carry_goal_set(rig, name, side=side), _carry_goal_set(rig, name, min_bottom_z, side=side)
 
     def goals(state, q):
         # the constraints broken: the carry goal set from CARRY_Z up, the heights asked first
@@ -80,7 +84,7 @@ def _carry(rig, name, min_bottom_z=None):
             return g_lo, how
         return PoseSet(g_hi.goals + g_lo.goals, tuple(g_hi.cost) + tuple(c + CARRY_LOW_COST for c in g_lo.cost),
                        g_lo.prefer, g_lo.weights), how
-    return Carry(check, goals, want, high)
+    return Carry(check, goals, want, high, side)
 
 
 def _carry_bottom_z(rig, place):
@@ -125,21 +129,24 @@ def _carry_bottom_z(rig, place):
     return round(z + 0.03, 3)
 
 
-def carry_posture(rig, min_bottom_z=None, label="carry_in"):
-    """With a load in the right hand: the posture checked against the carry constraints (_carry) and
-    kept when it meets them -- pick's carry_in chose it -- else planned to the carry goal set
-    (free space, the tilt held), SkillFailure when there is none (no unchecked straight, no posture
-    kept that fails them: docs 9.3 step 1.3).  plan_navigate's first stage, run on its own: a skill
-    that settles the posture before its park search (place, a stand-off check)."""
-    if rig.held is None:
+def carry_posture(rig, min_bottom_z=None, label="carry_in", side=None):
+    """With a load in a hand (``side``; default the right's, else the left's): the posture checked against the
+    carry constraints (_carry) and kept when it meets them -- pick's carry_in chose it -- else planned to the
+    carry goal set (free space, the tilt held), SkillFailure when there is none (no unchecked straight, no
+    posture kept that fails them: docs 9.3 step 1.3).  plan_navigate's stage of that arm, run on its own: a
+    skill that settles the posture before its park search (place, a stand-off check)."""
+    side = side or ("right" if rig.held is not None else "left" if getattr(rig, "left_held", None) is not None else None)
+    held = rig.held_by(side) if side is not None else None
+    if held is None:
         return
     from ..skill_plans import plan_navigate
     state = observe(rig)
-    plan = plan_navigate(rig.kin, rig.left_kin, state, None, None, carry=_carry(rig, rig.held["name"], min_bottom_z),
-                         stop="arm")
+    plan = plan_navigate(rig.kin, rig.left_kin, state, None, None, carry=_carry(rig, held["name"], min_bottom_z, side),
+                         stop="arm" if side == "right" else "left_fold")
     if isinstance(plan, Failure):
         raise SkillFailure(f"{label}: {plan.why}")
-    rig.log("carry_posture", how=plan.info.get("carry"), moved=bool(plan.segments))
+    rig.log("carry_posture", side=side, how=plan.info.get("carry"), moved=bool(plan.segments))
     from ..skill_plans import plan_clear
-    run(rig, plan, None, {"carry_in": {"after": lambda r: check_held(r, "carry_in", open_hand=False)}},
-        clear=lambda st, what: plan_clear(rig.kin, st, **what))
+    leg = "carry_in" if side == "right" else "left_carry_in"
+    run(rig, plan, None, {leg: {"after": lambda r: check_held(r, leg, open_hand=False, side=side)}},
+        clear=lambda st, what: plan_clear(rig.arm_kin(side), st, **what))

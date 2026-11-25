@@ -1,13 +1,13 @@
 ---
 name: handover-object
-description: "Transfer a right-held object into the left gripper and open the right gripper."
+description: "Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move)."
 ---
 
 # Hand an object over to the left hand (`skill_022`)
 
 `handover(object: object_ref)`
 
-Transfer a right-held object into the left gripper and open the right gripper.
+Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move).
 
 ## When to use
 
@@ -27,13 +27,13 @@ Requires holding(hand=right, object=$object); hand_empty(hand=left).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `hand_empty(hand=left)` — The given gripper holds nothing. GT: gripper_state.
+- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `hand_empty(hand=left)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
-- `holding(hand=left, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `holding(hand=left, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
@@ -54,9 +54,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `present` (`skill_016`) (enables) — the object is passed to the left hand
+- Previous step: `present` (`skill_016`) (then) — the object is passed to the left hand
 - Next step: `open` (`skill_040`) (enables) — the right hand must open a door while the left carries the load
-- Next step: `pick` (`skill_017`) (enables) — a second object is picked with the free right hand
+- Next step: `pick` (`skill_017`) (then) — a second object is picked with the free right hand
 - Is a fallback for: `open` (`skill_040`) (repair) — the right hand still holds a load
 - Alternative: `brace` (`skill_027`) — the left hand should hold an object that stays on its support
 

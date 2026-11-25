@@ -57,8 +57,8 @@
  {
   "task": "T03_utensils_one_container",
   "seed": 10,
-  "variant": "small_bin_or_bedroom_bin__on_island",
-  "route": "v6_small_bin_or_bedroom_bin__on_island",
+  "variant": "small_bin_or_bedroom_bin__wide_in_bedroom",
+  "route": "v6_small_bin_or_bedroom_bin__wide_in_bedroom",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -68,8 +68,8 @@
  {
   "task": "T03_utensils_one_container",
   "seed": 10,
-  "variant": "which_bin_by_contents__tools_near",
-  "route": "v6_which_bin_by_contents__tools_near",
+  "variant": "which_bin_by_contents__kitchen_bin_full",
+  "route": "v6_which_bin_by_contents__kitchen_bin_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -90,8 +90,8 @@
  {
   "task": "T03_utensils_one_container",
   "seed": 10,
-  "variant": "utensils_apart__dining",
-  "route": "v6_utensils_apart__dining",
+  "variant": "utensils_apart__bin_free",
+  "route": "v6_utensils_apart__bin_free",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -101,8 +101,8 @@
  {
   "task": "T04_cup_or_mug_to_cabinet",
   "seed": 10,
-  "variant": "no_cup_mug_away__alt_dining_table_2",
-  "route": "v6_no_cup_mug_away__alt_dining_table_2",
+  "variant": "no_cup",
+  "route": "alternative_mug",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -112,8 +112,8 @@
  {
   "task": "T04_cup_or_mug_to_cabinet",
   "seed": 10,
-  "variant": "clear_the_drinks_spot",
-  "route": "v6_clear_the_drinks_spot",
+  "variant": "clear_the_drinks_spot__spot_kid_toys",
+  "route": "v6_clear_the_drinks_spot__spot_kid_toys",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -123,8 +123,8 @@
  {
   "task": "T04_cup_or_mug_to_cabinet",
   "seed": 10,
-  "variant": "two_guests__study",
-  "route": "v6_two_guests__study",
+  "variant": "two_guests__mug",
+  "route": "v6_two_guests__mug",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -156,8 +156,8 @@
  {
   "task": "T05_pen_or_pencil_to_desk",
   "seed": 10,
-  "variant": "check_desk_first__pencil_on_desk",
-  "route": "v6_check_desk_first__pencil_on_desk",
+  "variant": "check_desk_first__pen_in_use",
+  "route": "v6_check_desk_first__pen_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -167,19 +167,8 @@
  {
   "task": "T05_pen_or_pencil_to_desk",
   "seed": 10,
-  "variant": "all_pens__two",
-  "route": "v6_all_pens__two",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "all_pens"
- },
- {
-  "task": "T05_pen_or_pencil_to_desk",
-  "seed": 10,
-  "variant": "homework_ready__pencil_only",
-  "route": "v6_homework_ready__pencil_only",
+  "variant": "homework_ready__notebook_in_use",
+  "route": "v6_homework_ready__notebook_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -189,19 +178,8 @@
  {
   "task": "T05_pen_or_pencil_to_desk",
   "seed": 10,
-  "variant": "pens_per_notebook__notebooks_3",
-  "route": "v6_pens_per_notebook__notebooks_3",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "pens_per_notebook"
- },
- {
-  "task": "T05_pen_or_pencil_to_desk",
-  "seed": 10,
-  "variant": "errand_combined__pen_dining",
-  "route": "v6_errand_combined__pen_dining",
+  "variant": "errand_combined__pen_in_use",
+  "route": "v6_errand_combined__pen_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -211,8 +189,8 @@
  {
   "task": "T05_pen_or_pencil_to_desk",
   "seed": 10,
-  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-  "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+  "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -222,8 +200,8 @@
  {
   "task": "T06_block_destination_occupied",
   "seed": 10,
-  "variant": "display_row__spread",
-  "route": "v6_display_row__spread",
+  "variant": "display_row__cab_short",
+  "route": "v6_display_row__cab_short",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -233,8 +211,8 @@
  {
   "task": "T06_block_destination_occupied",
   "seed": 10,
-  "variant": "display_spot_or_tv__front_taken_block_away",
-  "route": "v6_display_spot_or_tv__front_taken_block_away",
+  "variant": "display_spot_or_tv__front_taken_tv_full",
+  "route": "v6_display_spot_or_tv__front_taken_tv_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -244,8 +222,8 @@
  {
   "task": "T06_block_destination_occupied",
   "seed": 10,
-  "variant": "seen_from_bed__boxes_corner",
-  "route": "v6_seen_from_bed__boxes_corner",
+  "variant": "seen_from_bed__bookcase_full",
+  "route": "v6_seen_from_bed__bookcase_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -365,24 +343,13 @@
  {
   "task": "T09_tomato_soup",
   "seed": 10,
-  "variant": "pot_in_dining_room",
-  "route": "v6_pot_in_dining_room",
+  "variant": "pot_in_dining_room__spare_pot",
+  "route": "v6_pot_in_dining_room__spare_pot",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
   "v6_variant": "pot_in_dining_room"
- },
- {
-  "task": "T10_trash_the_can",
-  "seed": 10,
-  "variant": "can_in_dining_room__alt_tv_stand_2",
-  "route": "v6_can_in_dining_room__alt_tv_stand_2",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "can_in_dining_room"
  },
  {
   "task": "T10_trash_the_can",
@@ -464,24 +431,13 @@
  {
   "task": "T11_collect_fruits",
   "seed": 10,
-  "variant": "fruit_plate_for_guests__tray_by_table",
-  "route": "v6_fruit_plate_for_guests__tray_by_table",
+  "variant": "fruit_plate_for_guests__tray_in_use",
+  "route": "v6_fruit_plate_for_guests__tray_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
   "v6_variant": "fruit_plate_for_guests"
- },
- {
-  "task": "T12_tidy_toys",
-  "seed": 10,
-  "variant": "duck_in_study",
-  "route": "explore_search_duck",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "duck_in_study"
  },
  {
   "task": "T12_tidy_toys",
@@ -493,17 +449,6 @@
   "video": true,
   "category": "task",
   "v6_variant": "bins_capacity"
- },
- {
-  "task": "T12_tidy_toys",
-  "seed": 10,
-  "variant": "find_all_toys__all_four",
-  "route": "v6_find_all_toys__all_four",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "find_all_toys"
  },
  {
   "task": "T12_tidy_toys",
@@ -550,48 +495,70 @@
   "v6_variant": "finish_the_table"
  },
  {
-  "task": "T15_book_face_up",
+  "task": "T15_cover_the_pot",
   "seed": 10,
-  "variant": "book_out_of_view",
-  "route": "explore_search_book",
+  "variant": "lid_elsewhere__covering_bowl",
+  "route": "v6_lid_elsewhere__covering_bowl",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "book_out_of_view"
+  "v6_variant": "lid_elsewhere"
  },
  {
-  "task": "T15_book_face_up",
+  "task": "T15_cover_the_pot",
   "seed": 10,
-  "variant": "flip_on_the_shelf__shelf_1",
-  "route": "v6_flip_on_the_shelf__shelf_1",
+  "variant": "no_lid",
+  "route": "v6_no_lid",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "flip_on_the_shelf"
+  "v6_variant": "no_lid"
  },
  {
-  "task": "T16_rolling_pin_at_edge",
+  "task": "T15_cover_the_pot",
   "seed": 10,
-  "variant": "pin_out_of_view",
-  "route": "explore_search_pin",
+  "variant": "lid_in_use",
+  "route": "v6_lid_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "pin_out_of_view"
+  "v6_variant": "lid_in_use"
  },
  {
-  "task": "T16_rolling_pin_at_edge",
+  "task": "T16_pack_snack_box",
   "seed": 10,
-  "variant": "everything_near_the_edge__pin_only",
-  "route": "v6_everything_near_the_edge__pin_only",
+  "variant": "box_in_cabinet__box_full",
+  "route": "v6_box_in_cabinet__box_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "everything_near_the_edge"
+  "v6_variant": "box_in_cabinet"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "no_box",
+  "route": "v6_no_box",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "task",
+  "v6_variant": "no_box"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "box_in_use",
+  "route": "v6_box_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "task",
+  "v6_variant": "box_in_use"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -607,8 +574,8 @@
  {
   "task": "T17_hide_and_seek_block",
   "seed": 10,
-  "variant": "hide_both__dining",
-  "route": "v6_hide_both__dining",
+  "variant": "hide_both__two_pots",
+  "route": "v6_hide_both__two_pots",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -627,32 +594,43 @@
   "v6_variant": "hide_somewhere"
  },
  {
-  "task": "T18_check_cabinet_dishes",
+  "task": "T18_set_out_bowls",
   "seed": 10,
-  "variant": "dishes_spread__in_microwave",
-  "route": "v6_dishes_spread__in_microwave",
+  "variant": "one_bowl__mug",
+  "route": "v6_one_bowl__mug",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "dishes_spread"
+  "v6_variant": "one_bowl"
  },
  {
-  "task": "T18_check_cabinet_dishes",
+  "task": "T18_set_out_bowls",
   "seed": 10,
-  "variant": "enough_for_dinner__two_short",
-  "route": "v6_enough_for_dinner__two_short",
+  "variant": "bowl_in_use__oatmeal",
+  "route": "v6_bowl_in_use__oatmeal",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "task",
-  "v6_variant": "enough_for_dinner"
+  "v6_variant": "bowl_in_use"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "door_stuck",
+  "route": "v6_door_stuck",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "task",
+  "v6_variant": "door_stuck"
  },
  {
   "task": "T19_recycling",
   "seed": 10,
-  "variant": "m_can_in_dining_room__alt_tv_stand_2",
-  "route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+  "variant": "can_in_use",
+  "route": "v6_can_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -684,8 +662,8 @@
  {
   "task": "T20_juice_back_to_table",
   "seed": 10,
-  "variant": "m_bottle_on_tv_stand__alt_bookcase_2",
-  "route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
+  "variant": "bottle_in_use",
+  "route": "v6_bottle_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -695,8 +673,8 @@
  {
   "task": "T20_juice_back_to_table",
   "seed": 10,
-  "variant": "x6_gd_bottle_put_away__in_cabinet_6",
-  "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+  "variant": "x6_gd_bottle_put_away__in_bedroom",
+  "route": "v6_x6_gd_bottle_put_away__in_bedroom",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -713,17 +691,6 @@
   "video": true,
   "category": "task",
   "v6_variant": "within_kids_reach"
- },
- {
-  "task": "T14_shelve_the_book",
-  "seed": 10,
-  "variant": "stack_them_stably__blue_green_paperback",
-  "route": "v6_stack_them_stably__blue_green_paperback",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "stack_them_stably"
  },
  {
   "task": "T14_shelve_the_book",
@@ -761,17 +728,6 @@
  {
   "task": "T21_bring_tissues",
   "seed": 10,
-  "variant": "tissue_out_of_view",
-  "route": "v6_tissue_out_of_view",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "tissue_out_of_view"
- },
- {
-  "task": "T21_bring_tissues",
-  "seed": 10,
   "variant": "which_table__east",
   "route": "v6_which_table__east",
   "planner": "scripted",
@@ -790,17 +746,6 @@
   "video": true,
   "category": "task",
   "v6_variant": "no_tissue"
- },
- {
-  "task": "T21_bring_tissues",
-  "seed": 10,
-  "variant": "tissue_put_away__in_4",
-  "route": "v6_tissue_put_away__in_4",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true,
-  "category": "task",
-  "v6_variant": "tissue_put_away"
  },
  {
   "task": "T21_bring_tissues",
@@ -827,8 +772,8 @@
  {
   "task": "T22_put_away_shopping",
   "seed": 10,
-  "variant": "eat_now",
-  "route": "v6_eat_now",
+  "variant": "eat_now__desk_free",
+  "route": "v6_eat_now__desk_free",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -860,8 +805,8 @@
  {
   "task": "T23_pick_up_dropped",
   "seed": 10,
-  "variant": "by_kind",
-  "route": "v6_by_kind",
+  "variant": "by_kind__bin_full",
+  "route": "v6_by_kind__bin_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -871,8 +816,8 @@
  {
   "task": "T23_pick_up_dropped",
   "seed": 10,
-  "variant": "belongs_on_floor",
-  "route": "v6_belongs_on_floor",
+  "variant": "belongs_on_floor__no_toy_box",
+  "route": "v6_belongs_on_floor__no_toy_box",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -882,8 +827,8 @@
  {
   "task": "T23_pick_up_dropped",
   "seed": 10,
-  "variant": "dropped_out_of_view",
-  "route": "v6_dropped_out_of_view",
+  "variant": "dropped_out_of_view__counter_full",
+  "route": "v6_dropped_out_of_view__counter_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -893,8 +838,8 @@
  {
   "task": "T23_pick_up_dropped",
   "seed": 10,
-  "variant": "only_this_room",
-  "route": "v6_only_this_room",
+  "variant": "only_this_room__cabinet_full",
+  "route": "v6_only_this_room__cabinet_full",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -904,8 +849,8 @@
  {
   "task": "T23_pick_up_dropped",
   "seed": 10,
-  "variant": "dropped_in_two_rooms",
-  "route": "v6_dropped_in_two_rooms",
+  "variant": "dropped_in_two_rooms__shelf_room",
+  "route": "v6_dropped_in_two_rooms__shelf_room",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -915,8 +860,8 @@
  {
   "task": "T24_snack_for_kid",
   "seed": 10,
-  "variant": "no_apples_for_him",
-  "route": "v6_no_apples_for_him",
+  "variant": "no_apples_for_him__apple_in_use",
+  "route": "v6_no_apples_for_him__apple_in_use",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -926,8 +871,8 @@
  {
   "task": "T24_snack_for_kid",
   "seed": 10,
-  "variant": "dinner_soon",
-  "route": "v6_dinner_soon",
+  "variant": "dinner_soon__apple",
+  "route": "v6_dinner_soon__apple",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -937,8 +882,8 @@
  {
   "task": "T24_snack_for_kid",
   "seed": 10,
-  "variant": "fruit_out_of_view",
-  "route": "v6_fruit_out_of_view",
+  "variant": "fruit_out_of_view__basket_empty",
+  "route": "v6_fruit_out_of_view__basket_empty",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -959,8 +904,8 @@
  {
   "task": "T24_snack_for_kid",
   "seed": 10,
-  "variant": "two_kids",
-  "route": "v6_two_kids",
+  "variant": "two_kids__apple_snacks",
+  "route": "v6_two_kids__apple_snacks",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -970,8 +915,8 @@
  {
   "task": "T25_drink_for_guest",
   "seed": 10,
-  "variant": "cup_elsewhere",
-  "route": "v6_cup_elsewhere",
+  "variant": "cup_elsewhere__blocks_in_cup",
+  "route": "v6_cup_elsewhere__blocks_in_cup",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -981,8 +926,8 @@
  {
   "task": "T25_drink_for_guest",
   "seed": 10,
-  "variant": "cold_one",
-  "route": "v6_cold_one",
+  "variant": "cold_one__cold_soda",
+  "route": "v6_cold_one__cold_soda",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -992,8 +937,8 @@
  {
   "task": "T25_drink_for_guest",
   "seed": 10,
-  "variant": "drink_in_fridge",
-  "route": "v6_drink_in_fridge",
+  "variant": "drink_in_fridge__juice",
+  "route": "v6_drink_in_fridge__juice",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1014,8 +959,8 @@
  {
   "task": "T25_drink_for_guest",
   "seed": 10,
-  "variant": "two_guests",
-  "route": "v6_two_guests",
+  "variant": "two_guests__one_cup",
+  "route": "v6_two_guests__one_cup",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1036,8 +981,8 @@
  {
   "task": "T26_kids_things_to_room",
   "seed": 10,
-  "variant": "whose",
-  "route": "v6_whose",
+  "variant": "whose__shelf_room",
+  "route": "v6_whose__shelf_room",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1047,8 +992,8 @@
  {
   "task": "T26_kids_things_to_room",
   "seed": 10,
-  "variant": "scattered",
-  "route": "v6_scattered",
+  "variant": "scattered__basket",
+  "route": "v6_scattered__basket",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1058,8 +1003,8 @@
  {
   "task": "T26_kids_things_to_room",
   "seed": 10,
-  "variant": "where_in_room",
-  "route": "v6_where_in_room",
+  "variant": "where_in_room__waste_bin",
+  "route": "v6_where_in_room__waste_bin",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1069,8 +1014,8 @@
  {
   "task": "T26_kids_things_to_room",
   "seed": 10,
-  "variant": "bear_to_bed",
-  "route": "v6_bear_to_bed",
+  "variant": "bear_to_bed__top_free",
+  "route": "v6_bear_to_bed__top_free",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1102,8 +1047,8 @@
  {
   "task": "T27_leftovers_to_fridge",
   "seed": 10,
-  "variant": "two_leftovers__soup_on_table",
-  "route": "v6_two_leftovers__soup_on_table",
+  "variant": "two_leftovers__soup_at_seat",
+  "route": "v6_two_leftovers__soup_at_seat",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1113,8 +1058,8 @@
  {
   "task": "T27_leftovers_to_fridge",
   "seed": 10,
-  "variant": "fridge_out_of_view",
-  "route": "v6_fridge_out_of_view",
+  "variant": "fridge_out_of_view__fridge_crowded",
+  "route": "v6_fridge_out_of_view__fridge_crowded",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1135,8 +1080,8 @@
  {
   "task": "T28_cup_to_bedside",
   "seed": 10,
-  "variant": "where_his_cup_is__on_counter",
-  "route": "v6_where_his_cup_is__on_counter",
+  "variant": "where_his_cup_is__no_kid_cup",
+  "route": "v6_where_his_cup_is__no_kid_cup",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1146,8 +1091,8 @@
  {
   "task": "T28_cup_to_bedside",
   "seed": 10,
-  "variant": "cup_out_of_view",
-  "route": "v6_cup_out_of_view",
+  "variant": "cup_out_of_view__side_covered",
+  "route": "v6_cup_out_of_view__side_covered",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1157,8 +1102,8 @@
  {
   "task": "T28_cup_to_bedside",
   "seed": 10,
-  "variant": "already_there",
-  "route": "v6_already_there",
+  "variant": "already_there__wrong_cup",
+  "route": "v6_already_there__wrong_cup",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1168,8 +1113,8 @@
  {
   "task": "T29_clear_table_for_dinner",
   "seed": 10,
-  "variant": "nothing_to_clear",
-  "route": "v6_nothing_to_clear",
+  "variant": "belongs_on_table",
+  "route": "v6_belongs_on_table",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1179,8 +1124,8 @@
  {
   "task": "T29_clear_table_for_dinner",
   "seed": 10,
-  "variant": "homework_on_table",
-  "route": "v6_homework_on_table",
+  "variant": "homework_on_table__desk_free",
+  "route": "v6_homework_on_table__desk_free",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1190,8 +1135,8 @@
  {
   "task": "T29_clear_table_for_dinner",
   "seed": 10,
-  "variant": "several",
-  "route": "v6_several",
+  "variant": "several__toy_box",
+  "route": "v6_several__toy_box",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1212,8 +1157,8 @@
  {
   "task": "T30_bowls_for_soup",
   "seed": 10,
-  "variant": "how_many",
-  "route": "v6_how_many",
+  "variant": "how_many__two_bowls",
+  "route": "v6_how_many__two_bowls",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1234,8 +1179,8 @@
  {
   "task": "T30_bowls_for_soup",
   "seed": 10,
-  "variant": "bowl_put_away",
-  "route": "v6_bowl_put_away",
+  "variant": "bowl_put_away__mug_inside",
+  "route": "v6_bowl_put_away__mug_inside",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
@@ -1375,6 +1320,17 @@
   "v6_variant": "can_on_island"
  },
  {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "can_in_dining_room__alt_tv_stand_2",
+  "route": "v6_can_in_dining_room__alt_tv_stand_2",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "control",
+  "v6_variant": "can_in_dining_room"
+ },
+ {
   "task": "T11_collect_fruits",
   "seed": 10,
   "variant": "fruits_on_table",
@@ -1397,6 +1353,17 @@
   "v6_variant": "toys_out"
  },
  {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "duck_in_study",
+  "route": "explore_search_duck",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "control",
+  "v6_variant": "duck_in_study"
+ },
+ {
   "task": "T13_breakfast_setup",
   "seed": 10,
   "variant": "dishes_on_tv_stand",
@@ -1408,26 +1375,26 @@
   "v6_variant": "dishes_on_tv_stand"
  },
  {
-  "task": "T15_book_face_up",
+  "task": "T15_cover_the_pot",
   "seed": 10,
-  "variant": "book_free",
+  "variant": "lid_by_pot",
   "route": "nominal",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "control",
-  "v6_variant": "book_free"
+  "v6_variant": "lid_by_pot"
  },
  {
-  "task": "T16_rolling_pin_at_edge",
+  "task": "T16_pack_snack_box",
   "seed": 10,
-  "variant": "pin_free",
+  "variant": "box_on_counter",
   "route": "nominal",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "control",
-  "v6_variant": "pin_free"
+  "v6_variant": "box_on_counter"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1441,15 +1408,26 @@
   "v6_variant": "lid_off"
  },
  {
-  "task": "T18_check_cabinet_dishes",
+  "task": "T18_set_out_bowls",
   "seed": 10,
-  "variant": "at_island",
+  "variant": "bowls_in_cabinet",
   "route": "nominal",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,
   "category": "control",
-  "v6_variant": "at_island"
+  "v6_variant": "bowls_in_cabinet"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "bowls_apart",
+  "route": "v6_bowls_apart",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true,
+  "category": "control",
+  "v6_variant": "bowls_apart"
  },
  {
   "task": "T19_recycling",
@@ -1641,8 +1619,8 @@
  {
   "task": "T02_stack_blocks",
   "seed": 10,
-  "variant": "block_put_away__in_4",
-  "route": "v6_block_put_away__in_4",
+  "variant": "block_put_away__gone_toy_block",
+  "route": "v6_block_put_away__gone_toy_block",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true,

@@ -6,14 +6,14 @@ Paired SkillNode: `skill_019` (`drop-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
 - [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier
 
 - [all paths] `inside(object=$object, container=$container)` — GT: object_pose, container_profile
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `not holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

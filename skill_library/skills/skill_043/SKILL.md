@@ -30,11 +30,11 @@ Food must reach a target temperature with the microwave or the stove.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$appliance). Depending on the bound nouns, the chosen path also needs: microwave (appliance.category == 'microwave'): in_appliance(object=$food, appliance=$appliance), is_closed(articulated=$appliance); stove_pot (appliance.category == 'stove'): in_cookware_on_burner(food=$food, appliance=$appliance).
+Requires hand_empty(hand=any); base_near(place=$appliance). Depending on the bound nouns, the chosen path also needs: microwave (appliance.category == 'microwave'): in_appliance(object=$food, appliance=$appliance), is_closed(articulated=$appliance); stove_pot (appliance.category == 'stove'): in_cookware_on_burner(food=$food, appliance=$appliance).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
@@ -71,7 +71,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `stir` (`skill_038`) (then) — the stirred food is heated
 - Previous step: `close` (`skill_041`) (enables) — a microwave or fridge must be closed before its cycle
 - Previous step: `press` (`skill_042`) (enables) — the start key began a cycle
-- Previous step: `cover` (`skill_045`) (enables) — the pot is heated with its lid on (heat itself needs no lid)
+- Previous step: `cover` (`skill_045`) (then) — the pot is heated with its lid on (heat itself needs no lid)
 - Next step: `open` (`skill_040`) (then) — the heated food is taken out of the microwave
 - Next step: `pick` (`skill_017`) (then) — the heated food is served
 - Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the microwave door is open

@@ -6,12 +6,12 @@ Paired SkillNode: `skill_060` (`wave-hand`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Verifier
 
 - [all paths] `waved()` — GT: robot_memory (TCP swing samples)
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Policy paths
 

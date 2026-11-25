@@ -6,7 +6,7 @@ Paired SkillNode: `skill_039` (`pour-contents`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$target)` — GT: base_pose, scene_annotation
 - [all paths] `uncovered(container=$target)` — GT: object_pose, container_profile, asset_tags
 - [all paths] `not container_empty(container=$source)` — GT: object_pose, container_profile
@@ -14,7 +14,7 @@ Paired SkillNode: `skill_039` (`pour-contents`).
 ## Verifier
 
 - [all paths] `poured_into(source=$source, target=$target)` — GT: object_pose (before/after), container_profile
-- [all paths] `holding(hand=right, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

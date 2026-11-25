@@ -428,7 +428,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the gesture is finished",
    "bind": {
     "hand": "right"
@@ -469,7 +469,7 @@
    "to": "skill_022",
    "to_verb": "handover",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is passed to the left hand",
    "bind": {
     "object": "$object"
@@ -644,7 +644,7 @@
    "to": "skill_041",
    "to_verb": "close",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object went into a cabinet or appliance whose door must be shut",
    "bind": {},
    "automatic": false
@@ -670,7 +670,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the hand is empty and the robot drives next",
    "bind": {
     "hand": "right"
@@ -768,7 +768,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "more items go into the same container",
    "bind": {},
    "automatic": false
@@ -794,7 +794,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "a taller stack is built",
    "bind": {},
    "automatic": false
@@ -870,7 +870,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "a second object is picked with the free right hand",
    "bind": {},
    "automatic": false
@@ -1016,7 +1016,7 @@
    "to": "skill_033",
    "to_verb": "center",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is left overhanging the edge",
    "bind": {
     "object": "$object"
@@ -1499,7 +1499,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the hand is free again",
    "bind": {
     "hand": "right"
@@ -1651,7 +1651,7 @@
    "to": "skill_043",
    "to_verb": "heat",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the pot is heated with its lid on (heat itself needs no lid)",
    "bind": {},
    "automatic": false
@@ -1891,7 +1891,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot drives on",
    "bind": {
     "hand": "right"
@@ -1916,7 +1916,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot drives on",
    "bind": {
     "hand": "right"
@@ -2333,7 +2333,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot leaves",
    "bind": {
     "hand": "right"

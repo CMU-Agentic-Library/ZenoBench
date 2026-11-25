@@ -134,6 +134,38 @@ RETIRED_POLICIES = {
                   "distances, heights and pitches: pick's floor_top path is the pick alone (policy_010), whose plan "
                   "lowers the torso and leans itself from a park it chooses (docs 9.3 step 5, 2026-11-16).",
     "policy_065": "Approach a floor item before policy_042: pick chooses its own park (see policy_042).",
+    "policy_027": "Align the fingertips in front of a microwave key as a step of its own: a press is one plan "
+                  "(skill_plans.plan_press, the reach, the press and the way back out; policy_032 / 033 / 094) from a "
+                  "park whose search checks the press itself -- the staged approach parked where only the aligned "
+                  "pose was reachable (T07 microwave_works, 2026-11-24).",
+    "policy_028": "Press a microwave key from policy_027's aligned pose: one plan with the approach (see policy_027).",
+    "policy_029": "Withdraw from a microwave key after policy_028: one plan with the press (see policy_027).",
+    "policy_030": "Drive to a hand-written pose clear of the microwave door's swing: the door key's press parks "
+                  "where its plan finds the robot clear of the swing (skill_plans.plan_press press_door, "
+                  "2026-11-24).",
+    "policy_031": "Drive the microwave's hinge with no key pressed (a door closed by no one): the door moves by its "
+                  "key, open and close alike (policy_024 / 025, user 2026-11-24).",
+    "policy_018": "Carry a load into the microwave from hand-written parks and a hand-written front point: the "
+                  "microwave's floor is a support behind a door like a cabinet's shelf, set down by place's one "
+                  "path (policy_015: skill_plans.plan_place behind the door, docs 9.3 step 8c, 2026-11-24).",
+    "policy_019": "Let go of a load policy_018 carried into the microwave: place's own release (see policy_018).",
+    "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's "
+                  "own pull-out (see policy_018).",
+    "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+    "policy_039": "Move the right arm's joints to a target (a primitive): reset is the tuck, raise and straighten skills "
+                  "(HAND_PLAN 9j, 2026-11-25).",
+    "policy_040": "Open the right fingers (a primitive): every skill opens its hand as a segment of its own plan "
+                  "(HAND_PLAN 9j, 2026-11-25).",
+    "policy_041": "Close the right fingers (a primitive) before a push / pull: the push's plan closes the hand itself "
+                  "(plan_slide slide_close_hand; HAND_PLAN 9j, 2026-11-25).",
+    "policy_095": "Plan the home joint vector for policy_039: reset is the tuck, raise and straighten skills (HAND_PLAN 9j, "
+                  "2026-11-25).",
+    "policy_038": "Move the right TCP to a pose with a joint plan (a primitive): only point's old chain used it; point is "
+                  "the point skill on the motion layers (policy_071, skill_jobs.held.point_job, HAND_PLAN 9h, 2026-11-25).",
+    "policy_101": "Compute the right TCP pose that points at a target for policy_038: the point skill's own goal set now "
+                  "(policy_071, HAND_PLAN 9h, 2026-11-25).",
+    "policy_048": "Pick from the microwave back through a pose policy_020 recorded: the cavity is a support behind a "
+                  "door like a cabinet's, picked by pick's one path (policy_061, docs 9.3 step 8d, 2026-11-24).",
 }
 
 NOUN_FIELDS = {

@@ -25,7 +25,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    }
   },
@@ -52,7 +52,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    }
   }
@@ -60,14 +60,14 @@
  "invalidates": [],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -129,14 +129,14 @@
    "scope": "all paths"
   },
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",

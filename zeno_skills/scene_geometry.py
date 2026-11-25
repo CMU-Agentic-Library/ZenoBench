@@ -30,7 +30,7 @@ HULL_VERTICES = 64        # PhysX's default hullVertexLimit
 @dataclass
 class Collider:
     name: str                 # unique obstacle name (the prim path)
-    owner: str                # "static", "object:<name>", "part:<name>"
+    owner: str                # "static", "object:<name>", "part:<name>", "button:<appliance>/<key>"
     kind: str                 # "cuboid" or "mesh"
     body: str | None          # rigid body prim whose pose moves it (None: static)
     local: np.ndarray         # 4x4 collider pose in the body frame (world frame when static)
@@ -49,6 +49,29 @@ class Colliders:
 
     def owners(self):
         return sorted({c.owner for c in self.items})
+
+
+BUTTON_KEYS = ("door_button", "start_button", "power_button")    # an appliance's annotated buttons
+
+
+def buttons(ann):
+    """(appliance, key, prim) of every annotated button with a prim: the microwave's door and start keys
+    on its body, the stove's power key.  Their colliders are owned by "button:<appliance>/<key>" -- the
+    name predicates.entity_kind gives a button -- not "static": a press may touch one (Spec.touch) and
+    nothing else of the appliance (skill_plans.plan_press)."""
+    out = []
+    for a in list(ann.articulated) + list(getattr(ann, "appliances", [])):
+        for key in BUTTON_KEYS:
+            rec = a.get(key)
+            if isinstance(rec, dict) and rec.get("prim"):
+                out.append((a["name"], key, rec["prim"]))
+    return out
+
+
+def is_static(owner):
+    """A collider that never moves: the house and its furniture, and an appliance's buttons -- part of its body
+    for everything but a press (the base's footprint, the surfaces things rest on, the monitor's watch)."""
+    return owner == "static" or owner.startswith("button:")
 
 
 def _enabled(prim, stop):
@@ -107,6 +130,8 @@ def collect(stage, ann):
     for a in ann.articulated:
         if a.get("part"):
             owners.append((a["part"], f"part:{a['name']}"))
+    for app, key, prim in buttons(ann):
+        owners.append((prim, f"button:{app}/{key}"))
     owners.sort(key=lambda t: -len(t[0]))
 
     def owner_of(path):

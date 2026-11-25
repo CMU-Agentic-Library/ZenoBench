@@ -6,7 +6,7 @@ Paired SkillNode: `skill_072` (`mark-spots-support`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Verifier
 

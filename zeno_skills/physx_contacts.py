@@ -66,19 +66,50 @@ class Reader:
             p = self._paths[i] = str(self._to_path(i))
         return p
 
+    def _link(self, i):
+        """The robot link name of actor ``i``, None for an actor outside the robot (cached per id)."""
+        links = self.__dict__.setdefault("_links", {})
+        if i not in links:
+            p = self._path(i)
+            links[i] = p.rsplit("/", 1)[1] if p.startswith(self.root) else None
+        return links[i]
+
     def touching(self):
+        return self.read()[0]
+
+    def read(self, bodies=()):
+        """One pass over the last step's report: (the robot's touches as the class says; what the
+        rigid ``bodies`` (held objects) touch outside the robot and themselves: {(body, other
+        collider path): (closest separation m, summed impulse N s, the closest contact point)}).
+        Most pairs are loose objects resting on furniture (~1300 a tick, 11-23): a pair is classed by
+        its actors' ids, and only one the robot or a held body is in is read further."""
         heads, data = self.sim.get_contact_report()[:2]
-        self._last = (heads, data)
-        out = {}
+        bodies = set(bodies)
+        robot, held = {}, {}
+        link = self.__dict__.get("_links", {}).get
+        miss = self._link
         for h in heads:
             if not h.num_contact_data:
                 continue                                 # a lost contact
-            a0, a1 = self._path(h.actor0), self._path(h.actor1)
-            r0, r1 = a0.startswith(self.root), a1.startswith(self.root)
-            if r0 == r1:
-                continue                                 # the robot on itself (or not the robot)
-            link = (a0 if r0 else a1).rsplit("/", 1)[1]
-            other = self._path(h.collider1 if r0 else h.collider0)
+            i0, i1 = h.actor0, h.actor1
+            l0, l1 = link(i0, 0), link(i1, 0)
+            if l0 == 0:
+                l0 = miss(i0)
+            if l1 == 0:
+                l1 = miss(i1)
+            if l0 is not None and l1 is not None:
+                continue                                 # the robot on itself
+            if l0 is not None or l1 is not None:
+                key = (l0 if l0 is not None else l1, self._path(h.collider1 if l0 is not None else h.collider0))
+                out = robot
+            else:
+                if not bodies:
+                    continue
+                a0, a1 = self._path(i0), self._path(i1)
+                if (a0 in bodies) == (a1 in bodies):
+                    continue                             # neither held, or held on held
+                key = (a0, self._path(h.collider1)) if a0 in bodies else (a1, self._path(h.collider0))
+                out = held
             sep, imp, at = float("inf"), 0.0, None
             for i in range(h.contact_data_offset, h.contact_data_offset + h.num_contact_data):
                 d = data[i]
@@ -88,37 +119,6 @@ class Reader:
                 imp += (j[0] * j[0] + j[1] * j[1] + j[2] * j[2]) ** 0.5
             if sep > TOUCH_SEP and imp == 0.0:
                 continue                                 # within the contact offset, not touching
-            key = (link, other)
-            s0, i0, a0_ = out.get(key, (float("inf"), 0.0, None))
-            out[key] = (sep, i0 + imp, at) if sep < s0 else (s0, i0 + imp, a0_)
-        return out
-
-    def held_touching(self, bodies):
-        """What the rigid ``bodies`` (held objects) touch outside the robot and themselves in the
-        step ``touching`` last read: {(body, other collider path): (closest separation m, summed
-        impulse N s, the closest contact point)}."""
-        heads, data = getattr(self, "_last", ((), ()))
-        bodies = set(bodies)
-        out = {}
-        for h in heads:
-            if not h.num_contact_data:
-                continue
-            a0, a1 = self._path(h.actor0), self._path(h.actor1)
-            if (a0 in bodies) == (a1 in bodies):
-                continue                                 # neither held, or held on held
-            body, other_actor = (a0, a1) if a0 in bodies else (a1, a0)
-            if other_actor.startswith(self.root):
-                continue                                 # the robot (the hand on what it holds): touching's
-            other = self._path(h.collider1 if a0 == body else h.collider0)
-            sep, imp, at = float("inf"), 0.0, None
-            for i in range(h.contact_data_offset, h.contact_data_offset + h.num_contact_data):
-                d = data[i]
-                if float(d.separation) < sep:
-                    sep, at = float(d.separation), (float(d.position[0]), float(d.position[1]), float(d.position[2]))
-                j = d.impulse
-                imp += (j[0] * j[0] + j[1] * j[1] + j[2] * j[2]) ** 0.5
-            if sep > TOUCH_SEP and imp == 0.0:
-                continue
-            s0, i0, a0_ = out.get((body, other), (float("inf"), 0.0, None))
-            out[(body, other)] = (sep, i0 + imp, at) if sep < s0 else (s0, i0 + imp, a0_)
-        return out
+            s0, i0_, a0_ = out.get(key, (float("inf"), 0.0, None))
+            out[key] = (sep, i0_ + imp, at) if sep < s0 else (s0, i0_ + imp, a0_)
+        return robot, held

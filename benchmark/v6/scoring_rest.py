@@ -24,7 +24,7 @@ SHELVES = [f"bookcase_{i}/{s}" for i in range(1, 5) for s in ("top", "shelf_1", 
     [f"large_shelf_{i}/shelf_{k}" for i, n in ((1, 5), (2, 4), (3, 4), (4, 5), (5, 4), (6, 4)) for k in range(n)] + \
     ["large_shelf_6/top"]
 DESKS = ["desk_1/top", "desk_3/top", "bookcase_4/top"]
-HAND = ["hand_empty", "right"]
+HAND = ["hand_empty", "both"]
 
 
 # ----------------------------------------------------------------------------------------------- goal edits

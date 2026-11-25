@@ -51,7 +51,7 @@ postconditions and selects a policy path by noun. See [skill_library/](skill_lib
 [contract_library/](contract_library/README.md) and [policy_library/](policy_library/README.md).
 
 <!-- library:start -->
-**71 个动词 SkillNode**，一一对应 71 个 Contract，共 118 条按名词选择的 policy 路径，覆盖 101/117 个底层 policy（退役 16 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 97 条上一步/下一步、40 条 fallback、47 条 alternative。
+**71 个动词 SkillNode**，一一对应 71 个 Contract，共 114 条按名词选择的 policy 路径，覆盖 85/117 个底层 policy（退役 32 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 97 条上一步/下一步、40 条 fallback、47 条 alternative。
 
 | 类别 | 动词 |
 |---|---|

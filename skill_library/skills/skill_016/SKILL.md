@@ -19,27 +19,27 @@ A held object must be shown to the head camera or a person.
 
 ## Inputs
 
-- `object` (`object_ref`): The right-held object to show.
+- `object` (`object_ref`): The held object to show (either hand).
 
 ## Applicability
 
-Requires holding(hand=right, object=$object).
+Requires holding(hand=any, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 
-- `presenting(object=$object)` — The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view. GT: object_pose, base_pose, head_fk.
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `presenting(object=$object)` — The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view. GT: object_pose, base_pose, head_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `presenting(object=$object)` (all paths)
-- `holding(hand=right, object=$object)` (all paths)
+- `holding(hand=any, object=$object)` (all paths)
 
 ## May invalidate
 
@@ -54,7 +54,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Next step: `place` (`skill_018`) (enables) — the object is put away after showing it
-- Next step: `handover` (`skill_022`) (enables) — the object is passed to the left hand
+- Next step: `handover` (`skill_022`) (then) — the object is passed to the left hand
 - Alternative: `lift` (`skill_023`) — only the height of the load matters
 
 ## Failure

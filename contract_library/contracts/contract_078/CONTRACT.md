@@ -6,13 +6,13 @@ Paired SkillNode: `skill_070` (`hide-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path container_with_lid] `uncovered(container=$receptacle)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier
 
 - [all paths] `hidden(object=$object)` — GT: object_pose, container_profile, articulation_joint, support_annotation
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Policy paths
 

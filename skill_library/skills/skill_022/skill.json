@@ -16,7 +16,7 @@
    "object"
   ]
  },
- "description": "Transfer a right-held object into the left gripper and open the right gripper.",
+ "description": "Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move).",
  "use_when": "The right hand must be freed while the object stays held (by the left hand).",
  "not_to_be_confused_with": {
   "release": "release lets the object go; handover keeps it held by the left hand."
@@ -45,7 +45,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -62,7 +62,7 @@
     "hand": "left"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -79,7 +79,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -96,7 +96,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -115,7 +115,7 @@
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",
@@ -133,7 +133,7 @@
      "hand": "right"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"
@@ -169,7 +169,7 @@
     "skill_id": "skill_016",
     "verb": "present",
     "when": "the object is passed to the left hand",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [
@@ -187,7 +187,7 @@
     "when": "a second object is picked with the free right hand",
     "bind": {},
     "reason": "right hand free",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

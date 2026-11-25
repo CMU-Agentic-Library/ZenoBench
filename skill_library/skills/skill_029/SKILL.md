@@ -35,11 +35,11 @@ An object must slide along its support without grasping it.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object).
+Requires hand_empty(hand=any); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
@@ -60,8 +60,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `drag_from_top` — when object.near_closed_edge
 
-1. `policy_041()`
-2. `policy_044($object, @object.support, $direction_xy, $distance_m)`
+1. `policy_044($object, @object.support, $direction_xy, $distance_m)`
 
 ### `thin_auto` — when object.flat
 
@@ -70,8 +69,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `from_behind` — when always (default path)
 
-1. `policy_041()`
-2. `policy_043($object, @object.support, $direction_xy, $distance_m)`
+1. `policy_043($object, @object.support, $direction_xy, $distance_m)`
 
 ## Relations
 

@@ -29,15 +29,9 @@ from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
 from ..physics import PHYSICS_HZ
-from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
 from ..tolerances import COUNT_YAWS
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _mem(rig, key):
@@ -45,36 +39,12 @@ def _mem(rig, key):
 
 
 class ShakeHeldPolicy(AtomicPolicy):
+    """Shake a held object along the pinch's closing axis: the shake skill (skill_jobs.held.shake_job, one task
+    segment; HAND_PLAN 9h) with the hand that holds it."""
+
     def execute(self, name, *, cycles=3, amplitude=0.02):
-        rig = self.rig
-        if rig.held is None or rig.held["name"] != name:
-            raise SkillFailure(f"shake {name}: not right-held")
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        x, y, yaw = rig.base_pose()
-        # shake along the closing axis: the pads take the inertial load in
-        # compression instead of shear (a sideways shake rolled a block in the pinch)
-        lat = R[:, 1].copy()
-        lat[2] = 0.0
-        if np.linalg.norm(lat) < 0.3:
-            lat = np.array([-math.sin(math.radians(yaw)), math.cos(math.radians(yaw)), 0.0])
-        lat /= np.linalg.norm(lat)
-        gap0 = float(rig.fingers().sum())
-        done = 0
-        for _ in range(int(cycles)):
-            for s in (1, -1):
-                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake",
-                            allow=FREE_ELSE_STRAIGHT)
-            skills.check_held(rig, "shake")
-            done += 1
-        rig.move_to(tcp, R, step=0.004, label="shake_end", allow=FREE_ELSE_STRAIGHT)
-        rig.step(30)
-        gap1 = float(rig.fingers().sum())
-        rig.log("shake_grip", obj=name, gap_before=round(gap0, 4), gap_after=round(gap1, 4))
-        if gap0 - gap1 > 0.008:
-            raise SkillFailure(f"shake {name}: the pinch closed {gap0 - gap1:.3f} m (object turned in the hand)")
-        _mem(rig, "shaken")[name] = _mem(rig, "shaken").get(name, 0) + done
-        rig.log("shake_result", obj=name, cycles=done)
-        return {"cycles": done}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["shake"], {"name": name, "cycles": int(cycles), "amplitude": float(amplitude)})
 
 
 class WaitPolicy(AtomicPolicy):
@@ -88,36 +58,11 @@ class WaitPolicy(AtomicPolicy):
 
 
 class WaveHandPolicy(AtomicPolicy):
+    """Wave the empty hand: the wave skill (skill_jobs.held.wave_job, plan_gesture; HAND_PLAN 9h)."""
+
     def execute(self, *, swings=3):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("wave: the right hand holds an object")
-        x, y, yaw = rig.base_pose()
-        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        centre = np.array([x + 0.35 * c + 0.25 * s, y + 0.35 * s - 0.25 * c, 1.25])
-        lat = np.array([-s, c, 0.0])
-        R = gripper_rot([0, 0, 1.0], [c, s, 0.0])          # fingers up, palm forward
-        rig.grip(0.04, 20)
-        last = None
-        for z in (1.25, 1.15, 1.05):
-            centre[2] = z
-            try:
-                rig.move_to(centre, R, label="wave_raise", smooth=True)
-                break
-            except SkillFailure as exc:
-                last = exc
-        else:
-            raise last
-        n = 0
-        for _ in range(int(swings)):
-            for sgn in (1, -1):
-                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing",
-                            allow=FREE_ELSE_STRAIGHT)
-            n += 1
-        _mem(rig, "gestures")["wave"] = n
-        rig.log("wave_result", swings=n)
-        rig.tuck()
-        return {"swings": n}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["wave"], {"swings": int(swings)})
 
 
 class NodHeadPolicy(AtomicPolicy):
@@ -140,94 +85,23 @@ class NodHeadPolicy(AtomicPolicy):
 
 
 class KnockPanelPolicy(AtomicPolicy):
-    """Tap the closed panel of a door/drawer twice, 7 cm beside its handle."""
+    """Tap the closed panel of a door / drawer ``taps`` times beside its handle: the knock skill
+    (skill_jobs.press.knock_job, plan_press; HAND_PLAN 9g) once per tap, with the empty hand."""
 
     def execute(self, name, *, taps=2):
-        rig = self.rig
-        a = rig.ann.art(name)
-        if rig.held is not None:
-            raise SkillFailure("knock: the right hand holds an object")
-        h = a.get("handle")
-        if not h:
-            raise SkillFailure(f"knock {name}: no annotated panel frame")
-        out = np.asarray(h["outward"], float)
-        along = np.asarray(h["along"], float)
-        hc = np.asarray(h["center"], float)
-        bar = float(np.abs(np.asarray(h.get("bar_size", [0.02, 0.02, 0.02]), float)) @ np.abs(out))
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park, panel, pre, R = None, None, None, None
-        # tap beside or above the handle, on the panel plane behind the bar
-        for da, dz in ((0.07, 0.0), (-0.07, 0.0), (0.0, 0.08), (0.0, -0.08), (0.10, 0.05)):
-            cand = hc + da * along + np.array([0.0, 0.0, dz]) - out * max(bar, 0.015)
-            cpre = cand + out * 0.10
-            for close in ((0, 0, 1.0), along):
-                Rc = gripper_rot(-out, close)
-                park = find_park(rig.kin, rig.world, [(cpre, Rc), (cand + out * 0.004, Rc)], near=rig.base_pose(),
-                                 max_tries=80, q_start=rig.q_cmd, travel_q=rig.kin.rest)
-                if park is not None:
-                    panel, pre, R = cand, cpre, Rc
-                    break
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"knock {name}: no reach to the panel (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.grip(0.0, 30)
-        rig.move_to(pre, R, label="knock_pre", q_hint=park[3][0])
-        q0 = rig.joint(name)
-        hits = 0
+        from ..motion_skills import SKILLS, run_skill
         for _ in range(int(taps)):
-            rig.move_to(panel + out * 0.004, R, step=0.004, label="knock_tap", allow=LEGACY)
-            tcp, _ = rig.kin.tcp(rig.q())
-            gap = float((tcp - panel) @ out)
-            if gap < 0.02:
-                hits += 1
-                rig.log("knock_contact", articulated=name, gap_m=round(gap, 4))
-            rig.move_to(panel + out * 0.06, R, step=0.006, label="knock_back", allow=LEGACY)
-        rig.move_to(pre, R, label="knock_retract", allow=LEGACY)
-        rig.grip(0.04, 60)
-        moved = abs(rig.joint(name) - q0)
-        rig.log("knock_result", articulated=name, hits=hits, joint_moved=round(moved, 4))
-        if hits < int(taps) or moved > 0.05:
-            raise SkillFailure(f"knock {name}: {hits} contacts, joint moved {moved:.3f}")
-        return {"taps": hits}
+            run_skill(self.rig, SKILLS["knock"], {"name": name})
+        return {"taps": int(taps)}
 
 
 class TouchObjectPolicy(AtomicPolicy):
+    """Touch an object's top with the closed fingertips: the touch skill (skill_jobs.press.touch_job, plan_press;
+    HAND_PLAN 9g) with the empty hand."""
+
     def execute(self, name):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("touch: the right hand holds an object")
-        st = rig.state()
-        b = rig.geo.bottom(name, st)
-        top = b[2] + rig.ann.asset_of(rig.ann.objects[name])["size"][2]
-        c = rig.geo.centre(name, st)
-        # closed pad tips sit ~1.8 cm below the TCP
-        contact = np.array([c[0], c[1], top + 0.016])
-        pre = contact + np.array([0, 0, 0.08])
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = None
-        for d in ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)):
-            R = gripper_rot([0, 0, -1.0], [d[0], d[1], 0.0])
-            park = find_park(rig.kin, rig.world, [(pre, R), (contact, R)], near=rig.base_pose(), max_tries=80,
-                             q_start=rig.q_cmd, travel_q=skills._travel_q(rig))
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"touch {name}: no reach above it (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.grip(0.0, 30)
-        p0 = rig.obj_pose(name)[0]
-        rig.move_to(pre, R, label="touch_pre", q_hint=park[3][0])
-        rig.move_to(contact, R, step=0.002, steps_per_wp=4, label="touch_down", allow=LEGACY)
-        tcp, _ = rig.kin.tcp(rig.q())
-        rig.log("touch_contact", obj=name, tcp_above_top=round(float(tcp[2] - top), 4))
-        rig.move_to(pre, R, step=0.006, label="touch_up", allow=LEGACY)
-        rig.grip(0.04, 60)
-        moved = float(np.linalg.norm(rig.obj_pose(name)[0] - p0))
-        return {"moved_m": moved}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["touch"], {"name": name})
 
 
 class PlanSquareYawPolicy(AtomicPolicy):
@@ -351,39 +225,9 @@ class SidestepPolicy(AtomicPolicy):
 
 
 class HoverOverPolicy(AtomicPolicy):
-    """Hold the carried object centred 6 cm above a target's top."""
+    """Hold the carried object centred 6 cm above a target's top: the hover skill (skill_jobs.drop.hover_job,
+    skill_plans.plan_hover -- the drop without the release; HAND_PLAN 9e) with the hand that holds it."""
 
-    def execute(self, name, target, *, clearance_m=0.06):
-        rig = self.rig
-        if rig.held is None or rig.held["name"] != name:
-            raise SkillFailure(f"hover {name}: not right-held")
-        from .tooluse import stow_load
-        stow_load(rig)
-        st = rig.state()
-        kind, rec = entity_kind(rig.ann, target)
-        if kind == "object":
-            t = np.asarray(rig.geo.bottom(target, st), float)
-            a = rig.ann.asset_of(rec)
-            top = t[2] + (a["container"]["rim_height"] if a.get("container") else a["size"][2])
-            c = t[:2]
-        else:
-            p = entity_point(rig, target, st)
-            top, c = p[2], p[:2]
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        hang = float(body[2] - skills._lowest_z(rig, name, st))
-        b_now = rig.geo.bottom(name, st)
-        off = tcp - np.r_[b_now[:2], b_now[2]]
-        # one relay pose, the load's bottom centred clearance_m above the target; the planner takes
-        # it there
-        found = skills.park_over(rig, "hover", np.r_[c, top + clearance_m], off, R)
-        if found is None:
-            raise SkillFailure(f"hover {name}: no base pose above {target} (rejected: {_park_diag()})")
-        park, goal, Rg = found
-        skills._goto_park(rig, park)
-        with skills.fingers_checked(rig):
-            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE, smooth=True,
-                        q_hint=park[3][0])
-        skills.check_held(rig, "hover")
-        rig.step(30)
-        return {"bottom_above_target_m": float(rig.geo.bottom(name, rig.state())[2] - top), "hang_m": hang}
+    def execute(self, name, target):
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["hover"], {"name": name, "target": target})

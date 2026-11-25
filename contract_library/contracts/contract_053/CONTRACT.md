@@ -6,14 +6,14 @@ Paired SkillNode: `skill_045` (`cover-container`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$lid)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$lid)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
 - [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier
 
 - [all paths] `covered(container=$container, lid=$lid)` — GT: object_pose, container_profile
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `not holding(hand=any, object=$lid)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

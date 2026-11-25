@@ -35,7 +35,7 @@
   {
    "pred": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    }
   },
   {
@@ -63,13 +63,13 @@
  ],
  "precheck": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -145,11 +145,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_044",
       "args": [
        "$object",
@@ -194,11 +189,6 @@
     "path_id": "from_behind",
     "when": [],
     "steps": [
-     {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
      {
       "policy": "policy_043",
       "args": [

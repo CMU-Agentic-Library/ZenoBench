@@ -34,17 +34,17 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$object)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -84,13 +84,13 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -118,13 +118,13 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"
@@ -146,16 +146,14 @@
    "chain": [
     "policy_108($object) as sq",
     "policy_010($object)",
-    "policy_075($object, #sq.degrees)",
-    "policy_015($object, @object.support, hint=#sq.xy)"
+    "policy_015($object, @object.support, hint=#sq.xy, square=True)"
    ],
    "policies": [
     "policy_010",
     "policy_015",
-    "policy_075",
     "policy_108"
    ],
-   "note": ""
+   "note": "The turn that squares it is in the place's goal set, from its yaw as the hand holds it (a rotate by the yaw measured before the pick drifted with the carry)."
   }
  ],
  "relations": {

@@ -28,7 +28,7 @@ The contents of a container or cabinet must be seen (opens it if needed).
 
 ## Applicability
 
-Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=right).
+Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=any).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -51,7 +51,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_062($receptacle)`
 2. `policy_088($receptacle)`
 3. `policy_063($receptacle)`
-- extra precondition `hand_empty(hand=right)`
+- extra precondition `hand_empty(hand=any)`
 - Open with the annotation-selected route, look, close again.
 
 ### `open_view` — when always (default path)

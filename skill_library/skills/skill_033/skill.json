@@ -52,7 +52,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -141,7 +141,7 @@
     "skill_id": "skill_028",
     "verb": "flip",
     "when": "the object is left overhanging the edge",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [

@@ -6,13 +6,13 @@ Paired SkillNode: `skill_037` (`wipe-surface`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$surface)` — GT: base_pose, scene_annotation
 
 ## Verifier
 
 - [all paths] `wiped(support=$surface)` — GT: robot_memory (tool-bottom contact samples)
-- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

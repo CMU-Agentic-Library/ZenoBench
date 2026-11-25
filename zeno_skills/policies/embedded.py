@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from .base import AtomicPolicy
+from .base import AtomicPolicy, RetiredPolicy
 from .posture import LowerTorsoPolicy, SetWaistPitchPolicy
 from .. import skills
 from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, lifting
@@ -13,61 +13,10 @@ from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 
-class PrepareFloorReachPolicy(AtomicPolicy):
-    """Lower the torso, lean, and reach a measured pre-grasp above a floor item."""
+class PrepareFloorReachPolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): pick lowers the body itself for a floor object (policy_042)."""
 
-    def execute(self, name, *, clearance_m=0.10):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("prepare floor reach: right hand must be empty")
-        if name not in rig.ann.objects:
-            raise SkillFailure(f"prepare floor reach: unknown object {name}")
-        st = rig.state()
-        bottom = rig.geo.bottom(name, st)
-        if bottom[2] >= 0.05:
-            raise SkillFailure(f"prepare floor reach: {name} is not on the floor")
-        size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
-        bx, by, _ = rig.base_pose()
-        away = np.array([bx, by]) - bottom[:2]
-        norm = np.linalg.norm(away)
-        if norm < 1e-6:
-            raise SkillFailure("prepare floor reach: base is directly over the object")
-        away /= norm
-        side = max(size[:2]) / 2
-        LowerTorsoPolicy(rig).execute()
-        idx = rig.kin.names.index("waist_pitch_joint")
-        SetWaistPitchPolicy(rig).execute(min(0.30, float(rig.kin.hi[idx])))
-        rig.sync_world()
-        # A floor pregrasp is above the item. The earlier fixed 13 cm target
-        # can put the palm through the floor at the lowered torso posture.
-        # Search collision-checked clearances, then drive the reachable pose.
-        chosen = None
-        distances = (side + clearance_m, side + 0.06, side + 0.02)
-        heights = (bottom[2] + 0.18, bottom[2] + 0.24,
-                   bottom[2] + 0.30, bottom[2] + 0.38)
-        for distance in distances:
-            for height in heights:
-                target = np.r_[bottom[:2] + away * distance, height]
-                for pitch in (-0.3, -0.6, 0.0, 0.3):
-                    R = gripper_rot(np.r_[-away, pitch], [0, 0, 1])
-                    q, ok = rig.kin.ik_global(target, R, seeds=[rig.q_cmd])
-                    if ok:
-                        chosen = (target, R, q)
-                        break
-                if chosen is not None:
-                    break
-            if chosen is not None:
-                break
-        if chosen is None:
-            raise SkillFailure(f"prepare floor reach: no clear pregrasp above {name}")
-        target, R, q = chosen
-        rig.move_to(target, R, label="prepare_floor_reach", q_hint=q)
-        tcp, _ = rig.kin.tcp(rig.q())
-        error = float(np.linalg.norm(tcp - target))
-        if error > 0.03:
-            raise SkillFailure(f"prepare floor reach: TCP missed by {error:.3f} m")
-        rig.log("floor_reach_ready", obj=name, error_m=round(error, 4))
-        return error
+    REPLACED_BY = "pick lowers the body itself for a floor object (policy_042)"
 
 
 class SlideToEdgePolicy(AtomicPolicy):
@@ -132,179 +81,25 @@ class SlideToEdgePolicy(AtomicPolicy):
                 "overhang_m": overhang}
 
 
-class GraspArticulatedHandlePolicy(AtomicPolicy):
-    """Hold a manual handle with the right gripper, checking finger contact."""
+class GraspArticulatedHandlePolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): open / close grasp the handle in their own plan (policy_046)."""
 
-    def execute(self, name):
-        rig = self.rig
-        art = rig.ann.art(name)
-        if rig.held is not None or getattr(rig, "_handle_grasp", None) is not None:
-            raise SkillFailure("grasp handle: right hand is occupied")
-        if not art.get("handle") or "door_button" in art:
-            raise SkillFailure(f"grasp handle: {name} has no manual handle route")
-        q = rig.joint(name)
-        rig.sync_world()
-        old_coll_kw = rig.kin.coll_kw
-        rig.kin.coll_kw = {"hand_touches_part": True}
-        candidates = [("side", False, 0.0)]
-        if art["type"] == "prismatic" or art["handle"].get("flip_ok"):
-            candidates.append(("side", True, 0.0))
-        if art["handle"].get("pre_open") is not None:
-            candidates.append(("front", False, 0.0))
-        for grasp, flip, tilt in candidates:
-            _, _, _, targets = skills._handle_targets(rig, art, q, flip, tilt, grasp)
-            park = skills.find_park(rig.kin, rig.world, targets, near=rig.base_pose(),
-                                    q_start=rig.q_cmd, travel_q=skills._travel_q(rig), max_tries=120)
-            if park is not None:
-                break
-        else:
-            rig.kin.coll_kw = old_coll_kw
-            raise SkillFailure(f"grasp handle {name}: no reachable handle path")
-        skills._goto_park(rig, park)
-        thickness = float(art["handle"].get("thickness", 0.025))
-        pre_open = float(art["handle"].get("pre_open", 0.04))
-        rig.grip(pre_open, 30)
-        for k_, (target, label, hint) in enumerate(zip(targets, ("handle_pre_high", "handle_pre", "handle_contact"),
-                                                         park[3])):
-            if k_ == 0 and hint is not None:
-                # onto the planned joint branch first: a straight line from the
-                # compact tuck reached the pre-pose on another branch, from
-                # which the short move to the handle had no joint path
-                try:
-                    rig.sync_world()
-                    rig.follow(rig.joint_path(np.asarray(hint), label))
-                    continue
-                except SkillFailure as exc:
-                    rig.log("handle_pre_branch_short", reason=str(exc))
-            rig.move_to(*target, label=label, q_hint=hint)
-        fingers = rig.grip(0.0, PHYSICS_HZ)
-        if fingers.min() <= min(0.004, 0.3*thickness):
-            rig.kin.coll_kw = old_coll_kw
-            raise SkillFailure(f"grasp handle {name}: no finger contact")
-        rig._handle_grasp = {"name": name, "pre_open": pre_open, "q": rig.joint(name),
-                             "coll_kw": old_coll_kw}
-        rig.log("handle_grasped", name=name, fingers=fingers.tolist())
-        return fingers
+    REPLACED_BY = "open / close grasp the handle in their own plan (policy_046)"
 
 
-class ReleaseArticulatedHandlePolicy(AtomicPolicy):
-    """Release a handle grasp and confirm both fingers opened."""
+class ReleaseArticulatedHandlePolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): open / close let go of the handle in their own plan (policy_047)."""
 
-    def execute(self, name):
-        rig = self.rig
-        held = getattr(rig, "_handle_grasp", None)
-        if held is None or held["name"] != name:
-            raise SkillFailure(f"release handle {name}: no matching handle grasp")
-        fingers = rig.grip(max(0.025, held["pre_open"]), 90)
-        if fingers.min() < 0.02:
-            raise SkillFailure(f"release handle {name}: fingers did not open")
-        rig._handle_grasp = None
-        rig.kin.coll_kw = held.get("coll_kw", {})
-        rig.log("handle_released", name=name, fingers=fingers.tolist())
-        return fingers
+    REPLACED_BY = "open / close let go of the handle in their own plan (policy_047)"
 
 
 class PickFromCavityPolicy(AtomicPolicy):
-    """Pick an object in an open annotated cavity, then withdraw beyond its mouth."""
+    """Retired (policy_048): picked back out of the microwave through the arm pose its old set-down recorded.
+    The cavity is a support behind a door like a cabinet's, picked by pick's one path (policy_061,
+    skill_plans.plan_pick; docs 9.3 step 8d)."""
 
-    def execute(self, name, cavity="kitchen_microwave", *, max_candidates=12):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("pick from cavity: right hand is occupied")
-        art = rig.ann.art(cavity)
-        bounds = art.get("cavity_aabb")
-        if bounds is None:
-            raise SkillFailure(f"pick from cavity: {cavity} has no cavity annotation")
-        pos, _ = rig.obj_pose(name)
-        if not all(bounds[i] < pos[i] < bounds[i+3] for i in range(3)):
-            raise SkillFailure(f"pick from cavity: {name} is outside {cavity}")
-        from ..predicates import OPEN_ENOUGH, _art_open
-        if _art_open(rig, cavity)[0] < OPEN_ENOUGH:
-            raise SkillFailure(f"pick from cavity: {cavity} is closed")
-        outward = np.asarray(art.get("handle", {}).get("outward", [0, -1, 0]), float)
-        axis = int(np.argmax(np.abs(outward[:2])))
-        sign = float(np.sign(outward[axis]))
-        if sign == 0:
-            raise SkillFailure(f"pick from cavity: {cavity} has no annotated front direction")
-        stage = getattr(rig, "_microwave_retrieval_stage", None)
-        if stage and stage.get("name") == name and stage.get("phase") == "released":
-            # Reverse the measured insertion approach. Generic rim samples can
-            # be unreachable through the narrow open door even when the pose
-            # that loaded this exact object is reachable.
-            rig.kin.coll_kw = {"ignore_fingers": True}
-            skills.relocate(rig, tuple(stage["release_base"]),
-                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()))],
-                            label="cavity_return_safe", speed=0.12)
-            rig.sync_world()
-            before, _ = rig.obj_pose(name)
-            target = stage["release_tcp"] + before-stage["release_body"]
-            R = stage["R"]
-            rig.grip(stage["pre_open"], 40)
-            front_err = rig.move_to(target+np.array([0, -0.10, 0.06]), R,
-                                    label="cavity_pick_front", allow=FREE_ELSE_STRAIGHT)
-            if front_err > 0.02:
-                raise SkillFailure(f"pick from cavity {name}: front approach missed by {front_err:.3f} m")
-            above_err = rig.move_to(target+np.array([0, 0, 0.045]), R,
-                                    label="cavity_pick_above", allow=FREE_ELSE_STRAIGHT)
-            if above_err > 0.20:
-                raise SkillFailure(f"pick from cavity {name}: upper approach missed by {above_err:.3f} m")
-            if above_err > 0.02:
-                rig.log("cavity_intermediate_tracking", obj=name,
-                        tcp_error_m=round(float(above_err), 4))
-            err = rig.move_to(target, R, step=0.003, steps_per_wp=5,
-                              label="cavity_pick_contact", allow=LEGACY)
-            if err > 0.02:
-                # A measured insertion-reversal pose may be kinematically valid
-                # yet blocked by the shell in dynamics. Replan a different
-                # annotated rim contact before attempting to close the fingers.
-                rig.log("cavity_retrieval_replan", obj=name,
-                        contact_error_m=round(float(err), 4))
-                result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
-                body, _ = rig.obj_pose(name)
-                mouth = bounds[axis] if sign < 0 else bounds[axis+3]
-                if rig.held is None or rig.held["name"] != name or sign*(body[axis]-mouth) < 0.02:
-                    raise SkillFailure(f"pick from cavity {name}: fallback did not withdraw through the front")
-                skills.check_held(rig, "pick_from_cavity_replan")
-                return result
-            fingers = rig.grip(0.0, PHYSICS_HZ)
-            rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
-                        steps_per_wp=5, label="cavity_pick_lift", allow=lifting(name))
-            rig.step(40)
-            after, _ = rig.obj_pose(name)
-            if after[2]-before[2] < 0.015 or fingers.min() < 0.003:
-                raise SkillFailure(f"pick from cavity {name}: did not lift after contact")
-            tcp, actual_R = rig.kin.tcp(rig.q())
-            rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp-after,
-                        "R": actual_R, "pre_open": stage["pre_open"]}
-            # the whole bowl must leave the cavity (centre 1.8 cm past the mouth
-            # left half of it inside; the carry then knocked it out of the pinch)
-            clear = 0.5*float(max(rig.ann.asset_of(rig.ann.objects[name])["size"][:2])) + 0.02
-            for y in (bounds[1]-0.10, bounds[1]-0.16, bounds[1]-0.23, bounds[1]-0.30):
-                tcp, _ = rig.kin.tcp(rig.q())
-                front = tcp.copy()
-                front[1] = y
-                try:
-                    rig.move_to(front, actual_R, label="cavity_pick_withdraw")
-                except SkillFailure as exc:
-                    if rig.held is None:
-                        raise
-                    rig.log("cavity_withdraw_short", y=round(float(y), 3), reason=str(exc))
-                    continue
-                skills.check_held(rig, "cavity_pick_withdraw")
-                body, _ = rig.obj_pose(name)
-                rig.log("cavity_withdraw_check", obj=name,
-                        body=body.round(3).tolist(), mouth=float(bounds[1]))
-                if body[1] < bounds[1]-clear:
-                    break
-            result = True
-        else:
-            result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
-        pos, _ = rig.obj_pose(name)
-        mouth = bounds[axis] if sign < 0 else bounds[axis+3]
-        if rig.held is None or rig.held["name"] != name or sign*(pos[axis]-mouth) < 0.015:
-            raise SkillFailure(f"pick from cavity {name}: did not withdraw through the front")
-        skills.check_held(rig, "pick_from_cavity")
-        return result
+    def execute(self, name, cavity="kitchen_microwave", **kwargs):
+        raise SkillFailure("PickFromCavityPolicy is retired: pick from the microwave with pick (policy_061)")
 
 
 class OpenRevoluteDoorPolicy(AtomicPolicy):

@@ -6,7 +6,7 @@
  "verb": "reset",
  "noun": "posture",
  "name": "Reset the posture",
- "description": "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.",
+ "description": "Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state.",
  "group": "base_and_body",
  "inputs": {},
  "outputs": {},
@@ -49,7 +49,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -117,32 +117,24 @@
     "when": [],
     "steps": [
      {
-      "policy": "policy_040",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_003",
       "args": [],
       "kwargs": {}
      },
      {
-      "policy": "policy_095",
+      "policy": "policy_006",
       "args": [],
-      "kwargs": {},
-      "as": "home"
+      "kwargs": {}
      },
      {
-      "policy": "policy_039",
-      "args": [
-       "#home.target"
-      ],
+      "policy": "policy_009",
+      "args": [],
       "kwargs": {}
      }
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "Each step a skill on the motion layers (HAND_PLAN 9j); the old chain of primitives (open the fingers, plan the home joints, a joint move) is gone."
    }
   ]
  },

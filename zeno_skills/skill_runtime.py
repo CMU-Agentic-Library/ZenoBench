@@ -130,7 +130,9 @@ def object_attrs(rig, name, st, values=None):
     sup = rig.geo.support_under(name, st)
     bottom = rig.geo.bottom(name, st)
     loc, where = _object_location(rig, name, st)
-    held = rig.held if rig.held and rig.held.get("name") == name else None
+    held_by = next((sd for sd, h in (("right", rig.held), ("left", getattr(rig, "left_held", None)))
+                    if h and h.get("name") == name), None)          # either hand (HAND_PLAN 9c)
+    held = None if held_by is None else (rig.held if held_by == "right" else rig.left_held)
     lid = None
     contents = []
     if asset.get("container"):
@@ -144,7 +146,7 @@ def object_attrs(rig, name, st, values=None):
         "on_floor": bool(bottom[2] < 0.05), "location": loc,
         "appliance": where if loc in ("microwave_cavity", "appliance_cavity", "refrigerator", "cabinet") else None,
         "in_container": where if loc == "container" else None,
-        "held_by": "right" if held else ("left" if rig.left_held and rig.left_held.get("name") == name else None),
+        "held_by": held_by,
         "held_kind": held.get("kind") if held else None,
         "flat": "flat" in tags or (bool(grasp_types) and set(grasp_types) == {"thickness_pinch"}),
         "tall": bool(size[2] >= 1.3 * min(size[:2]) and t <= 20),
@@ -153,7 +155,7 @@ def object_attrs(rig, name, st, values=None):
         "handle_collider": _handle_collider(rig, obj),
         "near_closed_edge": _near_closed_edge(rig, name, st),
         "edge_ready": _edge_ready(rig, name, st),
-        "is_container": bool(asset.get("container")), "is_lid": bool({"lid", "plate"} & set(tags)),   # 11-21 (user): a plate covers a pot too (lid_ref)
+        "is_container": bool(asset.get("container")), "is_lid": "lid" in tags,
         "lid": lid, "contents": contents,
         "initial_support": (getattr(rig, "memory", {}) or {}).get("initial_support", {}).get(name) or obj.get("support"),
         "initial_xy": (getattr(rig, "memory", {}) or {}).get("initial_xy", {}).get(name),
@@ -299,10 +301,9 @@ def robot_attrs(rig):
 SLOT_VALIDATORS = {
     "object_ref": lambda rig, n: n in rig.ann.objects,
     "container_ref": lambda rig, n: n in rig.ann.objects and bool(rig.ann.asset_of(rig.ann.objects[n]).get("container")),
-    # 11-21 (user): a plate stands in for a lid (T15 no_lid / lid_elsewhere): 24.8 cm across like the 25 cm pot lid,
-    # set on the rim by the same place; CoverWithLidPolicy and lid_on assume nothing else of a lid
-    "lid_ref": lambda rig, n: n in rig.ann.objects and bool({"lid", "plate"} &
-                                                            set(rig.ann.asset_of(rig.ann.objects[n]).get("tags", []))),
+    # a lid: an asset tagged "lid" (annotations/assets.json; the plate too, 11-23: it covers a pot) -- the one
+    # source lids(), uncovered, hidden and objects_inside read as well
+    "lid_ref": lambda rig, n: n in rig.ann.objects and "lid" in rig.ann.asset_of(rig.ann.objects[n]).get("tags", []),
     "tool_ref": lambda rig, n: n in rig.ann.objects and bool({"wiping_tool", "utensil", "sponge"} &
                                                              set(rig.ann.asset_of(rig.ann.objects[n]).get("tags", []))),
     "support_ref": lambda rig, n: any(s["name"] == n for s in rig.ann.supports),
@@ -698,7 +699,10 @@ class SkillContractRunner:
                 o = values["object"]
                 v = float(rig.obj_pose(o)[0][2] - ctx["before"]["objects"][o]["pos"][2])
             elif name == "grasp":
-                v = rig.held.get("kind") if rig.held else None
+                o = values.get("object")
+                h = next((h for h in (rig.held, getattr(rig, "left_held", None)) if h and h.get("name") == o),
+                         rig.held)
+                v = h.get("kind") if h else None
             elif name == "position":
                 v = [float(x) for x in rig.geo.bottom(values["object"], rig.state())[:2]]
             elif name == "lid":

@@ -33,22 +33,22 @@ The robot must hold an object for any later hand action.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
+Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet', 'microwave_cavity']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-- `holding(hand=right, object=$object)` (all paths)
+- `holding(hand=any, object=$object)` (all paths)
 - `holding(hand=left, object=$object)` (path two_hand_box)
 - `holding(hand=left, object=$object)` (path two_hand_flat)
 
@@ -58,13 +58,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `microwave_cavity` — when object.location == 'microwave_cavity'
-
-1. `policy_048($object, @object.appliance)`
-- extra precondition `is_open(articulated=@object.appliance)`
-- Front withdrawal through the open door.
-
-### `inside_cabinet_or_fridge` — when object.location in ['refrigerator', 'cabinet']
+### `inside_cabinet_or_fridge` — when object.location in ['refrigerator', 'cabinet', 'microwave_cavity']
 
 1. `policy_061($object, grasp=$grasp)`
 - extra precondition `is_open(articulated=@object.appliance)`
@@ -147,9 +141,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `crouch` (`skill_005`) (then) — the object is on the floor or a low shelf
 - Previous step: `bend` (`skill_007`) (then) — the object lies deep on the surface
 - Previous step: `inspect` (`skill_012`) (then) — an object found inside must be taken out
-- Previous step: `drop` (`skill_019`) (enables) — more items go into the same container
-- Previous step: `stack` (`skill_020`) (enables) — a taller stack is built
-- Previous step: `handover` (`skill_022`) (enables) — a second object is picked with the free right hand
+- Previous step: `drop` (`skill_019`) (then) — more items go into the same container
+- Previous step: `stack` (`skill_020`) (then) — a taller stack is built
+- Previous step: `handover` (`skill_022`) (then) — a second object is picked with the free right hand
 - Previous step: `push` (`skill_029`) (then) — the object was pushed into a graspable spot
 - Previous step: `pull` (`skill_030`) (then) — the object is now close enough to grasp
 - Previous step: `expose` (`skill_031`) (enables) — pinch the overhang

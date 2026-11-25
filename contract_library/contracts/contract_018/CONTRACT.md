@@ -1,6 +1,6 @@
 # contract_018 — Reset the posture
 
-Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.
+Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state.
 
 Paired SkillNode: `skill_010` (`reset-posture`).
 
@@ -16,6 +16,6 @@ Paired SkillNode: `skill_010` (`reset-posture`).
 
 ## Policy paths
 
-- `joint_home` when always: `policy_040()` -> `policy_003()` -> `policy_095() as home` -> `policy_039(#home.target)`
+- `joint_home` when always: `policy_003()` -> `policy_006()` -> `policy_009()`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

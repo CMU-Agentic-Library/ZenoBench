@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**71 个 SkillNode**（`skill_001`–`skill_072`，`skill_002` 已退役不再使用，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_080`），共 **118 条按名词选择的 policy 路径**，覆盖 **101/117 个底层 policy**（16 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、48 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 47 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**71 个 SkillNode**（`skill_001`–`skill_072`，`skill_002` 已退役不再使用，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_080`），共 **114 条按名词选择的 policy 路径**，覆盖 **85/117 个底层 policy**（32 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 36 条 enables、61 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 47 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -88,7 +88,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 |---|---|---|---|---|
 | `skill_001` | **navigate** place | `navigate(destination)` | two_hand_carry, drive | `base_near` |
 | `skill_003` | **face** target | `face(target)` | already_facing, rotate | `facing` |
-| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, away | `base_clear_of` |
+| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | away | `base_clear_of` |
 | `skill_005` | **crouch** torso | `crouch(height_m?)` | to_height, lowest | `torso_raised` + `torso_at`, `torso_lowered` |
 | `skill_006` | **stand** torso | `stand()` | highest | `torso_raised` |
 | `skill_007` | **bend** waist | `bend(pitch_rad?)` | to_pitch, full | `waist_straight` + `waist_bent` |
@@ -101,10 +101,10 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_014` | **explore_room** room | `explore_room(room)` | viewpoints | `room_explored` |
 | `skill_015` | **point** target | `point(target)` | front, turn_and_point | `pointing_at`, `hand_empty` |
 | `skill_016` | **present** object | `present(object)` | front_of_head | `presenting`, `holding` |
-| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | microwave_cavity, inside_cabinet_or_fridge, handle_requested, pinch_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
-| `skill_018` | **place** object | `place(object, receptacle, hint_xy?, near?, pass_by?)` | microwave_staged, microwave, cabinet_or_fridge_shelf, container, on_the_move, edge_held_flat, stove_burner, surface | `hand_empty` + `in_appliance`, `inside`, `on`, `on_burner` |
-| `skill_019` | **drop** object | `drop(object, container)` | above_opening | `inside`, `hand_empty` |
-| `skill_020` | **stack** object | `stack(object, base)` | top_face | `on_top_of`, `hand_empty` |
+| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | inside_cabinet_or_fridge, handle_requested, pinch_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
+| `skill_018` | **place** object | `place(object, receptacle, hint_xy?, near?, pass_by?)` | microwave, cabinet_or_fridge_shelf, container, on_the_move, edge_held_flat, stove_burner, surface | `holding` + `in_appliance`, `inside`, `on`, `on_burner` |
+| `skill_019` | **drop** object | `drop(object, container)` | above_opening | `inside`, `holding` |
+| `skill_020` | **stack** object | `stack(object, base)` | top_face | `on_top_of`, `holding` |
 | `skill_021` | **release** object | `release(object, hand)` | open_in_place | `hand_empty` |
 | `skill_022` | **handover** object | `handover(object)` | right_to_left | `holding`, `hand_empty` |
 | `skill_023` | **lift** object | `lift(object, height_m, near?)` | raise | `held_above`, `holding` |
@@ -125,11 +125,11 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_038` | **stir** container | `stir(container, tool)` | circle_below_rim | `stirred`, `holding` |
 | `skill_039` | **pour** contents | `pour(source, target)` | tilt_over_rim | `poured_into`, `holding` |
 | `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, refrigerator_loaded, loaded, refrigerator, drawer, hinged_door | `is_open` |
-| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, loaded, handle_push, dispatch | `is_closed` |
+| `skill_041` | **close** articulated | `close(articulated)` | powered, loaded, handle_push, dispatch | `is_closed` |
 | `skill_042` | **press** button | `press(button)` | microwave_start_staged, microwave_door_key, generic_key | `button_pressed`, `hand_empty` + `heating` |
 | `skill_043` | **heat** food | `heat(food, appliance, temp_c)` | microwave, stove_pot | `temperature_at_least`, `heating` |
 | `skill_044` | **chill** food | `chill(food, appliance, temp_c)` | fridge_wait | `temperature_at_most` |
-| `skill_045` | **cover** container | `cover(container, lid)` | rim_plane | `covered`, `hand_empty` |
+| `skill_045` | **cover** container | `cover(container, lid)` | rim_plane | `covered`, `holding` |
 | `skill_046` | **uncover** container | `uncover(container)` | knob_lift_aside | `uncovered`, `hand_empty` + `on` |
 | `skill_047` | **fetch** object | `fetch(object, receptacle)` | to_container, to_surface | `hand_empty` + `inside`, `on` |
 | `skill_048` | **collect** objects | `collect(objects, container)` | fetch_each | `all_inside` |

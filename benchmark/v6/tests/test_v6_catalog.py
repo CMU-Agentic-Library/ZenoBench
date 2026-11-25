@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 
-from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT
+from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT, both_hands_empty
 import subprocess
 import sys
 from collections import Counter
@@ -64,7 +64,9 @@ def test_v5_designs_unchanged():
                 assert vid not in t["variants"]
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
-            assert old.get("goal") == PRE[tid]["variants"][vid].get("goal"), vid   # before the 11-24 loosening
+            # before the 11-24 loosening, but its hand: ["hand_empty", "right"] became "both"
+            # (define_tasks_v6.both_hands_empty, HAND_PLAN 9b)
+            assert both_hands_empty(old.get("goal")) == PRE[tid]["variants"][vid].get("goal"), vid
             if instructions_1124_touches(tid, vid):  # 11-24: rewritten on purpose (instructions_1124.py)
                 pass
             elif (tid, vid) in INSTR_TO_TASK:       # a form-like instruction: the task's own instead

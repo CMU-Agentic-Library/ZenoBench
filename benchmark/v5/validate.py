@@ -171,7 +171,7 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
     for seed in seeds:
         cfg, ann = episode_scene(task, seed, vid)
         objs, sups, arts, furn, rooms, appl = names_of(ann)
-        known = set(objs) | set(sups) | arts | furn | rooms | appl | {"right", "left"}
+        known = set(objs) | set(sups) | arts | furn | rooms | appl | {"right", "left", "any", "both"}   # hands (predicates.HANDS)
         # appliance buttons, written <appliance>/<button> (zeno_skills.predicates.entity_kind)
         known |= {f"{x['name']}/{k}" for x in ann.get("articulated", []) + ann.get("appliances", [])
                   for k, y in x.items() if isinstance(y, dict) and "center" in y}

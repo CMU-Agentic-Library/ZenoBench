@@ -6,9 +6,8 @@ Paired SkillNode: `skill_017` (`pick-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
-- [path microwave_cavity] `is_open(articulated=@object.appliance)` — GT: articulation_joint, articulation_annotation
 - [path inside_cabinet_or_fridge] `is_open(articulated=@object.appliance)` — GT: articulation_joint, articulation_annotation
 - [path pinch_requested] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 - [path on_the_move] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
@@ -21,14 +20,13 @@ Paired SkillNode: `skill_017` (`pick-object`).
 
 ## Verifier
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [path two_hand_box] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [path two_hand_flat] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-- `microwave_cavity` when object.location == 'microwave_cavity': `policy_048($object, @object.appliance)`
-- `inside_cabinet_or_fridge` when object.location in ['refrigerator', 'cabinet']: `policy_061($object, grasp=$grasp)`
+- `inside_cabinet_or_fridge` when object.location in ['refrigerator', 'cabinet', 'microwave_cavity']: `policy_061($object, grasp=$grasp)`
 - `handle_requested` when args.grasp == 'handle' and 'handle_pinch' in object.grasp_types and object.handle_collider: `policy_055($object)`
 - `pinch_requested` when args.grasp in ['top', 'side']: `policy_061($object, grasp=$grasp)`
 - `on_the_move` when args.pass_by and 'top_pinch' in object.grasp_types: `policy_052($object, $pass_by)`

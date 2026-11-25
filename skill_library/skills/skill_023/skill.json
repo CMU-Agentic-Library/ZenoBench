@@ -49,18 +49,18 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object)."
+  "summary": "Requires holding(hand=any, object=$object)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -80,7 +80,7 @@
     "height_m": "$height_m"
    },
    "negated": false,
-   "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -89,14 +89,14 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -118,7 +118,7 @@
      "height_m": "$height_m"
     },
     "negated": false,
-    "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+    "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
     "kind": "fluent",
     "gt_sources": [
      "object_pose",
@@ -128,14 +128,14 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",
@@ -160,7 +160,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_034($height_m)"
+    "policy_034($height_m, name=$object)"
    ],
    "policies": [
     "policy_034"

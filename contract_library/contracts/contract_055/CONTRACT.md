@@ -6,12 +6,12 @@ Paired SkillNode: `skill_047` (`fetch-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path to_container] `uncovered(container=$receptacle)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path to_container] `inside(object=$object, container=$receptacle)` — GT: object_pose, container_profile
 - [path to_surface] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
 

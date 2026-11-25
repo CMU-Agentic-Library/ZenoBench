@@ -6,13 +6,13 @@ Paired SkillNode: `skill_063` (`hover-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$target)` — GT: base_pose, scene_annotation
 
 ## Verifier
 
 - [all paths] `hovering_over(object=$object, target=$target)` — GT: object_pose, gripper_state, asset_annotation
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

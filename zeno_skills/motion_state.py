@@ -80,6 +80,9 @@ class Aim:
 class Hand:
     width: float                     # m per finger, as the fingers stand (or will)
     held: Held | None = None
+    # (left, right) m: each finger as it stands, read from the robot (they part ways when a contact
+    # pushes one: T14 left place, 0.036 / 0.029 m opened to 0.032); None: both at ``width`` (planned)
+    fingers: tuple | None = None
 
 
 @dataclass(frozen=True, eq=False)
@@ -312,7 +315,7 @@ def with_posture(s: State, p, side="right") -> State:
 
 def with_width(s: State, side, width) -> State:
     h = s.hands.get(side, Hand(width=0.0))
-    return replace(s, hands={**s.hands, side: replace(h, width=float(width))})
+    return replace(s, hands={**s.hands, side: replace(h, width=float(width), fingers=None)})
 
 
 def holding(s: State, side, held: Held) -> State:
@@ -435,6 +438,10 @@ class Actuator(Protocol):
       grip(width, steps, gradual, side)        side's gripper
       wait(ticks)                              the world settles that many physics ticks, nothing moves
       aim_head(yaw, pitch, steps)              the head joints to (yaw, pitch), at most ``steps`` ticks
+      toggle(appliance, on)                    the appliance's heat source switched on / off (a press's
+                                               action: the task-level thermal model, thermal.py)
+      drive_part(part, value)                  a powered part (the microwave's door) driven by its own motor
+                                               to ``value`` (a press's action); SkillFailure where it stops off
       drive_base(path, allow=...)              the base along waypoints [(x, y, yaw_deg)]
       swing(posture, label)                    the body and both arms straight in joint space to a Posture
                                                (a travel-posture switch)
@@ -450,6 +457,8 @@ class Actuator(Protocol):
     def grip(self, width, steps=100, gradual=False, side="right"): ...
     def wait(self, ticks): ...
     def aim_head(self, yaw, pitch, steps=90): ...
+    def toggle(self, appliance, on): ...
+    def drive_part(self, part, value): ...
     def drive_base(self, path, **kw): ...
     def swing(self, posture, label, **kw): ...
     def declare(self, name, allow, side="right", follows=True): ...

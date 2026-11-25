@@ -16,7 +16,7 @@
    "articulated"
   ]
  },
- "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
+ "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
  "use_when": "A door, drawer or appliance must be opened before reaching inside.",
  "not_to_be_confused_with": {
   "press": "press only pushes a button; open guarantees the door is open."
@@ -39,7 +39,7 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=right); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
+  "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=any); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
  },
  "preconditions": [
   {
@@ -110,13 +110,13 @@
    ],
    "extra_preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -147,7 +147,7 @@
       "hand": "left"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -177,7 +177,7 @@
       "hand": "left"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -207,7 +207,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -237,7 +237,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -267,7 +267,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"

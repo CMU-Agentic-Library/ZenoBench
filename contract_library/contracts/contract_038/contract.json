@@ -63,7 +63,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -149,11 +149,6 @@
     "path_id": "top_drag",
     "when": [],
     "steps": [
-     {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
      {
       "policy": "policy_079",
       "args": [

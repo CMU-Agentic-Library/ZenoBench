@@ -18,14 +18,8 @@ from .base import AtomicPolicy
 from .. import skills
 from ..clearance import LEGACY
 from ..kinematics import gripper_rot
-from ..planner import find_park
 from ..predicates import finger_slots_free, neighbour_gap, tilt_deg, GRASP_GAP_M
 from ..rig import SkillFailure
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _support(rig, name):
@@ -134,57 +128,15 @@ def _long_axis(rig, name):
     return axis, size
 
 
-def _contact_sweep(rig, name, start_xy, n, z_tcp, travel, label, side_ok=False):
-    """Closed fingers pointing down, TCP at z_tcp: approach behind the object,
-    sweep ``travel`` along n, lift.  Returns the measured object displacement."""
-    lat = np.array([-n[1], n[0]])
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    park, legs = None, None
-    options = []
-    for d in (lat, -lat, n, -n):            # closed fingers pointing down: any closing direction pushes
-        R = gripper_rot([0, 0, -1.0], [d[0], d[1], 0.0])
-        options.append([(np.r_[start_xy, z_tcp + 0.05], R), (np.r_[start_xy, z_tcp], R),
-                        (np.r_[start_xy + n * travel, z_tcp], R), (np.r_[start_xy + n * travel, z_tcp + 0.05], R)])
-    if side_ok:
-        # fingers pointing along the push (a poke): easier near shoulder height;
-        # the closed tips sit ~2 cm ahead of the TCP, so start 2 cm further back
-        back = np.r_[start_xy - n * 0.02, z_tcp - 0.018]
-        for close in ((0, 0, 1.0), (lat[0], lat[1], 0.0)):
-            R = gripper_rot([n[0], n[1], 0.0], close)
-            options.append([(back - np.r_[n * 0.08, 0.0], R), (back, R), (back + np.r_[n * travel, 0.0], R),
-                            (back + np.r_[n * (travel - 0.06), 0.0], R)])
-    with skills.contact_obstacles(rig, name, label):        # the hand and fingers miss the neighbours
-        for legs in options:
-            park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=80, q_start=rig.q_cmd,
-                             travel_q=skills._travel_q(rig))
-            if park is not None:
-                break
-        if park is None:
-            raise skills.ContactUnreachable(f"{label} {name}: no base pose reaches the contact sweep clear of its "
-                                            f"neighbours (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        rig.grip(0.0, 30)
-        p0 = rig.obj_pose(name)[0]
-        rig.move_to(*legs[0], step=0.02, label=f"{label}_above", q_hint=park[3][0])
-    rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{label}_down", allow=LEGACY)
-    rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label=f"{label}_sweep", allow=LEGACY)
-    rig.move_to(*legs[3], step=0.01, label=f"{label}_up", allow=LEGACY)
-    rig.grip(0.04, 60)
-    rig.step(90)
-    return rig.obj_pose(name)[0] - p0
-
-
 class RollCylinderPolicy(AtomicPolicy):
-    """Roll a lying cylinder (rolling pin, bottle on its side) the way a hand
-    does: closed pads press on its top and move perpendicular to its axis, so
-    the rubber pads turn it and its centre travels half as far as the hand."""
+    """Roll a lying cylinder (rolling pin, bottle on its side) the way a hand does: the closed pads press on its top
+    and drag it across its axis -- push's drag (skill_jobs.slide.push_object, modes ("drag",); HAND_PLAN 9h), leg by
+    leg until it went ``distance_m``, away from the robot where there is room.  Judged as before: it turned at least
+    45 deg (else it slid)."""
 
     def execute(self, name, distance_m=0.10):
+        from ..skill_jobs.slide import push_object
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("roll: the right hand must be empty")
         s = _support(rig, name)
         q0 = rig.obj_pose(name)[1]
         from ..predicates import lying_state
@@ -197,17 +149,14 @@ class RollCylinderPolicy(AtomicPolicy):
         b = rig.geo.bottom(name, rig.state())
         if n @ (b[:2] - np.array([x, y])) < 0:
             n = -n                                         # roll away from the robot
-        if _room_along(rig, name, s, n) < 0.6 * float(distance_m):
-            n = -n
-        d = min(float(distance_m), _room_along(rig, name, s, n))
-        if d < 0.03:
+        # both ways across its axis are goals of the one search (push_object: every direction a goal), away from the
+        # robot first; each as far as the support leaves room (what stands in the way the plan's collision check sees:
+        # rolled toward the oatmeal, the fingers ran into it 9 cm on, P03 11-25)
+        ways = [(v, min(float(distance_m), _room_along(rig, name, s, v)), None) for v in (n, -n)]
+        ways = [w for w in ways if w[1] >= 0.03]
+        if not ways:
             raise SkillFailure(f"roll {name}: no room on {s['name']}")
-        dia = float(sorted(size)[1])
-        top = s["z"] + dia
-        start = b[:2] - n * 0.01
-        # the TCP sits ~2 cm above the closed pad tips: tips press ~1 cm into the top
-        z_tcp = top + 0.010
-        _contact_sweep(rig, name, start, n, z_tcp, 2.0 * d, "roll")
+        n, _ = push_object(rig, name, s, ways, label="ROLL", modes=("drag",))
         from ..predicates import _rot_angle
         ang = _rot_angle(q0, rig.obj_pose(name)[1])
         moved = float((rig.geo.bottom(name, rig.state())[:2] - b[:2]) @ n)
@@ -218,13 +167,13 @@ class RollCylinderPolicy(AtomicPolicy):
 
 
 class TipOverPolicy(AtomicPolicy):
-    """Push a standing object 80 % up its height so it falls onto its side on
-    the same support (toward the support's interior)."""
+    """Poke a standing object at TIP_HEIGHT of its height so it falls onto its side on the same support (toward the
+    support's interior): one leg of push's poke (the catalog's push, modes ("poke",); HAND_PLAN 9h) -- one leg, a
+    fallen object is not pushed again.  Judged as before: tilted past 60 deg and still on the support."""
 
     def execute(self, name):
+        from ..motion_skills import SKILLS, run_skill
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("tip: the right hand must be empty")
         s = _support(rig, name)
         size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
         if tilt_deg(rig.obj_pose(name)[1]) > 20:
@@ -240,14 +189,12 @@ class TipOverPolicy(AtomicPolicy):
         away = np.array([np.sign(away[0]), 0.0]) if abs(away[0]) >= abs(away[1]) else np.array([0.0, np.sign(away[1])])
         inward = centre - b[:2]
         inward = np.array([np.sign(inward[0]), 0.0]) if abs(inward[0]) >= abs(inward[1]) else np.array([0.0, np.sign(inward[1])])
-        # prefer pushing away from the robot (a forward poke); it must land on the support
-        n = next((d for d in (away, inward, -away) if _room_along(rig, name, s, d) >= size[2] * 0.8), None)
-        if n is None:
+        # every direction it may fall onto the support is one goal of the leg's park search (away first: its cost)
+        dirs = [(d, float(2.0 * skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), d) + 0.03), c)
+                for c, d in enumerate((away, inward, -away)) if _room_along(rig, name, s, d) >= size[2] * 0.8]
+        if not dirs:
             raise SkillFailure(f"tip {name}: not enough room on {s['name']} to lie down")
-        half = skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), n)
-        start = b[:2] - n * (half + 0.03)
-        z_tcp = s["z"] + 0.80 * size[2] + 0.018
-        _contact_sweep(rig, name, start, n, z_tcp, half + 0.09, "tip", side_ok=True)
+        run_skill(rig, SKILLS["push"], {"name": name, "support": s, "dirs": dirs, "modes": ("poke",), "label": "TIP"})
         t = tilt_deg(rig.obj_pose(name)[1])
         on, _ = rig.geo.on(name, s["name"], rig.state())
         rig.log("tip_result", obj=name, tilt_deg=round(t, 1), on_support=bool(on))

@@ -1,13 +1,13 @@
 ---
 name: close-articulated
-description: "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load."
+description: "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), also while the right hand carries a load."
 ---
 
 # Close a door or drawer (`skill_041`)
 
 `close(articulated: articulated_ref)`
 
-Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
+Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), also while the right hand carries a load.
 
 ## When to use
 
@@ -49,14 +49,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `powered_loaded` — when articulated.powered and robot.right_held
-
-1. `policy_030($articulated)`
-2. `policy_031($articulated, target=close)`
-
 ### `powered` — when articulated.powered
 
 1. `policy_025($articulated)`
+- The door key pressed by the empty hand (the left while the right holds a load).
 
 ### `loaded` — when articulated.has_handle and robot.right_held
 
@@ -77,7 +73,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `place` (`skill_018`) (enables) — the object went into a cabinet or appliance whose door must be shut
+- Previous step: `place` (`skill_018`) (then) — the object went into a cabinet or appliance whose door must be shut
 - Previous step: `open` (`skill_040`) (then) — the door must be shut afterwards
 - Previous step: `collect` (`skill_048`) (then) — the container sits in a cabinet that must be closed
 - Previous step: `sort` (`skill_049`) (then) — a sorted container sits in a cabinet

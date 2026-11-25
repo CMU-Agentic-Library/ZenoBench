@@ -605,6 +605,16 @@
     "skill_id": "skill_038"
    },
    {
+    "name": "press",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:press_job",
+    "skill_id": "skill_042"
+   },
+   {
     "name": "crouch",
     "shape": "posture",
     "template": "plan_posture",
@@ -653,6 +663,166 @@
     "travel": "fold",
     "job": "zeno_skills.skill_jobs.posture:tuck_job",
     "skill_id": "skill_009"
+   },
+   {
+    "name": "lift",
+    "shape": "posture",
+    "template": "plan_held_move",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:lift_job",
+    "skill_id": "skill_023"
+   },
+   {
+    "name": "lower",
+    "shape": "posture",
+    "template": "plan_held_move",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:lower_job",
+    "skill_id": "skill_024"
+   },
+   {
+    "name": "present",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:present_job",
+    "skill_id": "skill_016"
+   },
+   {
+    "name": "hover",
+    "shape": "pick_place",
+    "template": "plan_hover",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.drop:hover_job",
+    "skill_id": "skill_063"
+   },
+   {
+    "name": "rotate",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:rotate_job",
+    "skill_id": "skill_025"
+   },
+   {
+    "name": "upright",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:upright_job",
+    "skill_id": "skill_036"
+   },
+   {
+    "name": "release",
+    "shape": "pick_place",
+    "template": "plan_release",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:release_job",
+    "skill_id": "skill_021"
+   },
+   {
+    "name": "touch",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:touch_job",
+    "skill_id": "skill_065"
+   },
+   {
+    "name": "knock",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:knock_job",
+    "skill_id": "skill_066"
+   },
+   {
+    "name": "wipe",
+    "shape": "contact",
+    "template": "plan_wipe",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.wipe:wipe_job",
+    "skill_id": "skill_037"
+   },
+   {
+    "name": "wave",
+    "shape": "posture",
+    "template": "plan_gesture",
+    "park": false,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.held:wave_job",
+    "skill_id": "skill_060"
+   },
+   {
+    "name": "point",
+    "shape": "posture",
+    "template": "plan_gesture",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.held:point_job",
+    "skill_id": "skill_015"
+   },
+   {
+    "name": "shake",
+    "shape": "posture",
+    "template": "plan_gesture",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:shake_job",
+    "skill_id": "skill_062"
+   },
+   {
+    "name": "flip",
+    "shape": "contact",
+    "template": "plan_flip",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:flip_job",
+    "skill_id": "skill_028"
+   },
+   {
+    "name": "pour",
+    "shape": "contact",
+    "template": "plan_pour",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.pour:pour_job",
+    "skill_id": "skill_039"
+   },
+   {
+    "name": "handover",
+    "shape": "bimanual",
+    "template": "plan_pick",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.pick:handover_job",
+    "skill_id": "skill_022"
    }
   ]
  }

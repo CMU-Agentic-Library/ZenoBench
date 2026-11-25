@@ -113,7 +113,7 @@ def fam(control, conditions, factor, challenge, rationale, cases, **kw):
                 rationale=rationale, cases=cases, **kw)
 
 
-H = ["hand_empty", "right"]
+H = ["hand_empty", "both"]
 # the household's own clean bowls and cups (base scene): bringing one of them does what was asked as well
 HOUSE_BOWLS = ["bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table", "bowl_inside_kitchen_cabinet"]
 HOUSE_CUPS = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table", "mug_dining_cabinet", "mug_shelf", "mug_counter"]

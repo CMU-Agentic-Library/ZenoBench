@@ -32,7 +32,7 @@
   "lid": {
    "type": "lid_ref",
    "required": true,
-   "description": "The held lid."
+   "description": "The held lid: an object tagged lid (a pot lid, or a plate set on the rim)."
   }
  },
  "required_inputs": [
@@ -42,18 +42,18 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$lid); base_near(place=$container); uncovered(container=$container)."
+  "summary": "Requires holding(hand=any, object=$lid); base_near(place=$container); uncovered(container=$container)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$lid)",
+   "predicate": "holding(hand=any, object=$lid)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$lid"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -113,16 +113,20 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
+   "predicate": "not holding(hand=any, object=$lid)",
+   "name": "holding",
    "args": {
-    "hand": "right"
+    "hand": "any",
+    "object": "$lid"
    },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "negated": true,
+   "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
-    "gripper_state"
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
    ],
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   }
@@ -148,16 +152,20 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
+    "predicate": "not holding(hand=any, object=$lid)",
+    "name": "holding",
     "args": {
-     "hand": "right"
+     "hand": "any",
+     "object": "$lid"
     },
-    "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "negated": true,
+    "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
-     "gripper_state"
+     "gripper_state",
+     "finger_joints",
+     "object_pose",
+     "arm_fk"
     ],
     "checked": "after the policy chain on live GT state; the action is reported only if true",
     "scope": "all paths"
@@ -201,7 +209,7 @@
     "when": "the pot is heated with its lid on (heat itself needs no lid)",
     "bind": {},
     "reason": "stove path",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

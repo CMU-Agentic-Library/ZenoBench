@@ -16,7 +16,7 @@
    "target"
   ]
  },
- "description": "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
+ "description": "Point the closed fingers at a target (finger axis within 8 deg) to indicate it.",
  "use_when": "A person must be shown an object or place without touching it.",
  "not_to_be_confused_with": {
   "touch": "point does not make contact."
@@ -34,17 +34,17 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right)."
+  "summary": "Requires hand_empty(hand=any)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -60,7 +60,7 @@
     "target": "$target"
    },
    "negated": false,
-   "meaning": "The right finger axis points at the target within 8 deg.",
+   "meaning": "Either hand's finger axis points at the target within 8 deg.",
    "kind": "fluent",
    "gt_sources": [
     "arm_fk",
@@ -69,13 +69,13 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -93,7 +93,7 @@
      "target": "$target"
     },
     "negated": false,
-    "meaning": "The right finger axis points at the target within 8 deg.",
+    "meaning": "Either hand's finger axis points at the target within 8 deg.",
     "kind": "fluent",
     "gt_sources": [
      "arm_fk",
@@ -103,13 +103,13 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
-    "meaning": "The given gripper holds nothing.",
+    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state"
@@ -132,16 +132,12 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_041()",
-    "policy_101($target) as aim",
-    "policy_038(#aim.position, #aim.rotation, position_tolerance=0.04, rotation_tolerance=0.2)"
+    "policy_071($target)"
    ],
    "policies": [
-    "policy_038",
-    "policy_041",
-    "policy_101"
+    "policy_071"
    ],
-   "note": ""
+   "note": "The point skill on the motion layers (HAND_PLAN 9h); the old chain of primitives (close, aim, right_tcp_move) is gone."
   },
   {
    "path_id": "turn_and_point",
@@ -182,7 +178,7 @@
     "bind": {
      "hand": "right"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

@@ -6,7 +6,7 @@
  "verb": "close",
  "noun": "articulated",
  "name": "Close a door or drawer",
- "description": "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.",
+ "description": "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), also while the right hand carries a load.",
  "group": "articulated_and_appliance",
  "inputs": {
   "articulated": {
@@ -67,7 +67,7 @@
     "hand": "left"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -82,7 +82,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -97,7 +97,7 @@
     "hand": "right"
    },
    "negated": false,
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
@@ -143,44 +143,6 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
-    "path_id": "powered_loaded",
-    "when": [
-     {
-      "noun": "articulated",
-      "field": "powered",
-      "op": "truthy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "right_held",
-      "op": "truthy",
-      "value": true
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_030",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_031",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {
-       "target": "close"
-      }
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": ""
-   },
-   {
     "path_id": "powered",
     "when": [
      {
@@ -201,7 +163,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "The door key pressed by the empty hand (the left while the right holds a load)."
    },
    {
     "path_id": "loaded",
