@@ -448,7 +448,8 @@ FLIP_MIN = math.radians(60.0)        # rad: an arc shorter than this cannot turn
 def flip_job(rig, args, state, skill=None):
     """motion_skills.Job of flip (HAND_PLAN 9h): what a hand holds by its edge (``args["name"]``, an edge pinch, picked
     from an overhang) turned over where the robot stands -- the pivot its far edge on the support along the approach,
-    the arc about it (skill_plans.plan_flip); an arm that turns it less than FLIP_MIN fails the build.  done(): its up
+    the arc about it (skill_plans.plan_flip); an arm that turns it less than FLIP_MIN fails the build (plan_flip's
+    "min_arc", every build: the first and run's).  done(): its up
     axis points down (SkillFailure otherwise), the arc returned."""
     from ..motion_skills import Job
     from ..evaluator import quat_R
@@ -482,17 +483,15 @@ def flip_job(rig, args, state, skill=None):
     k = np.cross(-a, [0.0, 0.0, 1.0])
     k /= np.linalg.norm(k)
     flip = {"obj": name, "support": s.get("furniture") or s["name"].split("/")[0], "pivot": pivot, "axis": k,
-            "release": FLIP_RELEASE, "past": FLIP_PAST, "push_to": FLIP_PUSH_TO,
+            "release": FLIP_RELEASE, "past": FLIP_PAST, "push_to": FLIP_PUSH_TO, "min_arc": FLIP_MIN,
             "pre_open": float(held.get("pre_open", 0.04))}
     z0 = Rb[:, 2].copy()
     rests = (kin.rest, kin.drive)
     ctx = {}
 
     def build(st_, frm=None, prior=None):
-        plan = plan_flip(kin, st_, flip, rests, start=frm or "flip_arrive", prior=prior)
-        if frm in (None, "flip_arrive") and not isinstance(plan, Failure) and (plan.info.get("arc_rad") or 0.0) < FLIP_MIN:
-            return Failure(f"the arm turns it only {math.degrees(plan.info.get('arc_rad') or 0.0):.0f} deg", "flip_arc")
-        return plan
+        # the arc short of FLIP_MIN fails plan_flip itself ("min_arc"): here and in run's rebuild alike
+        return plan_flip(kin, st_, flip, rests, start=frm or "flip_arrive", prior=prior)
 
     def ready(found):
         plan = build(_observe(rig))

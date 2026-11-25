@@ -61,8 +61,8 @@ def wipe_job(rig, args, state, skill=None):
     """motion_skills.Job of wiping ``args["support"]`` with ``args["tool"]`` (held in either hand): the load first in
     the carry posture (carry_posture, the old stow_load); every free strip (_strips) x hand turn (WIPE_YAWS) one goal
     of the park search -- the press's pose the TCP that puts the sponge's bottom centre WIPE_PRESS into the surface
-    at the strip's start through the hold the State has, the stroke along it (plan_wipe) -- a park whose arm strokes
-    too little of the strip for WIPE_COVER rejected in the build.  After the drive the plan run with the wipe's
+    at the strip's start through the hold the State has, the stroke along it (plan_wipe) -- a stroke too short for
+    WIPE_COVER of the strip a Failure of plan_wipe itself ("need"), at a park and in a rebuild alike.  After the drive the plan run with the wipe's
     hooks: the sponge sampled every WIPE_EVERY ticks while it strokes, a WIPE_CELL cell of the strip covered while
     its lowest point is within WIPE_ON of the surface (the old rule, now on every tick).  Judged: at least
     WIPE_COVER covered (memory "wiped")."""
@@ -91,6 +91,7 @@ def wipe_job(rig, args, state, skill=None):
     T_hold = np.asarray(held.T_tcp_obj, float)       # the sponge's box frame in the TCP frame
     _, R_now = kin.tcp(rig.chain_q(side))
     above = WIPE_PRESS + LEAVE_GAP + LEAVE_MARGIN
+    need = max(0.0, WIPE_COVER * length - half)      # m the stroke must run for WIPE_COVER of the strip
     wipes, goals = [], []
     for c_strip, a, b in strips:
         for psi in WIPE_YAWS:
@@ -99,20 +100,15 @@ def wipe_job(rig, args, state, skill=None):
             body_at = np.r_[a, s["z"] - WIPE_PRESS + hang]
             p = body_at - Rk @ T_hold[:3, 3]
             d = np.r_[b - a, 0.0]
-            wipes.append({"support": furniture, "p": p, "R": Rk, "d": d, "above": above, "strip": (a, b), "yaw": psi})
+            wipes.append({"support": furniture, "p": p, "R": Rk, "d": d, "above": above, "need": need, "strip": (a, b),
+                          "yaw": psi})
             goals.append(((p + [0.0, 0.0, above], p, p + d), (p, Rk), c_strip))
-    need = max(0.0, WIPE_COVER * length - half)      # m the stroke must run for WIPE_COVER of the strip
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_wipe as build_with
 
     def build(st_, k, prior):
-        plan = build_with(kin, st_, wipes[k], prior=prior)
-        stroke = getattr(plan, "info", {}).get("stroke_m") if not hasattr(plan, "why") else None
-        if stroke is not None and stroke < need:
-            from ..motion_state import Failure
-            return Failure(f"the arm strokes {stroke:.3f} m of the strip, {need:.3f} m needed", "wipe_stroke")
-        return plan
+        return build_with(kin, st_, wipes[k], prior=prior)
     problem = Problem(tuple(goals), build, WIPE_RELAY, near=rig.base_pose(), label=f"wipe {support}", hand=side)
     ctx = {"n": 0}
 

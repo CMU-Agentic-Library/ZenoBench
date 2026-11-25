@@ -242,6 +242,13 @@ def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
     assert np.allclose(_named(plan, "wipe_leave").q_end[:3], [0.5, 0.0, 0.116])
     assert np.allclose(plan.segments[-1].q_end, q0)                                      # back where it arrived
     assert isinstance(plan_wipe(FakeKin(), _state(q0), wipe), Failure)                    # nothing to wipe with
+    # rule 2: a stroke shorter than the job's need fails the build -- at the park and in run's rebuild alike
+    st = _state(q0, held=Held("sponge", np.eye(4)))
+    short = plan_wipe(FakeKin(), st, {**wipe, "need": 0.25})
+    assert isinstance(short, Failure) and short.segment == "wipe_stroke" and "0.250 m needed" in short.why
+    again = plan_wipe(FakeKin(), _state(press.q_end, held=Held("sponge", np.eye(4))), {**wipe, "need": 0.25},
+                      start="wipe_stroke", prior=plan)
+    assert isinstance(again, Failure) and again.segment == "wipe_stroke"
 
 
 def test_a_gesture_reaches_its_goal_set_swings_about_where_it_got_and_folds():
@@ -277,6 +284,12 @@ def test_a_pour_tilts_about_its_pivot_as_far_as_the_arm_goes_and_back():
     assert np.allclose(tilt.q_end[:3], [0.55, -0.05, 0.40], atol=1e-6)                 # turned about the pivot
     assert np.allclose(untilt.q_end[:3], [0.5, 0.0, 0.40], atol=1e-6)                   # back where it started
     assert np.allclose(plan.segments[-1].q_end, q0)
+    # rule 2: short of the least tilt the build fails, the first and a rebuild from the tilt alike
+    st = _state(q0, held=Held("cup", np.eye(4)))
+    assert isinstance(plan_pour(FakeKin(), st, {**pour, "min_tilt": np.radians(100.0)}), Failure)
+    again = plan_pour(FakeKin(), _state(_named(plan, "pour_reach").q_end, held=Held("cup", np.eye(4))),
+                      {**pour, "min_tilt": np.radians(100.0)}, start="pour_tilt", prior=plan)
+    assert isinstance(again, Failure) and again.segment == "pour_tilt"
 
 
 def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves():
@@ -291,6 +304,13 @@ def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves(
     assert plan.info["arc_rad"] == pytest.approx(np.radians(80.0))              # short of past: the open hand pushes on
     assert _named(plan, "flip_arc").spec.touch == (("table", "held"),)
     assert _named(plan, "flip_release").action[:2] == ("grip", 0.03)
+    # docs 8.3: run's rebuild at the arrival keeps the arc that still holds; rule 2: short of the least arc the
+    # build fails there as at the park
+    st = _state(q0, held=Held("book", np.eye(4)))
+    again = plan_flip(FakeKin(), st, flip, (np.zeros(9),), start="flip_arc", prior=plan)
+    assert isinstance(again, Plan) and _named(again, "flip_arc") is _named(plan, "flip_arc")
+    short = plan_flip(FakeKin(), st, {**flip, "min_arc": np.radians(85.0)}, (np.zeros(9),), start="flip_arc", prior=plan)
+    assert isinstance(short, Failure) and short.segment == "flip_arc"
 
 
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():

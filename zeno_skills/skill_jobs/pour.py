@@ -86,19 +86,14 @@ def pour_job(rig, args, state, skill=None):
                 axis = np.cross([0.0, 0.0, 1.0], np.r_[u, 0.0])
                 axis /= np.linalg.norm(axis)
                 pours.append({"source": source, "target": target, "p": p, "R": Rg, "pivot": pivot, "axis": axis,
-                              "tilt": POUR_TILT, "yaw": psi, "lip_off": lip_off})
+                              "tilt": POUR_TILT, "min_tilt": POUR_MIN_TILT, "yaw": psi, "lip_off": lip_off})
                 goals.append(((p,), (p, Rg), VARIANT_COST * j + (0.5 * VARIANT_COST if lip_off else 0.0)))
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_pour as build_with
 
     def build(s, k, prior):
-        plan = build_with(kin, s, pours[k], prior=prior)
-        tilt = getattr(plan, "info", {}).get("tilt_rad") if not hasattr(plan, "why") else None
-        if tilt is not None and tilt < POUR_MIN_TILT:
-            from ..motion_state import Failure
-            return Failure(f"the arm tilts it only {math.degrees(tilt):.0f} deg", "pour_tilt")
-        return plan
+        return build_with(kin, s, pours[k], prior=prior)
     problem = Problem(tuple(goals), build, POUR_RELAY, near=rig.base_pose(), label=f"pour {source}", hand=side)
     ctx = {}
 
