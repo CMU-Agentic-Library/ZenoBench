@@ -14,7 +14,7 @@ import numpy as np
 
 from ..kinematics import PAD_TIP, gripper_rot
 from ..park_search import VARIANT_COST, Problem
-from ..predicates import entity_kind
+from ..predicates import KNOCKED_STILL, entity_kind
 from ..rig import SkillFailure
 from ..skill_plans import PRESS_RELAY
 from ..tolerances import PRESS_APPROACH, PRESS_DEPTH, TARGET_TOL
@@ -163,7 +163,6 @@ def press_job(rig, args, state, skill=None):
 KNOCK_AT = ((0.07, 0.0), (-0.07, 0.0), (0.0, 0.08), (0.0, -0.08), (0.10, 0.05))   # m beside (along the handle) and
 #                                           above the handle's centre a knock lands, on the panel behind the bar (the old
 #                                           KnockPanelPolicy's), ranked in this order
-KNOCK_STILL = 0.05                          # rad / m a knocked door's joint may move (the knocked predicate's)
 TOUCH_CLOSES = ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0))   # the closed fingers' axis over a touched top
 
 
@@ -258,7 +257,7 @@ def knock_job(rig, args, state, skill=None):
     closed panel of ``args["name"]`` (a door or drawer with an annotated handle frame) beside or above its handle
     (KNOCK_AT, on the panel plane behind the bar), TOUCH_DEPTH into it, the closed fingers' axis vertical or along
     the handle (_tap_job).  Logs knock_contact (the knocked predicate counts them) when the tips got there; done():
-    the joint moved at most KNOCK_STILL (SkillFailure otherwise).  KnockPanelPolicy knocks ``taps`` times."""
+    the joint moved at most KNOCKED_STILL (SkillFailure otherwise).  KnockPanelPolicy knocks ``taps`` times."""
     from ..tolerances import TOUCH_DEPTH
     name = args["name"]
     a = rig.ann.art(name)
@@ -284,7 +283,7 @@ def knock_job(rig, args, state, skill=None):
     def result():
         moved = abs(rig.joint(name) - q0)
         rig.log("knock_result", articulated=name, joint_moved=round(moved, 4))
-        if moved > KNOCK_STILL:
+        if moved > KNOCKED_STILL:
             raise SkillFailure(f"knock {name}: the joint moved {moved:.3f}")
         return {"joint_moved": moved}
     return _tap_job(rig, skill, name, "knock", targets, contact, result)

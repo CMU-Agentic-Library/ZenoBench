@@ -11,11 +11,11 @@ import numpy as np
 
 from ..motion_state import Failure, Plan
 from ..rig import SkillFailure
+from ..predicates import FLIPPED_DOT, HELD_HEIGHT_TOL, POINTING_DEG
 from ..skills import check_held
+from ..tolerances import (FLIP_MIN, FLIP_PAST, FLIP_PUSH_TO, FLIP_RELEASE, ROTATE_NEAR_BASE, ROTATE_TOL_DEG, SHAKE_SLIP,
+                          UPRIGHT_RAISE, WAVE_AMP)
 
-HEIGHT_TOL = 0.02       # m: lift / lower -- the load's bottom this close to the height asked got there (the old
-#                         CarryHeightAdjustPolicy's / SetHeldHeightPolicy's tolerance and the held_above / held_below
-#                         predicates')
 # present: the load's centre in front of the base (forward, sideways toward the holding hand's side, height), m.
 # One goal set (any of them presents it), not tried one after another as the old PresentHeldPolicy did
 PRESENT_AT = ((0.55, -0.05, 1.10), (0.50, -0.15, 1.05), (0.60, 0.0, 1.00), (0.45, -0.10, 0.95))
@@ -44,14 +44,14 @@ def _bottom(rig, name):
 def lift_job(rig, args, state, skill=None):
     """motion_skills.Job of lift: what a hand holds (``args["name"]``) straight up where the robot stands until
     its bottom is at ``args["height"]`` (m, world) -- nothing moves when it is that high already (within
-    HEIGHT_TOL).  done(): the measured bottom at least height - HEIGHT_TOL (SkillFailure otherwise; a load whose
+    HELD_HEIGHT_TOL).  done(): the measured bottom at least height - HELD_HEIGHT_TOL (SkillFailure otherwise; a load whose
     end is caught lags the hand, and that is a failure, not a second try), logged as held_height_result."""
     return _height_job(rig, args, skill, up=True)
 
 
 def lower_job(rig, args, state, skill=None):
     """motion_skills.Job of lower: as lift_job, straight down until the bottom is at ``args["height"]`` --
-    nothing moves when it is that low already.  done(): the bottom at most height + HEIGHT_TOL."""
+    nothing moves when it is that low already.  done(): the bottom at most height + HELD_HEIGHT_TOL."""
     return _height_job(rig, args, skill, up=False)
 
 
@@ -66,7 +66,7 @@ def _height_job(rig, args, skill, up):
     side, kin = _held(rig, name, label)
     bottom = _bottom(rig, name)
     dz = height - bottom
-    still = (dz <= HEIGHT_TOL) if up else (dz >= -HEIGHT_TOL)
+    still = (dz <= HELD_HEIGHT_TOL) if up else (dz >= -HELD_HEIGHT_TOL)
     # the TCP's height goal, fixed now: the load moves with the hand (a rebuild goes on to the same height)
     tcp, _ = kin.tcp(rig.chain_q(side))
     z_goal = None if still else float(tcp[2]) + dz
@@ -84,7 +84,7 @@ def _height_job(rig, args, skill, up):
         actual = _bottom(rig, name)
         rig.log("held_height_result", obj=name, hand=side, bottom_z=round(actual, 3), target=round(height, 3),
                 moved=z_goal is not None)
-        if (up and actual < height - HEIGHT_TOL) or (not up and actual > height + HEIGHT_TOL):
+        if (up and actual < height - HELD_HEIGHT_TOL) or (not up and actual > height + HELD_HEIGHT_TOL):
             raise SkillFailure(f"{label} {name}: bottom at {actual:.3f} m, asked {height:.3f} m")
         return actual
     return Job(ready=ready, done=done)
@@ -148,12 +148,9 @@ def _observe(rig):
 # (m along the floor toward the base, m up; the old RotateHeldPolicy's staging poses, where the wrist has more
 # range).  One goal set, not tried one after another
 ROTATE_AT = ((0.0, 0.0), (0.15, 0.06), (0.25, 0.12), (0.05, 0.04), (0.30, 0.20))
-ROTATE_NEAR_BASE = 0.35     # m: no staging pose is pulled closer to the base than this (the old code's)
-ROTATE_TOL_DEG = 10.0       # deg: the load's yaw changed this close to the angle asked (rotate_result; the old value)
-# upright: the hand raised by this much at least (or half the load's longest side) where it is, or a TCP in front
+# upright: the hand raised UPRIGHT_RAISE at least (or half the load's longest side) where it is, or a TCP in front
 # of the chest (forward, sideways toward the hand's side, height, m) -- the old stage grid's core; the turned
 # load's heading about the vertical free (UPRIGHT_YAWS deg)
-UPRIGHT_RAISE = 0.12
 UPRIGHT_FRONT = tuple((f, l, z) for f in (0.45, 0.38) for l in (-0.15, -0.05) for z in (1.0, 1.1))
 UPRIGHT_YAWS = (0.0, 45.0, -45.0, 90.0, -90.0, 135.0, -135.0, 180.0)
 
@@ -305,11 +302,8 @@ def release_job(rig, args, state, skill=None):
 # gestures (HAND_PLAN 9h): one goal set each where the old policies tried poses one after another
 WAVE_AT = (0.35, 0.25, (1.25, 1.15, 1.05))   # m: the hand raised this far forward, toward its own side, at any of
 #                                             these heights (the old WaveHandPolicy's three tries)
-WAVE_AMP = 0.10                               # m the raised hand swings to each side (old value)
 POINT_SHOULDER = (0.09, 0.18, 1.05)           # m: the pointing ray's origin -- forward, toward the hand's side, height
 POINT_REACH = (0.45, 0.38, 0.52, 0.30)        # m out along the ray the hand may stand (the old four tries)
-POINT_TOL_DEG = 8.0                           # deg: the closed fingers' axis this close to the target (point_result)
-SHAKE_SLIP = 0.008                            # m the pinch may close while shaking (the object did not turn in it)
 
 
 def _empty_or(rig, default="right"):
@@ -364,7 +358,7 @@ def point_job(rig, args, state, skill=None):
     """motion_skills.Job of point (HAND_PLAN 9h): the closed fingers (an empty hand closed first) along the ray from
     the hand's shoulder (POINT_SHOULDER) to ``args["target"]``, the hand anywhere along it at POINT_REACH -- one goal
     set.  A target not in front (the ray's forward part < 0.2): SkillFailure (the task layer turns the robot first).
-    done(): the fingers' axis within POINT_TOL_DEG of the target (point_result), the angle returned."""
+    done(): the fingers' axis within POINTING_DEG of the target (point_result), the angle returned."""
     from ..kinematics import gripper_rot
     from ..predicates import entity_point
     from ..primitives import PoseSet
@@ -397,7 +391,7 @@ def point_job(rig, args, state, skill=None):
         v = p - np.asarray(tcp, float)
         ang = math.degrees(math.acos(float(np.clip((-R2[:, 2]) @ v / np.linalg.norm(v), -1.0, 1.0))))
         rig.log("point_result", target=target, hand=side, angle_deg=round(ang, 2))
-        if ang > POINT_TOL_DEG:
+        if ang > POINTING_DEG:
             raise SkillFailure(f"point at {target}: {ang:.1f} deg off")
         return ang
     return _gesture_job(rig, "point", side, build, done)
@@ -438,11 +432,6 @@ def shake_job(rig, args, state, skill=None):
     return _gesture_job(rig, "shake", side, build, done)
 
 
-FLIP_RELEASE = math.radians(105.0)   # rad: the flip's arc goes this far at most (the old release_deg)
-FLIP_PAST = math.radians(95.0)       # rad: past vertical -- the old PAST_VERTICAL_DEG
-FLIP_PUSH_TO = math.radians(120.0)   # rad: the open hand's push ends here (the old release + 15 deg)
-FLIP_MIN = math.radians(60.0)        # rad: an arc shorter than this cannot turn it (the old check) -- a park whose
-#                                      arm turns it less is rejected in the build
 
 
 def flip_job(rig, args, state, skill=None):
@@ -505,7 +494,7 @@ def flip_job(rig, args, state, skill=None):
         dot = float(z0 @ z1)
         rig.log("flip_result", obj=name, hand=side, arc_deg=round(math.degrees(ctx.get("arc") or 0.0), 1),
                 z_dot=round(dot, 3))
-        if dot > -0.7:
+        if dot > FLIPPED_DOT:
             raise SkillFailure(f"flip {name}: not turned over (z dot {dot:.2f})")
         return math.degrees(ctx.get("arc") or 0.0)
     return Job(ready=ready, done=done)

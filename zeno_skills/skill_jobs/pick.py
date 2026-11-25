@@ -14,14 +14,13 @@ from ..rig import SkillFailure
 from ..run import observe
 from ..sticky import note_grasp
 from ..skill_plans import FREE_HAND, PICK_RELAY
-from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, SHUT, TARGET_TOL
+from ..predicates import TOUCHED_STILL
+from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, HANDOVER_LONG, SHUT, TARGET_TOL
 from .door_access import door_ahead, front_of, outward
 from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
-HOLD_STILL = 0.015             # m a pick that holds it where it stands (brace, handover) may move it (the touched
-#                                predicate's 1.5 cm)
 
 
 def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, relay_free=None, sides=("right",),
@@ -250,7 +249,7 @@ def pick_job(rig, args, state, skill=None):
                     held=held is not None and held["name"] == name)
             if held is None or held["name"] != name:
                 raise SkillFailure(f"pick {name}: not in the {side} hand after the close")
-            if moved > HOLD_STILL:
+            if moved > TOUCHED_STILL:
                 raise SkillFailure(f"pick {name}: the hold moved it {moved:.3f} m")
             return ctx["g"]["kind"]
         return _pick_judged(rig, name, ctx["g"], ctx["out"]["tcp0"], ctx["pos"], ctx["side"])
@@ -264,7 +263,6 @@ HANDOVER_AXIS = (60.0, 50.0, 70.0)
 # deg, base frame: a long load (longest side over HANDOVER_LONG) is turned about the vertical so its long axis lies
 # this far round from forward toward the taking hand -- across the body, its far end toward the taking hand (the old
 # across-the-body turn); any other load keeps the hand as it is or turned a quarter
-HANDOVER_LONG = 0.15
 HANDOVER_TURNS = (0.0, 90.0, -90.0, 180.0)
 
 

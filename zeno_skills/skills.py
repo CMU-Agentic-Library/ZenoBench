@@ -48,7 +48,6 @@ PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search c
 # m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
 # vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
 PAD_FLOOR_GAP = 0.022 - PAD_TIP
-PLACE_APPROACH = 0.05         # m: wipe's press straight (tooluse); place measures its set-down (skill_plans.set_down_length)
 
 
 # ---------------------------------------------------------------- navigation

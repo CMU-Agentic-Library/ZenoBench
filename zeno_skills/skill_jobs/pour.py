@@ -14,13 +14,10 @@ from ..predicates import objects_inside
 from ..rig import SkillFailure
 from ..skill_plans import POUR_RELAY
 from ..skills import check_held
+from ..tolerances import POUR_ABOVE, POUR_MIN_TILT, POUR_TILT
 from .carry import carry_posture
 
-POUR_TILT = math.radians(110.0)      # rad: the tilt goes this far at most (the old largest commanded tilt)
-POUR_MIN_TILT = math.radians(60.0)   # rad: a park whose arm tilts it less is rejected in the build (the old rocking
-#                                      threshold: below it nothing poured)
 POUR_YAWS = (0.0, 45.0, -45.0, 90.0, -90.0, 180.0)   # deg the hand (and the pour) turns about the vertical
-POUR_ABOVE = 0.05                    # m: the cup's bottom this far over the target's rim at the start (old value)
 
 
 def pour_job(rig, args, state, skill=None):

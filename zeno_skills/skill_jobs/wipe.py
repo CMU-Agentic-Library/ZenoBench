@@ -11,23 +11,18 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from ..park_search import Problem
-from ..predicates import memory
+from ..predicates import WIPED_COVER, memory
 from ..rig import SkillFailure
 from ..skill_plans import WIPE_RELAY
 from ..skills import _lowest_z, _overlaps_objects, check_held
-from ..tolerances import LEAVE_GAP, LEAVE_MARGIN, WIPE_PRESS
+from ..tolerances import LEAVE_GAP, LEAVE_MARGIN, WIPE_CELL, WIPE_INSETS, WIPE_LENGTH, WIPE_ON, WIPE_PRESS
 from .carry import carry_posture
 
-WIPE_LENGTH = 0.30            # m: the strip wiped (the old policy's)
-WIPE_INSETS = (0.08, 0.045)   # m in from a support edge a wipe strip runs (the second when objects line the first)
 WIPE_STEP_ALONG = 0.10        # m between strip centres sampled along an edge
 WIPE_STRIPS = 8               # cheapest free strips in the park goal set (x WIPE_YAWS)
 WIPE_DIST_COST = 0.3          # park cost per m from the robot to a strip's centre
 WIPE_INSET_COST = 0.05        # park cost of the closer-to-the-edge inset
 WIPE_YAWS = (0.0, 90.0, -90.0, 180.0)   # deg the hand (and the sponge) turns about the vertical: it does not matter
-WIPE_COVER = 0.5              # of the strip's 2 cm cells under the sponge while pressed: the wiped predicate's
-WIPE_CELL = 0.02              # m: a coverage cell
-WIPE_ON = 0.008               # m: the sponge's lowest point this close to the surface counts as pressed (old value)
 WIPE_EVERY = 4                # physics ticks between coverage samples
 
 
@@ -62,10 +57,10 @@ def wipe_job(rig, args, state, skill=None):
     the carry posture (carry_posture, the old stow_load); every free strip (_strips) x hand turn (WIPE_YAWS) one goal
     of the park search -- the press's pose the TCP that puts the sponge's bottom centre WIPE_PRESS into the surface
     at the strip's start through the hold the State has, the stroke along it (plan_wipe) -- a stroke too short for
-    WIPE_COVER of the strip a Failure of plan_wipe itself ("need"), at a park and in a rebuild alike.  After the drive the plan run with the wipe's
+    WIPED_COVER of the strip a Failure of plan_wipe itself ("need"), at a park and in a rebuild alike.  After the drive the plan run with the wipe's
     hooks: the sponge sampled every WIPE_EVERY ticks while it strokes, a WIPE_CELL cell of the strip covered while
     its lowest point is within WIPE_ON of the surface (the old rule, now on every tick).  Judged: at least
-    WIPE_COVER covered (memory "wiped")."""
+    WIPED_COVER covered (memory "wiped")."""
     from ..motion_skills import Job
     from ..run import observe
     tool, support = args["tool"], args["support"]
@@ -91,7 +86,7 @@ def wipe_job(rig, args, state, skill=None):
     T_hold = np.asarray(held.T_tcp_obj, float)       # the sponge's box frame in the TCP frame
     _, R_now = kin.tcp(rig.chain_q(side))
     above = WIPE_PRESS + LEAVE_GAP + LEAVE_MARGIN
-    need = max(0.0, WIPE_COVER * length - half)      # m the stroke must run for WIPE_COVER of the strip
+    need = max(0.0, WIPED_COVER * length - half)      # m the stroke must run for WIPED_COVER of the strip
     wipes, goals = [], []
     for c_strip, a, b in strips:
         for psi in WIPE_YAWS:
@@ -162,7 +157,7 @@ def wipe_job(rig, args, state, skill=None):
         a, b = ctx["w"]["strip"]
         rig.log("wipe_result", tool=tool, support=support, hand=side, coverage=round(cov, 3),
                 strip=[np.round(a, 3).tolist(), np.round(b, 3).tolist()])
-        if cov < WIPE_COVER:
+        if cov < WIPED_COVER:
             raise SkillFailure(f"wipe {support}: contact coverage {cov:.2f}")
         return cov
     return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, done=done)

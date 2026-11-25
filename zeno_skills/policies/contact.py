@@ -20,6 +20,7 @@ from ..clearance import LEGACY
 from ..kinematics import gripper_rot
 from ..predicates import finger_slots_free, neighbour_gap, tilt_deg, GRASP_GAP_M
 from ..rig import SkillFailure
+from ..tolerances import TIP_PAST
 
 
 def _support(rig, name):
@@ -190,7 +191,7 @@ class TipOverPolicy(AtomicPolicy):
         inward = centre - b[:2]
         inward = np.array([np.sign(inward[0]), 0.0]) if abs(inward[0]) >= abs(inward[1]) else np.array([0.0, np.sign(inward[1])])
         # every direction it may fall onto the support is one goal of the leg's park search (away first: its cost)
-        dirs = [(d, float(2.0 * skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), d) + 0.03), c)
+        dirs = [(d, float(2.0 * skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), d) + TIP_PAST), c)
                 for c, d in enumerate((away, inward, -away)) if _room_along(rig, name, s, d) >= size[2] * 0.8]
         if not dirs:
             raise SkillFailure(f"tip {name}: not enough room on {s['name']} to lie down")

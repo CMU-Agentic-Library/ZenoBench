@@ -99,6 +99,13 @@ def type_satisfies(value_type: str, wanted: str) -> bool:
 
 # --------------------------------------------------------------------- thresholds
 UPRIGHT_DEG = 20.0
+# the task's thresholds a skill's own result check uses too (skill_jobs import them: one source, here)
+HELD_HEIGHT_TOL = 0.02   # m: held_above / held_below -- the held load's bottom this close to the height (lift / lower)
+POINTING_DEG = 8.0       # deg: pointing_at -- the closed fingers' axis this close to the target (point)
+FLIPPED_DOT = -0.7       # flipped: the object's z axis against its start's, at most this (flip)
+WIPED_COVER = 0.5        # wiped: this much of the strip in contact (wipe's result, and the stroke its build needs)
+KNOCKED_STILL = 0.05     # rad / m: knocked -- the knocked door's joint moved less (knock)
+TOUCHED_STILL = 0.015    # m: touched -- the touched object moved less (touch; brace and handover hold one as still)
 LYING_DEG = 60.0
 REACH_OFFSET = 0.10           # reach test: TCP this far above the target point
 NEAR_M = 1.30                 # base_near: base centre to target footprint
@@ -464,7 +471,7 @@ def _pointing_at(rig, ctx, target):
         d = entity_point(rig, target, _state(rig, ctx)) - tcp
         ang = math.degrees(math.acos(max(-1.0, min(1.0, float((-R[:, 2]) @ d / max(1e-9, np.linalg.norm(d)))))))
         best = ang if best is None else min(best, ang)
-    return best is not None and best <= 8.0, f"angle {best:.1f} deg"
+    return best is not None and best <= POINTING_DEG, f"angle {best:.1f} deg"
 
 
 @predicate("presenting", [("object", "object_ref")], "fluent",
@@ -617,14 +624,14 @@ def _lying(rig, ctx, object):
            "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).")
 def _held_above(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return in_a_hand(rig, object) and z >= float(height_m) - 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z >= float(height_m) - HELD_HEIGHT_TOL, f"bottom z {z:.3f} m"
 
 
 @predicate("held_below", [("object", "object_ref"), ("height_m", "positive_number")], "fluent",
            "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).")
 def _held_below(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return in_a_hand(rig, object) and z <= float(height_m) + 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z <= float(height_m) + HELD_HEIGHT_TOL, f"bottom z {z:.3f} m"
 
 
 def edge_overhang(rig, name, st):
@@ -895,7 +902,7 @@ def _sorted(rig, ctx, objects, rule):
            "A held wiping tool stayed in contact with at least 50 % of the requested strip of the support.")
 def _wiped(rig, ctx, support):
     cov = memory(rig)["wiped"].get(support, 0.0)
-    return cov >= 0.5, f"coverage {cov:.2f}"
+    return cov >= WIPED_COVER, f"coverage {cov:.2f}"
 
 
 @predicate("stirred", [("container", "container_ref")], "memory",
@@ -1017,7 +1024,7 @@ def _flipped(rig, ctx, object):
     z0 = _quat_R(ctx["before"]["objects"][object]["quat"])[:, 2]
     z1 = _quat_R(rig.obj_pose(object)[1])[:, 2]
     dot = float(z0 @ z1)
-    return dot <= -0.7, f"z dot {dot:.2f}"
+    return dot <= FLIPPED_DOT, f"z dot {dot:.2f}"
 
 
 @predicate("button_pressed", [("button", "button_ref")], "relative",
@@ -1113,7 +1120,7 @@ def _knocked(rig, ctx, articulated):
           and e.get("articulated") == articulated]
     q0 = ctx["before"]["joints"].get(articulated, rig.joint(articulated))
     moved = abs(rig.joint(articulated) - q0)
-    return len(ev) >= 2 and moved < 0.05, f"{len(ev)} contacts, joint moved {moved:.3f}"
+    return len(ev) >= 2 and moved < KNOCKED_STILL, f"{len(ev)} contacts, joint moved {moved:.3f}"
 
 
 @predicate("touched", [("object", "object_ref")], "relative",
@@ -1121,7 +1128,7 @@ def _knocked(rig, ctx, articulated):
 def _touched(rig, ctx, object):
     ev = [e for e in rig.events[ctx["before"]["events"]:] if e.get("label") == "touch_contact" and e.get("obj") == object]
     moved = float(np.linalg.norm(rig.obj_pose(object)[0] - _before_pos(ctx, object)))
-    return bool(ev) and moved < 0.015, f"{len(ev)} contacts, moved {moved:.3f} m"
+    return bool(ev) and moved < TOUCHED_STILL, f"{len(ev)} contacts, moved {moved:.3f} m"
 
 
 def _support_axes_err(rig, name, st):
