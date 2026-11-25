@@ -25,7 +25,7 @@ def _job(rig, state, build, label, done):
         plan = build(state, None)
         if isinstance(plan, Failure):
             raise SkillFailure(f"{label}: {plan.why}")
-        hooks = {sg.name: {"after": lambda r, n=sg.name: check_both_held(r, n)}
+        hooks = {sg.name: {"after": lambda r, n=sg.name: check_both_held(r, n, open_hand=False)}
                  for sg in plan.segments if sg.kind == "move"}
         return plan, (lambda st, frm, prior=None: build(st, frm)), hooks
     return Job(ready=ready, done=done)

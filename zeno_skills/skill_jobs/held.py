@@ -31,8 +31,9 @@ def _held(rig, name, what):
 
 
 def _hooks(plan, side):
-    """After each move the hold checked (the load is still in that hand)."""
-    return {sg.name: {"after": lambda r, n=sg.name: check_held(r, n, side=side)}
+    """After each move the hold checked (the load is still in that hand); a drop asks run for the failure exit that
+    opens that hand (docs 8.6: a hook does not move the robot)."""
+    return {sg.name: {"after": lambda r, n=sg.name: check_held(r, n, open_hand=False, side=side)}
             for sg in plan.segments if sg.kind == "move"}
 
 

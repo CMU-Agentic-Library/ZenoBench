@@ -6,7 +6,7 @@ from dataclasses import replace
 
 from ..motion_state import Failure
 from ..rig import SkillFailure
-from ..skills import (check_held, check_left_held)
+from ..skills import check_held
 from .base import RigBase
 from .carry import _carry
 
@@ -54,7 +54,7 @@ def navigate_job(rig, args, state, skill=None):
             if r.held is not None:
                 check_held(r, "carry", open_hand=False)
             if r.left_held is not None:
-                check_left_held(r, "left_carry")
+                check_held(r, "left_carry", open_hand=False, side="left")
         hooks = {"carry_in": {"after": lambda r: check_held(r, "carry_in", open_hand=False)},
                  "left_carry_in": {"after": lambda r: check_held(r, "left_carry_in", open_hand=False, side="left")},
                  label: {"before": before_drive, "after": after_drive}}

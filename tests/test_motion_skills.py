@@ -81,6 +81,27 @@ def test_a_park_too_close_to_drive_to_has_its_plan_made_again_where_the_base_sta
     assert priors == [old]                                             # the found plan's decisions: the prior
 
 
+def test_the_failure_exit_is_the_failed_hands_else_the_plans_own(monkeypatch):
+    """docs 8.6: the exit opens the hand that failed (the clearing names it); with none named, the hand the plan
+    works with -- an in-place skill's (no park search) is its plan's side, not the right by default (HAND_PLAN
+    9i: the left hand's pick of a handover, the right still holding the load, had no exit at all)."""
+    rig, used = _rig(), []
+    rig.arm_kin = lambda side: SimpleNamespace(side=side)
+    plan = Plan((Segment("wave_reach", Spec(), rig.q_cmd, info={"side": "left"}),))
+
+    def run(rig_, plan_, build, hooks, clear=None):
+        clear(None, {"open_width": 0.04, "leave": False, "ticks": 20, "side": None})
+        clear(None, {"open_width": 0.04, "leave": True, "ticks": 60, "side": "right"})
+    monkeypatch.setattr(skill_plans, "plan_clear", lambda kin, st, **what: used.append((kin.side, what)))
+    monkeypatch.setattr(MS, "observe", _state)
+    monkeypatch.setattr(MS, "run", run)
+    wave = Skill("wave", "posture", "plan_gesture", False, "fold", "fold",
+                 lambda rig_, args, state, skill: Job(ready=lambda f: (plan, None, {})))
+    MS.run_skill(rig, wave, {})
+    assert used == [("left", {"open_width": 0.04, "leave": False, "ticks": 20}),
+                    ("right", {"open_width": 0.04, "leave": True, "ticks": 60})]
+
+
 def test_a_skill_plans_with_the_head_straight_ahead(monkeypatch):
     """A look leaves the head where it aimed (T07 11-14: at its 18 deg down limit over the tray it had
     looked at): run_skill turns it straight ahead before it reads the state it plans from, and leaves a

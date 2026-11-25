@@ -167,7 +167,7 @@ def check_held(rig, label, open_hand=True, side="right"):
         setattr(rig, "held" if side == "right" else "left_held", None)
         exc = Dropped(f"{label}: {h['name']} slipped out of the {'' if side == 'right' else 'left '}hand while carrying it")
         if not open_hand:
-            raise clearing(exc, 0.04, leave=False, ticks=20)
+            raise clearing(exc, 0.04, leave=False, ticks=20, side=side)
         rig.grip(0.04, 20, side=side)
         raise exc
 
@@ -785,7 +785,7 @@ def _pick_judged(rig, name, g, tcp0, pos, side="right"):
     if not held:
         setattr(rig, "held" if side == "right" else "left_held", None)   # opened by the failure exit (clearing)
         raise clearing(SkillFailure(f"pick {name}: not held (lift {lift:.3f} m, hand {rise:.3f} m)"), 0.04,
-                       leave=False)
+                       leave=False, side=side)
     return True
 
 

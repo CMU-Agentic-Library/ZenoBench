@@ -820,7 +820,7 @@ def test_a_hook_failure_that_asks_for_the_exit_has_it_run_before_it_is_raised(mo
     with pytest.raises(SkillFailure, match="not pinched"):
         RUN.run(rig, Plan((_seg("a", np.zeros(9), np.full(9, 0.1)),)), None, {"a": {"after": hook}},
                 clear=lambda st, what: asked.append(what) or exit_plan)
-    assert asked == [{"open_width": 0.04, "leave": True, "ticks": 60}] and np.allclose(rig.q_cmd, 0.3)
+    assert asked == [{"open_width": 0.04, "leave": True, "ticks": 60, "side": None}] and np.allclose(rig.q_cmd, 0.3)
     with pytest.raises(SkillFailure):                                # not asked: no exit
         RUN.run(rig, Plan((_seg("b", rig.q_cmd, np.full(9, 0.4)),)), None,
                 {"b": {"after": lambda a: (_ for _ in ()).throw(SkillFailure("plain"))}},
@@ -846,6 +846,22 @@ def test_the_skill_jobs_hooks_do_not_move_the_robot():
                  and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
                  and n.func.value.id in ("rig", "r") and n.func.attr in moves]
         assert not calls, (f.name, [(c.lineno, c.func.attr) for c in calls])
+
+
+def test_the_skill_jobs_held_checks_ask_for_the_exit_rather_than_open_the_hand():
+    # docs 8.6: a drop found by a job's check (a hook, or before its plan) is a clearing that run's failure exit
+    # opens the hand for -- check_held's own grip (open_hand=True) is the old entries' (HAND_PLAN 7)
+    import ast
+    from pathlib import Path
+    for f in (Path(__file__).resolve().parents[1] / "zeno_skills" / "skill_jobs").glob("*.py"):
+        for n in ast.walk(ast.parse(f.read_text())):
+            if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Name)):
+                continue
+            assert n.func.id != "check_left_held", (f.name, n.lineno)
+            if n.func.id in ("check_held", "check_both_held"):
+                kw = {k.arg: k.value for k in n.keywords}
+                assert isinstance(kw.get("open_hand"), ast.Constant) and kw["open_hand"].value is False, \
+                    (f.name, n.lineno)
 
 
 def test_a_rest_failing_only_at_the_tuck_runs_and_makes_the_tuck_when_the_arm_gets_there(monkeypatch):

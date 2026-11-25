@@ -95,7 +95,8 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
             rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
             rig.focus_z = None
             # out of the contact straight up: the failure exit run makes (skill_plans.plan_clear)
-            raise clearing(SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose"))
+            raise clearing(SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose"),
+                           side=side)
 
     def before_close(rig):
         rig.caption = f"PICK {name}: close gripper"
@@ -112,7 +113,7 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
             rig.focus_z = None
             # the hand opened and out of the contact: the failure exit run makes (plan_clear)
             raise clearing(SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
-                                        f"opened to {g['pre_open']:.3f})"), 0.04)
+                                        f"opened to {g['pre_open']:.3f})"), 0.04, side=side)
         # held from here (and welded, under sticky hands): the hand's pose as it stands
         tcp0, R = kin.tcp(_chain_q(rig, side))
         held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,

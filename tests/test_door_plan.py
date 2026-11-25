@@ -114,7 +114,8 @@ def test_a_ride_that_stops_short_asks_for_letting_go_and_backing_out():
     ride = next(s for s in plan.segments if s.name == "door_ride")
     with pytest.raises(SkillFailure) as e:
         RUN.execute(RideAct(done=False), ride)
-    assert e.value.clear == {"open_width": 0.04, "leave": True, "ticks": 60}
+    # the exit is the hand that rode the door (the segment's side)
+    assert e.value.clear == {"open_width": 0.04, "leave": True, "ticks": 60, "side": "right"}
 
 
 # ------------------------------------------------------------------ closing by a push (docs 6, close; 9.3 step 6b)

@@ -796,10 +796,10 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 `execute` 按种类分：`move` 交给 `follow`，持物时限速；`drive` 交给底盘；`scripted` 交给它的执行器（`follow` 照走 `qs`；`ride` 把 `ride_base` 这个函数交给 `Actuator.ride`，没走到 `done` 就失败）；`action` 做对应动作；`anchor` 不动。除锚点（不动，不声明）以外每段都向接触监视声明 `seg.spec.allow`（松手声明"手指可碰放下的物体"）。这些都是 `Actuator` 的方法（2.5）：`execute` 和 `observe` 是 ④ 仅有的两处仿真副作用，而且只通过这个协议，不直接碰 `Rig`。
 
-技能自己的判断挂在 hooks 上：伸入时盯物体、合爪后判断和登记持物、搬运后 `check_held`。hooks 只读状态、做判断、登记、写日志，**不动机器人，不改碰撞模型**。判失败以后要退出接触（没夹住、半路被挡），由技能给一个失败出口的 `build_clear(state)`（张手 + `contact_extent(near_world)` + `contact_segment`），`run` 执行它再抛 `SkillFailure`。做法：hook 判失败时抛的异常用 `motion_state.clearing(exc, open_width, leave, ticks)` 标明要什么退出（张手到多宽、要不要竖直退出接触），`run`（以及 `run_skill` 判结果失败时）用 `skill_plans.plan_clear` 从现在的 `State` 做出这份计划、原样执行，再把原来的异常抛出去；手里还有东西时不张手（`plan_clear` 返回 None）。退出本身失败就往上抛，原来的失败在异常链里。各处要的退出：
+技能自己的判断挂在 hooks 上：伸入时盯物体、合爪后判断和登记持物、搬运后 `check_held`。hooks 只读状态、做判断、登记、写日志，**不动机器人，不改碰撞模型**。判失败以后要退出接触（没夹住、半路被挡），由技能给一个失败出口的 `build_clear(state)`（张手 + `contact_extent(near_world)` + `contact_segment`），`run` 执行它再抛 `SkillFailure`。做法：hook 判失败时抛的异常用 `motion_state.clearing(exc, open_width, leave, ticks, side)` 标明要什么退出（张手到多宽、要不要竖直退出接触、哪只手：判失败的那只，hook 知道；没写就是计划用的那只手——停车点搜索选中的目标的手，不选停车点的技能取计划自己的段写的手，`run_skill`，11-25 以前一律取右手，左手的 handover 接不住时没有出口），`run`（以及 `run_skill` 判结果失败时）用 `skill_plans.plan_clear` 从现在的 `State` 做出这份计划、原样执行，再把原来的异常抛出去；手里还有东西时不张手（`plan_clear` 返回 None）。退出本身失败就往上抛，原来的失败在异常链里。各处要的退出：
 - `after_grasp` 被挡住 → 只退出接触；
 - `after_close` 没夹住 → 张到 4 cm、退出接触；
-- `check_held` 作为 hook（pick 的 `carry_in`、navigate 开车前后、`carry_posture`、place 的 `place_down` 后）发现掉了 → 张开、不退（旧入口的调用方照旧 `open_hand=True`，在 `check_held` 里张开）；
+- `check_held` 作为 hook（pick 的 `carry_in`、navigate 开车前后、`carry_posture`、place 的 `place_down` 后、持物的原地技能每段之后、姿态类每段之后查两只手）发现掉了 → 张开那只手、不退。`skill_jobs` 里的检查都传 `open_hand=False`（`tests/test_skill_plans.py` 守住）；旧入口的调用方照旧 `open_hand=True`，在 `check_held` 里张开；
 - `_pick_judged` 没拿住 → 张开、不退。
 
 `place_settle`（`wait` 动作）是 place 计划的最后一段；`before_pull_out` 只按现在的 `State` 做一次 `primitives.query` 记录手指碰着什么。`tests/test_skill_plans.py` 守住：`skill_jobs/` 里不直接调 `rig` 的运动入口（`grip`、`leave`、`step`、`move_to`……）。

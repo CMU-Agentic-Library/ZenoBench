@@ -155,7 +155,7 @@ def open_job(rig, args, state, skill=None):
             f = np.asarray(rig.fingers_of(side), float)[:2]
             if not handle_closed_on(f, t):
                 raise clearing(SkillFailure(f"open {name}: handle not grasped, fingers {f.round(4).tolist()}"),
-                               grip["pre_open"])
+                               grip["pre_open"], side=side)
             rig._handle_grasp = {"name": name, "pre_open": grip["pre_open"], "q": rig.joint(name),
                                  "coll_kw": kin.coll_kw, "side": side}
             rig.log("handle_grasped", name=name, fingers=f.round(4).tolist())
@@ -308,7 +308,7 @@ def close_job(rig, args, state, skill=None):
                 f = np.asarray(rig.fingers(), float)[:2]
                 if not handle_closed_on(f, t):
                     raise clearing(SkillFailure(f"close {name}: handle not grasped, fingers {f.round(4).tolist()}"),
-                                   inp["pre_open"])
+                                   inp["pre_open"], side="right")
                 rig._handle_grasp = {"name": name, "pre_open": inp["pre_open"], "q": rig.joint(name),
                                      "coll_kw": rig.kin.coll_kw, "side": "right"}
                 rig.log("handle_grasped", name=name, fingers=f.round(4).tolist())
