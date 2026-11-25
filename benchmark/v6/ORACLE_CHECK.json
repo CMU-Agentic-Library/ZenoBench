@@ -647,7 +647,7 @@
    "task": "T02_stack_blocks",
    "layout": "block_put_away__in_4",
    "steps": 24,
-   "atoms_checked": 20,
+   "atoms_checked": 18,
    "atoms_geometric": 6,
    "geometric_atoms": [
     "away_from_edge wooden_block_a 0.05",
@@ -664,7 +664,7 @@
    "task": "T02_stack_blocks",
    "layout": "block_put_away__in_6",
    "steps": 24,
-   "atoms_checked": 20,
+   "atoms_checked": 18,
    "atoms_geometric": 6,
    "geometric_atoms": [
     "away_from_edge wooden_block_a 0.05",
@@ -681,7 +681,7 @@
    "task": "T02_stack_blocks",
    "layout": "block_put_away__gone_toy_block",
    "steps": 23,
-   "atoms_checked": 20,
+   "atoms_checked": 18,
    "atoms_geometric": 6,
    "geometric_atoms": [
     "away_from_edge wooden_block_a 0.05",
@@ -698,7 +698,7 @@
    "task": "T02_stack_blocks",
    "layout": "block_put_away__gone_duck",
    "steps": 23,
-   "atoms_checked": 8,
+   "atoms_checked": 6,
    "atoms_geometric": 2,
    "geometric_atoms": [
     "away_from_edge wooden_block_a 0.05",

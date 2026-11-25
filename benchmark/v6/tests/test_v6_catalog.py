@@ -27,6 +27,29 @@ def test_catalog_is_up_to_date():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+def instructions_1124_touches(tid, vid):
+    from benchmark.v6 import instructions_1124 as I
+    p = tid[:3]
+    return p in I.BASE or (p, vid) in I.DESIGN or (p, vid) in I.LAYOUT
+
+
+def test_instructions_1124_keys_exist():
+    """Every rewritten instruction names a real design or layout and gives both languages."""
+    from benchmark.v6 import instructions_1124 as I
+    by = {t["task_id"][:3]: t for t in TASKS.values()}
+    assert set(I.BASE) <= set(by)
+    for (p, d), text in I.DESIGN.items():
+        assert d in by[p]["v6_variants"], (p, d)
+        assert text == "BASE" or (len(text) == 2 and all(text)), (p, d)
+    for (p, lid), text in I.LAYOUT.items():
+        assert lid in by[p]["variants"] and len(text) == 2 and all(text), (p, lid)
+    for p, d in [k for k, v in I.DESIGN.items() if v != "BASE"]:
+        for lid in by[p]["v6_variants"][d]["layouts"]:
+            v = by[p]["variants"][lid]
+            if (p, lid) not in I.LAYOUT:
+                assert (v["instruction"], v["instruction_zh"]) == I.DESIGN[(p, d)], (p, lid)
+
+
 def test_v5_designs_unchanged():
     """A v5 variant keeps its design (conditions, goal, instruction, failures other than the injected action ones);
     where things stand and where the robot starts are the seed's (layout.py)."""
@@ -42,7 +65,9 @@ def test_v5_designs_unchanged():
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
             assert old.get("goal") == PRE[tid]["variants"][vid].get("goal"), vid   # before the 11-24 loosening
-            if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
+            if instructions_1124_touches(tid, vid):  # 11-24: rewritten on purpose (instructions_1124.py)
+                pass
+            elif (tid, vid) in INSTR_TO_TASK:       # a form-like instruction: the task's own instead
                 assert "instruction" not in new, vid
             elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose
                 assert old.get("instruction") == new.get("instruction"), vid

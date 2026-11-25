@@ -21693,8 +21693,8 @@
     "k_separate",
     "k_sweep"
    ],
-   "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
-   "instruction_zh": "收拾孩子落在岛台上的积木：把一块木积木叠到另一块上面。",
+   "instruction": "Stack the two wooden blocks on the kitchen island, one on top of the other.",
+   "instruction_zh": "把岛台上的两块木积木叠起来，一块放在另一块上面。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -24321,8 +24321,8 @@
       "spot_quality",
       "destination_occupied"
      ],
-     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
-     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "instruction": "The kid wants to look at a block tower on the dining table next to the kitchen. Find all three toy blocks in the house and stack them into one tower there.",
+     "instruction_zh": "孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
      "add": {},
      "goal": {
       "all": [
@@ -25380,8 +25380,8 @@
       "spot_quality",
       "destination_occupied"
      ],
-     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
-     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "instruction": "The kid wants to look at a block tower on the dining table next to the kitchen. Find all three toy blocks in the house and stack them into one tower there.",
+     "instruction_zh": "孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
      "add": {},
      "goal": {
       "all": [
@@ -26437,8 +26437,8 @@
       "spot_quality",
       "destination_occupied"
      ],
-     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
-     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "instruction": "The kid wants to look at a block tower on the dining table next to the kitchen. Find all three toy blocks in the house and stack them into one tower there.",
+     "instruction_zh": "孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
      "add": {
       "clutter_toy_box": {
        "asset": "toy_box",
@@ -27729,8 +27729,8 @@
       "spot_quality",
       "destination_occupied"
      ],
-     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
-     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "instruction": "The kid wants to look at a block tower on the dining table next to the kitchen. Find all three toy blocks in the house and stack them into one tower there.",
+     "instruction_zh": "孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
      "remove": [
       "bowl_side_table",
       "cup_side_table",
@@ -30098,8 +30098,8 @@
       "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
      ],
-     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
-     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island.",
+     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。",
      "add": {
       "toy_block": {
        "asset": "toy_block",
@@ -30112,16 +30112,7 @@
       }
      },
      "goal": {
-      "all": [
-       [
-        "is_closed",
-        "kitchen_cabinet_4"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ]
-      ],
+      "all": [],
       "any": [
        [
         [
@@ -30863,8 +30854,8 @@
       "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
      ],
-     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
-     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island.",
+     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。",
      "add": {
       "toy_block": {
        "asset": "toy_block",
@@ -30877,16 +30868,7 @@
       }
      },
      "goal": {
-      "all": [
-       [
-        "is_closed",
-        "kitchen_cabinet_4"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ]
-      ],
+      "all": [],
       "any": [
        [
         [
@@ -31621,8 +31603,8 @@
       "floor_block",
       "plate_inside_kitchen_cabinet"
      ],
-     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
-     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island.",
+     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。",
      "add": {
       "toy_block": {
        "asset": "toy_block",
@@ -31635,16 +31617,7 @@
       }
      },
      "goal": {
-      "all": [
-       [
-        "is_closed",
-        "kitchen_cabinet_4"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ]
-      ],
+      "all": [],
       "any": [
        [
         [
@@ -32258,8 +32231,8 @@
       "floor_block",
       "plate_inside_kitchen_cabinet"
      ],
-     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
-     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+     "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island.",
+     "instruction_zh": "孩子想要一座三层的积木塔，在岛台上给他搭一座。",
      "add": {
       "rubber_duck": {
        "asset": "rubber_duck",
@@ -32272,16 +32245,7 @@
       }
      },
      "goal": {
-      "all": [
-       [
-        "is_closed",
-        "kitchen_cabinet_4"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ]
-      ],
+      "all": [],
       "any": [
        [
         [
@@ -39335,8 +39299,8 @@
     "k_hands (rolling pin)",
     "k_stir_cover (spoon)"
    ],
-   "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
-   "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进同一个容器里。",
+   "instruction": "Baking is done. Put the rolling pin and the spoon away together in the wide storage bin.",
+   "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进那个宽的储物箱里。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -39943,7 +39907,9 @@
       "ideal_present": true,
       "ideal_zh": "宽储物箱（在卧室）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进同一个容器里。"
     },
     "small_bin_or_bedroom_bin__basket_in_bedroom": {
      "move": {
@@ -40278,7 +40244,9 @@
       "ideal_present": false,
       "ideal_zh": "宽储物箱（没有，用卧室的收纳筐）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进同一个容器里。"
     },
     "which_bin_by_contents__toys_near": {
      "move": {
@@ -41333,8 +41301,6 @@
       "decoy_destination",
       "not_in_view"
      ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
-     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进一个容器里。",
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
@@ -41864,8 +41830,6 @@
       "decoy_destination",
       "not_in_view"
      ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
-     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进一个容器里。",
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
@@ -46901,8 +46865,8 @@
     "skill_library/tasks.json:breakfast_setup",
     "k_handle_mug / k_brace (mug rim pick)"
    ],
-   "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
-   "instruction_zh": "有客人要来喝茶，在靠墙矮柜上的饮品角摆一个玻璃杯。",
+   "instruction": "A guest is coming for tea. Set out a glass, standing upright, at the drinks spot on the low wall cabinet.",
+   "instruction_zh": "有客人要来喝茶，在靠墙矮柜上的饮品角立着摆一个玻璃杯。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -53655,8 +53619,8 @@
        ]
       ]
      },
-     "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
-     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。",
+     "instruction": "Two guests are coming for tea. Set out two glasses, standing upright and not touching each other, at the drinks spot on the low wall cabinet.",
+     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角立着摆两个玻璃杯，两个别挨着。",
      "watch": [
       "cup_counter_b",
       "mug",
@@ -54570,8 +54534,8 @@
        ]
       ]
      },
-     "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
-     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。",
+     "instruction": "Two guests are coming for tea. Set out two glasses, standing upright and not touching each other, at the drinks spot on the low wall cabinet.",
+     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角立着摆两个玻璃杯，两个别挨着。",
      "watch": [
       "cup_counter_b",
       "kid_cup",
@@ -55173,8 +55137,8 @@
        ]
       ]
      },
-     "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
-     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。",
+     "instruction": "Two guests are coming for tea. Set out two glasses, standing upright and not touching each other, at the drinks spot on the low wall cabinet.",
+     "instruction_zh": "有两位客人要来喝茶。在靠墙矮柜上的饮品角立着摆两个玻璃杯，两个别挨着。",
      "watch": [
       "cup_counter_b",
       "mug",
@@ -55447,8 +55411,8 @@
        ]
       ]
      },
-     "instruction": "A guest is coming and would like iced lemonade. Set out a cup at the drinks spot on the low wall cabinet.",
-     "instruction_zh": "有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。",
+     "instruction": "A guest is coming and would like iced lemonade. Set out a cup for it, standing upright, at the drinks spot on the low wall cabinet.",
+     "instruction_zh": "有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角立着摆个杯子。",
      "failures": [
       {
        "id": "resource_cup_in_cabinet",
@@ -55756,8 +55720,8 @@
        ]
       ]
      },
-     "instruction": "A guest is coming and would like iced lemonade. Set out a cup at the drinks spot on the low wall cabinet.",
-     "instruction_zh": "有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。",
+     "instruction": "A guest is coming and would like iced lemonade. Set out a cup for it, standing upright, at the drinks spot on the low wall cabinet.",
+     "instruction_zh": "有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角立着摆个杯子。",
      "add": {
       "kid_cup": {
        "asset": "plastic_cup",
@@ -67819,8 +67783,8 @@
        ]
       ]
      },
-     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: put it back where it belongs.",
-     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，放回合适的地方。",
+     "instruction": "The kid needs a pen for homework at the study desk; bring one there. Also, there is a used mug on that desk: take it back to the kitchen counter.",
+     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，拿回厨房台面上。",
      "watch": [
       "pen",
       "used_mug"
@@ -68189,8 +68153,8 @@
        ]
       ]
      },
-     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: put it back where it belongs.",
-     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，放回合适的地方。",
+     "instruction": "The kid needs a pen for homework at the study desk; bring one there. Also, there is a used mug on that desk: take it back to the kitchen counter.",
+     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，拿回厨房台面上。",
      "watch": [
       "pen",
       "pencil",
@@ -82202,8 +82166,8 @@
     "k_mug_on_burner",
     "g_heat_on_stove_instead_of_microwave"
    ],
-   "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
-   "instruction_zh": "把剩下的燕麦粥热一下当早饭（至少 40 度）。",
+   "instruction": "Warm up the bowl of leftover oatmeal for breakfast to at least 40 C, then switch off what you used.",
+   "instruction_zh": "把那碗剩燕麦粥热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -83206,8 +83170,8 @@
      "conditions": [
       "appliance_compatibility"
      ],
-     "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
-     "instruction_zh": "把剩饭热一下当早饭（至少 40 度）。",
+     "instruction": "Warm up the leftover oatmeal in the ceramic bowl for breakfast to at least 40 C, then switch off what you used.",
+     "instruction_zh": "把陶瓷碗里的剩燕麦粥热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
      "add": {
       "oatmeal_bowl": {
        "asset": "oatmeal_bowl",
@@ -83451,8 +83415,8 @@
      "conditions": [
       "appliance_compatibility"
      ],
-     "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
-     "instruction_zh": "把剩饭热一下当早饭（至少 40 度）。",
+     "instruction": "Warm up the leftovers in the glass food box for breakfast to at least 40 C, then switch off what you used.",
+     "instruction_zh": "把玻璃饭盒里的剩饭热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
      "add": {
       "glass_food_container": {
        "asset": "glass_food_container",
@@ -83696,8 +83660,8 @@
      "conditions": [
       "appliance_compatibility"
      ],
-     "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
-     "instruction_zh": "把剩饭热一下当早饭（至少 40 度）。",
+     "instruction": "Warm up the leftover soup in the pot for breakfast to at least 40 C, then switch off what you used.",
+     "instruction_zh": "把锅里的剩汤热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
      "add": {
       "soup_pot": {
        "asset": "soup_pot",
@@ -83920,8 +83884,8 @@
      "conditions": [
       "appliance_compatibility"
      ],
-     "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
-     "instruction_zh": "把剩饭热一下当早饭（至少 40 度）。",
+     "instruction": "Warm up the leftovers in the steel lunch box for breakfast to at least 40 C, then switch off what you used.",
+     "instruction_zh": "把不锈钢饭盒里的剩饭热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
      "add": {
       "steel_lunch_box": {
        "asset": "steel_lunch_box",
@@ -84166,8 +84130,8 @@
      "conditions": [
       "appliance_compatibility"
      ],
-     "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
-     "instruction_zh": "把剩饭热一下当早饭（至少 40 度）。",
+     "instruction": "Warm up the leftovers in the foil takeout tray for breakfast to at least 40 C, then switch off what you used.",
+     "instruction_zh": "把锡纸外卖盒里的剩饭热一下当早饭，至少热到 40 度，热完把用过的电器关掉。",
      "add": {
       "foil_takeout_tray": {
        "asset": "foil_takeout_tray",
@@ -84449,8 +84413,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C.",
-     "instruction_zh": "早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。",
+     "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Switch off what you used afterwards.",
+     "instruction_zh": "早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。热完把用过的电器关掉。",
      "watch": [
       "oatmeal_bowl",
       "soup_pot"
@@ -84815,8 +84779,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C.",
-     "instruction_zh": "早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。",
+     "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Switch off what you used afterwards.",
+     "instruction_zh": "早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。热完把用过的电器关掉。",
      "watch": [
       "oatmeal_bowl",
       "soup_pot"
@@ -103736,8 +103700,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table: rubbish goes in the trash can, leftover food in the fridge, used dishes back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，剩饭剩菜放进冰箱，用过的餐具拿回厨房台面。麦片盒留在桌上。",
      "remove": [
       "trash_can"
      ],
@@ -103953,8 +103917,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table: rubbish goes in the trash can, leftover food in the fridge, used dishes back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，剩饭剩菜放进冰箱，用过的餐具拿回厨房台面。麦片盒留在桌上。",
      "remove": [
       "trash_can"
      ],
@@ -104202,8 +104166,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table: rubbish goes in the trash can, leftover food in the fridge, used dishes back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，剩饭剩菜放进冰箱，用过的餐具拿回厨房台面。麦片盒留在桌上。",
      "remove": [
       "trash_can"
      ],
@@ -104436,8 +104400,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs (rubbish in the trash can, dishes to the kitchen, toys in the toy box), and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处（垃圾扔进垃圾桶，餐具拿回厨房，玩具放进玩具箱），本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -104823,8 +104787,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs (rubbish in the trash can, dishes to the kitchen, toys in the toy box), and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处（垃圾扔进垃圾桶，餐具拿回厨房，玩具放进玩具箱），本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -105141,8 +105105,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs (rubbish in the trash can, dishes to the kitchen, toys in the toy box), and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处（垃圾扔进垃圾桶，餐具拿回厨房，玩具放进玩具箱），本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -108527,8 +108491,8 @@
    "source": [
     "skill_library/tasks.json:collect_fruits"
    ],
-   "instruction": "Lunch is over and the apple is still on the dining table. Put it away.",
-   "instruction_zh": "午饭吃完了，苹果还在餐桌上，把它收起来。",
+   "instruction": "Lunch is over and the apple is still on the dining table. Put it away in the fruit basket.",
+   "instruction_zh": "午饭吃完了，苹果还在餐桌上，把它收进果篮里。",
    "scene": {
     "base": "tasks/collect_fruits",
     "remove": [
@@ -110688,8 +110652,8 @@
        ]
       ]
      },
-     "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
-     "instruction_zh": "客人在客厅看电视，用托盘给他们端点水果过去。",
+     "instruction": "The guests are watching TV in the living room. Bring them the apple and the orange from the dining table on a tray, and leave the tray on the TV stand in front of them.",
+     "instruction_zh": "客人在客厅看电视，把餐桌上的苹果和橙子放在托盘上端过去，托盘放在他们面前的电视柜上。",
      "watch": [
       "apple",
       "lunch_orange",
@@ -111057,8 +111021,8 @@
        ]
       ]
      },
-     "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
-     "instruction_zh": "客人在客厅看电视，用托盘给他们端点水果过去。",
+     "instruction": "The guests are watching TV in the living room. Bring them the apple and the orange from the dining table on a tray, and leave the tray on the TV stand in front of them.",
+     "instruction_zh": "客人在客厅看电视，把餐桌上的苹果和橙子放在托盘上端过去，托盘放在他们面前的电视柜上。",
      "watch": [
       "apple",
       "lunch_orange",
@@ -112980,8 +112944,8 @@
    "source": [
     "skill_library/tasks.json:tidy_toys"
    ],
-   "instruction": "It is nearly bedtime. Put the kid's toys away.",
-   "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。",
+   "instruction": "It is nearly bedtime. Put the kid's toys away in the storage basket.",
+   "instruction_zh": "快到睡觉时间了，把孩子的玩具收进收纳篮里。",
    "scene": {
     "base": "tasks/tidy_toys",
     "remove": [
@@ -118257,8 +118221,8 @@
       "relational_exception",
       "multi_object_goal"
      ],
-     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "instruction": "It is nearly bedtime. Put the kid's toys away in the storage basket. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收进收纳篮里。他搭的积木城堡别拆，明天还要接着搭。",
      "add": {
       "castle_block_1": {
        "asset": "wooden_block",
@@ -118568,8 +118532,8 @@
       "relational_exception",
       "multi_object_goal"
      ],
-     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "instruction": "It is nearly bedtime. Put the kid's toys away in the storage basket. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收进收纳篮里。他搭的积木城堡别拆，明天还要接着搭。",
      "add": {
       "castle_block_1": {
        "asset": "wooden_block",
@@ -118821,8 +118785,8 @@
       "relational_exception",
       "multi_object_goal"
      ],
-     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "instruction": "It is nearly bedtime. Put the kid's toys away in the storage basket. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收进收纳篮里。他搭的积木城堡别拆，明天还要接着搭。",
      "add": {
       "castle_block_1": {
        "asset": "wooden_block",
@@ -122076,8 +122040,8 @@
    "source": [
     "skill_library/tasks.json:breakfast_setup"
    ],
-   "instruction": "Breakfast is soon. Set the place at the dining table.",
-   "instruction_zh": "快吃早饭了，把餐桌上的位子摆好。",
+   "instruction": "Breakfast is soon. Set a place at the dining table: a bowl, a cup and a spoon, standing together.",
+   "instruction_zh": "快吃早饭了，在餐桌上摆一份餐具：碗、杯子和勺子，立着摆在一起。",
    "scene": {
     "base": "tasks/breakfast_setup",
     "remove": [
@@ -140647,8 +140611,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
-   "instruction_zh": "孩子明天上学要带水果，把一个苹果装进他的零食盒，放到他书桌上。",
+   "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave the box on his study desk.",
+   "instruction_zh": "孩子明天上学要带水果，把一个苹果装进他的零食盒，再把零食盒放到书房书桌上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -157817,8 +157781,8 @@
    "source": [
     "skill_library/tasks.json:shelve_books"
    ],
-   "instruction": "The kid finished reading. Put the book away for him.",
-   "instruction_zh": "孩子看完书了，帮他把书收好。",
+   "instruction": "The kid finished reading. Put the book back on his bookcase.",
+   "instruction_zh": "孩子看完书了，帮他把书放回他的书架上。",
    "scene": {
     "base": "tasks/shelve_books",
     "remove": [
@@ -163479,8 +163443,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
-   "instruction_zh": "餐桌上洒了点汤，拿点擦的东西过去。",
+   "instruction": "Some soup got spilled at the dining table. Bring the tissues there and leave them on the table.",
+   "instruction_zh": "餐桌上洒了点汤，把纸巾拿过去放在桌上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -164229,8 +164193,6 @@
      "conditions": [
       "resource_absent"
      ],
-     "instruction": "Some soup got spilled at the dining table. Bring something to wipe it with.",
-     "instruction_zh": "餐桌上洒了点汤，拿个能擦的用具过去。",
      "add": {
       "spare_sponge": {
        "asset": "kitchen_sponge",
@@ -164493,8 +164455,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
-     "instruction_zh": "孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。",
+     "instruction": "The kid spilled some soup at the dining table. Bring the tissues there and put them on the kid's side of the table.",
+     "instruction_zh": "孩子吃饭把汤洒了，把纸巾拿过去，放在孩子那一边。",
      "add": {
       "tissue": {
        "asset": "tissue_box",
@@ -164740,8 +164702,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
-     "instruction_zh": "孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。",
+     "instruction": "The kid spilled some soup at the dining table. Bring the tissues there and put them on the kid's side of the table.",
+     "instruction_zh": "孩子吃饭把汤洒了，把纸巾拿过去，放在孩子那一边。",
      "add": {
       "tissue": {
        "asset": "tissue_box",
@@ -165621,8 +165583,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away.",
-   "instruction_zh": "我刚买东西回来，放在餐桌上了，帮我收好。",
+   "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away in the kitchen.",
+   "instruction_zh": "我刚买东西回来，放在餐桌上了，帮我收到厨房里。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -181433,8 +181395,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
-   "instruction_zh": "孩子在书房写作业饿了，给他拿点吃的。",
+   "instruction": "The kid is doing homework at the study desk and is hungry. Bring him something to eat and put it on his desk.",
+   "instruction_zh": "孩子在书房书桌写作业饿了，给他拿点吃的，放到他书桌上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -182281,8 +182243,8 @@
      "conditions": [
       "preference_allocation"
      ],
-     "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
-     "instruction_zh": "孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。",
+     "instruction": "The kid is doing homework at the study desk and is hungry. Bring him something to eat and put it on his desk; dinner is in half an hour.",
+     "instruction_zh": "孩子在书房书桌写作业饿了，给他拿点吃的放到他书桌上。还有半小时就吃晚饭了。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -182555,8 +182517,8 @@
      "conditions": [
       "preference_allocation"
      ],
-     "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
-     "instruction_zh": "孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。",
+     "instruction": "The kid is doing homework at the study desk and is hungry. Bring him something to eat and put it on his desk; dinner is in half an hour.",
+     "instruction_zh": "孩子在书房书桌写作业饿了，给他拿点吃的放到他书桌上。还有半小时就吃晚饭了。",
      "add": {
       "snack_banana": {
        "asset": "banana",
@@ -183331,8 +183293,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid is doing homework and is hungry. Bring him something to eat.",
-     "instruction_zh": "孩子写作业饿了，给他拿点吃的。",
+     "instruction": "The kid is doing homework and is hungry. Bring him something to eat and put it on the desk where he is doing his homework.",
+     "instruction_zh": "孩子写作业饿了，给他拿点吃的，放到他写作业的那张书桌上。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -183549,8 +183511,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid is doing homework and is hungry. Bring him something to eat.",
-     "instruction_zh": "孩子写作业饿了，给他拿点吃的。",
+     "instruction": "The kid is doing homework and is hungry. Bring him something to eat and put it on the desk where he is doing his homework.",
+     "instruction_zh": "孩子写作业饿了，给他拿点吃的，放到他写作业的那张书桌上。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -183771,8 +183733,8 @@
       "count_from_scene",
       "multi_object_goal"
      ],
-     "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
-     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的。",
+     "instruction": "The kids are doing homework and are hungry. Bring them something to eat: one thing for each, put by their homework.",
+     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的：每人一样，放在各自的作业旁边。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -184369,8 +184331,8 @@
       "count_from_scene",
       "multi_object_goal"
      ],
-     "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
-     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的。",
+     "instruction": "The kids are doing homework and are hungry. Bring them something to eat: one thing for each, put by their homework.",
+     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的：每人一样，放在各自的作业旁边。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -184968,8 +184930,8 @@
       "count_from_scene",
       "multi_object_goal"
      ],
-     "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
-     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的。",
+     "instruction": "The kids are doing homework and are hungry. Bring them something to eat: one thing for each, put by their homework.",
+     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的：每人一样，放在各自的作业旁边。",
      "add": {
       "snack_apple": {
        "asset": "apple",
@@ -187933,8 +187895,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "A guest is sitting in the living room. Bring him something to drink.",
-   "instruction_zh": "客人在客厅坐着，给他拿点喝的。",
+   "instruction": "A guest is sitting in the living room. Bring him the juice and a cup, and put them on the TV stand in front of him.",
+   "instruction_zh": "客人在客厅坐着，给他拿果汁和一个杯子，放到他面前的电视柜上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -189194,8 +189156,8 @@
       "preference_allocation",
       "resource_absent"
      ],
-     "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
-     "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的。",
+     "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink and a cup, and put them on the TV stand in front of him.",
+     "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。",
      "add": {
       "guest_juice": {
        "asset": "juice_bottle",
@@ -189514,8 +189476,8 @@
       "preference_allocation",
       "resource_absent"
      ],
-     "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
-     "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的。",
+     "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink and a cup, and put them on the TV stand in front of him.",
+     "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。",
      "add": {
       "guest_juice": {
        "asset": "juice_bottle",
@@ -191656,8 +191618,8 @@
       "multi_object_goal",
       "resource_absent"
      ],
-     "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
-     "instruction_zh": "两位客人在客厅坐着，给他们拿点喝的。",
+     "instruction": "Two guests are sitting in the living room. Bring them the juice and a cup each, and put them on the TV stand in front of them.",
+     "instruction_zh": "两位客人在客厅坐着，给他们拿果汁，每人一个杯子，放到他们面前的电视柜上。",
      "add": {
       "guest_juice": {
        "asset": "juice_bottle",
@@ -191943,8 +191905,8 @@
       "multi_object_goal",
       "resource_absent"
      ],
-     "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
-     "instruction_zh": "两位客人在客厅坐着，给他们拿点喝的。",
+     "instruction": "Two guests are sitting in the living room. Bring them the juice and a cup each, and put them on the TV stand in front of them.",
+     "instruction_zh": "两位客人在客厅坐着，给他们拿果汁，每人一个杯子，放到他们面前的电视柜上。",
      "move": {
       "mug_shelf": {
        "support": "cell_shelf_4/top",
@@ -192241,8 +192203,8 @@
      "conditions": [
       "preference_allocation"
      ],
-     "instruction": "A little girl is visiting and sitting in the living room. Bring her something to drink.",
-     "instruction_zh": "来了个小朋友，在客厅坐着，给她拿点喝的。",
+     "instruction": "A little girl is visiting and sitting in the living room. Bring her some juice and a cup, and put them on the TV stand in front of her.",
+     "instruction_zh": "来了个小朋友，在客厅坐着，给她拿果汁和一个杯子，放到她面前的电视柜上。",
      "add": {
       "guest_juice": {
        "asset": "juice_bottle",
@@ -195461,8 +195423,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "Take the things the kid left in the living room back to his room.",
-   "instruction_zh": "把孩子落在客厅的东西拿回他房间。",
+   "instruction": "Take the things the kid left in the living room back to his room: toys into his toy basket, books onto his bookcase.",
+   "instruction_zh": "把孩子落在客厅的东西拿回他房间：玩具放进他的玩具筐，书放到他的书架上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -195905,7 +195867,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     },
     "whose__shelf_full": {
      "conditions": [
@@ -197106,7 +197070,9 @@
       "ideal_present": false,
       "ideal_zh": "他的书架（每层都满，放床边那个书架）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     },
     "scattered__basket": {
      "conditions": [
@@ -198504,7 +198470,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     },
     "where_in_room__waste_bin": {
      "conditions": [
@@ -198992,7 +198960,9 @@
       "ideal_present": false,
       "ideal_zh": "玩具筐（没有，原处是垃圾桶；小车放书架）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     },
     "bear_to_bed__top_free": {
      "conditions": [
@@ -199751,7 +199721,9 @@
       "ideal_present": true,
       "ideal_zh": "有他玩具筐的那间",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     },
     "two_bedrooms__room_south": {
      "conditions": [
@@ -199850,7 +199822,9 @@
       "ideal_present": true,
       "ideal_zh": "有他玩具筐的那间",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间。"
     }
    },
    "watch": [
@@ -205824,8 +205798,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "The kid is going to bed. Bring his cup to his bedside.",
-   "instruction_zh": "孩子要睡了，把他的水杯拿到床边。",
+   "instruction": "The kid is going to bed. Bring his cup to his bedside and leave it standing up.",
+   "instruction_zh": "孩子要睡了，把他的水杯拿到床边，立着放好。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -209938,8 +209912,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
-   "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走。",
+   "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table and put each thing where it belongs: toys in the toy box, rubbish in the trash can, books on a bookshelf, homework on the study desk.",
+   "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走，各放到该放的地方：玩具放进玩具箱，垃圾扔进垃圾桶，书放到书架上，作业放到书房书桌上。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -210844,7 +210818,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+     "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走。"
     },
     "homework_on_table__desk_covered": {
      "conditions": [
@@ -211758,7 +211734,9 @@
       "ideal_present": false,
       "ideal_zh": "书房书桌（摊满别人的书，放他卧室书桌）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+     "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走。"
     },
     "several__toy_box": {
      "conditions": [
@@ -212256,7 +212234,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+     "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走。"
     },
     "several__bin_full": {
      "conditions": [
@@ -213436,7 +213416,9 @@
       "ideal_present": false,
       "ideal_zh": "玩具箱（没有，玩具盒满了，用旁边托盘）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+     "instruction_zh": "要吃饭了，把餐桌上不该放的东西拿走。"
     },
     "nothing_to_clear": {
      "conditions": [
@@ -216065,8 +216047,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
-   "instruction_zh": "汤快好了，拿碗过来准备盛。",
+   "instruction": "The soup is almost ready. Bring a clean bowl to the kitchen island next to the stove for serving it.",
+   "instruction_zh": "汤快好了，拿一只干净的碗放到灶台旁边的岛台上准备盛汤。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -216243,8 +216225,8 @@
       "multi_object_goal",
       "resource_absent"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring clean bowls to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。",
      "remove": [
       "clutter_cereal_a",
       "clutter_cereal_b"
@@ -216769,8 +216751,8 @@
       "multi_object_goal",
       "resource_absent"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring clean bowls to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
@@ -217255,8 +217237,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring clean bowls to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
@@ -217688,8 +217670,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring clean bowls to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
@@ -218448,7 +218430,9 @@
       "ideal_present": true,
       "ideal_zh": "干净的碗（旁边那碗装着燕麦）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "The soup is almost ready. Bring a bowl to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿一只碗放到灶台旁边的岛台上准备盛汤。"
     },
     "bowl_put_away__bowl_inside": {
      "conditions": [
@@ -219416,7 +219400,9 @@
       "ideal_present": true,
       "ideal_zh": "干净的碗（旁边是盘子）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "The soup is almost ready. Bring a bowl to the kitchen island next to the stove for serving it.",
+     "instruction_zh": "汤快好了，拿一只碗放到灶台旁边的岛台上准备盛汤。"
     }
    },
    "watch": [

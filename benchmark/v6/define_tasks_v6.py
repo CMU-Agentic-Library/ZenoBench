@@ -648,9 +648,10 @@ def T02(t):
                                                   "kitchen_0_1"))}),
         "tower_for_kid": dict(
             base="clear", control="clear", conditions=["item_out_of_view", "spot_quality", "destination_occupied"],
-            instruction="The kid wants to look at a block tower on the dining table. Find all three toy blocks in the "
-                        "house and stack them into one tower on the dining table.",
-            instruction_zh="孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+            # 11-24 (user): name the kid's table -- the tiers rank the near table over the west one
+            instruction="The kid wants to look at a block tower on the dining table next to the kitchen. Find all "
+                        "three toy blocks in the house and stack them into one tower there.",
+            instruction_zh="孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
             keep_design=[DINING, FAR_DINING],
             factor="which tables can take the tower (seed: the near dining table free -- counter/study, where the "
                    "other two blocks differ; the near one piled full; both dining tables piled full)",
@@ -683,9 +684,9 @@ def T02(t):
                                  route=table_route(B, "living_room_0_1", "rubber_duck", "living_room_0_0"))}),
         "block_put_away": dict(
             base="edge_base", control="clear", conditions=["unstable_base", "not_in_view", "missing_piece"],
-            instruction="The kid wants a three-level block tower; build one for him on the kitchen island. Close any "
-                        "cabinet you open.",
-            instruction_zh="孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+            # 11-24 (user): "close any cabinet you open" dropped -- it told where the third block is
+            instruction="The kid wants a three-level block tower; build one for him on the kitchen island.",
+            instruction_zh="孩子想要一座三层的积木塔，在岛台上给他搭一座。",
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             factor="where the third wooden block is and what stands in for it (seed: in cabinet 4 or 6 with a toy "
                    "block of another make in view; not in the house, a toy block or the rubber duck in view)",
@@ -3610,7 +3611,12 @@ TASK_TEXT = {
                         "午饭做个番茄汤：把小番茄放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
-    "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
+    # 11-24 (user): say where the toys go -- "put away" alone let a planner move the bin of blocks instead
+    # 11-24 (user): "tidy" read as putting away; say the stacking plainly
+    "T02_stack_blocks": ("Stack the two wooden blocks on the kitchen island, one on top of the other.",
+                         "把岛台上的两块木积木叠起来，一块放在另一块上面。"),
+    "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away in the storage basket.",
+                      "快到睡觉时间了，把孩子的玩具收进收纳篮里。"),
     "T13_breakfast_setup": ("Breakfast is soon. Set the place at the dining table.", "快吃早饭了，把餐桌上的位子摆好。"),
     "T14_shelve_the_book": ("The kid finished reading. Put the book away for him.", "孩子看完书了，帮他把书收好。"),
     "T15_book_face_up": ("A paperback has been lying face down on the kitchen island; its spine is getting bent. "
@@ -3964,6 +3970,8 @@ def build(loosen: bool = True) -> dict:
     apply_tracks(out)
     from benchmark.v6.scoring import attach_scoring
     attach_scoring(out)                          # graded outcomes of the designs reviewed so far (D, tiers)
+    from benchmark.v6.instructions_1124 import apply as instructions_1124
+    instructions_1124(out)                       # 11-24 (user): instructions name what the condition checks
     if loosen:
         from benchmark.v6.loosen_1124 import apply as loosen_1124
         loosen_1124(out)                         # 11-24 (user): object state decides, every fitting reading counts
