@@ -10,7 +10,6 @@
   "zeno_skills/policies/base_motion.py": {"coll_kw": 2, "ignore_fingers": 1},
   "zeno_skills/policies/bimanual.py": {"drive_base": 1, "follow": 2, "offset": 3, "except": 7, "swallow": 3, "retry": 4, "old_entry": 17},
   "zeno_skills/policies/embedded.py": {"coll_kw": 4, "follow": 1, "except": 1, "swallow": 1, "retry": 1, "old_entry": 7},
-  "zeno_skills/policies/hand.py": {"LEGACY": 1, "offset": 1, "retry": 1, "old_entry": 3},
   "zeno_skills/policies/handle_grasp.py": {"offset": 2, "old_entry": 6},
   "zeno_skills/policies/mobile.py": {"coll_kw": 4, "drive_base": 3, "ignore_fingers": 2, "offset": 2, "old_entry": 6},
   "zeno_skills/policies/navigation.py": {"except": 1, "swallow": 1},

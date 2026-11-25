@@ -20,9 +20,12 @@ from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
+HOLD_STILL = 0.015             # m a pick that holds it where it stands (brace, handover) may move it (the touched
+#                                predicate's 1.5 cm)
 
 
-def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, relay_free=None, sides=("right",)):
+def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, relay_free=None, sides=("right",),
+                  stop=None):
     """The park of the pick of ``name`` (its box frame at T_obj, the State's): every grasp candidate with
     every hand of ``sides`` (the empty ones: HAND_PLAN 9c) is one goal (its reach-in's start, the grasp, the
     first of the lift as the points the arm must reach; the reach-in's start as the relay pose the ranking
@@ -46,7 +49,8 @@ def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, rel
 
     def build(s, k, prior):
         sd = goals[k][3]
-        return build_with(_kin(rig, sd), s, grasps[which[k]], carry_goals[sd], prior=prior, step=APPROACH_STEP)
+        return build_with(_kin(rig, sd), s, grasps[which[k]], carry_goals[sd], prior=prior, step=APPROACH_STEP,
+                          stop=stop)
 
     problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), relay_free=relay_free,
                       label=f"pick {name}", hand=sides[0])
@@ -63,7 +67,7 @@ def _plan_pick():
     return plan_pick
 
 
-def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, side="right"):
+def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, side="right", stop=None):
     """The pick's plan to run from the park (the park search's: a grasp the object no longer gives
     has run build it again, primitives.holds), its builder for the rest, its hooks (run.run).  Between the
     segments the pick's own steps: the object watched on the way in, the reach checked, the pinch
@@ -75,7 +79,7 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
     plan_pick = plan_pick or _plan_pick()
 
     def rebuild(state, frm, prior):
-        return plan_pick(kin, state, grasp, carry_goals, start=frm, prior=prior, step=APPROACH_STEP)
+        return plan_pick(kin, state, grasp, carry_goals, start=frm, prior=prior, step=APPROACH_STEP, stop=stop)
 
     def after_grasp(rig):
         # the hand against where the reach-in sent it (Rig._settle measured it as the reach-in stopped; run
@@ -195,10 +199,12 @@ def pick_job(rig, args, state, skill=None):
     goal_cands = cands[:max_candidates] + extra
     build_with = skill.build if skill is not None else None
     sides = pick_hands(rig, name, args.get("hand"))
+    # hold it where it stands (brace, a handover's taking hand): the pick to the close and its anchor (HAND_PLAN 9i)
+    stop = "pick_held" if args.get("hold") else None
     # behind a door: the parks whose ranking solution of the reach-in start is free first (Problem.relay_free)
     problem, carry_goals, grasps, which = _pick_problem(rig, name, goal_cands, T_obj, near, prefer, build_with,
                                                         relay_free=FREE_HAND if door is not None else None,
-                                                        sides=sides)
+                                                        sides=sides, stop=stop)
     ctx = {"out": {}}
 
     def no_park(diag):
@@ -226,7 +232,7 @@ def pick_job(rig, args, state, skill=None):
                 kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
         note_grasp(rig, name, now[0], now[1], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
         ctx["g"], ctx["pos"], ctx["side"] = g, p_now, side
-        return _pick_ready(rig, name, g, grasp, found.plan, carry_goals[side], ctx["out"], build_with, side)
+        return _pick_ready(rig, name, g, grasp, found.plan, carry_goals[side], ctx["out"], build_with, side, stop)
 
     def failed(exc):
         if isinstance(exc, Dropped):
@@ -234,5 +240,17 @@ def pick_job(rig, args, state, skill=None):
         return None
 
     def done():
+        if stop:
+            # held where it stands: in that hand, and not carried off (a brace keeps it on its support)
+            side = ctx["side"]
+            moved = float(np.linalg.norm(np.asarray(rig.obj_pose(name)[0], float) - np.asarray(ctx["pos"], float)))
+            held = rig.held_by(side)
+            rig.log("pick_result", obj=name, kind=ctx["g"]["kind"], hand=side, hold=True, moved_m=round(moved, 4),
+                    held=held is not None and held["name"] == name)
+            if held is None or held["name"] != name:
+                raise SkillFailure(f"pick {name}: not in the {side} hand after the close")
+            if moved > HOLD_STILL:
+                raise SkillFailure(f"pick {name}: the hold moved it {moved:.3f} m")
+            return ctx["g"]["kind"]
         return _pick_judged(rig, name, ctx["g"], ctx["out"]["tcp0"], ctx["pos"], ctx["side"])
     return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, failed=failed, done=done)

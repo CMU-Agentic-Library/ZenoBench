@@ -699,7 +699,7 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
     from zeno_skills.skill_jobs import pick as PJ, place as LJ
     calls = []
 
-    def plan_pick_(kin, state, grasp, carry_goals, start="pick_open", prior=None, step=0.003):
+    def plan_pick_(kin, state, grasp, carry_goals, start="pick_open", prior=None, step=0.003, stop=None):
         calls.append(("pick", grasp, start, prior))
         return Plan(())
 

@@ -131,69 +131,22 @@ class RegraspPolicy(AtomicPolicy):
 
 
 class LeftSteadyPolicy(AtomicPolicy):
-    """Pinch a resting container's rim (or an object's top) with the left
-    gripper so the right hand can work in it without the object sliding."""
+    """Pinch a resting container's rim (or an object's top or handle) with the left gripper so the right hand can work
+    in it without the object sliding: the pick on the motion layers with the left hand, those pinches only, held where
+    it stands -- no lift, no carry (pick_job hold, plan_pick stop="pick_held"; HAND_PLAN 9i)."""
+
+    STEADY_KINDS = ("rim_pinch", "rim_pinch_rect", "top_pinch", "handle_pinch")
 
     def execute(self, name):
+        from ..motion_skills import SKILLS, run_skill
         rig = self.rig
-        if rig.left_held is not None:
+        if rig.held_by("left") is not None:
             raise SkillFailure("steady: the left hand is occupied")
-        obj = rig.ann.objects[name]
-        pos, quat = rig.obj_pose(name)
-        cands = rig.ann.grasp_poses(obj, pos, quat, kinds=("rim_pinch", "rim_pinch_rect", "top_pinch", "handle_pinch"))
-        if not cands:
-            raise SkillFailure(f"steady {name}: no annotated pinch contact")
-        x, y, yaw = rig.base_pose()
-        left_dir = np.array([-math.sin(math.radians(yaw)), math.cos(math.radians(yaw))])
-        cands.sort(key=lambda g: -float((g["p"][:2] - pos[:2]) @ left_dir))
-        rig.sync_world()
-        rig.world.left_active = True
-        start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-        lo, hi = rig.left_kin.lo.copy(), rig.left_kin.hi.copy()
-        chosen = None
-        try:
-            rig.left_kin.lo[:2] = rig.left_kin.hi[:2] = rig.q_cmd[:2]
-            for g in cands[:16]:
-                pre = g["p"] + np.array([0, 0, 0.08])
-                q1, ok1 = rig.left_kin.ik_global(pre, g["R"], seeds=[start])
-                q2, ok2 = rig.left_kin.ik_global(g["p"], g["R"], seeds=[q1])
-                if ok1 and ok2:
-                    chosen = g
-                    break
-        finally:
-            rig.left_kin.lo[:], rig.left_kin.hi[:] = lo, hi
-        if chosen is None:
-            # Re-park the base for the left arm (torso free; the right hand is idle).
-            for g in cands[:8]:
-                targets = [(g["p"] + np.array([0, 0, 0.08]), g["R"]), (g["p"], g["R"])]
-                park = find_park(rig.left_kin, rig.world, targets, near=rig.base_pose()[:2], max_tries=150,
-                                 shoulder=(0.09, 0.18))
-                if park is not None:
-                    chosen = g
-                    if not rig.tuck():
-                        raise SkillFailure(f"steady {name}: cannot fold the right arm before re-parking")
-                    skills.navigate(rig, park[:3], label="steady_park")
-                    rig.sync_world()
-                    rig.world.left_active = True
-                    break
-            if chosen is None:
-                raise SkillFailure(f"steady {name}: no base pose lets the left arm reach a contact (rejected: {_park_diag()})")
-        rig.caption = f"STEADY {name} with the left hand"
-        rig.left_grip(chosen["pre_open"], 30)
-        rig.move_left_to(chosen["p"] + np.array([0, 0, 0.08]), chosen["R"], label="steady_pre")
-        rig.move_left_to(chosen["p"], chosen["R"], label="steady_grasp", allow=LEGACY)
-        rig.left_grip(0.0, 100)
-        f = rig.left_fingers()
-        after, _ = rig.obj_pose(name)
-        if float(f.sum()) < 0.004:
-            rig.left_grip(0.04, 30)
-            raise SkillFailure(f"steady {name}: left fingers closed on nothing")
-        tcp, R = rig.left_kin.tcp(rig.left_q())
-        rig.left_held = {"name": name, "kind": "steady", "tcp_minus_body": tcp - after, "R": R,
-                         "pre_open": chosen["pre_open"]}
-        rig.log("steady_result", obj=name, kind=chosen["kind"], fingers=f.round(4).tolist(),
-                shift_m=round(float(np.linalg.norm(after - pos)), 4))
-        return chosen["kind"]
+        kind = run_skill(rig, SKILLS["pick"], {"name": name, "hand": "left", "kinds": self.STEADY_KINDS, "hold": True})
+        held = rig.held_by("left")
+        held["kind"] = "steady"
+        rig.log("steady_result", obj=name, kind=kind, fingers=np.round(rig.left_fingers(), 4).tolist())
+        return kind
 
 
 class ReleaseInPlacePolicy(AtomicPolicy):
