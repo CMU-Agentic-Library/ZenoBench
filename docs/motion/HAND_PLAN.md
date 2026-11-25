@@ -128,7 +128,8 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp 还在用，随 9f 删 | 本次提交；`/data/zenobench/hand9e_1125` |
 | 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 本次提交；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
 | 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 本次提交；`/data/zenobench/hand9g_1125` |
-| 9h–9j | 没开始 | — |
+| 9h v6 没用到的接触 / 手势 | 进行中：wave、point、shake 做完（P01 wave + point、P07 shake 成功；P01 整集败在 crouch，已知的躯干下限问题）；roll、tip、flip、pour 待做 | 本次提交；`/data/zenobench/hand9h_1125` |
+| 9i–9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
 

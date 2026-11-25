@@ -242,6 +242,25 @@ def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
     assert isinstance(plan_wipe(FakeKin(), _state(q0), wipe), Failure)                    # nothing to wipe with
 
 
+def test_a_gesture_reaches_its_goal_set_swings_about_where_it_got_and_folds():
+    from zeno_skills.primitives import JointSet, PoseSet
+    from zeno_skills.skill_plans import plan_gesture
+    q0, rest = _q(0.3, 0.0, 0.40), _q(0.2, -0.2, 0.30)
+    goals = PoseSet(((np.array([0.4, 0.1, 0.9]), np.eye(3)),))
+    plan = plan_gesture(FakeKin(ik=[_q(0.4, 0.1, 0.9)]), _state(q0), "wave", goals=goals, swing=((0.0, 1.0, 0.0), 0.1, 2),
+                        open_hand=0.04,
+                        back=JointSet((rest,)), hold_tilt=False)
+    assert isinstance(plan, Plan), plan
+    assert [sg.name for sg in plan.segments] == ["wave_open", "wave_reach", "wave_swing", "wave_back"]
+    swing = _named(plan, "wave_swing")
+    ys = [q[1] for q in swing.qs]
+    assert swing.kind == "scripted" and max(ys) == pytest.approx(0.2, abs=1e-3) and min(ys) == pytest.approx(0.0, abs=1e-3)
+    assert np.allclose(swing.q_end[:3], [0.4, 0.1, 0.9], atol=1e-6)                     # ends where it started
+    assert np.allclose(plan.segments[-1].q_end, rest)
+    shake = plan_gesture(FakeKin(), _state(q0, held=Held("cup", np.eye(4))), "shake", swing=((1.0, 0.0, 0.0), 0.02, 3))
+    assert [sg.name for sg in shake.segments] == ["shake_swing"] and shake.segments[0].spec.hold_tilt
+
+
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
     out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
     assert isinstance(out, Failure) and "nothing in the hand" in out.why

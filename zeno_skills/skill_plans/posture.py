@@ -144,3 +144,57 @@ def plan_held_move(kin, state, z_goal, name="lift", start=None, prior=None, step
     if isinstance(seg, Failure):
         return seg
     return Plan((sided(_move(seg, steps_per_wp=5, smooth=True), side),))
+
+
+GESTURE_STEP = np.pi / 8      # rad of a swing's phase between the task segment's checked samples (docs 2.4: by phase)
+
+
+def plan_gesture(kin, state, name, goals=None, swing=None, open_hand=None, back=None, hold_tilt=True, start=None,
+                 prior=None, step=0.005):
+    """A gesture where the robot stands (HAND_PLAN 9h: wave, point, shake): [``{name}_open``: the hand opened to
+    ``open_hand``] + [``{name}_reach``: the free leg to the first reachable of ``goals`` (primitives.PoseSet)] +
+    [``{name}_swing``: a task segment (Script, the world's frame, carry "arm") -- the TCP from where the leg left it
+    along the horizontal unit swing[0] by swing[1] m * sin(s), s over swing[2] full periods, the hand's rotation
+    kept] + [``{name}_back``: the free leg to the first free of ``back`` (JointSet)].  FREE_LOAD when the hand holds
+    something and ``hold_tilt``, else FREE_HAND.  ``start``: run's rebuild (the stage to build from).  Plan or
+    Failure."""
+    from ..motion_state import with_arm
+    from ..primitives import Script, scripted, sided, still
+    side = kin.side
+    spec = FREE_LOAD if state.held(side) is not None and hold_tilt else FREE_HAND
+    stages = ([f"{name}_open"] if open_hand is not None else []) + ([f"{name}_reach"] if goals is not None else []) + \
+        ([f"{name}_swing"] if swing is not None else []) + ([f"{name}_back"] if back is not None else [])
+    if start is not None and start not in stages:
+        return Failure(f"{name}: no stage {start}", start)
+    q, s, segs = np.asarray(state.q(side), float), state, []
+    for stage in stages[stages.index(start) if start else 0:]:
+        if stage.endswith("_open"):
+            seg = Segment(stage, spec, q, kind="action", action=("grip", float(open_hand), 20, False), info={"side": side})
+        elif stage.endswith("_reach"):
+            seg = free_leg(kin, s, spec, goals, stage, q_from=q)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+        elif stage.endswith("_swing"):
+            u, amp, periods = np.asarray(swing[0], float), float(swing[1]), float(swing[2])
+            u = np.r_[u[:2], 0.0] / max(float(np.linalg.norm(u[:2])), 1e-9)
+            with query(kin, s, spec):
+                p0, R0 = kin.tcp(q)
+            p0, R0 = np.asarray(p0, float), np.asarray(R0, float)
+
+            def tcp(a, p0=p0, R0=R0, u=u, amp=amp):
+                T = np.eye(4)
+                T[:3, :3], T[:3, 3] = R0, p0 + amp * np.sin(a) * u
+                return T
+            script = Script(still(None), 0.0, 2 * np.pi * periods, step=GESTURE_STEP, tcp=tcp, carry="arm")
+            seg = scripted(kin, with_arm(s, q, side), spec, script, stage, arm_step=step)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=2)
+        else:
+            seg = free_leg(kin, s, spec, back, stage, q_from=q)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+        if isinstance(seg, Failure):
+            return seg
+        segs.append(sided(seg, side))
+        q = np.asarray(seg.q_end, float)
+    return Plan(tuple(segs))

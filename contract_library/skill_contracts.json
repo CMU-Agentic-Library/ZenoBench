@@ -2025,7 +2025,7 @@
    "verb": "point",
    "noun": "target",
    "name": "Point at a target",
-   "description": "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
+   "description": "Point the closed fingers at a target (finger axis within 8 deg) to indicate it.",
    "group": "perception_and_gesture",
    "inputs": {
     "target": {
@@ -2039,7 +2039,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -2053,7 +2053,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -2063,10 +2063,10 @@
    ],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -2086,7 +2086,7 @@
       "target": "$target"
      },
      "negated": false,
-     "meaning": "The right finger axis points at the target within 8 deg.",
+     "meaning": "Either hand's finger axis points at the target within 8 deg.",
      "kind": "fluent",
      "gt_sources": [
       "arm_fk",
@@ -2096,10 +2096,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -2141,33 +2141,16 @@
       ],
       "steps": [
        {
-        "policy": "policy_041",
-        "args": [],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_101",
+        "policy": "policy_071",
         "args": [
          "$target"
         ],
-        "kwargs": {},
-        "as": "aim"
-       },
-       {
-        "policy": "policy_038",
-        "args": [
-         "#aim.position",
-         "#aim.rotation"
-        ],
-        "kwargs": {
-         "position_tolerance": 0.04,
-         "rotation_tolerance": 0.2
-        }
+        "kwargs": {}
        }
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "The point skill on the motion layers (HAND_PLAN 9h); the old chain of primitives (close, aim, right_tcp_move) is gone."
      },
      {
       "path_id": "turn_and_point",
@@ -2197,7 +2180,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_009",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -12738,7 +12721,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -12750,17 +12733,17 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -12778,7 +12761,7 @@
      "name": "waved",
      "args": {},
      "negated": false,
-     "meaning": "The right hand performed a measured wave (>= 2 lateral swings at head height).",
+     "meaning": "A hand performed a measured wave (>= 2 lateral swings at head height).",
      "kind": "memory",
      "gt_sources": [
       "robot_memory (TCP swing samples)"
@@ -12787,10 +12770,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -12972,7 +12955,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     }
@@ -12987,7 +12970,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     }
@@ -12995,10 +12978,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -13031,10 +13014,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -13096,7 +13079,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_039",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -15143,6 +15126,8 @@
   "policy_019": "Let go of a load policy_018 carried into the microwave: place's own release (see policy_018).",
   "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's own pull-out (see policy_018).",
   "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+  "policy_038": "Move the right TCP to a pose with a joint plan (a primitive): only point's old chain used it; point is the point skill on the motion layers (policy_071, skill_jobs.held.point_job, HAND_PLAN 9h, 2026-11-25).",
+  "policy_101": "Compute the right TCP pose that points at a target for policy_038: the point skill's own goal set now (policy_071, HAND_PLAN 9h, 2026-11-25).",
   "policy_048": "Pick from the microwave back through a pose policy_020 recorded: the cavity is a support behind a door like a cabinet's, picked by pick's one path (policy_061, docs 9.3 step 8d, 2026-11-24)."
  }
 }

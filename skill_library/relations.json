@@ -428,7 +428,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the gesture is finished",
    "bind": {
     "hand": "right"
@@ -2099,7 +2099,7 @@
    "to": "skill_039",
    "to_verb": "pour",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "loose contents are poured out",
    "bind": {
     "source": "$object"

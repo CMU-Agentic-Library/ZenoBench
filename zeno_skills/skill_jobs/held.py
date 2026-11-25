@@ -299,3 +299,139 @@ def release_job(rig, args, state, skill=None):
             raise SkillFailure(f"release {name}: the {side} hand still holds {rig.held_by(side)['name']}")
         return True
     return Job(ready=ready, done=done)
+
+
+# gestures (HAND_PLAN 9h): one goal set each where the old policies tried poses one after another
+WAVE_AT = (0.35, 0.25, (1.25, 1.15, 1.05))   # m: the hand raised this far forward, toward its own side, at any of
+#                                             these heights (the old WaveHandPolicy's three tries)
+WAVE_AMP = 0.10                               # m the raised hand swings to each side (old value)
+POINT_SHOULDER = (0.09, 0.18, 1.05)           # m: the pointing ray's origin -- forward, toward the hand's side, height
+POINT_REACH = (0.45, 0.38, 0.52, 0.30)        # m out along the ray the hand may stand (the old four tries)
+POINT_TOL_DEG = 8.0                           # deg: the closed fingers' axis this close to the target (point_result)
+SHAKE_SLIP = 0.008                            # m the pinch may close while shaking (the object did not turn in it)
+
+
+def _empty_or(rig, default="right"):
+    """The empty hand (the right where both are), else ``default``."""
+    return next((sd for sd in ("right", "left") if rig.held_by(sd) is None), default)
+
+
+def _gesture_job(rig, label, side, build, done):
+    from ..motion_skills import Job
+
+    def ready(found):
+        plan = build(_observe(rig))
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"{label}: {plan.why}")
+        return plan, build, _hooks(plan, side) if rig.held_by(side) is not None else {}
+    return Job(ready=ready, done=done)
+
+
+def wave_job(rig, args, state, skill=None):
+    """motion_skills.Job of wave (HAND_PLAN 9h): the empty hand opened, raised fingers up and palm forward in front of
+    the body toward its own side (WAVE_AT: one goal set of three heights), swung WAVE_AMP to each side ``swings`` times
+    (plan_gesture's swing, a task segment), then folded (kin.rest).  done(): memory gestures["wave"]."""
+    from ..kinematics import gripper_rot
+    from ..predicates import memory
+    from ..primitives import JointSet, PoseSet
+    from ..skill_plans import plan_gesture as _default
+    plan_gesture = skill.build if skill is not None else _default
+    swings = int(args.get("swings", 3))
+    side = _empty_or(rig, None)
+    if side is None:
+        raise SkillFailure("wave: both hands hold something")
+    kin = rig.arm_kin(side)
+    sgn = 1.0 if side == "right" else -1.0
+    x, y, yaw = rig.base_pose()
+    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    fwd, out, heights = WAVE_AT
+    R = gripper_rot([0.0, 0.0, 1.0], [c, s, 0.0])
+    goals = PoseSet(tuple((np.array([x + fwd * c + sgn * out * s, y + fwd * s - sgn * out * c, z]), R) for z in heights))
+
+    def build(st, frm=None, prior=None):
+        return plan_gesture(kin, st, "wave", goals=goals, swing=((-s, c, 0.0), WAVE_AMP, swings), open_hand=0.04,
+                            back=JointSet((np.asarray(kin.rest, float),)), hold_tilt=False, start=frm)
+
+    def done():
+        memory(rig).setdefault("gestures", {})["wave"] = swings
+        rig.log("wave_result", hand=side, swings=swings)
+        return {"swings": swings}
+    return _gesture_job(rig, "wave", side, build, done)
+
+
+def point_job(rig, args, state, skill=None):
+    """motion_skills.Job of point (HAND_PLAN 9h): the closed fingers (an empty hand closed first) along the ray from
+    the hand's shoulder (POINT_SHOULDER) to ``args["target"]``, the hand anywhere along it at POINT_REACH -- one goal
+    set.  A target not in front (the ray's forward part < 0.2): SkillFailure (the task layer turns the robot first).
+    done(): the fingers' axis within POINT_TOL_DEG of the target (point_result), the angle returned."""
+    from ..kinematics import gripper_rot
+    from ..predicates import entity_point
+    from ..primitives import PoseSet
+    from ..skill_plans import plan_gesture as _default
+    plan_gesture = skill.build if skill is not None else _default
+    target = args["target"]
+    side = _empty_or(rig)
+    kin = rig.arm_kin(side)
+    sgn = 1.0 if side == "right" else -1.0
+    p = np.asarray(entity_point(rig, target), float)
+    x, y, yaw = rig.base_pose()
+    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    f, l, z = POINT_SHOULDER
+    shoulder = np.array([x + f * c + sgn * l * s, y + f * s - sgn * l * c, z])
+    d = p - shoulder
+    d /= np.linalg.norm(d)
+    if d[:2] @ np.array([c, s]) < 0.2:
+        raise SkillFailure(f"point at {target}: not in front of the robot")
+    across = np.cross(d, [0.0, 0.0, 1.0])
+    across = across / np.linalg.norm(across) if np.linalg.norm(across) > 1e-6 else np.array([0.0, 1.0, 0.0])
+    R = gripper_rot(d, across)
+    goals = PoseSet(tuple((shoulder + d * r, R) for r in POINT_REACH))
+    close = 0.0 if rig.held_by(side) is None else None
+
+    def build(st, frm=None, prior=None):
+        return plan_gesture(kin, st, "point", goals=goals, open_hand=close, start=frm)
+
+    def done():
+        tcp, R2 = kin.tcp(rig.chain_q(side))
+        v = p - np.asarray(tcp, float)
+        ang = math.degrees(math.acos(float(np.clip((-R2[:, 2]) @ v / np.linalg.norm(v), -1.0, 1.0))))
+        rig.log("point_result", target=target, hand=side, angle_deg=round(ang, 2))
+        if ang > POINT_TOL_DEG:
+            raise SkillFailure(f"point at {target}: {ang:.1f} deg off")
+        return ang
+    return _gesture_job(rig, "point", side, build, done)
+
+
+def shake_job(rig, args, state, skill=None):
+    """motion_skills.Job of shake (HAND_PLAN 9h): what a hand holds (``args["name"]``) shaken ``cycles`` times
+    ``amplitude`` m to each side along the pinch's closing axis (its horizontal part; the base's sideways where it is
+    near vertical) -- the pads take the load in compression, a sideways shake rolled a block in the pinch -- one task
+    segment, the load's tilt held, ending where it started.  done(): the pinch closed at most SHAKE_SLIP (the object
+    did not turn in it), memory shaken counted."""
+    from ..predicates import memory
+    from ..skill_plans import plan_gesture as _default
+    plan_gesture = skill.build if skill is not None else _default
+    name = args["name"]
+    cycles, amp = int(args.get("cycles", 3)), float(args.get("amplitude", 0.02))
+    side, kin = _held(rig, name, "shake")
+    _, R = kin.tcp(rig.chain_q(side))
+    lat = np.asarray(R, float)[:, 1].copy()
+    lat[2] = 0.0
+    if np.linalg.norm(lat) < 0.3:
+        yaw = math.radians(rig.base_pose()[2])
+        lat = np.array([-math.sin(yaw), math.cos(yaw), 0.0])
+    gap0 = float(np.sum(rig.fingers() if side == "right" else rig.left_fingers()))
+
+    def build(st, frm=None, prior=None):
+        return plan_gesture(kin, st, "shake", swing=(lat, amp, cycles), start=frm)
+
+    def done():
+        gap1 = float(np.sum(rig.fingers() if side == "right" else rig.left_fingers()))
+        rig.log("shake_grip", obj=name, hand=side, gap_before=round(gap0, 4), gap_after=round(gap1, 4))
+        if gap0 - gap1 > SHAKE_SLIP:
+            raise SkillFailure(f"shake {name}: the pinch closed {gap0 - gap1:.3f} m (object turned in the hand)")
+        mem = memory(rig).setdefault("shaken", {})
+        mem[name] = mem.get(name, 0) + cycles
+        rig.log("shake_result", obj=name, cycles=cycles)
+        return {"cycles": cycles}
+    return _gesture_job(rig, "shake", side, build, done)

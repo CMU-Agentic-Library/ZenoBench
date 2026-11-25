@@ -221,7 +221,7 @@
     "skill_id": "skill_062",
     "verb": "shake",
     "when": "loose contents are poured out",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [

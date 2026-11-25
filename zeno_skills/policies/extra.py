@@ -45,37 +45,12 @@ def _mem(rig, key):
 
 
 class ShakeHeldPolicy(AtomicPolicy):
+    """Shake a held object along the pinch's closing axis: the shake skill (skill_jobs.held.shake_job, one task
+    segment; HAND_PLAN 9h) with the hand that holds it."""
+
     def execute(self, name, *, cycles=3, amplitude=0.02):
-        rig = self.rig
-        skills.right_hand_only(rig, name, "shake")
-        if rig.held is None or rig.held["name"] != name:
-            raise SkillFailure(f"shake {name}: not right-held")
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        x, y, yaw = rig.base_pose()
-        # shake along the closing axis: the pads take the inertial load in
-        # compression instead of shear (a sideways shake rolled a block in the pinch)
-        lat = R[:, 1].copy()
-        lat[2] = 0.0
-        if np.linalg.norm(lat) < 0.3:
-            lat = np.array([-math.sin(math.radians(yaw)), math.cos(math.radians(yaw)), 0.0])
-        lat /= np.linalg.norm(lat)
-        gap0 = float(rig.fingers().sum())
-        done = 0
-        for _ in range(int(cycles)):
-            for s in (1, -1):
-                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake",
-                            allow=FREE_ELSE_STRAIGHT)
-            skills.check_held(rig, "shake")
-            done += 1
-        rig.move_to(tcp, R, step=0.004, label="shake_end", allow=FREE_ELSE_STRAIGHT)
-        rig.step(30)
-        gap1 = float(rig.fingers().sum())
-        rig.log("shake_grip", obj=name, gap_before=round(gap0, 4), gap_after=round(gap1, 4))
-        if gap0 - gap1 > 0.008:
-            raise SkillFailure(f"shake {name}: the pinch closed {gap0 - gap1:.3f} m (object turned in the hand)")
-        _mem(rig, "shaken")[name] = _mem(rig, "shaken").get(name, 0) + done
-        rig.log("shake_result", obj=name, cycles=done)
-        return {"cycles": done}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["shake"], {"name": name, "cycles": int(cycles), "amplitude": float(amplitude)})
 
 
 class WaitPolicy(AtomicPolicy):
@@ -89,36 +64,11 @@ class WaitPolicy(AtomicPolicy):
 
 
 class WaveHandPolicy(AtomicPolicy):
+    """Wave the empty hand: the wave skill (skill_jobs.held.wave_job, plan_gesture; HAND_PLAN 9h)."""
+
     def execute(self, *, swings=3):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("wave: the right hand holds an object")
-        x, y, yaw = rig.base_pose()
-        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        centre = np.array([x + 0.35 * c + 0.25 * s, y + 0.35 * s - 0.25 * c, 1.25])
-        lat = np.array([-s, c, 0.0])
-        R = gripper_rot([0, 0, 1.0], [c, s, 0.0])          # fingers up, palm forward
-        rig.grip(0.04, 20)
-        last = None
-        for z in (1.25, 1.15, 1.05):
-            centre[2] = z
-            try:
-                rig.move_to(centre, R, label="wave_raise", smooth=True)
-                break
-            except SkillFailure as exc:
-                last = exc
-        else:
-            raise last
-        n = 0
-        for _ in range(int(swings)):
-            for sgn in (1, -1):
-                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing",
-                            allow=FREE_ELSE_STRAIGHT)
-            n += 1
-        _mem(rig, "gestures")["wave"] = n
-        rig.log("wave_result", swings=n)
-        rig.tuck()
-        return {"swings": n}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["wave"], {"swings": int(swings)})
 
 
 class NodHeadPolicy(AtomicPolicy):

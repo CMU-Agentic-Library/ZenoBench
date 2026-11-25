@@ -9,7 +9,7 @@ from .place import (DROP_RELAY, DROP_STAGES, HOVER_RELAY, HOVER_STAGES, PLACE_AN
                     set_down_length)
 from .navigate import NAV_STAGES, Carry, plan_navigate, travel_chain
 from .look import LOOK_STEPS, head_segment, plan_look
-from .posture import plan_held_move, plan_posture
+from .posture import plan_gesture, plan_held_move, plan_posture
 from .door import (DOOR_ANCHORS, DOOR_RELAY, DOOR_STAGES, DOOR_TOL, PUSH_ANCHORS, PUSH_RELAY, PUSH_STAGES,
                    plan_door, plan_push)
 from .contact import (PRESS_ANCHORS, PRESS_RELAY, PRESS_STAGES, SLIDE_ANCHORS, SLIDE_RELAY, SLIDE_STAGES, SLIDE_STEP,

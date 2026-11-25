@@ -135,7 +135,7 @@
     "skill_id": "skill_015",
     "verb": "point",
     "when": "the gesture is finished",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_018",

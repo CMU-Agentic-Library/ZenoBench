@@ -55,7 +55,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `point` (`skill_015`) (enables) — the gesture is finished
+- Previous step: `point` (`skill_015`) (then) — the gesture is finished
 - Previous step: `place` (`skill_018`) (then) — the hand is empty and the robot drives next
 - Previous step: `release` (`skill_021`) (enables) — the arm is folded after letting go
 - Previous step: `press` (`skill_042`) (then) — the hand is free again

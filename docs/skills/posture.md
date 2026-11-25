@@ -47,6 +47,14 @@ HAND_PLAN 9f：`ReleaseInPlacePolicy` → `run_skill(SKILLS["release"])`，计�
 
 regrasp（`RegraspPolicy`）现在是 place（支撑面上离底盘最近、往里 12 cm 的点）加 pick，都走运动分层；旧的"已经在空地上方就直接竖直放下"分支删了。
 
+## wave / point / shake（手势）
+
+HAND_PLAN 9h（11-25）：`WaveHandPolicy` / `PointAtPolicy` / `ShakeHeldPolicy` → `run_skill(SKILLS["wave" / "point" / "shake"])`，job 在 `skill_jobs/held.py`，计划是 `plan_gesture`：[张手] → [自由段到一个目标集合] → [摆动任务段：TCP 沿水平方向 `amp · sin(s)`，世界坐标系 `Still`，`carry="arm"`] → [收回]。
+
+- **wave**：空着的手（右手优先）张开，举到身前、手那一侧 0.35 / 0.25 m、三个高度之一（一个目标集合，旧代码依次试），横向 ±10 cm 摆 `swings` 次，收臂。
+- **point**：从手那一侧的"肩"（身前 0.09、侧 0.18、高 1.05 m）到目标的射线上，离肩 0.30–0.52 m 四个位置组成一个目标集合，合拢的手指沿射线；结果：手指轴离目标 8° 以内。目标不在前方时 `PointAtPolicy` 先转身（任务层）。技能的两条路径都调它；旧的原语串（policy_041 → 101 → 038）退役。
+- **shake**：拿着东西的手沿合爪轴的水平方向摆 `cycles` 次、幅度 `amplitude`，保持倾角，回到起点；结果：合爪宽度收窄不超过 8 mm（物体没在手里转）。
+
 ## 谁在用
 
 - **explore_furniture**：站着看不全的层（下层被上一层的板挡住），能蹲多低蹲多低再看一遍，然后站回原来的高度（crouch、stand 技能）。蹲不下去，探索失败。

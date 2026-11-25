@@ -21,42 +21,21 @@ from .perceive import record_view
 
 
 class PointAtPolicy(AtomicPolicy):
-    """Point the closed right fingers at a target from in front of the chest."""
+    """Point the closed fingers at a target from in front of the chest: the point skill (skill_jobs.held.point_job,
+    plan_gesture; HAND_PLAN 9h).  A target not in front: the robot turns to it first (FaceTargetPolicy, the task
+    layer), then points."""
 
     def execute(self, target):
+        from ..motion_skills import SKILLS, run_skill
         rig = self.rig
         p = entity_point(rig, target)
         x, y, yaw = rig.base_pose()
-        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        shoulder = np.array([x + 0.09 * c + 0.18 * s, y + 0.09 * s - 0.18 * c, 1.05])
-        d = p - shoulder
-        d /= np.linalg.norm(d)
-        if d[:2] @ np.array([c, s]) < 0.2:
+        fwd = np.array([math.cos(math.radians(yaw)), math.sin(math.radians(yaw))])
+        d = np.asarray(p, float)[:2] - np.array([x, y])
+        if np.linalg.norm(d) > 1e-6 and (d / np.linalg.norm(d)) @ fwd < 0.2:
             from .base_motion import FaceTargetPolicy
             FaceTargetPolicy(rig).execute(target)
-            return self.execute(target)
-        side = np.cross(d, [0, 0, 1.0])
-        side = side / np.linalg.norm(side) if np.linalg.norm(side) > 1e-6 else np.array([0, 1.0, 0])
-        R = gripper_rot(d, side)
-        if rig.held is None:
-            rig.grip(0.0, 40)
-        last = None
-        for reach in (0.45, 0.38, 0.52, 0.30):
-            tcp = shoulder + d * reach
-            try:
-                rig.move_to(tcp, R, label="point", smooth=True)
-                break
-            except SkillFailure as exc:
-                last = exc
-        else:
-            raise last
-        tcp, R2 = rig.kin.tcp(rig.q())
-        v = p - tcp
-        ang = math.degrees(math.acos(np.clip((-R2[:, 2]) @ v / np.linalg.norm(v), -1, 1)))
-        rig.log("point_result", target=target, angle_deg=round(ang, 2))
-        if ang > 8.0:
-            raise SkillFailure(f"point at {target}: {ang:.1f} deg off")
-        return ang
+        return run_skill(rig, SKILLS["point"], {"target": target})
 
 
 class PresentHeldPolicy(AtomicPolicy):

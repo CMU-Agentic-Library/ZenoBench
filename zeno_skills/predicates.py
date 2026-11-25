@@ -454,12 +454,17 @@ def _observed(rig, ctx, target):
 
 
 @predicate("pointing_at", [("target", "entity_ref")], "fluent",
-           "The right finger axis points at the target within 8 deg.")
+           "Either hand's finger axis points at the target within 8 deg.")
 def _pointing_at(rig, ctx, target):
-    tcp, R = rig.kin.tcp(rig.q())
-    d = entity_point(rig, target, _state(rig, ctx)) - tcp
-    ang = math.degrees(math.acos(max(-1.0, min(1.0, float((-R[:, 2]) @ d / max(1e-9, np.linalg.norm(d)))))))
-    return ang <= 8.0, f"angle {ang:.1f} deg"
+    best = None
+    for kin, q in ((rig.kin, rig.q()), (getattr(rig, "left_kin", None), getattr(rig, "left_q", lambda: None)())):
+        if kin is None or q is None:
+            continue
+        tcp, R = kin.tcp(q)
+        d = entity_point(rig, target, _state(rig, ctx)) - tcp
+        ang = math.degrees(math.acos(max(-1.0, min(1.0, float((-R[:, 2]) @ d / max(1e-9, np.linalg.norm(d)))))))
+        best = ang if best is None else min(best, ang)
+    return best is not None and best <= 8.0, f"angle {best:.1f} deg"
 
 
 @predicate("presenting", [("object", "object_ref")], "fluent",
@@ -1089,7 +1094,7 @@ def _waited(rig, ctx, seconds):
     return dt >= float(seconds) - 0.05, f"{dt:.2f} s elapsed"
 
 
-@predicate("waved", [], "memory", "The right hand performed a measured wave (>= 2 lateral swings at head height).")
+@predicate("waved", [], "memory", "A hand performed a measured wave (>= 2 lateral swings at head height).")
 def _waved(rig, ctx):
     n = _mem(rig, "gestures").get("wave", 0)
     return n >= 2, f"{n} swings"

@@ -152,6 +152,10 @@ RETIRED_POLICIES = {
     "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's "
                   "own pull-out (see policy_018).",
     "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+    "policy_038": "Move the right TCP to a pose with a joint plan (a primitive): only point's old chain used it; point is "
+                  "the point skill on the motion layers (policy_071, skill_jobs.held.point_job, HAND_PLAN 9h, 2026-11-25).",
+    "policy_101": "Compute the right TCP pose that points at a target for policy_038: the point skill's own goal set now "
+                  "(policy_071, HAND_PLAN 9h, 2026-11-25).",
     "policy_048": "Pick from the microwave back through a pose policy_020 recorded: the cavity is a support behind a "
                   "door like a cabinet's, picked by pick's one path (policy_061, docs 9.3 step 8d, 2026-11-24).",
 }
