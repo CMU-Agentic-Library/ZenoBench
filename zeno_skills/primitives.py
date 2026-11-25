@@ -639,7 +639,8 @@ def _script_path(kin, state, spec, script, info, base=None, arm_step=0.005, reac
                 return qs, s_at, float(samples[i - 1])
             return f"no IK along the task at {where}"
         if line and not free_path(kin, st, spec, [q] + list(line)):
-            return f"the robot collides by {where}"
+            bad = next((x for x in line if not free_at(kin, st, spec, x)), None)   # what it runs into, if a waypoint
+            return f"the robot collides by {where}" + ("" if bad is None else _explain(kin, st, spec, bad))
         qs += [np.asarray(x, float) for x in line]
         s_at += [float(s)] * len(line)
         q = qs[-1] if qs else q

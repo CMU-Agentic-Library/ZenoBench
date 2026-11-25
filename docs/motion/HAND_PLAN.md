@@ -128,7 +128,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp 还在用，随 9f 删 | 本次提交；`/data/zenobench/hand9e_1125` |
 | 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 本次提交；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
 | 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 本次提交；`/data/zenobench/hand9g_1125` |
-| 9h v6 没用到的接触 / 手势 | 进行中：wave、point、shake 做完（P01 wave + point、P07 shake 成功；P01 整集败在 crouch，已知的躯干下限问题）；roll、tip、flip、pour 待做 | 本次提交；`/data/zenobench/hand9h_1125` |
+| 9h v6 没用到的接触 / 手势 | 进行中：wave、point、shake 做完（bef85df6；P01 wave + point、P07 shake 成功）；tip 做完（P04 tip 成功，整集败在后面的 upright NO_PATH，和 11-08 一样）；roll 迁了但 P03 失败（见下）；flip、pour 待做 | bef85df6、本次提交；`/data/zenobench/hand9h_1125` |
 | 9i–9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
@@ -148,5 +148,9 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 **9f 做了什么**（11-25）：rotate = `plan_posture` 到一个目标集合（手的朝向绕竖直轴转给定角度，位置是现在的 TCP 或旧代码的 4 个往底盘拉回 / 抬高的点，保持倾角）；upright = `plan_posture(hold_tilt=False)` 到"物体竖直"的目标集合（8 个朝向 × 原地抬高或胸前 8 个点），旧代码的大网格、IK 连续性搜索和放下撬起 / 挂直两级退路删了；release = `plan_release`（张开 + 沿夹爪轴退一个手指长，动之前都建好）；regrasp = place + pick（都走运动分层），旧的"直接竖直放下"分支删了。square 不再 pick 之后单独 rotate：**摆正的转角放进 place 的目标集合**（`place(square=True)`：按放下那一刻手里物体的朝向算出摆正需要的转角，加 0 / ±90 / 180），因为 pick 之前量的转角会随搬运姿态漂（检查里第一次左手放下选了 135° 转角，块偏 44°；改成 rotate 后只许 90° 倍数仍偏 44°，就是这个漂移）。路线 id `pick_rotate_place` 保留（覆盖、验证数据引用它），步骤里已经没有 rotate。强制左手（`ZENO_PICK_SIDE=left`，诊断，不进基线）T06 display_row 整集成功，6 次 pick 都是左手，三块都摆正（`/data/zenobench/hand9f3_1125/runs_left`）。`orientation.py` 的旧入口 24 -> 0，`hand.py` 19 -> 12（剩下的是 flip、LeftSteady 等，9h / 9i）。
 
 **9g 做了什么**（11-25）：touch / knock 直接用 `plan_press`（指尖沿 u 压进被碰的面 `TOUCH_DEPTH` 2 mm，锚点，按测量退出，收臂；touch 是物体顶面，4 个合爪方向；knock 是门板上把手旁的 5 个点 × 2 个合爪方向，`KnockPanelPolicy` 每敲一次跑一次技能），job 在 `skill_jobs/press.py`，记 `touch_contact` / `knock_contact`。wipe = `plan_wipe`（`skill_plans/contact.py`，stir 的形状）：到达 → 自由段到按压位姿上方 → 直线压下 `WIPE_PRESS` → 任务段沿带子擦（`scripted`，世界坐标系的 `Still`，`carry="arm"`，`reach`：能擦多长量出来）→ 擦回 → 锚点 → 抬起 → 回到来时的姿态；擦不到半条带子的停车点在构造里拒掉；覆盖率在两段任务段执行时每 4 个物理步采一次。旧代码是手臂不动、底盘平移，按压有接近段，抬起是写死的 8 cm 不查碰撞，都删了。为此加了两样东西：静态家具能按名字放进 `Spec.touch`（`Motion._touch_key`：静态碰撞体按所属家具记作 `furniture:<名字>`，和接触监控报的名字同一条规则），`Still(None)` 是世界坐标系。检查：右手 5 次 wipe 手臂擦 12–16 cm，覆盖率 0.6–0.73（旧代码平移底盘擦满 30 cm）；强制左手那次擦满 30 cm，覆盖率 1.0。`extra.py` 的旧入口 17 -> 6，`tooluse.py` 11 -> 8（剩下的是 pour 等，9h）。
+
+**9h 第二部分**（11-25）：tip = push 的新方式 `poke`（合拢的指尖朝推的方向，在物体高度 `TIP_HEIGHT` 80% 处推，一条腿），P04 瓶子倒下 92°、仍在台面上。roll = push 的拖（`drag`），两个方向都作为目标（往机器人外侧那个排前）。push（`slide_job`）改成用空着的手（右手优先；原来右手拿着东西就拒绝），契约 `hand_empty(any)`。任务段的碰撞失败现在写出撞到哪个部位、哪个物体（`_script_path`）。`contact.py` 旧入口 6 -> 0，`_contact_sweep` 删了。
+
+**roll 卡在哪**：P03 擀面杖。往外拖时手指在约 9 cm 处撞到前面的 oatmeal（旧代码的扫动不查碰撞）；换成往里拖以后规划成功，执行时 `slide_down` 停在离目标 1.4 cm 处：拖的 TCP 在顶面上方 `DRAG_PRESS` 6 mm，合拢的指尖在 TCP 下方约 2 cm，等于按设计压进物体约 1.4 cm，刚性的擀面杖顶住了手（`run` 的"停在目标前"判据）。这是 push 的 drag 本身的压深，v6 的拖（T01、T29 的书）也走它；改 `DRAG_PRESS` 会动基线，等用户定。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

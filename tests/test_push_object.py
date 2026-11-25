@@ -32,6 +32,12 @@ class _Book:
     def state(self):
         return {"objects": {"book": {"quat": [1.0, 0.0, 0.0, 0.0]}}}
 
+    def held_by(self, side="right"):
+        return None
+
+    def arm_kin(self, side="right"):
+        return self.kin if side == "right" else getattr(self, "left_kin", self.kin)
+
     def log(self, label, **kw):
         self.events.append((label, kw))
 
@@ -87,7 +93,7 @@ def test_enough_ends_it_before_the_distance(monkeypatch):
 
 def test_an_unknown_way_is_refused():
     with pytest.raises(ValueError, match="mode"):
-        push_object(_Book(), "book", _TABLE, [(X, 0.1, None)], modes=("poke",))
+        push_object(_Book(), "book", _TABLE, [(X, 0.1, None)], modes=("shove",))
 
 
 def test_the_job_has_every_direction_and_way_as_goals_each_mode_a_tier(monkeypatch):

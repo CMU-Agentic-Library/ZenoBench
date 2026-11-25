@@ -23,11 +23,11 @@ An upright object must be laid on its side.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object); upright(object=$object).
+Requires hand_empty(hand=any); base_near(place=$object); upright(object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `upright(object=$object)` — Object z axis within 20 deg of vertical. GT: object_pose.
 

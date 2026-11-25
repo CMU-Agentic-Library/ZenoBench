@@ -94,6 +94,8 @@ SLIDE_GAP = _t("SLIDE_GAP", 0.005, "m", "chosen, unmeasured: the planner's close
                "where the push-in ends -- with the finger box's excess over the real pads along n (2.7 / 4.2 mm by "
                "the gripper's turn) the hand's lag before the object moves (primitives.Pushed): 7.7 / 9.2 mm; "
                "slide_1112 (11-12) measured 10.7 mm on average (18 pushes, 9-14 mm), the rest unexplained")
+TIP_HEIGHT = _t("TIP_HEIGHT", 0.80, "1", "inherited (the old TipOverPolicy's): a tip pokes a standing object at this "
+                "fraction of its height -- high enough that it falls rather than slides (HAND_PLAN 9h)")
 DRAG_RIM = _t("DRAG_RIM", 0.03, "m", "inherited (skills' old push): a drag presses this far inside the leading rim")
 DRAG_PRESS = _t("DRAG_PRESS", 0.006, "m", "inherited (skills' old push: top - 4 mm + 10 mm): a drag's TCP this far "
                 "above the top, the fingertips pressed into it (higher only brushes it)")

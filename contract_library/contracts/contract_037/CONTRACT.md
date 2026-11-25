@@ -6,7 +6,7 @@ Paired SkillNode: `skill_029` (`push-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
 ## Verifier
