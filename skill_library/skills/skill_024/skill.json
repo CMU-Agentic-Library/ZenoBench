@@ -47,14 +47,14 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object)."
+  "summary": "Requires holding(hand=any, object=$object)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -78,7 +78,7 @@
     "height_m": "$height_m"
    },
    "negated": false,
-   "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -87,10 +87,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -116,7 +116,7 @@
      "height_m": "$height_m"
     },
     "negated": false,
-    "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+    "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
     "kind": "fluent",
     "gt_sources": [
      "object_pose",
@@ -126,10 +126,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
@@ -176,7 +176,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "then"
+    "type": "enables"
    }
   ],
   "fallback": [],

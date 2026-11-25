@@ -1,4 +1,4 @@
-# 姿态：下蹲、站起、弯腰、直腰、收臂
+# 姿态：下蹲、站起、弯腰、直腰、收臂；举高、放低、举到头前
 
 2026-11-16 起走运动分层（`skill_plans/posture.py` 的 `plan_posture`，job 在 `skill_jobs/posture.py`；`../motion/MOTION_ARCHITECTURE.md` 第 6 节、9.3 第 5 步）：在机器人现在站的地方做一段关节运动，不选停车点，不挪底盘。
 
@@ -17,6 +17,22 @@
 3. 左臂：先张开左手，再只动左臂到它的收起姿态，身体不动。
 4. 收起姿态在这里会碰、或者走不过去：失败。旧代码挪底盘再收（`fold_where_possible`），左臂是不查碰撞的关节直线，都删了。下垂不算收好：技能保证的 `arm_stowed` 要求收起姿态。
 5. 结果：手臂关节离收起姿态 0.10 rad 以内（`STOWED_TOL`）。
+
+## lift / lower（手里的东西竖直上下）
+
+HAND_PLAN 9e（11-25）：`CarryHeightAdjustPolicy` / `SetHeldHeightPolicy` → `run_skill(SKILLS["lift" / "lower"])`，job 是 `skill_jobs/held.py`，计划是 `plan_held_move`。
+
+1. 拿着这个物体的手（哪只都行）；物体底面已经够高（lift）/ 够低（lower，2 cm 以内，`HEIGHT_TOL`）就不动。
+2. **一条直线**：TCP 从现在的位置竖直走到让物体底面到达给定高度的那个高度，手的朝向不变（物体倾角保持），`FREE_LOAD` 查碰撞。
+3. **做不出来就失败**：旧代码 `held_vertical_move` 在直线没 IK 时先把物体往身体拉 8–30 cm 的 5 个中间点再抬，`CarryHeightAdjustPolicy` 还按实测底面闭环重试 3 次，都删了（规则 3）。物体被卡住跟不上手，结果判定失败。
+4. 结果：实测底面 ≥ 目标 − 2 cm（lift）/ ≤ 目标 + 2 cm（lower）。
+
+## present（把手里的东西举到头前）
+
+HAND_PLAN 9e：`PresentHeldPolicy` → `run_skill(SKILLS["present"])`，job 是 `skill_jobs/held.py` 的 `present_job`，计划是 `plan_posture` 加一个转头段。
+
+1. 物体中心在身前的 4 个位置（`PRESENT_AT`，左手的横向镜像）组成**一个目标集合**，手的朝向不变；自由段到第一个能到的（旧代码是 4 个依次 `move_to` 重试）。
+2. 头转向自由段终点处的物体（`present_look`），再记录视野（`record_view`）。
 
 ## 谁在用
 

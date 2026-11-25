@@ -318,7 +318,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
    "gt_sources": [
     "object_pose",
     "gripper_state"
@@ -336,7 +336,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
    "gt_sources": [
     "object_pose",
     "gripper_state"
@@ -390,7 +390,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+   "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
    "gt_sources": [
     "object_pose",
     "gripper_state",
@@ -752,7 +752,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.",
+   "meaning": "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.",
    "gt_sources": [
     "object_pose",
     "base_pose",
@@ -4083,7 +4083,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object to show."
+     "description": "The held object to show (either hand)."
     }
    },
    "required_inputs": [
@@ -4092,14 +4092,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object)."
+    "summary": "Requires holding(hand=any, object=$object)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -4122,7 +4122,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.",
+     "meaning": "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -4132,10 +4132,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -4160,7 +4160,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.",
+      "meaning": "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.",
       "kind": "fluent",
       "gt_sources": [
        "object_pose",
@@ -4171,10 +4171,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -4221,7 +4221,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_022",
@@ -4230,7 +4230,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "enables"
+      "type": "then"
      }
     ],
     "fallback": [],
@@ -5046,7 +5046,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [
@@ -5815,7 +5815,7 @@
       "skill_id": "skill_016",
       "verb": "present",
       "when": "the object is put away after showing it",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_017",
@@ -5827,7 +5827,7 @@
       "skill_id": "skill_024",
       "verb": "lower",
       "when": "the object goes onto a low shelf or into the fridge",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_025",
@@ -6200,13 +6200,13 @@
       "skill_id": "skill_023",
       "verb": "lift",
       "when": "the object is released over a tall container",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_063",
       "verb": "hover",
       "when": "the object is released into the container under it",
-      "type": "then"
+      "type": "enables"
      }
     ],
     "next": [
@@ -6923,7 +6923,7 @@
       "skill_id": "skill_016",
       "verb": "present",
       "when": "the object is passed to the left hand",
-      "type": "enables"
+      "type": "then"
      }
     ],
     "next": [
@@ -7045,14 +7045,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object)."
+    "summary": "Requires holding(hand=any, object=$object)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7076,7 +7076,7 @@
       "height_m": "$height_m"
      },
      "negated": false,
-     "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+     "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -7085,10 +7085,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7114,7 +7114,7 @@
        "height_m": "$height_m"
       },
       "negated": false,
-      "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+      "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
       "kind": "fluent",
       "gt_sources": [
        "object_pose",
@@ -7124,10 +7124,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -7156,7 +7156,7 @@
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_034($height_m)"
+      "policy_034($height_m, name=$object)"
      ],
      "policies": [
       "policy_034"
@@ -7170,7 +7170,7 @@
       "skill_id": "skill_017",
       "verb": "pick",
       "when": "the object must clear a high rim while carried",
-      "type": "then"
+      "type": "enables"
      }
     ],
     "next": [
@@ -7189,7 +7189,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],
@@ -7306,14 +7306,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object)."
+    "summary": "Requires holding(hand=any, object=$object)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7337,7 +7337,7 @@
       "height_m": "$height_m"
      },
      "negated": false,
-     "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+     "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -7346,10 +7346,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7375,7 +7375,7 @@
        "height_m": "$height_m"
       },
       "negated": false,
-      "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+      "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
       "kind": "fluent",
       "gt_sources": [
        "object_pose",
@@ -7385,10 +7385,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -7435,7 +7435,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],
@@ -16414,7 +16414,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object."
+     "description": "The held object (either hand)."
     },
     "target": {
      "type": "entity_ref",
@@ -16429,14 +16429,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object); base_near(place=$target)."
+    "summary": "Requires holding(hand=any, object=$object); base_near(place=$target)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -16475,7 +16475,7 @@
       "target": "$target"
      },
      "negated": false,
-     "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+     "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -16485,10 +16485,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -16514,7 +16514,7 @@
        "target": "$target"
       },
       "negated": false,
-      "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+      "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
       "kind": "fluent",
       "gt_sources": [
        "object_pose",
@@ -16525,10 +16525,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -16574,7 +16574,7 @@
        "object": "$object",
        "container": "$target"
       },
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_021",

@@ -849,7 +849,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_023",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "fallback",

@@ -30,7 +30,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -46,7 +46,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -56,10 +56,10 @@
  ],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -84,7 +84,7 @@
     "height_m": "$height_m"
    },
    "negated": false,
-   "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -94,10 +94,10 @@
    "scope": "all paths"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -168,7 +168,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_018",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "alternative",

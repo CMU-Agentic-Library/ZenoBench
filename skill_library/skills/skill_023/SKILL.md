@@ -27,23 +27,23 @@ A held object must be raised to a height (clear an obstacle, show it).
 
 ## Applicability
 
-Requires holding(hand=right, object=$object).
+Requires holding(hand=any, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 
-- `held_above(object=$object, height_m=$height_m)` — Right-held object's bottom at or above the given world height (2 cm tolerance). GT: object_pose, gripper_state.
-- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `held_above(object=$object, height_m=$height_m)` — Held object's bottom (either hand) at or above the given world height (2 cm tolerance). GT: object_pose, gripper_state.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `held_above(object=$object, height_m=$height_m)` (all paths)
-- `holding(hand=right, object=$object)` (all paths)
+- `holding(hand=any, object=$object)` (all paths)
 
 ## May invalidate
 
@@ -53,13 +53,13 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `raise` — when always (default path)
 
-1. `policy_034($height_m)`
+1. `policy_034($height_m, name=$object)`
 
 ## Relations
 
-- Previous step: `pick` (`skill_017`) (then) — the object must clear a high rim while carried
+- Previous step: `pick` (`skill_017`) (enables) — the object must clear a high rim while carried
 - Next step: `navigate` (`skill_001`) (then) — the object is carried over furniture
-- Next step: `drop` (`skill_019`) (then) — the object is released over a tall container
+- Next step: `drop` (`skill_019`) (enables) — the object is released over a tall container
 - Is a fallback for: `navigate` (`skill_001`) (recover) — a carried object hangs too low for the doorway clearance
 - Alternative: `present` (`skill_016`) — use lift instead when only the height of the load matters
 - Alternative: `lower` (`skill_024`) — use lift instead when opposite direction

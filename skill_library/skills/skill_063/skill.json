@@ -27,7 +27,7 @@
   "object": {
    "type": "object_ref",
    "required": true,
-   "description": "The right-held object."
+   "description": "The held object (either hand)."
   },
   "target": {
    "type": "entity_ref",
@@ -42,14 +42,14 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object); base_near(place=$target)."
+  "summary": "Requires holding(hand=any, object=$object); base_near(place=$target)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -88,7 +88,7 @@
     "target": "$target"
    },
    "negated": false,
-   "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+   "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -98,10 +98,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -127,7 +127,7 @@
      "target": "$target"
     },
     "negated": false,
-    "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
+    "meaning": "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.",
     "kind": "fluent",
     "gt_sources": [
      "object_pose",
@@ -138,10 +138,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
@@ -187,7 +187,7 @@
      "object": "$object",
      "container": "$target"
     },
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_021",

@@ -636,7 +636,7 @@
     "skill_id": "skill_016",
     "verb": "present",
     "when": "the object is put away after showing it",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_017",
@@ -648,7 +648,7 @@
     "skill_id": "skill_024",
     "verb": "lower",
     "when": "the object goes onto a low shelf or into the fridge",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_025",

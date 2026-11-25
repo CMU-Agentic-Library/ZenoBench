@@ -12,7 +12,7 @@
   "object": {
    "type": "object_ref",
    "required": true,
-   "description": "The right-held object to show."
+   "description": "The held object to show (either hand)."
   }
  },
  "outputs": {},
@@ -20,7 +20,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -35,7 +35,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -45,10 +45,10 @@
  ],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -72,7 +72,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.",
+   "meaning": "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -83,10 +83,10 @@
    "scope": "all paths"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -148,7 +148,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_018",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "sequence",
@@ -159,7 +159,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_022",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   },
   {
    "kind": "alternative",

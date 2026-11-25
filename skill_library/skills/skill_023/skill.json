@@ -49,14 +49,14 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object)."
+  "summary": "Requires holding(hand=any, object=$object)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -80,7 +80,7 @@
     "height_m": "$height_m"
    },
    "negated": false,
-   "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+   "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -89,10 +89,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -118,7 +118,7 @@
      "height_m": "$height_m"
     },
     "negated": false,
-    "meaning": "Right-held object's bottom at or above the given world height (2 cm tolerance).",
+    "meaning": "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).",
     "kind": "fluent",
     "gt_sources": [
      "object_pose",
@@ -128,10 +128,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
@@ -160,7 +160,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_034($height_m)"
+    "policy_034($height_m, name=$object)"
    ],
    "policies": [
     "policy_034"
@@ -174,7 +174,7 @@
     "skill_id": "skill_017",
     "verb": "pick",
     "when": "the object must clear a high rim while carried",
-    "type": "then"
+    "type": "enables"
    }
   ],
   "next": [
@@ -193,7 +193,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "then"
+    "type": "enables"
    }
   ],
   "fallback": [],

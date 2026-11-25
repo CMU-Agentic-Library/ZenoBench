@@ -125,7 +125,8 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9c pick 选手 | 做完；强制左手 3/3 整集成功（T11、T04、T22，含冰箱层板） | fe321f67 |
 | 左手放下的收臂起点碰撞（9c 的后续） | 做完：规划器按两根手指各自的实测值（`Hand.fingers`），不再都取较宽的那根；定向 5/5 | 8cba9d98 |
 | 9d 微波炉腔体取放 | 部分做完（用户 11-25：先提交，进 9e）：放入走 place，检查 2/4；microwave_works、broken_oatmeal_away 仍建不出（见下）；取出走 pick 只有单测（v6 种子 10 的路线没有从腔体取出） | 本次提交；`/data/zenobench/hand9d2_1125` |
-| 9e–9j | 没开始 | — |
+| 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp 还在用，随 9f 删 | 本次提交；`/data/zenobench/hand9e_1125` |
+| 9f–9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
 
@@ -138,5 +139,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 结果：microwave_holds_pot、two_portions__counter 成功（后者左手把碗放进微波炉，整集成功）；microwave_works、broken_oatmeal_away 失败（停车点搜索 7 / 15 次构造都不成）。转储：碗放在腔体最前沿，手跨在门槛外夹碗沿（手在 y 2.29–2.33，开口面 2.345），所以 `place_exit` 一次都没触发；失败在抽出（沿夹爪轴往上约 8 cm，末端左前臂 `left_arm_link_5` 进开口上方的机身框 1–2 mm）和收臂（TRAJOPT）。这两集 1125 也是失败（当时是旧代码只认右手、直接拒绝），不算回退。取出走 pick 没在仿真里跑过。
 
 **以后接着做 9d**：碗沿捏取在门后的抽出方向（现在只能沿夹爪轴往上；要么让放的目标里有夹爪轴更朝开口的，要么抽出先上到指尖过碗沿、再朝开口），以及找一集从腔体取出的场景验证 pick。
+
+**9e 做了什么**（11-25）：lift / lower = `plan_held_move`（原地，TCP 竖直一条直线到目标高度，手的朝向不变，`FREE_LOAD`；旧代码往身体拉回的 5 个中间点和 3 次闭环重试删了）；present = `plan_posture` 到身前 4 个位置组成的一个目标集合（左手横向镜像）+ 转头段 `present_look`；hover = `plan_hover`（`plan_drop` 只留 arrive / reach，停车点搜索同 drop，物体底面在目标顶面上方 6 cm）。job 在 `skill_jobs/held.py`、`skill_jobs/drop.py:hover_job`，catalog 加 lift / lower / present / hover；policy_034 / 093 / 115 / 072 只调 `run_skill`；契约 `holding(any)`，谓词 `held_above` / `held_below` / `presenting` / `hovering_over` 认任一只手。检查 `/data/zenobench/hand9e_1125`：T10 trash_moved__dining（1125 败在 lift 只认右手）、can_on_island、keep_kids_can（左手 lift + hover）、guests_coming，T05 e1_pencil_asked（左手 present）成功；after_dinner 败在 pick takeout_tray（no reachable grasp，1125 同一个 pick 失败）。lower 在 v6 没用到，只有单测。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

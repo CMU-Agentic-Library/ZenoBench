@@ -231,6 +231,10 @@ MOTION_SKILLS = [
     {"name": "bend", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
     {"name": "straighten", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
     {"name": "tuck", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.posture:tuck_job"},
+    {"name": "lift", "shape": "posture", "template": "plan_held_move", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:lift_job"},
+    {"name": "lower", "shape": "posture", "template": "plan_held_move", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:lower_job"},
+    {"name": "present", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:present_job"},
+    {"name": "hover", "shape": "pick_place", "template": "plan_hover", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.drop:hover_job"},
 ]
 
 COMPOSITE_NOTES = [

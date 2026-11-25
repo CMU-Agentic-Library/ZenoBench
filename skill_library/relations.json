@@ -455,7 +455,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the object is put away after showing it",
    "bind": {
     "object": "$object"
@@ -469,7 +469,7 @@
    "to": "skill_022",
    "to_verb": "handover",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is passed to the left hand",
    "bind": {
     "object": "$object"
@@ -522,7 +522,7 @@
    "to": "skill_023",
    "to_verb": "lift",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the object must clear a high rim while carried",
    "bind": {
     "object": "$object"
@@ -905,7 +905,7 @@
    "to": "skill_019",
    "to_verb": "drop",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the object is released over a tall container",
    "bind": {
     "object": "$object"
@@ -919,7 +919,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the object goes onto a low shelf or into the fridge",
    "bind": {
     "object": "$object"
@@ -2126,7 +2126,7 @@
    "to": "skill_019",
    "to_verb": "drop",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the object is released into the container under it",
    "bind": {
     "object": "$object",

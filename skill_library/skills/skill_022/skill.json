@@ -169,7 +169,7 @@
     "skill_id": "skill_016",
     "verb": "present",
     "when": "the object is passed to the left hand",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [

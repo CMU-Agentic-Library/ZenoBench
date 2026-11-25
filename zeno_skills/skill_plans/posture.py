@@ -118,3 +118,27 @@ def _other_arm(other, state, spec, leg):
     i, why = _first_hit(other, state, spec, qs)
     return (f"the {other.side} arm, riding the body, collides at {_where(qs, i, chain(other))} "
             f"({why or 'between waypoints'})")
+
+
+def plan_held_move(kin, state, z_goal, name="lift", start=None, prior=None, step=0.005):
+    """lift / lower (HAND_PLAN 9e): what ``kin``'s hand holds moved straight up or down where the robot
+    stands, the TCP from where the State has it to the height ``z_goal`` (m, world) with its xy and rotation
+    kept -- the load's tilt held all the way (a straight keeps the hand's rotation) -- under FREE_LOAD.  One
+    straight, nothing tried instead (docs section 1, rule 3): the old held_vertical_move pulled the load toward
+    the body from up to five staging points when the straight had no IK.  ``start`` / ``prior``: run's rebuild
+    (made again from the State).  An empty Plan when the TCP is at ``z_goal`` already; Failure when the
+    straight cannot be made here."""
+    from ..primitives import sided, straight
+    from ..tolerances import NUMERIC_M
+    side = kin.side
+    if state.held(side) is None:
+        return Failure(f"the {side} hand holds nothing to move", name)
+    q0 = np.asarray(state.q(side), float)
+    with query(kin, state, FREE_LOAD):
+        p, R = kin.tcp(q0)
+    if abs(float(z_goal) - float(p[2])) < NUMERIC_M:
+        return Plan(())
+    seg = straight(kin, state, FREE_LOAD, np.r_[p[:2], float(z_goal)], R, name, step=step, q_from=q0)
+    if isinstance(seg, Failure):
+        return seg
+    return Plan((sided(_move(seg, steps_per_wp=5, smooth=True), side),))

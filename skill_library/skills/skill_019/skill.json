@@ -197,13 +197,13 @@
     "skill_id": "skill_023",
     "verb": "lift",
     "when": "the object is released over a tall container",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_063",
     "verb": "hover",
     "when": "the object is released into the container under it",
-    "type": "then"
+    "type": "enables"
    }
   ],
   "next": [

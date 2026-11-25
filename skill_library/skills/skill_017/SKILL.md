@@ -161,7 +161,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `stop` (`skill_068`) (enables) — the food is taken off the heat
 - Next step: `navigate` (`skill_001`) (then) — the object must be carried elsewhere
 - Next step: `place` (`skill_018`) (enables) — the object goes onto a surface or into a container
-- Next step: `lift` (`skill_023`) (then) — the object must clear a high rim while carried
+- Next step: `lift` (`skill_023`) (enables) — the object must clear a high rim while carried
 - Fallback on failure: `expose` (`skill_031`) (repair, repairs edge_overhang) — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
 - Fallback on failure: `separate` (`skill_032`) (repair, repairs grasp_clearance) — fingers have no room beside the object (grasp_clearance false)
 - Fallback on failure: `pull` (`skill_030`) (recover) — the object sits too deep to reach

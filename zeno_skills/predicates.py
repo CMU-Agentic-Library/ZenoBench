@@ -269,6 +269,11 @@ def held_name(rig, hand):
     return None if h is None else h.get("name")
 
 
+def in_a_hand(rig, name):
+    """``name`` held in either hand (HAND_PLAN 9e: lift / lower / hover / present take the hand that holds it)."""
+    return any(held_name(rig, side) == name for side in ("right", "left"))
+
+
 def reach_targets(rig, name, st=None):
     """TCP poses whose IK solvability defines ``reachable``."""
     from .kinematics import gripper_rot
@@ -458,10 +463,10 @@ def _pointing_at(rig, ctx, target):
 
 
 @predicate("presenting", [("object", "object_ref")], "fluent",
-           "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.")
+           "The held object (either hand) is in front of the body at 0.9-1.4 m height and in the head camera view.")
 def _presenting(rig, ctx, object):
-    if held_name(rig, "right") != object:
-        return False, "not right-held"
+    if not in_a_hand(rig, object):
+        return False, "not held"
     x, y, yaw = rig.base_pose()
     c = rig.geo.centre(object, _state(rig, ctx))
     fwd = (c[0] - x) * math.cos(math.radians(yaw)) + (c[1] - y) * math.sin(math.radians(yaw))
@@ -604,17 +609,17 @@ def _lying(rig, ctx, object):
 
 
 @predicate("held_above", [("object", "object_ref"), ("height_m", "positive_number")], "fluent",
-           "Right-held object's bottom at or above the given world height (2 cm tolerance).")
+           "Held object's bottom (either hand) at or above the given world height (2 cm tolerance).")
 def _held_above(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return held_name(rig, "right") == object and z >= float(height_m) - 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z >= float(height_m) - 0.02, f"bottom z {z:.3f} m"
 
 
 @predicate("held_below", [("object", "object_ref"), ("height_m", "positive_number")], "fluent",
-           "Right-held object's bottom at or below the given world height (2 cm tolerance).")
+           "Held object's bottom (either hand) at or below the given world height (2 cm tolerance).")
 def _held_below(rig, ctx, object, height_m):
     z = float(rig.geo.bottom(object, _state(rig, ctx))[2])
-    return held_name(rig, "right") == object and z <= float(height_m) + 0.02, f"bottom z {z:.3f} m"
+    return in_a_hand(rig, object) and z <= float(height_m) + 0.02, f"bottom z {z:.3f} m"
 
 
 def edge_overhang(rig, name, st):
@@ -1196,10 +1201,10 @@ def _sidestepped(rig, ctx, distance_m):
 
 
 @predicate("hovering_over", [("object", "object_ref"), ("target", "entity_ref")], "fluent",
-           "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.")
+           "The held object's (either hand) bottom is 3-15 cm above the target's top, centred within 4 cm.")
 def _hovering_over(rig, ctx, object, target):
-    if held_name(rig, "right") != object:
-        return False, "not right-held"
+    if not in_a_hand(rig, object):
+        return False, "not held"
     st = _state(rig, ctx)
     b = rig.geo.bottom(object, st)
     kind, rec = entity_kind(rig.ann, target)

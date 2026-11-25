@@ -60,32 +60,9 @@ class PointAtPolicy(AtomicPolicy):
 
 
 class PresentHeldPolicy(AtomicPolicy):
-    """Bring the right-held object in front of the body at eye level."""
+    """Bring the held object in front of the body at eye level and look at it: the present skill
+    (skill_jobs.held.present_job, HAND_PLAN 9e) with the hand that holds it."""
 
     def execute(self, name):
-        rig = self.rig
-        skills.right_hand_only(rig, name, "present")
-        if rig.held is None or rig.held["name"] != name:
-            raise SkillFailure(f"present {name}: not right-held")
-        x, y, yaw = rig.base_pose()
-        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        off = tcp - body
-        last = None
-        for fwd, lat, z in ((0.55, -0.05, 1.10), (0.50, -0.15, 1.05), (0.60, 0.0, 1.00), (0.45, -0.10, 0.95)):
-            goal = np.array([x + c * fwd - s * lat, y + s * fwd + c * lat, z]) + off
-            try:
-                rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="present", smooth=True)
-                break
-            except SkillFailure as exc:
-                last = exc
-        else:
-            raise last
-        skills.check_held(rig, "present")
-        centre = rig.geo.centre(name, rig.state())
-        yaw_h, pitch_h = look_angles(rig, centre)
-        drive_head(rig, yaw_h, pitch_h)
-        record_view(rig)
-        rig.log("present_result", obj=name, centre=np.round(centre, 3).tolist())
-        return centre.tolist()
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["present"], {"name": name})

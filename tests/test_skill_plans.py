@@ -183,6 +183,35 @@ def test_a_drop_reaches_over_the_opening_lets_go_waits_and_tucks():
     assert np.allclose(plan.decisions["drop_reach"], reach.q_end)
 
 
+def test_a_hover_is_the_drops_reach_with_nothing_let_go():
+    from zeno_skills.skill_plans import HOVER_STAGES, plan_hover
+    q_p = _q(0.5, 0.0, 0.30)
+    plan = plan_hover(FakeKin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]),
+                      prior={"hover_reach": q_p})
+    assert isinstance(plan, Plan), plan
+    assert tuple(s.name for s in plan.segments) == HOVER_STAGES
+    reach = _named(plan, "hover_reach")
+    assert np.allclose(reach.q_end[:3], q_p[:3]) and reach.spec.hold_tilt and reach.info["tol"]
+    assert np.allclose(plan.decisions["hover_reach"], reach.q_end)
+    out = plan_hover(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at(q_p[:3]))
+    assert isinstance(out, Failure) and "nothing in the hand to hover" in out.why
+
+
+def test_a_lift_moves_the_load_straight_up_to_the_height_and_nothing_else():
+    from zeno_skills.skill_plans import plan_held_move
+    q0 = _q(0.4, -0.1, 0.80)
+    st = _state(q0, held=Held("cup", np.eye(4)))
+    plan = plan_held_move(FakeKin(), st, 0.95, name="lift")
+    assert isinstance(plan, Plan) and [sg.name for sg in plan.segments] == ["lift"]
+    up = plan.segments[0]
+    assert np.allclose(up.q_end[:3], [0.4, -0.1, 0.95]) and up.spec.hold_tilt
+    assert all(abs(q[0] - 0.4) < 1e-9 and abs(q[1] + 0.1) < 1e-9 for q in up.qs)      # straight up
+    assert plan_held_move(FakeKin(), st, 0.80, name="lift").segments == ()            # there already
+    blocked = plan_held_move(FakeKin(wall=lambda p: p[2] > 0.9), st, 0.95, name="lift")
+    assert isinstance(blocked, Failure) and blocked.segment == "lift"                 # nothing tried instead
+    assert isinstance(plan_held_move(FakeKin(), _state(q0), 0.95), Failure)            # nothing held
+
+
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
     out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
     assert isinstance(out, Failure) and "nothing in the hand" in out.why

@@ -352,40 +352,9 @@ class SidestepPolicy(AtomicPolicy):
 
 
 class HoverOverPolicy(AtomicPolicy):
-    """Hold the carried object centred 6 cm above a target's top."""
+    """Hold the carried object centred 6 cm above a target's top: the hover skill (skill_jobs.drop.hover_job,
+    skill_plans.plan_hover -- the drop without the release; HAND_PLAN 9e) with the hand that holds it."""
 
-    def execute(self, name, target, *, clearance_m=0.06):
-        rig = self.rig
-        skills.right_hand_only(rig, name, "hover")
-        if rig.held is None or rig.held["name"] != name:
-            raise SkillFailure(f"hover {name}: not right-held")
-        from .tooluse import stow_load
-        stow_load(rig)
-        st = rig.state()
-        kind, rec = entity_kind(rig.ann, target)
-        if kind == "object":
-            t = np.asarray(rig.geo.bottom(target, st), float)
-            a = rig.ann.asset_of(rec)
-            top = t[2] + (a["container"]["rim_height"] if a.get("container") else a["size"][2])
-            c = t[:2]
-        else:
-            p = entity_point(rig, target, st)
-            top, c = p[2], p[:2]
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        hang = float(body[2] - skills._lowest_z(rig, name, st))
-        b_now = rig.geo.bottom(name, st)
-        off = tcp - np.r_[b_now[:2], b_now[2]]
-        # one relay pose, the load's bottom centred clearance_m above the target; the planner takes
-        # it there
-        found = skills.park_over(rig, "hover", np.r_[c, top + clearance_m], off, R)
-        if found is None:
-            raise SkillFailure(f"hover {name}: no base pose above {target} (rejected: {_park_diag()})")
-        park, goal, Rg = found
-        skills._goto_park(rig, park)
-        with skills.fingers_checked(rig):
-            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE, smooth=True,
-                        q_hint=park[3][0])
-        skills.check_held(rig, "hover")
-        rig.step(30)
-        return {"bottom_above_target_m": float(rig.geo.bottom(name, rig.state())[2] - top), "hang_m": hang}
+    def execute(self, name, target):
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["hover"], {"name": name, "target": target})

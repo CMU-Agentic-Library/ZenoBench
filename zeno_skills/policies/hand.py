@@ -439,19 +439,12 @@ class CoverWithLidPolicy(AtomicPolicy):
 
 
 class SetHeldHeightPolicy(AtomicPolicy):
-    """Move the held object vertically until its bottom is at ``height_m``."""
+    """Move the held object straight down (``down_only``), or up or down, until its bottom is at ``height_m``:
+    the lower / lift skill (skill_jobs.held, HAND_PLAN 9e) with the hand that holds it."""
 
-    def execute(self, name, height_m, *, tolerance=0.02, down_only=False):
+    def execute(self, name, height_m, *, down_only=False):
+        from ..motion_skills import SKILLS, run_skill
         rig = self.rig
-        _require_held(rig, name, "set height")
-        bottom = float(rig.geo.bottom(name, rig.state())[2])
-        dz = float(height_m) - bottom
-        if abs(dz) <= tolerance or (down_only and dz > 0):
-            return bottom
-        skills.held_vertical_move(rig, dz, "held_height")
-        skills.check_held(rig, "held_height")
-        bottom = float(rig.geo.bottom(name, rig.state())[2])
-        rig.log("held_height_result", obj=name, bottom_z=round(bottom, 3), target=float(height_m))
-        if abs(bottom - float(height_m)) > tolerance + 0.01:
-            raise SkillFailure(f"set held height: bottom at {bottom:.3f} m")
-        return bottom
+        _require_held_any(rig, name, "set height")
+        up = not down_only and float(height_m) > float(rig.geo.bottom(name, rig.state())[2])
+        return run_skill(rig, SKILLS["lift" if up else "lower"], {"name": name, "height": float(height_m)})

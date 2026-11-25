@@ -6,15 +6,15 @@ Paired SkillNode: `skill_023` (`lift-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Verifier
 
 - [all paths] `held_above(object=$object, height_m=$height_m)` — GT: object_pose, gripper_state
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-- `raise` when always: `policy_034($height_m)`
+- `raise` when always: `policy_034($height_m, name=$object)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

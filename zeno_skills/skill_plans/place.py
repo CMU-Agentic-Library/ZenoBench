@@ -23,6 +23,9 @@ SETTLE_TICKS = 90           # physics ticks the object let go settles before the
 
 DROP_STAGES = ("drop_arrive", "drop_reach", "drop_release", "drop_fall", "tuck")
 DROP_RELAY = "drop_reach"   # the decision the park search's ranking IK solves for: the pose over the opening
+HOVER_STAGES = ("hover_arrive", "hover_reach")    # the drop's arrive and reach, nothing let go (plan_hover)
+HOVER_RELAY = "hover_reach"
+_ROLE = {"hover_arrive": "drop_arrive", "hover_reach": "drop_reach"}     # a hover stage: the drop stage it is
 DROP_GRIP_TICKS = 40        # physics ticks the hand opens in (inherited: the old drop_into's grip)
 DROP_FALL_TICKS = 120       # ...and the load falls clear of the open fingers in before the tuck (inherited: 1 s)
 
@@ -286,8 +289,18 @@ def plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start="drop_ar
         return _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior, step, obj)
 
 
-def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_plan, step, obj):
-    i0 = DROP_STAGES.index(start)
+def plan_hover(kin, state, goal, start="hover_arrive", prior=None, step=0.005, obj=None):
+    """The hover (docs/skills/drop_hover.md): plan_drop's arrive and reach -- the anchor where it arrives, the
+    free leg, the load's tilt held, to the solution decide_ik decides of the TCP pose that puts what the hand
+    holds with its box frame at ``goal`` (4x4), carrying the Aim and PLACE_TOL -- and nothing let go: the hand
+    stays there holding it (HAND_PLAN 9e; the old HoverOverPolicy's one move_to from a park_over park).
+    ``prior``, ``start``, ``obj``: as plan_drop's.  Plan or Failure."""
+    with query(kin, state, FREE_HAND):
+        return _plan_drop(kin, state, goal, None, (), None, 0.0, start, prior, step, obj, stages=HOVER_STAGES)
+
+
+def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_plan, step, obj, stages=DROP_STAGES):
+    i0 = stages.index(start)
     prior = decisions_of(prior_plan)
     q = state.q(kin.side)
     held = state.held(kin.side)
@@ -296,14 +309,16 @@ def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_
     if held is not None:
         aim = Aim(held.name, np.asarray(goal, float), held=True, side=kin.side)
         aimed = aim_pose(state, aim)
-    if aimed is None and i0 <= DROP_STAGES.index("drop_release"):
-        return Failure("nothing in the hand to drop", start)
+    if aimed is None and (stages is HOVER_STAGES or i0 <= DROP_STAGES.index("drop_release")):
+        return Failure("nothing in the hand to drop" if stages is DROP_STAGES else "nothing in the hand to hover",
+                       start)
     segs, s, times, decided = [], state, {}, {}
-    for stage in DROP_STAGES[i0:]:
+    for stage in stages[i0:]:
         t0 = time.time()
-        if stage == "drop_arrive":
+        role = _ROLE.get(stage, stage)
+        if role == "drop_arrive":
             seg = anchor(stage, q, s, (obj,) if obj else (), kin.side)
-        elif stage == "drop_reach":
+        elif role == "drop_reach":
             seg = _kept(kin, s, q, prior_plan, stage)
             if seg is None:
                 p, R = aimed
@@ -317,7 +332,7 @@ def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_
                 if not isinstance(seg, Failure):
                     seg = _aimed(kin, seg, aim, aimed, PLACE_TOL, steps_per_wp=5, smooth=True, decided={stage: how})
             if not isinstance(seg, Failure):
-                decided[DROP_RELAY] = seg.q_end
+                decided[stage] = seg.q_end
         elif stage == "drop_release":
             seg = Segment(stage, release_spec(kin.side, obj, into), q, kind="action",
                           action=("grip", float(pre_open), DROP_GRIP_TICKS, False))

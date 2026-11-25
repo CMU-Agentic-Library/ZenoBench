@@ -56,8 +56,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `lift` (`skill_023`) (then) — the object is released over a tall container
-- Previous step: `hover` (`skill_063`) (then) — the object is released into the container under it
+- Previous step: `lift` (`skill_023`) (enables) — the object is released over a tall container
+- Previous step: `hover` (`skill_063`) (enables) — the object is released into the container under it
 - Next step: `pick` (`skill_017`) (then) — more items go into the same container
 - Is a fallback for: `place` (`skill_018`) (substitute) — the hand cannot reach the robot-side release spot inside the container
 - Alternative: `place` (`skill_018`) — a gentle release inside is needed
