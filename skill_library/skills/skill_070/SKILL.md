@@ -37,12 +37,12 @@ Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path a
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
 - `hidden(object=$object)` — Object is inside a lid-covered container or on a shelf inside a closed cabinet. GT: object_pose, container_profile, articulation_joint, support_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 

@@ -40,7 +40,7 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=right)."
+  "summary": "Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=any)."
  },
  "preconditions": [
   {
@@ -105,13 +105,13 @@
    ],
    "extra_preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"

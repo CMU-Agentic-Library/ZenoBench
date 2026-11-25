@@ -7,7 +7,7 @@ Paired SkillNode: `skill_040` (`open-articulated`).
 ## Precheck
 
 - [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
-- [path powered_microwave] `hand_empty(hand=right)` — GT: gripper_state
+- [path powered_microwave] `hand_empty(hand=any)` — GT: gripper_state
 - [path refrigerator_loaded] `hand_empty(hand=left)` — GT: gripper_state
 - [path loaded] `hand_empty(hand=left)` — GT: gripper_state
 - [path refrigerator] `hand_empty(hand=right)` — GT: gripper_state

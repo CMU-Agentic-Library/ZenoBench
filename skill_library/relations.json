@@ -1499,7 +1499,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the hand is free again",
    "bind": {
     "hand": "right"
@@ -1651,7 +1651,7 @@
    "to": "skill_043",
    "to_verb": "heat",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the pot is heated with its lid on (heat itself needs no lid)",
    "bind": {},
    "automatic": false

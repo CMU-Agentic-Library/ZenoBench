@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 
-from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT
+from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT, both_hands_empty
 import subprocess
 import sys
 from collections import Counter
@@ -39,7 +39,8 @@ def test_v5_designs_unchanged():
                 assert vid not in t["variants"]
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
-            assert old.get("goal") == new.get("goal"), vid
+            # but its hand: ["hand_empty", "right"] became "both" (define_tasks_v6.both_hands_empty, HAND_PLAN 9b)
+            assert both_hands_empty(old.get("goal")) == new.get("goal"), vid
             if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
                 assert "instruction" not in new, vid
             elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose

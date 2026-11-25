@@ -288,7 +288,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "The given gripper holds nothing.",
+   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
    "gt_sources": [
     "gripper_state"
    ]
@@ -370,7 +370,7 @@
     ]
    ],
    "kind": "fluent",
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "gt_sources": [
     "gripper_state",
     "finger_joints",
@@ -2567,7 +2567,7 @@
       "hand": "$hand"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -2671,7 +2671,7 @@
       "skill_id": "skill_042",
       "verb": "press",
       "when": "the hand is free again",
-      "type": "enables"
+      "type": "then"
      },
      {
       "skill_id": "skill_053",
@@ -2790,7 +2790,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -3261,7 +3261,7 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=right)."
+    "summary": "Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=any)."
    },
    "preconditions": [
     {
@@ -3326,13 +3326,13 @@
      ],
      "extra_preconditions": [
       {
-       "predicate": "hand_empty(hand=right)",
+       "predicate": "hand_empty(hand=any)",
        "name": "hand_empty",
        "args": {
-        "hand": "right"
+        "hand": "any"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -3864,7 +3864,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -3895,7 +3895,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -3929,7 +3929,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -4103,7 +4103,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -4139,7 +4139,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -4178,7 +4178,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -4362,7 +4362,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -4394,7 +4394,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -4416,7 +4416,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -4435,7 +4435,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -4454,7 +4454,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -4638,7 +4638,7 @@
         "hand": "left"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -4655,7 +4655,7 @@
         "object": "$object"
        },
        "negated": false,
-       "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+       "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state",
@@ -4688,7 +4688,7 @@
         "hand": "left"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -4705,7 +4705,7 @@
         "object": "$object"
        },
        "negated": false,
-       "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+       "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state",
@@ -5287,7 +5287,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -5321,7 +5321,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -5339,7 +5339,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -6184,7 +6184,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -6250,7 +6250,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -6285,7 +6285,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -6456,7 +6456,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -6521,7 +6521,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -6556,7 +6556,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -6723,7 +6723,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -6742,7 +6742,7 @@
       "hand": "$hand"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -6760,7 +6760,7 @@
        "hand": "$hand"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -6912,7 +6912,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -6929,7 +6929,7 @@
       "hand": "left"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -6946,7 +6946,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -6963,7 +6963,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -6982,7 +6982,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -7000,7 +7000,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -7169,7 +7169,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7205,7 +7205,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7244,7 +7244,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -7430,7 +7430,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7466,7 +7466,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7505,7 +7505,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -7653,7 +7653,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7688,7 +7688,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7726,7 +7726,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -7890,7 +7890,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7925,7 +7925,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -7947,7 +7947,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -8096,7 +8096,7 @@
       "hand": "left"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -8143,7 +8143,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -8181,7 +8181,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -8334,7 +8334,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -8379,7 +8379,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -8412,7 +8412,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -8582,7 +8582,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -8836,7 +8836,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -9077,7 +9077,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -9283,7 +9283,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -9474,7 +9474,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -9686,7 +9686,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -9895,7 +9895,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -10102,7 +10102,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -10162,7 +10162,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -10195,7 +10195,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -10387,7 +10387,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -10436,7 +10436,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -10473,7 +10473,7 @@
        "object": "$tool"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -10633,7 +10633,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -10698,7 +10698,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -10735,7 +10735,7 @@
        "object": "$tool"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -10928,7 +10928,7 @@
       "object": "$source"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -11010,7 +11010,7 @@
       "object": "$source"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -11049,7 +11049,7 @@
        "object": "$source"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -11213,7 +11213,7 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=right); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
+    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=any); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
    },
    "preconditions": [
     {
@@ -11284,13 +11284,13 @@
      ],
      "extra_preconditions": [
       {
-       "predicate": "hand_empty(hand=right)",
+       "predicate": "hand_empty(hand=any)",
        "name": "hand_empty",
        "args": {
-        "hand": "right"
+        "hand": "any"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11321,7 +11321,7 @@
         "hand": "left"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11351,7 +11351,7 @@
         "hand": "left"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11381,7 +11381,7 @@
         "hand": "right"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11411,7 +11411,7 @@
         "hand": "right"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11441,7 +11441,7 @@
         "hand": "right"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11733,7 +11733,7 @@
         "hand": "left"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11763,7 +11763,7 @@
         "hand": "right"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11793,7 +11793,7 @@
         "hand": "right"
        },
        "negated": false,
-       "meaning": "The given gripper holds nothing.",
+       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
        "kind": "fluent",
        "gt_sources": [
         "gripper_state"
@@ -11969,17 +11969,17 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=@button.appliance). Depending on the bound nouns, the chosen path also needs: microwave_start_staged (button.button == 'start_button'): is_closed(articulated=@button.appliance)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=@button.appliance). Depending on the bound nouns, the chosen path also needs: microwave_start_staged (button.button == 'start_button'): is_closed(articulated=@button.appliance)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -12018,13 +12018,13 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -12051,13 +12051,13 @@
       "scope": "all paths"
      },
      {
-      "predicate": "hand_empty(hand=right)",
+      "predicate": "hand_empty(hand=any)",
       "name": "hand_empty",
       "args": {
-       "hand": "right"
+       "hand": "any"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -12182,7 +12182,7 @@
       "bind": {
        "hand": "right"
       },
-      "type": "enables"
+      "type": "then"
      }
     ],
     "fallback": [
@@ -12287,17 +12287,17 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$appliance). Depending on the bound nouns, the chosen path also needs: microwave (appliance.category == 'microwave'): in_appliance(object=$food, appliance=$appliance), is_closed(articulated=$appliance); stove_pot (appliance.category == 'stove'): in_cookware_on_burner(food=$food, appliance=$appliance)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=$appliance). Depending on the bound nouns, the chosen path also needs: microwave (appliance.category == 'microwave'): in_appliance(object=$food, appliance=$appliance), is_closed(articulated=$appliance); stove_pot (appliance.category == 'stove'): in_cookware_on_burner(food=$food, appliance=$appliance)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -12504,7 +12504,7 @@
       "skill_id": "skill_045",
       "verb": "cover",
       "when": "the pot is heated with its lid on (heat itself needs no lid)",
-      "type": "enables"
+      "type": "then"
      }
     ],
     "next": [
@@ -12898,7 +12898,7 @@
       "object": "$lid"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -12964,7 +12964,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -12999,7 +12999,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -13046,7 +13046,7 @@
       "when": "the pot is heated with its lid on (heat itself needs no lid)",
       "bind": {},
       "reason": "stove path",
-      "type": "enables"
+      "type": "then"
      }
     ],
     "fallback": [],
@@ -13146,7 +13146,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -13193,7 +13193,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -13228,7 +13228,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -13449,7 +13449,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -13465,7 +13465,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -13483,7 +13483,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -13764,7 +13764,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -13968,7 +13968,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14157,7 +14157,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14358,7 +14358,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14567,7 +14567,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14742,7 +14742,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14773,7 +14773,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14807,7 +14807,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -14951,7 +14951,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -14982,7 +14982,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -15016,7 +15016,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -16013,7 +16013,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -16041,7 +16041,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -16072,7 +16072,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -16330,7 +16330,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -16364,7 +16364,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -16401,7 +16401,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -16545,7 +16545,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -16597,7 +16597,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -16637,7 +16637,7 @@
        "object": "$object"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -16785,7 +16785,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -16831,7 +16831,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -16865,7 +16865,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -17003,7 +17003,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -17049,7 +17049,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -17083,7 +17083,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -17221,7 +17221,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -17457,7 +17457,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -17619,17 +17619,17 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$appliance)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=$appliance)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -17862,7 +17862,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -17927,7 +17927,7 @@
       "object": "$tool"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -17964,7 +17964,7 @@
        "object": "$tool"
       },
       "negated": false,
-      "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+      "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state",
@@ -18117,7 +18117,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -18150,7 +18150,7 @@
       "hand": "right"
      },
      "negated": false,
-     "meaning": "The given gripper holds nothing.",
+     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
@@ -18186,7 +18186,7 @@
        "hand": "right"
       },
       "negated": false,
-      "meaning": "The given gripper holds nothing.",
+      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
       "kind": "fluent",
       "gt_sources": [
        "gripper_state"
@@ -18568,7 +18568,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",

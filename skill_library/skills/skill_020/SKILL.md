@@ -28,14 +28,14 @@ Requires holding(hand=right, object=$object); base_near(place=$base); top_clear(
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$base)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `top_clear(object=$base)` — No other object rests on the object's top face. GT: object_pose, asset_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `on_top_of(object=$object, base=$base)` — Object rests on the base object's top face: bottom within 2 cm of it, centre over its footprint. GT: object_pose, asset_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 

@@ -6,14 +6,14 @@ Paired SkillNode: `skill_042` (`press-button`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=@button.appliance)` — GT: base_pose, scene_annotation
 - [path microwave_start_staged] `is_closed(articulated=@button.appliance)` — GT: articulation_joint, articulation_annotation
 
 ## Verifier
 
 - [all paths] `button_pressed(button=$button)` — GT: event_log (measured fingertip contact)
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path microwave_start_staged] `heating(appliance=@button.appliance)` — GT: thermal_state
 
 ## Policy paths

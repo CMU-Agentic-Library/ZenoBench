@@ -38,7 +38,7 @@ def test_every_design_scored_and_tiers_sound():
             assert any(t["task_id"].startswith(k[0]) and k[1] == design for k in NOT_OK_ZH), (t["task_id"], design)
             for lid in info["layouts"]:
                 own = t["variants"][lid].get("goal") or t["goal"]
-                known = _objects(t, lid) | _names(own) | {"right", "left"}
+                known = _objects(t, lid) | _names(own) | {"right", "left", "any", "both"}
                 for tier in sc["tiers"]:
                     g = tier_goal(tier, dict(t, goal=own), lid)
                     if g == "n/a":               # 11-17: a level this seed cannot offer

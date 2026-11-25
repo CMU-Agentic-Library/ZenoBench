@@ -71,7 +71,7 @@ SCORING: dict[tuple[str, str], dict] = {
          "why": "only the guest's book on a dining table, the other two untouched"},
         {"name": "second", "score": 0.6,
          "goal": {"all": [["not on_any", "paperback_book", ["dining_table_2/top", "dining_table_1/top"]],
-                          ["hand_empty", "right"]],
+                          ["hand_empty", "both"]],
                   "any": [[["on_any", "book_island", ["dining_table_2/top", "dining_table_1/top"]]],
                           [["on_any", "book_other", ["dining_table_2/top", "dining_table_1/top"]]]]},
          "why": "a wrong book (the island's or the other room's) brought instead of the guest's"},
@@ -181,7 +181,7 @@ def _third_toy_elsewhere(task: dict) -> dict:
     toy in another room.  Two levels only is the task not done (user 11-11)."""
     lays = task["v6_variants"]["third_toy_elsewhere"]["layouts"]
     a, b = "wooden_block_a", "wooden_block_b"
-    sponge = {lid: {"all": [["hand_empty", "right"]], "any": _tower_orders((a, b, "kitchen_sponge"))}
+    sponge = {lid: {"all": [["hand_empty", "both"]], "any": _tower_orders((a, b, "kitchen_sponge"))}
               for lid in lays}
     return {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
@@ -282,9 +282,9 @@ def _homework_ready(task: dict) -> dict:
     second, worst = {}, {}
     for lid in lays:
         g = task["variants"][lid]["goal"]
-        second[lid] = {"all": [["hand_empty", "right"]], "any": g["any"]}
+        second[lid] = {"all": [["hand_empty", "both"]], "any": g["any"]}
         writers = sorted({grp[0][1] for grp in g["any"]})
-        worst[lid] = {"all": [["on", "book_red", "desk_1/top"], ["hand_empty", "right"]],
+        worst[lid] = {"all": [["on", "book_red", "desk_1/top"], ["hand_empty", "both"]],
                       "any": [[["on", w, "desk_1/top"]] for w in writers]}
     return {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
@@ -344,7 +344,7 @@ _T06_NO = {"display_row": "two blocks only (the third not found); stacked instea
 # stove (in part or whole) is the second tier, as is the door left open; both, the worst (user 11-11).
 # heated_by: episode.heat_log
 _HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"],
-        ["hand_empty", "right"]]
+        ["hand_empty", "both"]]
 _SHUT = ["is_closed", "kitchen_microwave"]
 _NO_STOVE = ["not heated_by", "oatmeal", "kitchen_stove", 0.5]
 SCORING[("T07", "microwave_works")] = {"D": 1, "tiers": [
@@ -415,7 +415,7 @@ def _vessel_decides_appliance(task: dict) -> dict:
 _TWO_CLEAN = [["not exposed_in", "oatmeal_bowl", "kitchen_stove", 1.0],
               ["not exposed_in", "soup_pot", "kitchen_microwave", 1.0]]
 _TWO_DONE = [["temperature_at_least", "oatmeal_bowl", 40], ["temperature_at_least", "soup_pot", 40],
-             ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"], ["hand_empty", "right"]]
+             ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"], ["hand_empty", "both"]]
 SCORING[("T07", "two_portions")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": {"all": [*_TWO_DONE, ["is_closed", "kitchen_microwave"], *_TWO_CLEAN]},
      "why": "both at 40 C at the end, each in its own appliance from the start, both off, the door closed"},
@@ -431,7 +431,7 @@ SCORING[("T07", "two_portions")] = {"D": 1, "tiers": [
 SCORING[("T08", "sponge_on_island")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None, "why": "the island wiped, the sponge back on the island"},
     {"name": "second", "score": 0.6,
-     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "both"]]},
      "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"}],
     "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"}
 # T08 far_sponge_tv (11-17, user): per-seed tiers (define_tasks_v6 LAYOUT_TIERS): the sponge to find, the kid's
@@ -454,7 +454,7 @@ def _wipe_and_sort(task: dict) -> dict:
         toys = [a for a in g if a[0] == "inside"]
         kitchen = [a[1] for a in g if a[0] == "near_start"]
         upright = [a for a in g if a[0] == "upright"]
-        tail = [["wiped", isl], ["not on_floor", sponge], ["hand_empty", "right"]]
+        tail = [["wiped", isl], ["not on_floor", sponge], ["hand_empty", "both"]]
         second[lid] = {"all": [*tail, *toys, *[["on", x, isl] for x in kitchen], *upright]}
         worst[lid] = {"all": [*tail, *[["not on", a[1], isl] for a in toys], *upright]}
     return {"D": 1, "tiers": [
@@ -478,12 +478,12 @@ SCORING[("T08", "return_sponge_home")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None,
      "why": "the island wiped, the sponge in the tray, the spare sponge still in it"},
     {"name": "second", "score": 0.6,
-     "goal": {"all": [["wiped", "kitchen_island/top"], ["hand_empty", "right"]],
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["hand_empty", "both"]],
               "any": [[["inside", "kitchen_sponge", "sponge_tray"]], [["on_any", "kitchen_sponge", _KITCHEN_TOPS]]]},
      "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in "
             "the tray with the spare knocked out"},
     {"name": "worst", "score": 0.3,
-     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "both"]]},
      "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"}],
     "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"}
 
@@ -496,7 +496,7 @@ def _which_surface(task: dict) -> dict:
         g = task["variants"][lid]["goal"]["all"]
         used = next(a for a in g if a[0] == "wiped")
         clean = next(a for a in g if a[0] == "not wiped")
-        tail = [["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]
+        tail = [["not on_floor", "kitchen_sponge"], ["hand_empty", "both"]]
         second[lid] = {"all": [used, clean, *tail]}
         worst[lid] = {"all": [used, *tail]}
     return {"D": 1, "tiers": [
@@ -557,8 +557,8 @@ def _pot_in_use(task: dict) -> dict:
         second[lid] = {"all": core, "any": [steps] + [[st, ["near_start", "soup_pot", 0.03]] for st in steps]}
         tomatoes = [a[1] for a in g if a[0] == "temperature_at_least"]
         old = [*[["inside", x, "soup_pot"] for x in tomatoes], *[a for a in g if a[0] == "temperature_at_least"],
-               ["not heating", "kitchen_stove"], ["upright", "soup_pot"], ["hand_empty", "right"]]
-        worst[lid] = {"all": [["not heating", "kitchen_stove"], ["hand_empty", "right"], ["upright", "soup_pot"]],
+               ["not heating", "kitchen_stove"], ["upright", "soup_pot"], ["hand_empty", "both"]]
+        worst[lid] = {"all": [["not heating", "kitchen_stove"], ["hand_empty", "both"], ["upright", "soup_pot"]],
                       "any": [core, old]}
     return {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
@@ -572,7 +572,7 @@ def _pot_in_use(task: dict) -> dict:
 
 # T15 (11-17, user): per-seed tiers; the plate is the stand-in when the lid is gone or in use (ideal absent)
 _P15 = [[["covered", "handled_cooking_pot", p]] for p in ("plate_counter_a", "plate_counter_b")]
-_H15 = [["hand_empty", "right"]]
+_H15 = [["hand_empty", "both"]]
 LAYOUT_TIERS[("T15", "*")] = {
     "lid_elsewhere__dining": {"best": {"all": [["covered", "handled_cooking_pot", "pot_lid"], *_H15]}, "second": NA,
                               "worst": NA, "_ideal": True},
@@ -657,7 +657,7 @@ def cost_tiers(options, faults=(), hand=True):
     out = {}
     for name, ts in zip(("best", "second", "worst"), ranks):
         g = [grp for tt in ts for grp in by_total[tt]]
-        out[name] = {"any": g, "all": [["hand_empty", "right"]] if hand else []} if g else NA
+        out[name] = {"any": g, "all": [["hand_empty", "both"]] if hand else []} if g else NA
     out["_ideal"] = bool(totals) and totals[0] == 0
     return out
 
@@ -1196,7 +1196,7 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
     def mentions(grp, names):
         return any(n in json.dumps(a) for a in grp for n in names)
 
-    hand = [["hand_empty", "right"]]
+    hand = [["hand_empty", "both"]]
     best0 = out[0]["goal"]["any"]                   # substitutes are built from the best before best_plus
     if cfg.get("best_plus"):                        # the thing not to take stays: part of the best level
         out[0]["goal"]["any"] = [clean(g + cfg["best_plus"]) for g in best0]

@@ -6,7 +6,7 @@ Paired SkillNode: `skill_043` (`heat-food`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$appliance)` — GT: base_pose, scene_annotation
 - [path microwave] `in_appliance(object=$food, appliance=$appliance)` — GT: object_pose, appliance_annotation
 - [path microwave] `is_closed(articulated=$appliance)` — GT: articulation_joint, articulation_annotation

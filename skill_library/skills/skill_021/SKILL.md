@@ -29,11 +29,11 @@ Requires holding(hand=$hand, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=$hand, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=$hand, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 
-- `hand_empty(hand=$hand)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=$hand)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 

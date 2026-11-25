@@ -91,7 +91,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 步 | 内容 | 针对性检查 | 完成标准 |
 |---|---|---|---|
 | 9a | 持物状态按手（3.3）：`held_by(side)`、合并 `check_held`；旧技能和还只认右手的新层 job（place、drop、stir）遇左手持物报错（`carry_posture` 按手随 9c：它是 `plan_navigate` 搬运段的右臂版；sticky、`snapshot` 已按手） | 右手不变：T07 microwave_works、T22 by_kind、T11 一集托盘、T09 lid_off（调用、停车点、锚点同改之前）；FakeKin 左手单测 | 右手行为不变；左手持物的状态读写有单测 |
-| 9b | 契约按物体（3.2）：`holding(object)`、`hand_empty()`、pick 输出 `hand`、可选 `hand=`；skill 库重新生成 | 同 9a 的集（契约只换写法，行为不变）；`build_skill_library.py --check` | 83 处改完；v6 路线静态检查（bench 的 1510/1510）仍过 |
+| 9b | 契约按物体（3.2）：手的取值加 `any`（任一只）/ `both`（两只都空）；评分的 `["hand_empty", "right"]` 改成 `"both"`；已经用空手的技能（open 的电机门、press、heat、stop、inspect）的契约改成 `hand_empty(any)`。pick / place 一族的契约随 9c 和代码一起改，旧技能的随各自迁移改（每次提交契约都如实） | 同 9a 的集（契约只换写法，行为不变）；`build_skill_library.py --check` | 83 处改完；v6 路线静态检查（bench 的 1510/1510）仍过 |
 | 9c | pick 选手（3.1）：目标集合 × 空着的手；place / drop / stack / cover 用拿着的那只手 | 强制左手开关（诊断，不进基线）跑 3 集左手 pick + place；不强制跑 T07 broken_oatmeal_away 前半、T20、T25 看选到哪只手 | 左手 pick → place 整集成功至少 2/3；右手为主的集成败不变或变好 |
 | 9d | 微波炉腔体取放（第 8c / 8d 步，3.5）：取出 stash，改走 pick / place，退役 018–021、048，删旧腔体代码和 `microwave_retrieval_q` | T07 microwave_works、broken_oatmeal_away、two_portions__counter | 三集里的腔体放入、取出都成；需要的话加 3.5 的穿过开口 |
 | 9e | 取放家族的旧技能：lift / lower、hover、present | v6 里用到它们的集（lift 13、hover 11 次所在的集，挑 ≤ 30 分钟的） | `CarryHeightAdjust`、`SetHeldHeight`、`HoverOver`、`PresentHeld` 只调 `run_skill`；`held_vertical_move` 删 |

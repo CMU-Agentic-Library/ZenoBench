@@ -7,7 +7,7 @@ Paired SkillNode: `skill_012` (`inspect-receptacle`).
 ## Precheck
 
 - [all paths] `base_near(place=$receptacle)` — GT: base_pose, scene_annotation
-- [path closed_cabinet] `hand_empty(hand=right)` — GT: gripper_state
+- [path closed_cabinet] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Verifier
 

@@ -31,7 +31,8 @@ import numpy as np
 
 from .physics import PHYSICS_HZ
 
-HANDS = ("right", "left")
+HANDS = ("right", "left", "any", "both")   # a hand; "any": either (holding: the one that holds; hand_empty: one is
+#                                            free); "both": hand_empty of both (HAND_PLAN 9b)
 
 # --------------------------------------------------------------------- types
 # Argument types of SkillNode inputs/outputs and predicate arguments.  A value of
@@ -264,7 +265,7 @@ def _box_dist(box, xy):
 
 
 def held_name(rig, hand):
-    h = rig.held if hand == "right" else rig.left_held
+    h = rig.held if hand == "right" else getattr(rig, "left_held", None)
     return None if h is None else h.get("name")
 
 
@@ -314,15 +315,24 @@ def ik_reachable(rig, targets):
 
 
 # --------------------------------------------------------------------- robot body
-@predicate("hand_empty", [("hand", "hand")], "fluent", "The given gripper holds nothing.")
+@predicate("hand_empty", [("hand", "hand")], "fluent",
+           "The given gripper holds nothing (any: at least one does not; both: neither does).")
 def _hand_empty(rig, ctx, hand):
+    if hand in ("any", "both"):
+        held = {sd: held_name(rig, sd) for sd in ("right", "left")}
+        empty = [sd for sd, n in held.items() if n is None]
+        ok = bool(empty) if hand == "any" else len(empty) == 2
+        return ok, ", ".join(f"{sd} holds {n}" for sd, n in held.items())
     name = held_name(rig, hand)
     return name is None, f"{hand} holds {name}"
 
 
 @predicate("holding", [("hand", "hand"), ("object", "object_ref")], "fluent",
-           "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.")
+           "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged "
+           "since the grasp.")
 def _holding(rig, ctx, hand, object):
+    if hand in ("any", "both"):
+        hand = next((sd for sd in ("right", "left") if held_name(rig, sd) == object), "right")
     name = held_name(rig, hand)
     if name != object:
         return False, f"{hand} holds {name}"
