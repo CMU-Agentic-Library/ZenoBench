@@ -2434,33 +2434,6 @@
      "ideal_present": false,
      "items": [
       {
-       "name": "cup_counter_b",
-       "kind": "breakfast_cup",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "cup_kitchen_cabinet",
-       "kind": "breakfast_cup",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "cup_side_table",
-       "kind": "breakfast_cup",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
        "name": "mug",
        "kind": "breakfast_mug",
        "score": 1.0,
@@ -2983,33 +2956,6 @@
        ]
       },
       {
-       "name": "bowl_dining_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_kitchen_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_side_table",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
        "name": "plate_counter_a",
        "kind": "breakfast_plate",
        "score": 0.6,
@@ -3080,33 +3026,6 @@
        "score": 1.0,
        "level": 2,
        "why": []
-      },
-      {
-       "name": "bowl_dining_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_kitchen_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_side_table",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
       },
       {
        "name": "mug_counter",
@@ -3193,33 +3112,6 @@
        "why": [
         "+serve_food"
        ]
-      },
-      {
-       "name": "bowl_dining_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_kitchen_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_side_table",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
       }
      ],
      "proposals": [
@@ -3285,33 +3177,6 @@
        "level": 3,
        "why": [
         "+serve_food"
-       ]
-      },
-      {
-       "name": "bowl_dining_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_kitchen_cabinet",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
-       ]
-      },
-      {
-       "name": "bowl_side_table",
-       "kind": "breakfast_bowl",
-       "score": 1.0,
-       "level": 10,
-       "why": [
-        "ideal"
        ]
       }
      ],
@@ -5163,16 +5028,16 @@
        "score": 1.0,
        "level": 2,
        "why": []
-      }
-     ],
-     "proposals": [
+      },
       {
        "name": "dining_table_1/top",
        "kind": "table",
+       "score": 0.3,
        "level": 2,
        "why": []
       }
      ],
+     "proposals": [],
      "flags": []
     },
     {

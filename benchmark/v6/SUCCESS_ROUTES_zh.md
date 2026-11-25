@@ -6678,6 +6678,8 @@
 
 **情况**：没有储物筐，只有放不下所有玩具的容器：要么两个小箱（一个已经装满积木，一个空着，有时并排放在卧室书架上，有时分在不同房间），要么一个装了半箱积木的小箱和一个浅托盘（鸭子还不在原处） → 看每个容器还剩多少地方，把小车和鸭子分到放得下的地方，空箱或鸭子不在眼前就去找；箱子里原有的积木不动
 
+**指令**：快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。
+
 **成功条件**（D 按摆法：`side_left_full` D = 1、理想物不在，`side_right_full` D = 1、理想物不在，`apart_full_on_tv` D = 1、理想物不在，`apart_empty_on_desk` D = 1、理想物不在，`half_bin_and_tray` D = 1、理想物不在，`half_bin_and_tray_duck_dining` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -7545,11 +7547,23 @@
 
 **情况**：锅盖在灶边岛台上 → 盖好
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `handled_cooking_pot` 盖着 `pot_lid`
+- **次好（0.6）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `plate_counter_a`
+    - 第 2 组：
+      - `handled_cooking_pot` 盖着 `plate_counter_b`
+    - 第 3 组：
+      - `handled_cooking_pot` 盖着 `plate_dining_cabinet`
+    - 第 4 组：
+      - `handled_cooking_pot` 盖着 `plate_inside_kitchen_cabinet`
 - **不行（0）**：没盖；锅盖掉了或还拿着
 
 
@@ -7664,12 +7678,28 @@
 
 **情况**：零食盒在厨房台面 → 装好放书桌
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `school_apple` 在 `snack_box` 里
   - `snack_box` 在 `desk_1/top` 上
+- **次好（0.6）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `school_apple` 在 `bowl_dining_cabinet` 里
+      - `bowl_dining_cabinet` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `school_apple` 在 `bowl_inside_kitchen_cabinet` 里
+      - `bowl_inside_kitchen_cabinet` 在 `desk_1/top` 上
+    - 第 3 组：
+      - `school_apple` 在 `bowl_kitchen_cabinet` 里
+      - `bowl_kitchen_cabinet` 在 `desk_1/top` 上
+    - 第 4 组：
+      - `school_apple` 在 `bowl_side_table` 里
+      - `bowl_side_table` 在 `desk_1/top` 上
 - **不行（0）**：没装好或没放到书桌；还拿着或掉了
 
 
@@ -7958,7 +7988,7 @@
 
 ### bowls_in_cabinet（对照）
 
-**成功条件**（D 按摆法：`bowls_in_cabinet` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7980,6 +8010,34 @@
   - `dinner_spoon_1` 在 `dining_table_2/top` 上
   - `dinner_spoon_2` 在 `dining_table_2/top` 上
   - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_counter_a` 在其中任一处上：`dining_table_2/top`
+    - 第 2 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_counter_b` 在其中任一处上：`dining_table_2/top`
+    - 第 3 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_dining_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 4 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_inside_kitchen_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 5 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_counter_a` 在其中任一处上：`dining_table_2/top`
+    - 第 6 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_counter_b` 在其中任一处上：`dining_table_2/top`
+    - 第 7 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_dining_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 8 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_inside_kitchen_cabinet` 在其中任一处上：`dining_table_2/top`
 - **不行（0）**：碗或勺子不到两个；碗掉了；还拿着
 
 
@@ -8036,31 +8094,6 @@
         - `glass_box` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 3 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 4 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 5 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 6 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 7 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_side_table` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
   - 摆法 `mug`：
     - 满足下面任意一组：
       - 第 1 组：
@@ -8075,55 +8108,30 @@
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
       - 第 3 组：
         - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_2/top` 上
+        - `mug_counter` 在 `dining_table_2/top` 上
         - `dinner_spoon_1` 在 `dining_table_2/top` 上
         - `dinner_spoon_2` 在 `dining_table_2/top` 上
       - 第 4 组：
         - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_1/top` 上
+        - `mug_counter` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
       - 第 5 组：
         - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
         - `dinner_spoon_1` 在 `dining_table_2/top` 上
         - `dinner_spoon_2` 在 `dining_table_2/top` 上
       - 第 6 组：
         - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
       - 第 7 组：
         - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_side_table` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 8 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `mug_counter` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 9 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `mug_counter` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 10 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 11 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 12 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
         - `mug_shelf` 在 `dining_table_2/top` 上
         - `dinner_spoon_1` 在 `dining_table_2/top` 上
         - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 13 组：
+      - 第 8 组：
         - `dinner_bowl_1` 在 `dining_table_1/top` 上
         - `mug_shelf` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
@@ -8162,31 +8170,6 @@
         - `glass_box` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 3 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 4 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 5 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 6 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 7 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_side_table` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
   - 摆法 `oatmeal`：
     - `dinner_bowl_2` 在 `kitchen_cabinet_6/inside_shelf` 上
     - 满足下面任意一组：
@@ -8200,31 +8183,6 @@
         - `glass_box` 在 `dining_table_1/top` 上
         - `dinner_spoon_1` 在 `dining_table_1/top` 上
         - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 3 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 4 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_dining_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 5 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
-      - 第 6 组：
-        - `dinner_bowl_1` 在 `dining_table_1/top` 上
-        - `bowl_kitchen_cabinet` 在 `dining_table_1/top` 上
-        - `dinner_spoon_1` 在 `dining_table_1/top` 上
-        - `dinner_spoon_2` 在 `dining_table_1/top` 上
-      - 第 7 组：
-        - `dinner_bowl_1` 在 `dining_table_2/top` 上
-        - `bowl_side_table` 在 `dining_table_2/top` 上
-        - `dinner_spoon_1` 在 `dining_table_2/top` 上
-        - `dinner_spoon_2` 在 `dining_table_2/top` 上
 - **最不好（0.3）**：
 
   - `dinner_bowl_1` 在 `dining_table_2/top` 上
@@ -10466,6 +10424,8 @@
 
 **情况**：外面没有饮料 → 想到饮料在冰箱里，有什么喝的拿什么
 
+**指令**：客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。
+
 **成功条件**（D 按摆法：`juice` D = 1、理想物在，`soda_only` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -10897,6 +10857,8 @@
 ### scattered（Task）
 
 **情况**：小车在地上、鸭子在电视柜、积木在岛台 → 都找到放进装玩具的地方：玩具筐；没有筐时放进他书架上的小玩具盒（只放到他房间家具上的每样降一档）
+
+**指令**：把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。
 
 **成功条件**（D 按摆法：`basket` D = 1、理想物在，`no_basket` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -12008,7 +11970,7 @@
 
 **情况**：靠墙矮柜上一个干净碗 → 拿到岛台
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -12017,6 +11979,22 @@
       - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
     - 第 2 组：
       - 这 5 件中至少 1 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+- **次好（0.6）**：
+
+  - 这 6 件中至少 1 件还在 `kitchen_island/top` 上：`mug_counter`、`mug_dining_cabinet`、`mug_shelf`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`
+  - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `plate_counter_a` 在 `kitchen_island/top` 上
+    - 第 2 组：
+      - `plate_counter_b` 在 `kitchen_island/top` 上
+    - 第 3 组：
+      - `plate_dining_cabinet` 在 `kitchen_island/top` 上
+    - 第 4 组：
+      - `plate_inside_kitchen_cabinet` 在 `kitchen_island/top` 上
 - **不行（0）**：岛台上没碗；碗掉了；还拿着
 
 

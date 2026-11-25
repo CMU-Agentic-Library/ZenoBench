@@ -150,6 +150,19 @@ DESIGN = {
     # T29: where each thing goes is the test (storage_place)
     **{("T29", d): ("Dinner is about to start. Take away what doesn't belong on the dining table.",
                     "要吃饭了，把餐桌上不该放的东西拿走。") for d in ("homework_on_table", "several")},
+    # -- 11-25 layout audit: the base text names a container or drink some layouts of the design do not have,
+    # and what is scored best there is not a substitute but the design's own answer --
+    # T12 bins_capacity: no storage basket; small toy bins (one full) or a bin and a tray; which has room is the test
+    ("T12", "bins_capacity"): ("It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+                               "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"),
+    # T25 drink_in_fridge: on one seed the fridge holds a soda, not juice, and the soda is scored best
+    ("T25", "drink_in_fridge"): ("A guest is sitting in the living room. Bring him something to drink and a cup, "
+                                 "and put them on the TV stand in front of him.",
+                                 "客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。"),
+    # T26 scattered: on one seed there is no toy basket, his toys are kept in a small bin (scored best)
+    ("T26", "scattered"): ("Take the things the kid left in the living room back to his room: toys where his "
+                           "toys are kept, books onto his bookcase.",
+                           "把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。"),
     # T30: "clean" would tell the clean bowl from the full one (referent_clue); the place stays named
     ("T30", "bowl_not_plate"): ("The soup is almost ready. Bring a bowl to the kitchen island next to the stove for "
                                 "serving it.", "汤快好了，拿一只碗放到灶台旁边的岛台上准备盛汤。"),

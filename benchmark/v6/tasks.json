@@ -114300,7 +114300,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "bins_capacity__side_right_full": {
      "move": {
@@ -115252,7 +115254,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "bins_capacity__apart_full_on_tv": {
      "move": {
@@ -116256,7 +116260,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "bins_capacity__apart_empty_on_desk": {
      "move": {
@@ -117213,7 +117219,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "bins_capacity__half_bin_and_tray": {
      "move": {
@@ -117694,7 +117702,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "bins_capacity__half_bin_and_tray_duck_dining": {
      "move": {
@@ -118204,7 +118214,9 @@
       "ideal_present": false,
       "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "It is nearly bedtime. Put the kid's toys away where his toys are kept.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。"
     },
     "castle_stays__tall_two_loose": {
      "move": {
@@ -124283,7 +124295,10 @@
       "no_cup"
      ],
      "remove": [
-      "cup"
+      "cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
      ],
      "move": {
       "bowl": {
@@ -124421,12 +124436,6 @@
          7.8786,
          0.2138,
          8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
         ],
         [
          -0.0723,
@@ -124594,156 +124603,6 @@
           [
            [
             "on",
-            "bowl",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl"
-           ],
-           [
-            "on",
-            "cup_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_side_table"
-           ],
-           [
-            "grouped",
-            [
-             "bowl",
-             "cup_side_table",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
             "bowl_dining_cabinet",
             "dining_table_2/top"
            ],
@@ -124798,156 +124657,6 @@
              "spoon"
             ],
             "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_dining_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_dining_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_dining_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_dining_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_dining_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_dining_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_dining_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_dining_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_dining_cabinet"
-           ],
-           [
-            "on",
-            "cup_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_side_table"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_dining_cabinet",
-             "cup_side_table",
-             "spoon"
-            ],
-            "dining_table_2/top",
             0.5
            ]
           ],
@@ -125014,156 +124723,6 @@
           [
            [
             "on",
-            "bowl_inside_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_inside_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_inside_kitchen_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_inside_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_inside_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_inside_kitchen_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_inside_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_inside_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_inside_kitchen_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_inside_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_inside_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_inside_kitchen_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_inside_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_inside_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_side_table"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_inside_kitchen_cabinet",
-             "cup_side_table",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
             "bowl_kitchen_cabinet",
             "dining_table_2/top"
            ],
@@ -125218,156 +124777,6 @@
              "spoon"
             ],
             "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_kitchen_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_kitchen_cabinet",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_kitchen_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "bowl_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_kitchen_cabinet",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_1/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_kitchen_cabinet"
-           ],
-           [
-            "on",
-            "cup_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_side_table"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_kitchen_cabinet",
-             "cup_side_table",
-             "spoon"
-            ],
-            "dining_table_2/top",
             0.5
            ]
           ],
@@ -125395,96 +124804,6 @@
             [
              "bowl_side_table",
              "cup",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_side_table"
-           ],
-           [
-            "on",
-            "cup_counter_b",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_counter_b"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_side_table",
-             "cup_counter_b",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_side_table"
-           ],
-           [
-            "on",
-            "cup_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_kitchen_cabinet"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_side_table",
-             "cup_kitchen_cabinet",
-             "spoon"
-            ],
-            "dining_table_2/top",
-            0.5
-           ]
-          ],
-          [
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "bowl_side_table"
-           ],
-           [
-            "on",
-            "cup_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "upright",
-            "cup_side_table"
-           ],
-           [
-            "grouped",
-            [
-             "bowl_side_table",
-             "cup_side_table",
              "spoon"
             ],
             "dining_table_2/top",
@@ -126573,9 +125892,9 @@
           ]
          ]
         },
-        "why": "one of: on(bowl, dining_table_2/top) & upright(bowl) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_1/top, 0.5) || on(bowl, dining_table_2/top) & upright(bowl) & on(cup_counter_b, dining_table_2/top) & upright(cup_counter_b) & grouped([bowl|cup_counter_b|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup_counter_b, dining_table_1/top) & upright(cup_counter_b) & grouped([bowl|cup_counter_b|spoon], dining_table_1/top, 0.5) || ... 64 more ways",
+        "why": "one of: on(bowl, dining_table_2/top) & upright(bowl) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_1/top, 0.5) || on(bowl_dining_cabinet, dining_table_2/top) & upright(bowl_dining_cabinet) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl_dining_cabinet|cup|spoon], dining_table_2/top, 0.5) || on(bowl_dining_cabinet, dining_table_1/top) & upright(bowl_dining_cabinet) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl_dining_cabinet|cup|spoon], dining_table_1/top, 0.5) || ... 41 more ways",
         "raw": "best",
-        "check": "one of: on(bowl, dining_table_2/top) & upright(bowl) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_1/top, 0.5) || on(bowl, dining_table_2/top) & upright(bowl) & on(cup_counter_b, dining_table_2/top) & upright(cup_counter_b) & grouped([bowl|cup_counter_b|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup_counter_b, dining_table_1/top) & upright(cup_counter_b) & grouped([bowl|cup_counter_b|spoon], dining_table_1/top, 0.5) || ... 64 more ways"
+        "check": "one of: on(bowl, dining_table_2/top) & upright(bowl) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_2/top, 0.5) || on(bowl, dining_table_1/top) & upright(bowl) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl|cup|spoon], dining_table_1/top, 0.5) || on(bowl_dining_cabinet, dining_table_2/top) & upright(bowl_dining_cabinet) & on(cup, dining_table_2/top) & upright(cup) & grouped([bowl_dining_cabinet|cup|spoon], dining_table_2/top, 0.5) || on(bowl_dining_cabinet, dining_table_1/top) & upright(bowl_dining_cabinet) & on(cup, dining_table_1/top) & upright(cup) & grouped([bowl_dining_cabinet|cup|spoon], dining_table_1/top, 0.5) || ... 41 more ways"
        },
        {
         "name": "second",
@@ -126840,11 +126159,6 @@
         "bowl_inside_kitchen_cabinet",
         "bowl_kitchen_cabinet",
         "bowl_side_table"
-       ],
-       "cup": [
-        "cup_counter_b",
-        "cup_kitchen_cabinet",
-        "cup_side_table"
        ],
        "mug": [
         "mug_counter",
@@ -138608,7 +137922,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -138625,6 +137939,46 @@
         "why": "the pot covered with its lid",
         "raw": "best",
         "check": "covered(handled_cooking_pot, pot_lid)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_counter_a"
+           ]
+          ],
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_counter_b"
+           ]
+          ],
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_inside_kitchen_cabinet"
+           ]
+          ]
+         ]
+        },
+        "why": "the pot covered with a plate though the lid is by the stove",
+        "raw": "second",
+        "check": "one of: covered(handled_cooking_pot, plate_counter_a) || covered(handled_cooking_pot, plate_counter_b) || covered(handled_cooking_pot, plate_dining_cabinet) || covered(handled_cooking_pot, plate_inside_kitchen_cabinet)"
        }
       ],
       "not_ok": "the pot not covered; the lid dropped or still held",
@@ -140212,13 +139566,60 @@
       "19": "lid_by_pot"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
         "goal": null,
         "why": "the pot covered with its lid"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_by_pot": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_dining_cabinet"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_inside_kitchen_cabinet"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the pot covered with a plate though the lid is by the stove"
        }
       ],
       "not_ok": "the pot not covered; the lid dropped or still held"
@@ -140829,7 +140230,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -140851,9 +140252,69 @@
         "why": "the apple in the snack box on his desk",
         "raw": "best",
         "check": "inside(school_apple, snack_box) & on(snack_box, desk_1/top)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "inside",
+            "school_apple",
+            "bowl_dining_cabinet"
+           ],
+           [
+            "on",
+            "bowl_dining_cabinet",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "school_apple",
+            "bowl_inside_kitchen_cabinet"
+           ],
+           [
+            "on",
+            "bowl_inside_kitchen_cabinet",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "school_apple",
+            "bowl_kitchen_cabinet"
+           ],
+           [
+            "on",
+            "bowl_kitchen_cabinet",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "school_apple",
+            "bowl_side_table"
+           ],
+           [
+            "on",
+            "bowl_side_table",
+            "desk_1/top"
+           ]
+          ]
+         ]
+        },
+        "why": "the apple in a bowl on his desk though the box is there",
+        "raw": "second",
+        "check": "one of: inside(school_apple, bowl_dining_cabinet) & on(bowl_dining_cabinet, desk_1/top) || inside(school_apple, bowl_inside_kitchen_cabinet) & on(bowl_inside_kitchen_cabinet, desk_1/top) || inside(school_apple, bowl_kitchen_cabinet) & on(bowl_kitchen_cabinet, desk_1/top) || inside(school_apple, bowl_side_table) & on(bowl_side_table, desk_1/top)"
        }
       ],
-      "not_ok": "the apple not in the box on the desk; still held or dropped",
+      "not_ok": "the apple not in the box (or a bowl) on the desk; still held or dropped",
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
@@ -143078,16 +142539,83 @@
       "19": "box_on_counter"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
         "goal": null,
         "why": "the apple in the snack box on his desk"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "box_on_counter": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "school_apple",
+              "bowl_dining_cabinet"
+             ],
+             [
+              "on",
+              "bowl_dining_cabinet",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "school_apple",
+              "bowl_inside_kitchen_cabinet"
+             ],
+             [
+              "on",
+              "bowl_inside_kitchen_cabinet",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "school_apple",
+              "bowl_kitchen_cabinet"
+             ],
+             [
+              "on",
+              "bowl_kitchen_cabinet",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "school_apple",
+              "bowl_side_table"
+             ],
+             [
+              "on",
+              "bowl_side_table",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the apple in a bowl on his desk though the box is there"
        }
       ],
-      "not_ok": "the apple not in the box on the desk; still held or dropped"
+      "not_ok": "the apple not in the box (or a bowl) on the desk; still held or dropped"
      }
     },
     "box_in_cabinet": {
@@ -147198,7 +146726,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -147255,9 +146783,245 @@
         "why": "two bowls from the low wall cabinet and two spoons on the dining table",
         "raw": "best",
         "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on(dinner_bowl_2, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(dinner_bowl_2, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_a",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_a",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_b",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_b",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_dining_cabinet",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_dining_cabinet",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_inside_kitchen_cabinet",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_1",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_inside_kitchen_cabinet",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_a",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_a",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_b",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_counter_b",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_dining_cabinet",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_dining_cabinet",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_2/top"
+           ],
+           [
+            "on_any",
+            "plate_inside_kitchen_cabinet",
+            [
+             "dining_table_2/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on",
+            "dinner_bowl_2",
+            "dining_table_1/top"
+           ],
+           [
+            "on_any",
+            "plate_inside_kitchen_cabinet",
+            [
+             "dining_table_1/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "a plate as the second though both bowls are in the cabinet",
+        "raw": "worst",
+        "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on_any(plate_counter_a, [dining_table_2/top]) || on(dinner_bowl_1, dining_table_1/top) & on_any(plate_counter_a, [dining_table_1/top]) || on(dinner_bowl_1, dining_table_2/top) & on_any(plate_counter_b, [dining_table_2/top]) || on(dinner_bowl_1, dining_table_1/top) & on_any(plate_counter_b, [dining_table_1/top]) || ... 12 more ways"
        }
       ],
-      "not_ok": "fewer than two bowls or spoons on the table; a bowl dropped; still held",
+      "not_ok": "fewer than two bowls (or a bowl and a plate) on the table; a bowl dropped; still held",
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
@@ -147560,7 +147324,10 @@
       "resource_absent"
      ],
      "remove": [
+      "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
       "plate_inside_kitchen_cabinet"
      ],
      "add": {
@@ -147646,116 +147413,6 @@
          "on",
          "dinner_spoon_2",
          "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_side_table",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
         ]
        ]
       ]
@@ -147963,122 +147620,12 @@
             "dinner_spoon_2",
             "dining_table_1/top"
            ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
           ]
          ]
         },
-        "why": "one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways",
+        "why": "one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)",
         "raw": "best",
-        "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways"
+        "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)"
        },
        {
         "name": "second",
@@ -148125,14 +147672,7 @@
       "top": "moderate",
       "ideal_present": false,
       "ideal_zh": "两个碗（只有一个，用玻璃盒）",
-      "loosened": "11-24",
-      "stand_ins": {
-       "glass_box": [
-        "bowl_dining_cabinet",
-        "bowl_kitchen_cabinet",
-        "bowl_side_table"
-       ]
-      }
+      "loosened": "11-24"
      }
     },
     "one_bowl__mug": {
@@ -148140,7 +147680,10 @@
       "resource_absent"
      ],
      "remove": [
+      "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
       "plate_inside_kitchen_cabinet"
      ],
      "add": {
@@ -148226,116 +147769,6 @@
          "on",
          "dinner_spoon_2",
          "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_side_table",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
         ]
        ],
        [
@@ -148688,116 +148121,6 @@
            ],
            [
             "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
             "mug_counter",
             "dining_table_2/top"
            ],
@@ -148924,9 +148247,9 @@
           ]
          ]
         },
-        "why": "one of: on(dinner_bowl_1, dining_table_2/top) & on(spare_mug, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(spare_mug, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 9 more ways",
+        "why": "one of: on(dinner_bowl_1, dining_table_2/top) & on(spare_mug, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(spare_mug, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(mug_counter, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(mug_counter, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 4 more ways",
         "raw": "best",
-        "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on(spare_mug, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(spare_mug, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 9 more ways"
+        "check": "one of: on(dinner_bowl_1, dining_table_2/top) & on(spare_mug, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(spare_mug, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(mug_counter, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(mug_counter, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 4 more ways"
        },
        {
         "name": "second",
@@ -148976,9 +148299,6 @@
       "loosened": "11-24",
       "stand_ins": {
        "spare_mug": [
-        "bowl_dining_cabinet",
-        "bowl_kitchen_cabinet",
-        "bowl_side_table",
         "mug_counter",
         "mug_dining_cabinet",
         "mug_shelf"
@@ -148991,7 +148311,10 @@
       "resource_in_use"
      ],
      "remove": [
+      "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
       "plate_inside_kitchen_cabinet"
      ],
      "add": {
@@ -149122,116 +148445,6 @@
          "on",
          "dinner_spoon_2",
          "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_side_table",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
         ]
        ]
       ]
@@ -149456,122 +148669,12 @@
             "dinner_spoon_2",
             "dining_table_1/top"
            ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
           ]
          ]
         },
-        "why": "inside(left_tomato_1, dinner_bowl_2) & inside(left_tomato_2, dinner_bowl_2) & on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways",
+        "why": "inside(left_tomato_1, dinner_bowl_2) & inside(left_tomato_2, dinner_bowl_2) & on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)",
         "raw": "best",
-        "check": "inside(left_tomato_1, dinner_bowl_2) & inside(left_tomato_2, dinner_bowl_2) & on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways"
+        "check": "inside(left_tomato_1, dinner_bowl_2) & inside(left_tomato_2, dinner_bowl_2) & on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)"
        },
        {
         "name": "second",
@@ -149614,14 +148717,7 @@
       "top": "moderate",
       "ideal_present": false,
       "ideal_zh": "两个干净碗（一个装着剩番茄，用玻璃盒）",
-      "loosened": "11-24",
-      "stand_ins": {
-       "glass_box": [
-        "bowl_dining_cabinet",
-        "bowl_kitchen_cabinet",
-        "bowl_side_table"
-       ]
-      }
+      "loosened": "11-24"
      }
     },
     "bowl_in_use__oatmeal": {
@@ -149629,7 +148725,10 @@
       "resource_in_use"
      ],
      "remove": [
+      "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
       "plate_inside_kitchen_cabinet"
      ],
      "add": {
@@ -149730,116 +148829,6 @@
          "on",
          "dinner_spoon_2",
          "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_dining_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_1/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "dinner_bowl_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "bowl_side_table",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_1",
-         "dining_table_2/top"
-        ],
-        [
-         "on",
-         "dinner_spoon_2",
-         "dining_table_2/top"
         ]
        ]
       ]
@@ -150052,122 +149041,12 @@
             "dinner_spoon_2",
             "dining_table_1/top"
            ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_dining_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "bowl_kitchen_cabinet",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_1/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_1/top"
-           ]
-          ],
-          [
-           [
-            "on",
-            "dinner_bowl_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "bowl_side_table",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_1",
-            "dining_table_2/top"
-           ],
-           [
-            "on",
-            "dinner_spoon_2",
-            "dining_table_2/top"
-           ]
           ]
          ]
         },
-        "why": "on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways",
+        "why": "on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)",
         "raw": "best",
-        "check": "on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || on(dinner_bowl_1, dining_table_2/top) & on(bowl_dining_cabinet, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(bowl_dining_cabinet, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top) || ... 3 more ways"
+        "check": "on(dinner_bowl_2, kitchen_cabinet_6/inside_shelf); one of: on(dinner_bowl_1, dining_table_2/top) & on(glass_box, dining_table_2/top) & on(dinner_spoon_1, dining_table_2/top) & on(dinner_spoon_2, dining_table_2/top) || on(dinner_bowl_1, dining_table_1/top) & on(glass_box, dining_table_1/top) & on(dinner_spoon_1, dining_table_1/top) & on(dinner_spoon_2, dining_table_1/top)"
        },
        {
         "name": "second",
@@ -150210,14 +149089,7 @@
       "top": "moderate",
       "ideal_present": false,
       "ideal_zh": "两个干净碗（一个装着燕麦，用玻璃盒）",
-      "loosened": "11-24",
-      "stand_ins": {
-       "glass_box": [
-        "bowl_dining_cabinet",
-        "bowl_kitchen_cabinet",
-        "bowl_side_table"
-       ]
-      }
+      "loosened": "11-24"
      }
     },
     "door_stuck": {
@@ -151989,15 +150861,140 @@
          }
         },
         "why": "the task done, but a door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "bowls_in_cabinet": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "dinner_bowl_1",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_counter_a",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_1",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_counter_b",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_1",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_dining_cabinet",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_1",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_inside_kitchen_cabinet",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_2",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_counter_a",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_2",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_counter_b",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_2",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_dining_cabinet",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "dinner_bowl_2",
+              "dining_table_2/top"
+             ],
+             [
+              "on_any",
+              "plate_inside_kitchen_cabinet",
+              [
+               "dining_table_2/top"
+              ]
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a plate as the second though both bowls are in the cabinet"
        }
       ],
-      "not_ok": "fewer than two bowls or spoons on the table; a bowl dropped; still held",
-      "D_by_layout": {
-       "bowls_in_cabinet": 0
-      },
-      "top_by_layout": {
-       "bowls_in_cabinet": "ideal"
-      }
+      "not_ok": "fewer than two bowls (or a bowl and a plate) on the table; a bowl dropped; still held"
      }
     },
     "bowls_apart": {
@@ -190084,7 +189081,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "A guest is sitting in the living room. Bring him something to drink and a cup, and put them on the TV stand in front of him.",
+     "instruction_zh": "客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。"
     },
     "drink_in_fridge__soda_only": {
      "conditions": [
@@ -190310,7 +189309,9 @@
       "ideal_present": false,
       "ideal_zh": "果汁（冰箱里没有，用汽水）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "A guest is sitting in the living room. Bring him something to drink and a cup, and put them on the TV stand in front of him.",
+     "instruction_zh": "客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。"
     },
     "cups_for_two__one_there": {
      "conditions": [
@@ -197467,7 +196468,9 @@
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room: toys where his toys are kept, books onto his bookcase.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。"
     },
     "scattered__no_basket": {
      "conditions": [
@@ -198153,7 +197156,9 @@
       "ideal_present": false,
       "ideal_zh": "玩具筐（没有，用书架上的小玩具盒）",
       "loosened": "11-24"
-     }
+     },
+     "instruction": "Take the things the kid left in the living room back to his room: toys where his toys are kept, books onto his bookcase.",
+     "instruction_zh": "把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。"
     },
     "where_in_room__basket": {
      "conditions": [
@@ -216170,7 +215175,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -216211,9 +215216,147 @@
         "why": "a clean bowl on the island by the stove",
         "raw": "best",
         "check": "one of: count_on_at_least([soup_bowl_1|bowl_dining_cabinet|bowl_kitchen_cabinet|bowl_side_table|bowl_inside_kitchen_cabinet], kitchen_island/top, 1) || count_on_at_least([soup_bowl_1|bowl_dining_cabinet|bowl_kitchen_cabinet|bowl_side_table|bowl_inside_kitchen_cabinet], dining_table_2/top, 1)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "count_on_at_least",
+            [
+             "mug_counter",
+             "mug_dining_cabinet",
+             "mug_shelf",
+             "cup_counter_b",
+             "cup_kitchen_cabinet",
+             "cup_side_table"
+            ],
+            "kitchen_island/top",
+            1
+           ]
+          ],
+          [
+           [
+            "count_on_at_least",
+            [
+             "mug_counter",
+             "mug_dining_cabinet",
+             "mug_shelf",
+             "cup_counter_b",
+             "cup_kitchen_cabinet",
+             "cup_side_table"
+            ],
+            "dining_table_2/top",
+            1
+           ]
+          ]
+         ]
+        },
+        "why": "a mug or cup brought though the bowl is there",
+        "raw": "second",
+        "check": "one of: count_on_at_least([mug_counter|mug_dining_cabinet|mug_shelf|cup_counter_b|cup_kitchen_cabinet|cup_side_table], kitchen_island/top, 1) || count_on_at_least([mug_counter|mug_dining_cabinet|mug_shelf|cup_counter_b|cup_kitchen_cabinet|cup_side_table], dining_table_2/top, 1)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "plate_counter_a",
+            "kitchen_island/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_counter_a",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_counter_a",
+            "dining_table_2/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_counter_b",
+            "kitchen_island/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_counter_b",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_counter_b",
+            "dining_table_2/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_dining_cabinet",
+            "kitchen_island/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_dining_cabinet",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_dining_cabinet",
+            "dining_table_2/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_inside_kitchen_cabinet",
+            "kitchen_island/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_inside_kitchen_cabinet",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "plate_inside_kitchen_cabinet",
+            "dining_table_2/top"
+           ]
+          ]
+         ]
+        },
+        "why": "a plate brought though the bowl is there",
+        "raw": "worst",
+        "check": "one of: on(plate_counter_a, kitchen_island/top) || on(plate_counter_a, dining_table_1/top) || on(plate_counter_a, dining_table_2/top) || on(plate_counter_b, kitchen_island/top) || ... 8 more ways"
        }
       ],
-      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
+      "not_ok": "nothing that holds soup on the island; dropped; still held",
       "top": "ideal",
       "ideal_present": true,
       "loosened": "11-24"
@@ -220367,16 +219510,93 @@
       "19": "bowl_on_cabinet"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
         "goal": null,
         "why": "a clean bowl on the island by the stove"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "bowl_on_cabinet": {
+           "all": [
+            [
+             "count_on_at_least",
+             [
+              "mug_counter",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table"
+             ],
+             "kitchen_island/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a mug or cup brought though the bowl is there"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "bowl_on_cabinet": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "plate_counter_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "plate_counter_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "plate_dining_cabinet",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "plate_inside_kitchen_cabinet",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a plate brought though the bowl is there"
        }
       ],
-      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held"
+      "not_ok": "nothing that holds soup on the island; dropped; still held"
      }
     },
     "how_many": {

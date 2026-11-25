@@ -861,8 +861,8 @@
 
 ### T12 · bins_capacity（布局 6 个）
 
-- 指令 EN：（基础指令）
-- 指令 中：（基础指令）
+- 指令 EN：It is nearly bedtime. Put the kid's toys away where his toys are kept.
+- 指令 中：快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。
 - 场景：no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk
 - 考察：joint_capacity
 
@@ -1689,8 +1689,8 @@
 
 ### T25 · drink_in_fridge（布局 2 个）
 
-- 指令 EN：（基础指令）
-- 指令 中：（基础指令）
+- 指令 EN：A guest is sitting in the living room. Bring him something to drink and a cup, and put them on the TV stand in front of him.
+- 指令 中：客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。
 - 场景：a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge
 - 考察：storage_place, not_in_view, resource_absent
 
@@ -1771,8 +1771,8 @@
 
 ### T26 · scattered（布局 2 个）
 
-- 指令 EN：（基础指令）
-- 指令 中：（基础指令）
+- 指令 EN：Take the things the kid left in the living room back to his room: toys where his toys are kept, books onto his bookcase.
+- 指令 中：把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。
 - 场景：the car on the floor, the duck on the TV stand, a block on the island; his toys kept in the basket, or (no basket) in a small bin
 - 考察：goal_items_unstated, multi_object_goal, container_absent
 

@@ -79,7 +79,6 @@
 | soup_bowl_extra | T30 | how_many | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2）, mug_counter（合法 2）, mug_dining_cabinet（合法 2）, mug_shelf（合法 2） | 1 |
 | soup_bowl_one | T30 | bowl_not_plate | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2）, mug_counter（合法 2）, mug_dining_cabinet（合法 2）, mug_shelf（合法 2） | 2 |
 | soup_bowl_one | T30 | bowl_put_away | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2）, mug_counter（合法 2）, mug_dining_cabinet（合法 2）, mug_shelf（合法 2） | 1 |
-| soup_serving_place | T30 | bowl_on_cabinet | dining_table_1/top（合法 2） | 1 |
 | soup_vessel | T18 | bowl_in_use | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2）, mug_counter（合法 2）, mug_dining_cabinet（合法 2）, mug_shelf（合法 2） | 2 |
 | soup_vessel | T18 | one_bowl | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2） | 1 |
 | soup_vessel | T18 | one_bowl | cup_counter_b（合法 2）, cup_kitchen_cabinet（合法 2）, cup_side_table（合法 2）, mug_counter（合法 2）, mug_dining_cabinet（合法 2）, mug_shelf（合法 2） | 1 |

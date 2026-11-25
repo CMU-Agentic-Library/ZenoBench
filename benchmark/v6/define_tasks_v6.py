@@ -3535,6 +3535,15 @@ SPLIT = set()
 # taken from the sibling seed that uses them (scoring.LOOSEN says what each one scores there).  Keyed by (task, layout)
 _SURF = lambda sup, x, y, asset, yaw=0.0: {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}  # noqa: E731
 _ON = lambda x, y, z, asset: {"asset": asset, "support": None, "z": z, "xy": [x, y], "yaw_deg": 0.0}  # noqa: E731
+# 11-25 (ZenoBench-Sub): layouts that say the ideal kind is missing or taken still had the base house's own copies
+# of it (three cups, three bowls), which the loosened goals accepted as same-kind stand-ins: the ideal was in fact
+# free.  Those copies leave the scene, so the layout is a real substitution case (the B side of a pair).
+_BASE_BOWLS = ("bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table", "bowl_inside_kitchen_cabinet")
+ABSENT_CLEAR = {
+    ("T13", "no_cup"): ("cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"),
+    **{("T18", lid): _BASE_BOWLS for lid in ("one_bowl__glass_box", "one_bowl__mug", "bowl_in_use__tomatoes",
+                                             "bowl_in_use__oatmeal")},
+}
 _KID_CUP = {"kid_cup": _SURF("kitchen_counter_2/top", -0.364, 7.709, "plastic_cup")}
 EXTRA_SUBSTITUTES = {
     ("T03", "utensils_apart__bin_free"): {"storage_basket": _ON(0.894, -1.931, 0.001, "storage_basket"),
@@ -3712,6 +3721,11 @@ def build_task(t: dict) -> dict:
             if "remove" in v:
                 v["remove"] = [n for n in v["remove"] if n not in add]
             v["watch"] = sorted(set(v.get("watch") or []) | set(add))
+    for (tid, lid), gone in ABSENT_CLEAR.items():          # 11-25: the ideal kind really absent (ZenoBench-Sub B)
+        if tid == t["task_id"][:3]:
+            v = t["variants"][lid]
+            v["remove"] = sorted(set(v.get("remove", [])) | set(gone))
+            v["watch"] = [n for n in v.get("watch") or [] if n not in gone]
     t["v6_replaced"] = {vid: why for (tid, vid), why in REPLACED.items() if tid == t["task_id"]}
     for (tid, vid), conds in NOT_A_CHALLENGE.items():
         if tid == t["task_id"]:

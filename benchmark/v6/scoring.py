@@ -1275,7 +1275,8 @@ def tier_goal(tier: dict, task: dict, layout: str | None):
 
 
 def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict | None:
-    """The first tier whose goal holds (``holds(goal) -> bool``), as {tier, score, D}; None if not reviewed."""
+    """The first tier whose goal holds (``holds(goal) -> bool``), as {tier, score, D}; None if not reviewed.
+    With alternatives (``any``), also the first one that holds: ``branch`` (its index) and ``branch_atoms``."""
     if not scoring:
         return None
     for tier in scoring["tiers"]:
@@ -1283,7 +1284,14 @@ def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict |
         if g == NA:                                   # the level does not exist in this layout
             continue
         if holds(g):
-            return {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+            out = {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+            # 11-25: which alternative of the tier held, so substitution_metrics.py can tell what was used
+            for i, branch in enumerate(g.get("any") or []):
+                if len(g["any"]) > 1 and holds({**g, "any": [branch]}):
+                    out["branch"] = i
+                    out["branch_atoms"] = branch
+                    break
+            return out
     return {"tier": "not_ok", "level": "else", "score": 0.0, "D": scoring["D"]}
 
 
