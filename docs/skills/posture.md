@@ -1,4 +1,4 @@
-# 姿态：下蹲、站起、弯腰、直腰、收臂；举高、放低、举到头前
+# 姿态：下蹲、站起、弯腰、直腰、收臂；举高、放低、举到头前、转向、竖起、松手
 
 2026-11-16 起走运动分层（`skill_plans/posture.py` 的 `plan_posture`，job 在 `skill_jobs/posture.py`；`../motion/MOTION_ARCHITECTURE.md` 第 6 节、9.3 第 5 步）：在机器人现在站的地方做一段关节运动，不选停车点，不挪底盘。
 
@@ -33,6 +33,19 @@ HAND_PLAN 9e：`PresentHeldPolicy` → `run_skill(SKILLS["present"])`，job 是 
 
 1. 物体中心在身前的 4 个位置（`PRESENT_AT`，左手的横向镜像）组成**一个目标集合**，手的朝向不变；自由段到第一个能到的（旧代码是 4 个依次 `move_to` 重试）。
 2. 头转向自由段终点处的物体（`present_look`），再记录视野（`record_view`）。
+
+## rotate / upright（手里的东西原地转向）
+
+HAND_PLAN 9f（11-25）：`RotateHeldPolicy` / `UprightObjectPolicy` → `run_skill(SKILLS["rotate" / "upright"])`，job 在 `skill_jobs/held.py`，计划是 `plan_posture`（一个自由段到一个目标集合），用拿着东西的那只手。square 不再用 rotate：路线是 pick → place(square=True)，摆正的转角在 place 的目标集合里（见 [place](place.md)）。
+
+- **rotate**：手的朝向绕竖直轴转给定角度；位置是现在的 TCP，或往底盘拉回、抬高的 4 个点（`ROTATE_AT`，旧代码的中间点），都在一个目标集合里。保持物体倾角（绕竖直轴转不改倾角）。结果：物体朝向变化和要求差 10° 以内（`ROTATE_TOL_DEG`），握法重新记下。旧代码按 15° 一步、每个中间点依次试，删了。
+- **upright**：倾角已在 `max_tilt_deg` 内就不动。否则目标集合 = 让物体竖起来的手的朝向（绕竖直轴 8 个朝向，`UPRIGHT_YAWS`）× 位置（原地抬高 12 cm 或半个最长边，或胸前 8 个点，`UPRIGHT_FRONT`，左手镜像）；自由段**不保持倾角**（`plan_posture(hold_tilt=False)`），物体照样在碰撞模型里。结果：倾角在限内。旧代码约 100 个中间点的网格、IK 连续性搜索、以及"放下再撬起"/"挂直"两级退路都删了。
+
+## release（原地松手）
+
+HAND_PLAN 9f：`ReleaseInPlacePolicy` → `run_skill(SKILLS["release"])`，计划 `plan_release`：张开到抓取时的宽度（手指可以碰它放开的东西），再沿夹爪轴退一个手指长度。两段都在动之前建好：退不出来就失败，手还没张开（旧代码先张开、退不出来只记一笔）。
+
+regrasp（`RegraspPolicy`）现在是 place（支撑面上离底盘最近、往里 12 cm 的点）加 pick，都走运动分层；旧的"已经在空地上方就直接竖直放下"分支删了。
 
 ## 谁在用
 

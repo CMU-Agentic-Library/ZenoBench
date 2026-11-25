@@ -23,24 +23,24 @@ An object must be rotated so its sides align with the support edges.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object).
+Requires hand_empty(hand=any); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `squared(object=$object)` — Object yaw within 5 deg of the support's axes (edges parallel), resting on a support. GT: object_pose, support_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `squared(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -48,8 +48,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 1. `policy_108($object) as sq`
 2. `policy_010($object)`
-3. `policy_075($object, #sq.degrees)`
-4. `policy_015($object, @object.support, hint=#sq.xy)`
+3. `policy_015($object, @object.support, hint=#sq.xy, square=True)`
+- The turn that squares it is in the place's goal set, from its yaw as the hand holds it (a rotate by the yaw measured before the pick drifted with the carry).
 
 ## Relations
 

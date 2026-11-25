@@ -98,89 +98,34 @@ class StackOnPolicy(AtomicPolicy):
 
 
 class RotateHeldPolicy(AtomicPolicy):
-    """Rotate the held object about the vertical axis through the TCP.
-
-    The wrist turn is tried at a few staging poses closer to the body and
-    higher, where the arm has more orientation range."""
+    """Rotate the held object about the vertical: the rotate skill (skill_jobs.held.rotate_job, HAND_PLAN 9f) with
+    the hand that holds it."""
 
     def execute(self, name, degrees):
-        rig = self.rig
-        _require_held(rig, name, "rotate")
-        q0 = rig.obj_pose(name)[1]
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        steps = max(1, int(math.ceil(abs(float(degrees)) / 15.0)))
-        x, y, _ = rig.base_pose()
-        toward = np.array([x, y]) - tcp[:2]
-        dist = float(np.linalg.norm(toward))
-        unit = toward / dist if dist > 1e-6 else np.zeros(2)
-        last = None
-        done = False
-        for pull, up in ((0.15, 0.06), (0.25, 0.12), (0.05, 0.04), (0.30, 0.20)):
-            stage = tcp + np.r_[unit * min(pull, max(0.0, dist - 0.35)), up]
-            Rs = [rz(math.radians(float(degrees)) * k / steps) @ R for k in range(1, steps + 1)]
-            if not all(rig.kin.ik_global(stage, Rk, seeds=[rig.q_cmd])[1] for Rk in Rs[-1:]):
-                continue                     # the final orientation has no IK here
-            try:
-                rig.move_to(stage, R, step=0.005, label="rotate_clear", allow=FREE_ELSE_STRAIGHT)
-                for Rk in Rs:
-                    rig.move_to(stage, Rk, step=0.005, steps_per_wp=4, label="rotate_held", allow=FREE_ELSE_STRAIGHT,
-                                smooth=True)
-                    skills.check_held(rig, "rotate_held")
-                done = True
-                break
-            except SkillFailure as exc:
-                last = exc
-                if rig.held is None:
-                    raise
-        if not done:
-            raise last or SkillFailure(f"rotate {name}: no staging pose allows a {degrees:.0f} deg wrist turn")
-        tcp1, R1 = rig.kin.tcp(rig.q())
-        body, q1 = rig.obj_pose(name)
-        rig.held["tcp_minus_body"] = tcp1 - body
-        rig.held["R"] = R1
-
-        def yaw(q):
-            w, x_, y_, z = q
-            return math.degrees(math.atan2(2 * (w * z + x_ * y_), 1 - 2 * (y_ * y_ + z * z)))
-        change = (yaw(q1) - yaw(q0) + 180) % 360 - 180
-        rig.log("rotate_result", obj=name, requested=float(degrees), yaw_change=round(change, 1))
-        if abs((change - float(degrees) + 180) % 360 - 180) > 10:
-            raise SkillFailure(f"rotate {name}: yaw changed {change:.1f} deg")
-        return change
+        from ..motion_skills import SKILLS, run_skill
+        _require_held_any(self.rig, name, "rotate")
+        return run_skill(self.rig, SKILLS["rotate"], {"name": name, "degrees": float(degrees)})
 
 
 class RegraspPolicy(AtomicPolicy):
-    """Put the object down on a support and pick it again with a fresh grasp."""
+    """Put the object down on a support and pick it again with a fresh grasp: the place (at the support point
+    nearest the base, 12 cm in) and the pick, both on the motion layers (HAND_PLAN 9f; the old straight set-down
+    where it hung is gone)."""
 
     def execute(self, name, support):
         rig = self.rig
-        _require_held(rig, name, "regrasp")
-        before = rig.held.get("kind")
-        # set it down where the arm is: the support point nearest the base, 12 cm in
-        s = rig.ann.support(support)
-        x0, y0, x1, y1 = s["aabb_xy"]
-        st = rig.state()
-        fp = rig.geo.footprint(name, st)
-        if fp[0] > x0 + 0.02 and fp[2] < x1 - 0.02 and fp[1] > y0 + 0.02 and fp[3] < y1 - 0.02 and \
-                not skills._overlaps_objects(rig, [fp[0], fp[1], fp[2], fp[3], s["z"] + 0.005, s["z"] + 0.3],
-                                             {name}, st, margin=0.01):
-            # already over a free patch of the support: set it straight down
-            # (no wrist turn, no re-park: a pinched cylinder rolls out of both)
-            low = float(skills._lowest_z(rig, name, st))
-            skills.held_vertical_move(rig, s["z"] + 0.006 - low, "regrasp_set_down", step=0.003)
-            rig.grip(rig.held.get("pre_open", 0.04), 60, gradual=True)
-            rig.held = None
-            t, R = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t + np.array([0, 0, 0.06]), R, step=0.005, label="regrasp_clear", allow=LEAVE_CONTACT)
-        else:
-            x, y, _ = rig.base_pose()
-            hint = (min(max(x, x0 + 0.12), x1 - 0.12), min(max(y, y0 + 0.12), y1 - 0.12))
-            skills.place_on(rig, name, support, hint=hint)
-        rig.step(60)
+        side = skills._hand_of(rig, name)
+        if side is None:
+            raise SkillFailure(f"regrasp {name}: not held")
+        before = rig.held_by(side).get("kind")
+        x0, y0, x1, y1 = rig.ann.support(support)["aabb_xy"]
+        x, y, _ = rig.base_pose()
+        skills.place_on(rig, name, support, hint=(min(max(x, x0 + 0.12), x1 - 0.12), min(max(y, y0 + 0.12), y1 - 0.12)))
         skills.pick(rig, name)
-        kind = rig.held["kind"] if rig.held else None
-        rig.log("regrasp_result", obj=name, before=before, after=kind)
-        if rig.held is None or rig.held["name"] != name:
+        side = skills._hand_of(rig, name)
+        kind = None if side is None else rig.held_by(side).get("kind")
+        rig.log("regrasp_result", obj=name, before=before, after=kind, hand=side)
+        if side is None:
             raise SkillFailure(f"regrasp {name}: not held after the second grasp")
         return kind
 
@@ -252,36 +197,12 @@ class LeftSteadyPolicy(AtomicPolicy):
 
 
 class ReleaseInPlacePolicy(AtomicPolicy):
-    """Open one gripper without moving the object first, then back the fingers off."""
+    """Open one gripper without moving the object first, then back the fingers off: the release skill
+    (skill_jobs.held.release_job, skill_plans.plan_release; HAND_PLAN 9f)."""
 
     def execute(self, name, hand="right"):
-        rig = self.rig
-        if hand == "right":
-            if rig.held is None or rig.held["name"] != name:
-                raise SkillFailure(f"release {name}: not right-held")
-            rig.grip(rig.held.get("pre_open", 0.04), 60, gradual=True)
-            rig.held = None
-            t, R = rig.kin.tcp(rig.q_cmd)
-            try:
-                rig.move_to(t + 0.06 * R[:, 2], R, step=0.005, label="release_back", allow=LEAVE_CONTACT)
-            except SkillFailure as exc:
-                rig.log("release_back_short", reason=str(exc))
-        else:
-            if rig.left_held is None or rig.left_held["name"] != name:
-                raise SkillFailure(f"release {name}: not left-held")
-            rig.left_grip(0.04, 60)
-            rig.left_held = None
-            t, R = rig.left_kin.tcp(rig.left_q())
-            try:
-                rig.move_left_to(t + 0.06 * R[:, 2], R, label="left_release_back", allow=LEAVE_CONTACT)
-            except SkillFailure as exc:
-                rig.log("left_release_back_short", reason=str(exc))
-        rig.step(60)
-        rig.log("release_result", obj=name, hand=hand)
-        return True
-
-
-PAST_VERTICAL_DEG = 95.0      # flip: an arc below this has not carried the object over its pivot edge
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["release"], {"name": name, "hand": hand})
 
 
 class FlipFlatPolicy(AtomicPolicy):

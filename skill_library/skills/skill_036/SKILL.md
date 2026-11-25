@@ -23,25 +23,25 @@ A lying object must stand on its base again.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object); lying(object=$object).
+Requires hand_empty(hand=any); base_near(place=$object); lying(object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `lying(object=$object)` — Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `upright(object=$object)` — Object z axis within 20 deg of vertical. GT: object_pose.
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `upright(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 - `on(object=$object, support=@object.support)` (path pick_orient_place)
 
 ## May invalidate
@@ -60,7 +60,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `pick` (`skill_017`) (then) — the standing object is then grasped by its top
+- Next step: `pick` (`skill_017`) (enables) — the standing object is then grasped by its top
 - Is a fallback for: `pick` (`skill_017`) (recover) — a tall object fell over and its top pinch is gone
 - Alternative: `tip` (`skill_035`) — opposite effect
 

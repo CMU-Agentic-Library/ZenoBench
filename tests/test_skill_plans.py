@@ -212,6 +212,19 @@ def test_a_lift_moves_the_load_straight_up_to_the_height_and_nothing_else():
     assert isinstance(plan_held_move(FakeKin(), _state(q0), 0.95), Failure)            # nothing held
 
 
+def test_a_release_opens_where_it_is_and_pulls_out_back_along_the_gripper_axis():
+    from zeno_skills.skill_plans import RELEASE_STAGES, plan_release
+    q = _q(0.5, 0.0, 0.30)
+    plan = plan_release(FakeKin(), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
+    assert isinstance(plan, Plan) and tuple(s.name for s in plan.segments) == RELEASE_STAGES
+    opened, out = plan.segments
+    assert opened.action == ("grip", 0.03, 60, True) and opened.spec.allow.touch == ("cup",)
+    assert np.allclose(out.q_end[:3], [0.5, 0.0, 0.37]) and out.spec.allow.touch == ("cup",)   # TCP +z: back
+    blocked = plan_release(FakeKin(wall=lambda p: p[2] > 0.33), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
+    assert isinstance(blocked, Failure) and blocked.segment == "release_pull_out"   # built before the hand opens
+    assert isinstance(plan_release(FakeKin(), _state(q), 0.03, 0.07), Failure)
+
+
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
     out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
     assert isinstance(out, Failure) and "nothing in the hand" in out.why

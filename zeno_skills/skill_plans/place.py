@@ -352,3 +352,41 @@ def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)
+
+
+RELEASE_STAGES = ("release_open", "release_pull_out")
+RELEASE_TICKS = 60      # physics ticks the hand opens in, gradually (inherited: the old ReleaseInPlacePolicy's)
+
+
+def plan_release(kin, state, pre_open, out_len, start="release_open", prior=None, obj=None, step=0.004):
+    """release (HAND_PLAN 9f): let go of what ``kin``'s hand holds where it is -- the hand opened to
+    ``pre_open`` (the fingers may touch what they let go: release_spec) -- and the pull-out of length ``out_len``
+    back along the gripper axis, the fingers still allowed on it, as the place's pull-out.  Both built before
+    anything moves: a pull-out that cannot be made fails the release with the hand still closed (the old
+    ReleaseInPlacePolicy opened first and logged a short back-off).  ``obj``: what it lets go (default what the
+    State's hand holds; given, a plan built again after the opening).  ``start`` / ``prior``: run's rebuild.
+    Plan or Failure."""
+    with query(kin, state, FREE_HAND):
+        held = state.held(kin.side)
+        obj = obj if obj is not None else (None if held is None else held.name)
+        if obj is None and start == "release_open":
+            return Failure("nothing in the hand to release", start)
+        q = np.asarray(state.q(kin.side), float)
+        spec = release_spec(kin.side, obj)
+        segs, s = [], state
+        for stage in RELEASE_STAGES[RELEASE_STAGES.index(start):]:
+            if stage == "release_open":
+                seg = Segment(stage, spec, q, kind="action", action=("grip", float(pre_open), RELEASE_TICKS, True))
+                if held is not None:
+                    s = released(s, kin.side, held.name, held_frame(kin, q, held))
+                s = with_width(s, kin.side, pre_open)
+            else:
+                p0, R0 = kin.tcp(q)
+                seg = straight(kin, s, spec, p0 + out_len * R0[:, 2], R0, stage, step=step, q_from=q)   # +z: back
+                if not isinstance(seg, Failure):
+                    seg = _move(seg, steps_per_wp=3, smooth=True)
+            if isinstance(seg, Failure):
+                return seg
+            segs.append(seg)
+            q = seg.q_end
+        return Plan(tuple(sided(sg, kin.side) for sg in segs))

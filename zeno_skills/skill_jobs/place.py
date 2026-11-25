@@ -104,6 +104,14 @@ def place_job(rig, args, state, skill=None):
     # the set-down poses (the relay pose): every spot, relation and wrist turn is one goal -- for an
     # edge hold every position and overhang over an open edge and relation, the hand square to the edge
     edges = None                            # an edge hold: per goal, (the edge's outward normal, the overhang)
+    yaws = PLACE_YAWS
+    if args.get("square"):
+        # squared to the support's axes (square, HAND_PLAN 9f): the wrist turns that leave its yaw on an axis,
+        # from its yaw as the hand holds it now (a turn measured before the pick drifted with the carry, T06)
+        w, x_, y_, z_ = q_obj
+        yaw = math.degrees(math.atan2(2 * (w * z_ + x_ * y_), 1 - 2 * (y_ * y_ + z_ * z_)))
+        err = (yaw + 45.0) % 90.0 - 45.0
+        yaws = tuple(round(k - err, 2) for k in (0.0, 90.0, -90.0, 180.0))
     if edge:
         goals, leg_sets, cost, edges = _edge_goals(rig, name, s, relations, args.get("hint"), st, held_d)
         if not goals:
@@ -113,7 +121,7 @@ def place_job(rig, args, state, skill=None):
         for rank, spot in enumerate(spots):
             for off0, R0, levelled, hang in relations:
                 body = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP])
-                for deg in PLACE_YAWS:
+                for deg in yaws:
                     Rz = rz(math.radians(deg))
                     goals.append((spot, Rz @ R0, levelled, deg, hang))
                     leg_sets.append([(body + Rz @ off0, Rz @ R0, FREE_SPACE_KW)])

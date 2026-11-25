@@ -4976,7 +4976,7 @@
       "skill_id": "skill_036",
       "verb": "upright",
       "when": "the standing object is then grasped by its top",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_040",
@@ -5833,13 +5833,13 @@
       "skill_id": "skill_025",
       "verb": "rotate",
       "when": "the object is set down in the new orientation",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_026",
       "verb": "regrasp",
       "when": "the corrected grasp is used to place precisely",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_037",
@@ -7529,14 +7529,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object)."
+    "summary": "Requires holding(hand=any, object=$object)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7568,10 +7568,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7606,10 +7606,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -7654,7 +7654,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],
@@ -7766,14 +7766,14 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$object); base_near(place=$support)."
+    "summary": "Requires holding(hand=any, object=$object); base_near(place=$support)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7805,10 +7805,10 @@
    ],
    "postconditions": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -7827,10 +7827,10 @@
     "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
     "checks": [
      {
-      "predicate": "holding(hand=right, object=$object)",
+      "predicate": "holding(hand=any, object=$object)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$object"
       },
       "negated": false,
@@ -7875,7 +7875,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],
@@ -9979,14 +9979,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$object); lying(object=$object)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=$object); lying(object=$object)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10043,10 +10043,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10076,10 +10076,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "hand_empty(hand=right)",
+      "predicate": "hand_empty(hand=any)",
       "name": "hand_empty",
       "args": {
-       "hand": "right"
+       "hand": "any"
       },
       "negated": false,
       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10162,7 +10162,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],
@@ -16670,14 +16670,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=$object)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -16720,10 +16720,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -16754,10 +16754,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "hand_empty(hand=right)",
+      "predicate": "hand_empty(hand=any)",
       "name": "hand_empty",
       "args": {
-       "hand": "right"
+       "hand": "any"
       },
       "negated": false,
       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -16782,16 +16782,14 @@
      "chain": [
       "policy_108($object) as sq",
       "policy_010($object)",
-      "policy_075($object, #sq.degrees)",
-      "policy_015($object, @object.support, hint=#sq.xy)"
+      "policy_015($object, @object.support, hint=#sq.xy, square=True)"
      ],
      "policies": [
       "policy_010",
       "policy_015",
-      "policy_075",
       "policy_108"
      ],
-     "note": ""
+     "note": "The turn that squares it is in the place's goal set, from its yaw as the hand holds it (a rotate by the yaw measured before the pick drifted with the carry)."
     }
    ],
    "relations": {

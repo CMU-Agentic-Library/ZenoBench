@@ -235,6 +235,9 @@ MOTION_SKILLS = [
     {"name": "lower", "shape": "posture", "template": "plan_held_move", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:lower_job"},
     {"name": "present", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:present_job"},
     {"name": "hover", "shape": "pick_place", "template": "plan_hover", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.drop:hover_job"},
+    {"name": "rotate", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:rotate_job"},
+    {"name": "upright", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:upright_job"},
+    {"name": "release", "shape": "pick_place", "template": "plan_release", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:release_job"},
 ]
 
 COMPOSITE_NOTES = [

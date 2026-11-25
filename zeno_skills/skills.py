@@ -1202,7 +1202,7 @@ def _tray_support(rig, tray):
             "aabb_xy": [fp[0] + CONTAINER_WALL, fp[1] + CONTAINER_WALL, fp[2] - CONTAINER_WALL, fp[3] - CONTAINER_WALL]}
 
 
-def place(rig, name, support, xy=None, spots=None):
+def place(rig, name, support, xy=None, spots=None, square=False):
     """Set the held object down: pick run backwards (docs/motion/COLLISION_PLAN.md 6.2, skills/place.md).
     ``support``: a support surface (at xy, or at any of ``spots``, free_spots order), or
     "in:<container>": a tray's floor the same way, any other container a drop (drop_into).
@@ -1251,14 +1251,15 @@ def place(rig, name, support, xy=None, spots=None):
             dist = max(dist, float((c - np.asarray(hint)) @ n))
         push_object(rig, name, s, [(-n, dist, None)], label="EDGE_PUSH_IN")
         return True
-    return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
+    return _set_down(rig, name, s, list(spots) if spots is not None else [xy], square=square)
 
 
-def _set_down(rig, name, s, spots, tray=None, hint=None):
+def _set_down(rig, name, s, spots, tray=None, hint=None, square=False):
     """place onto the support ``s`` (an annotated one, or a tray's floor) at one of ``spots``
     (motion_skills.run_skill of place_job); an edge hold over an edge of it, ``hint`` ranking them."""
     from .motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS["place"], {"name": name, "support": s, "spots": spots, "tray": tray, "hint": hint})
+    return run_skill(rig, SKILLS["place"], {"name": name, "support": s, "spots": spots, "tray": tray, "hint": hint,
+                                            "square": bool(square)})
 
 
 def drop_into(rig, name, container):
@@ -1361,8 +1362,9 @@ def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     return [(x, y) for _, x, y in out[:k]]
 
 
-def place_on(rig, name, support, hint=None, tries=4):
-    """Place the held object on a support at the best free spot."""
+def place_on(rig, name, support, hint=None, tries=4, square=False):
+    """Place the held object on a support at the best free spot (``square``: squared to the support's axes,
+    skill_jobs.place)."""
     held = rig.held if _hand_of(rig, name) == "right" else getattr(rig, "left_held", None)
     if held is not None and held["kind"] == "edge":
         return place(rig, name, support, hint)
@@ -1370,7 +1372,7 @@ def place_on(rig, name, support, hint=None, tries=4):
     if not spots:
         raise SkillFailure(f"place {name}: no free spot on {support}")
     # the free spots are one goal set of the place (not tried one after another)
-    return place(rig, name, support, spots=spots[:tries])
+    return place(rig, name, support, spots=spots[:tries], square=square)
 
 
 def press_button(rig, button, on=None, door=None):

@@ -112,8 +112,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `present` (`skill_016`) (enables) — the object is put away after showing it
 - Previous step: `pick` (`skill_017`) (enables) — the object goes onto a surface or into a container
 - Previous step: `lower` (`skill_024`) (enables) — the object goes onto a low shelf or into the fridge
-- Previous step: `rotate` (`skill_025`) (then) — the object is set down in the new orientation
-- Previous step: `regrasp` (`skill_026`) (then) — the corrected grasp is used to place precisely
+- Previous step: `rotate` (`skill_025`) (enables) — the object is set down in the new orientation
+- Previous step: `regrasp` (`skill_026`) (enables) — the corrected grasp is used to place precisely
 - Previous step: `wipe` (`skill_037`) (then) — the sponge is put back
 - Previous step: `pour` (`skill_039`) (then) — the empty cup is put down
 - Previous step: `open` (`skill_040`) (enables) — an object must go inside

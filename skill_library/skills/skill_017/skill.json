@@ -696,7 +696,7 @@
     "skill_id": "skill_036",
     "verb": "upright",
     "when": "the standing object is then grasped by its top",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_040",

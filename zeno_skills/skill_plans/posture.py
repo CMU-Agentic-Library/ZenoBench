@@ -28,7 +28,7 @@ from ._common import FREE_HAND, FREE_LOAD, _move
 
 
 def plan_posture(kin, state, goal, joints=None, other=None, open_hand=None, name="posture", start=None, prior=None,
-                 reach=False):
+                 reach=False, hold_tilt=True):
     """``kin``'s chain from ``state`` to ``goal`` (primitives.Joint or JointSet) where the robot stands:
     [``{name}_open``: ``kin``'s hand to ``open_hand`` (m per finger), when given] + ``name``: one free_leg
     under FREE_HAND, or FREE_LOAD when that hand holds something, with Spec.joints ``joints`` (None: the
@@ -36,10 +36,12 @@ def plan_posture(kin, state, goal, joints=None, other=None, open_hand=None, name
     and ``other`` (the other arm's kin) checks the same leg with its own arm at the State's; ``reach``: the
     Joint goal is how far to go, the leg ends at the last point toward it where both arms are free.
     ``start``, ``prior``: run's rebuild (the leg is made again from the State; nothing of it is kept).  An
-    empty Plan when the chain is at the goal; Failure when the leg cannot be made here."""
+    empty Plan when the chain is at the goal; Failure when the leg cannot be made here.  ``hold_tilt`` False: a
+    load in the hand may tilt on the way (upright turns it to vertical, HAND_PLAN 9f) -- still in the
+    collision model, its tilt not held."""
     side = kin.side
     body_only = joints is not None and len(joints) > 0 and all(j in BODY_JOINTS for j in joints)
-    spec = FREE_LOAD if state.held(side) is not None else FREE_HAND
+    spec = FREE_LOAD if state.held(side) is not None and hold_tilt else FREE_HAND
     spec = replace(spec, joints=None if joints is None else tuple(joints), arms_still=body_only)
     q0 = np.asarray(state.q(side), float)
     segs = []

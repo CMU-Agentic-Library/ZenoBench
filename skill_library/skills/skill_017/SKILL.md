@@ -151,7 +151,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `center` (`skill_033`) (then) — the secured object is grasped later
 - Previous step: `roll` (`skill_034`) (then) — the rolled object is then grasped
 - Previous step: `tip` (`skill_035`) (then) — the lying object is pinched across its side
-- Previous step: `upright` (`skill_036`) (then) — the standing object is then grasped by its top
+- Previous step: `upright` (`skill_036`) (enables) — the standing object is then grasped by its top
 - Previous step: `open` (`skill_040`) (enables) — an object inside must be taken out
 - Previous step: `heat` (`skill_043`) (then) — the heated food is served
 - Previous step: `uncover` (`skill_046`) (enables) — something inside is taken out

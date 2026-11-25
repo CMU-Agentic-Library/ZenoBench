@@ -79,7 +79,9 @@ class PlacePolicy(AtomicPolicy):
 class SurfacePlacePolicy(AtomicPolicy):
     """Choose a free spot and place the held object on an annotated surface."""
 
-    def execute(self, name, support, *, hint=None, tries=4):
+    def execute(self, name, support, *, hint=None, tries=4, square=False):
+        """``square``: set it down with its edges along the support's axes -- the turn that squares it, as the
+        hold has it now, is in the place's goal set (skill_jobs.place; HAND_PLAN 9f), not a rotate before."""
         if support.startswith("in:"):
             raise ValueError("surface place needs a support name, not a container")
         rig = self.rig
@@ -91,7 +93,7 @@ class SurfacePlacePolicy(AtomicPolicy):
                 rig.log("place_already_on", obj=name, support=support)
                 return True
             raise SkillFailure(f"place {name}: not held and not on {support} ({why})")
-        return skills.place_on(rig, name, support, hint=hint, tries=tries)
+        return skills.place_on(rig, name, support, hint=hint, tries=tries, square=square)
 
 
 class ContainerPlacePolicy(AtomicPolicy):

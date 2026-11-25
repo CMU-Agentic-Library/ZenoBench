@@ -654,13 +654,13 @@
     "skill_id": "skill_025",
     "verb": "rotate",
     "when": "the object is set down in the new orientation",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_026",
     "verb": "regrasp",
     "when": "the corrected grasp is used to place precisely",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_037",
