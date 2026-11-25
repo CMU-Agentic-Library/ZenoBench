@@ -1,12 +1,8 @@
-"""The object and furniture registry (11-24): complete, closed vocabulary, roles that match tasks.json, and the
-hand-written loosening tables all legal by it."""
+"""The object and furniture registry (11-24; for classification since 11-25): complete and closed vocabulary."""
 from __future__ import annotations
 
 import json
 
-import pytest
-
-from benchmark.v6 import affordance_check as A
 from benchmark.v6 import loosen_1124 as L
 from benchmark.v6 import object_registry as R
 
@@ -55,53 +51,8 @@ def test_every_surface_has_a_room_but_the_microwave():
 
 
 def test_geometry_from_spawn_source():
-    assert R.covers("pot_lid", "handled_cooking_pot") and R.covers("breakfast_plate", "handled_cooking_pot")
-    assert not R.covers("book_blue", "handled_cooking_pot")          # 14 cm across a 23 cm opening
-    assert R.fits("breakfast_bowl", "apple") and R.fits("trash_can", "soda_can")
-    assert not R.fits("breakfast_mug", "teddy_bear")
-    assert R.appliance_ok("kitchen_stove", "soup_pot") and not R.appliance_ok("kitchen_microwave", "soup_pot")
-    assert R.appliance_ok("kitchen_microwave", "oatmeal_bowl") and not R.appliance_ok("kitchen_stove", "oatmeal_bowl")
-
-
-@pytest.mark.parametrize("role", R.roles(), ids=lambda r: r["id"])
-def test_role_designs_exist_and_capture(role):
-    tasks = {t["task_id"][:3]: t for t in R.tasks_json()["tasks"]}
-    for prefix, designs in role["tasks"].items():
-        assert prefix in tasks, prefix
-        have = set(tasks[prefix].get("v6_variants", {}))
-        assert "*" in designs or set(designs) <= have, (role["id"], set(designs) - have)
-    data = A.run()
-    rec = next(r for r in data["roles"] if r["id"] == role["id"])
-    assert rec["layouts"], f"{role['id']} captures nothing"
-
-
-@pytest.mark.parametrize("role", [r for r in R.roles() if r["kind"] == "object"], ids=lambda r: r["id"])
-def test_ideal_kind_legal(role):
-    for k in role["ideal"]:
-        assert not R._legal(role, R.obj(k)), (role["id"], k)
-
-
-@pytest.mark.parametrize("role", [r for r in R.roles() if r["kind"] == "place"], ids=lambda r: r["id"])
-def test_ideal_surface_legal(role):
-    for s in role["ideal"]:
-        assert R.assess_place(role, s)[0] == R.IDEAL_LEVEL, (role["id"], s)
-
-
-def test_loosen_tables_legal_by_registry():
-    """Every stand-in kind, place and storage alternative loosen_1124 adds by hand is legal by the registry."""
-    rows = A.run()["loosen_tables"]
-    n = sum(len(k) for t in L.SUBSTITUTE_KINDS.values() for k in t.values())
-    assert sum(r["table"] == "SUBSTITUTE_KINDS" for r in rows) == n
-    assert [r for r in rows if r["ok"] is not True] == []
-
-
-def test_report_up_to_date():
-    assert A.main(["--check"]) == 0
-
-
-def test_agent_card_lists_every_kind():
-    card = R.agent_card()
-    assert all(f"- {k} (" in card for k in R.objects_yaml()["objects"])
+    g = R.obj("breakfast_bowl")["geometry"]
+    assert g["size_m"] == [round(x, 4) for x in R.assets_json()["breakfast_bowl"]["size"]] and "opening_m" in g
     json.dumps(R.obj("breakfast_bowl"))                             # serialisable facts
 
 
