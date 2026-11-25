@@ -30,6 +30,45 @@ $PY -m baseline.run_http --server http://localhost:8800 --model qwen3.5-4b \
     --policy baseline.react:ReAct --batch benchmark/v6/batches/substitution_pairs.json
 ```
 
+## 小批次：只跑有替代的局
+
+`benchmark/v6/batches/substitution_smoke.json` 共 103 局，覆盖 20 个任务的 50 个布局，每个布局 2 个 seed（T12 有一个布局只有 1 个 seed）。
+
+挑选标准：指令点名了要用的东西或者放的地方；这个东西用不了（缺失、被占用、装不下）；场景里有别的东西能顶上。比如 T03，宽储物箱没有或者满了，就用收纳筐、托盘代替。
+
+| 不可用原因 | 局数 | 例子 |
+|---|---|---|
+| 缺失 | 56 | T03 没有储物箱、T04 没有玻璃杯、T15 没有锅盖、T16 没有零食盒、T21 没有纸巾、T30 没有碗、T02 第三块木块没了、T09 没有锅盖或小番茄不够 |
+| 被占用 | 26 | T15 锅盖盖着别的锅、T16 零食盒装着蜡笔、T18 一只碗装着剩菜、T05 笔正被人用着、T17 锅盖盖着炖菜 |
+| 能力不足 | 19 | T03 小箱子放不下擀面杖、T04 只有塑料杯盛冰饮、T10 垃圾桶满了、T12 玩具箱满了、T16 零食盒满了、T23/T29 玩具盒满了 |
+| 看着像但不能用 | 2 | T11 果篮原来的位置上是个用过的碗 |
+
+下面这些情况没选：
+- 指令没点名用什么：T07"热完关掉用过的电器"、T24"拿点吃的"、T26"放回放玩具的地方"（T12 也没点名，但考的是箱子满了要换，算能力不足收进来了）。
+- 被占的是地方不是东西：桌子满了、书架满了。
+- T18 柜门卡住：仿真里还没实现。
+
+**怎么判分：**
+- 10 个配对任务里的布局按档位表判：命中、bad、抢占。
+- 其余布局只按档判：1.0 档就是这个布局最好的替代，0.3 到 0.6 档是次一档的替代，失败就是没替代成。
+- 两类的失败都会按结束原因细分：放弃、预算用完、自称完成、出错中断。
+
+建议跑两组，共 206 局：
+
+```bash
+B=benchmark/v6/batches/substitution_smoke.json
+$PY -m baseline.run_http --server http://localhost:8800 --model qwen3.5-4b --policy baseline.react:ReAct --batch $B
+$PY -m baseline.run_http --server http://localhost:8800 --model qwen3.5-4b --policy baseline.react:ReActHint --batch $B
+
+python -m benchmark.v6.substitution_eval --native $ZB_RUN/native \
+    --run ReAct@qwen=baseline/runs/ReAct@qwen3.5-4b --run ReActHint@qwen=baseline/runs/ReActHint@qwen3.5-4b \
+    --out baseline/results/substitution_smoke.md
+```
+
+- ReAct 看替代能力本身：失败多不多，失败里是放弃、一直找到预算用完，还是没换就说做完了；替代的时候拿的是不是最好的那个。
+- ReActHint 看"可以替代"这句提示有没有让它更愿意换。这批只有 B 侧的局，看不到会不会乱换；要看乱换，得另外跑全量批次里的 A 侧。
+- 重新生成：`python -m benchmark.v6.substitution_eval --subset benchmark/v6/batches/substitution_smoke.json`，选哪些布局写在 `SUBSTITUTION_LAYOUTS`。
+
 ## 二、算指标
 
 ```bash

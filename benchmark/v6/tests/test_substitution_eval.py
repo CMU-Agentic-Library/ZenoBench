@@ -108,3 +108,15 @@ def test_missed_kinds():
     row = S.episode_row({"task_id": t["task_id"], "variant": "no_lid", "seed": 10, "calls": [],
                          "task_success": False, "_stop": "finish: no lid available"}, t)
     assert row["missed_switch"] and row["missed_kind"] == "放弃"
+
+
+def test_subset_is_substitution_only():
+    jobs = S.subset(CAT)
+    assert len({(j["task"], j["variant"], j["seed"]) for j in jobs}) == len(jobs)
+    for j in jobs:
+        t = CAT[j["task"]]
+        assert t["variants"][j["variant"]]["scoring"]["ideal_present"] is False, j
+        assert j["reason"] in ("缺失", "被占用", "能力不足", "看着像但不能用"), j
+        row = S.episode_row({"task_id": j["task"], "variant": j["variant"], "seed": j["seed"], "calls": [],
+                             "task_success": False}, t)
+        assert row["side"] in ("B", "B_open") and row["missed_switch"]

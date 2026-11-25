@@ -203,6 +203,8 @@ def episode_row(r: dict, task: dict) -> dict | None:
     tid, layout = task["task_id"][:3], r["variant"]
     s = side(task, layout)
     if s is None:
+        if task["variants"][layout].get("scoring", {}).get("ideal_present", True) is False:
+            return open_row(r, task, layout)
         return None
     v = task["variants"][layout]
     design = design_of(task, layout)
@@ -281,6 +283,28 @@ def episode_row(r: dict, task: dict) -> dict | None:
     return row
 
 
+def open_row(r: dict, task: dict, layout: str) -> dict:
+    """A layout where the ideal cannot be used but no grade table covers the task (``B_open``): read by tier alone --
+    the 1.0 tier is the best substitute the layout offers (the review set it), a lower tier a poorer one."""
+    v = task["variants"][layout]
+    design = design_of(task, layout)
+    sc = r.get("score") or {}
+    success = bool(r.get("task_success")) and not r.get("incomplete") and not r.get("crash")
+    score_ = sc.get("score", 0.0) if success else 0.0
+    route = task["routes"].get(task["oracle"].get(layout) or "", {}).get("steps") or []
+    a_ref = sum(1 for st in route if st.get("expect", "ok") != "fail" and st.get("role") != "unwind") or None
+    calls = r.get("skill_calls", len(r.get("calls") or []))
+    hit = success and score_ == 1.0
+    return {"task": task["task_id"], "design": design, "layout": layout, "seed": r.get("seed"), "side": "B_open",
+            "reason": reason_of(task, design, layout), "ideal": v["scoring"].get("ideal_zh"),
+            "success": success, "score": score_, "tier": sc.get("tier"), "chosen": None, "grade": None,
+            "chosen_from": "tier", "else_held": None, "best_available": None, "calls": calls, "a_ref": a_ref,
+            "stop": r.get("_stop"), "E": (a_ref / max(calls, a_ref)) if success and a_ref else 0.0,
+            "missed_switch": not success, "missed_kind": missed_kind(r.get("_stop")) if not success else None,
+            "grab": False, "hit": hit, "bad": success and 0 < score_ < 1.0, "else": False,
+            "right": hit, "strict": hit}
+
+
 # ------------------------------------------------------------------------------------------------ reading runs
 def results(root: Path, native: Path | None):
     for path in sorted(root.rglob("result.json")):
@@ -334,6 +358,14 @@ def summarize(label: str, rows: list[dict], k: int) -> list[str]:
     if kinds:
         out += ["", "漏替代细分（按结束原因；只读原生结果时没有原因，记为未知）：" +
                 "，".join(f"{k} {v}" for k, v in sorted(kinds.items(), key=lambda x: -x[1]))]
+    bo = [r for r in rows if r["side"] == "B_open"]
+    if bo:
+        out += ["", "其余替代局（不在配对表里，只按档判：1.0 档 = 这个布局最好的替代，0.3–0.6 档 = 次一档的替代，"
+                "失败 = 没替代成）：", "",
+                "| 局数 | 失败（漏替代或做砸） | 1.0 档替代 | 次一档替代 | 完成率 | 平均 E |", "|---|---|---|---|---|---|",
+                f"| {len(bo)} | {ratio(bo, 'missed_switch')} | {ratio(bo, 'hit')} | {ratio(bo, 'bad')} | "
+                f"{ratio(bo, 'success')} | {mean_e(bo)} |"]
+        b = b + bo
     out += ["", "B 按不可用原因：", "", "| 原因 | 局数 | 漏替代率 | 抢占率 | 命中率 | 完成率 | 严格成功率 |", "|---|---|---|---|---|---|---|"]
     by = defaultdict(list)
     for r in b:
@@ -384,6 +416,53 @@ def batch(cat: dict) -> list[dict]:
     return jobs
 
 
+# the first substitution run (11-25, user: "pick the episodes that have a substitution, like T03"): layouts whose
+# instruction names the thing (or the place it goes), the thing cannot be used -- missing, taken, too small -- and
+# another kind of thing does the job.  Too small or full (11-25, user: more of these): T03's small bin, T04's plastic
+# cup for an iced drink, T10's and T12's full bins, T16's full box, T23's and T29's full toy box.  Left out: the ideal not named (T07 "what you used", T24 "something to eat",
+# T26 "where his toys are kept"), a table or shelf that is full (a place, not a thing), T18 door_stuck.
+SUBSTITUTION_LAYOUTS = {
+    "T02": ["block_put_away__gone_toy_block", "block_put_away__gone_duck"],
+    "T03": ["no_bin_substitute__basket", "no_bin_substitute__tray", "utensils_apart__bin_full_tray",
+            "utensils_apart__bin_full_basket", "utensils_apart__bin_full_fruit",
+            "small_bin_or_bedroom_bin__basket_in_bedroom"],
+    "T04": ["no_cup", "no_cup_mug_away", "no_cup_kid", "two_guests__mug", "two_guests__kid_cup",
+            "x6_gd_cup_in_cabinets__plastic_only"],
+    "T05": ["no_pen_pencil_in_use", "check_desk_first__pen_in_use", "x6_gd_pen_or_pencil_cabinets__pen_in_use"],
+    "T09": ["lid_missing", "tomato_in_fridge__big_tomato", "pot_in_dining_room__spare_pot"],
+    "T10": ["trash_moved__trash_full"],
+    "T11": ["basket_missing", "basket_gone_bowl_there"],
+    "T12": ["bins_capacity__side_left_full", "bins_capacity__apart_full_on_tv", "bins_capacity__half_bin_and_tray"],
+    "T13": ["no_cup"],
+    "T15": ["no_lid", "lid_in_use", "lid_elsewhere__covering_bowl"],
+    "T16": ["no_box", "box_in_use", "box_in_cabinet__box_full"],
+    "T17": ["hide_lid_in_use"],
+    "T18": ["one_bowl__glass_box", "one_bowl__mug", "bowl_in_use__tomatoes", "bowl_in_use__oatmeal"],
+    "T21": ["no_tissue"],
+    "T22": ["basket_missing", "tray_elsewhere__orange_in_it", "tray_elsewhere__books_on_it"],
+    "T23": ["by_kind__bin_full", "belongs_on_floor__bin_full"],
+    "T25": ["cups_for_two__none_one_inside"],
+    "T28": ["where_his_cup_is__no_kid_cup"],
+    "T29": ["belongs_on_table__no_toy_box", "several__bin_full"],
+    "T30": ["no_bowl", "bowl_put_away__mug_inside", "how_many__two_bowls", "bowls_in_cabinet__one_inside"],
+}
+SUBSET_PER_LAYOUT = 2
+
+
+def subset(cat: dict) -> list[dict]:
+    """The substitution layouts, each on its lowest SUBSET_PER_LAYOUT seeds."""
+    jobs = []
+    for t in cat.values():
+        for lid in SUBSTITUTION_LAYOUTS.get(t["task_id"][:3], ()):
+            d = design_of(t, lid)
+            seeds = sorted(int(s) for s, x in t["v6_variants"][d]["seeds"].items() if x == lid)
+            for seed in seeds[:SUBSET_PER_LAYOUT]:
+                jobs.append({"task": t["task_id"], "variant": lid, "seed": seed, "v6_variant": d,
+                             "side": side(t, lid) or "B_open", "reason": reason_of(t, d, lid),
+                             "ideal": t["variants"][lid]["scoring"].get("ideal_zh")})
+    return jobs
+
+
 def check_pairs(cat: dict) -> list[str]:
     """Problems with the tables: a design that is not there, a pair whose texts differ, a B layout with no
     graded best, a candidate named in a grade that no layout has."""
@@ -417,6 +496,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pairs", action="store_true", help="print the A/B table and check it")
     ap.add_argument("--batch", help="write the run_http batch of every pair layout and seed to this path")
+    ap.add_argument("--subset", help="write the substitution-only batch (SUBSTITUTION_LAYOUTS) here")
     ap.add_argument("--run", action="append", default=[], help="LABEL=DIR of results (repeatable)")
     ap.add_argument("--native", help="the simulator's native results, for planner results without calls")
     ap.add_argument("--k", type=int, default=3)
@@ -434,8 +514,13 @@ def main(argv=None) -> int:
         Path(a.batch).write_text(json.dumps(jobs, indent=1) + "\n")
         print(f"wrote {a.batch}: {len(jobs)} episodes")
         return 0
+    if a.subset:
+        jobs = subset(cat)
+        Path(a.subset).write_text(json.dumps(jobs, indent=1) + "\n")
+        print(f"wrote {a.subset}: {len(jobs)} episodes")
+        return 0
     if not a.run:
-        ap.error("--pairs, --batch or --run")
+        ap.error("--pairs, --batch, --subset or --run")
     lines = ["# ZenoBench-Sub 替代指标", "", "由 `python -m benchmark.v6.substitution_eval` 生成。", ""]
     rows_out = []
     for spec in a.run:

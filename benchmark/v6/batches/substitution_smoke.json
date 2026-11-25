@@ -1,0 +1,929 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_toy_block",
+  "seed": 10,
+  "v6_variant": "block_put_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u5757\u6728\u5757\uff08\u5bb6\u91cc\u6ca1\u6709\u4e86\uff0c\u7528\u73a9\u5177\u79ef\u6728\u4ee3\uff09"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_toy_block",
+  "seed": 15,
+  "v6_variant": "block_put_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u5757\u6728\u5757\uff08\u5bb6\u91cc\u6ca1\u6709\u4e86\uff0c\u7528\u73a9\u5177\u79ef\u6728\u4ee3\uff09"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_duck",
+  "seed": 14,
+  "v6_variant": "block_put_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u5757\u6728\u5757\uff08\u5bb6\u91cc\u6ca1\u6709\u4e86\uff0c\u7528\u5c0f\u9e2d\u4ee3\uff09"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_duck",
+  "seed": 17,
+  "v6_variant": "block_put_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u5757\u6728\u5757\uff08\u5bb6\u91cc\u6ca1\u6709\u4e86\uff0c\u7528\u5c0f\u9e2d\u4ee3\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__basket",
+  "seed": 10,
+  "v6_variant": "no_bin_substitute",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__basket",
+  "seed": 12,
+  "v6_variant": "no_bin_substitute",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__tray",
+  "seed": 11,
+  "v6_variant": "no_bin_substitute",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__tray",
+  "seed": 15,
+  "v6_variant": "no_bin_substitute",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_tray",
+  "seed": 13,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_tray",
+  "seed": 14,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_basket",
+  "seed": 16,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u7528\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_basket",
+  "seed": 19,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u7528\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_fruit",
+  "seed": 12,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u53ea\u6709\u679c\u7bee\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_fruit",
+  "seed": 15,
+  "v6_variant": "utensils_apart",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7a7a\u7684\u6536\u7eb3\u7bb1\uff08\u6ee1\u4e86\uff0c\u53ea\u6709\u679c\u7bee\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "small_bin_or_bedroom_bin__basket_in_bedroom",
+  "seed": 14,
+  "v6_variant": "small_bin_or_bedroom_bin",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u5bbd\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u5367\u5ba4\u7684\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "small_bin_or_bedroom_bin__basket_in_bedroom",
+  "seed": 16,
+  "v6_variant": "small_bin_or_bedroom_bin",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u5bbd\u50a8\u7269\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u5367\u5ba4\u7684\u6536\u7eb3\u7b50\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup",
+  "seed": 10,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup",
+  "seed": 12,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_mug_away",
+  "seed": 11,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u7528\u6536\u8d77\u6765\u7684\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_mug_away",
+  "seed": 17,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u7528\u6536\u8d77\u6765\u7684\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_kid",
+  "seed": 15,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u53ea\u6709\u5b69\u5b50\u7684\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_kid",
+  "seed": 16,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u53ea\u6709\u5b69\u5b50\u7684\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__mug",
+  "seed": 10,
+  "v6_variant": "two_guests",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u73bb\u7483\u676f\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__mug",
+  "seed": 15,
+  "v6_variant": "two_guests",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u73bb\u7483\u676f\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__kid_cup",
+  "seed": 11,
+  "v6_variant": "two_guests",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u73bb\u7483\u676f\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__kid_cup",
+  "seed": 16,
+  "v6_variant": "two_guests",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u73bb\u7483\u676f\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "x6_gd_cup_in_cabinets__plastic_only",
+  "seed": 12,
+  "v6_variant": "x6_gd_cup_in_cabinets",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u53ea\u6709\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "x6_gd_cup_in_cabinets__plastic_only",
+  "seed": 13,
+  "v6_variant": "x6_gd_cup_in_cabinets",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73bb\u7483\u676f\uff08\u6ca1\u6709\uff0c\u53ea\u6709\u5851\u6599\u676f\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen_pencil_in_use",
+  "seed": 14,
+  "v6_variant": "no_pen_pencil_away",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u94c5\u7b14\uff08\u5976\u5976\u6b63\u7528\u7740\uff0c\u7528\u5367\u5ba4\u7684\u7b14\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen_pencil_in_use",
+  "seed": 15,
+  "v6_variant": "no_pen_pencil_away",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u94c5\u7b14\uff08\u5976\u5976\u6b63\u7528\u7740\uff0c\u7528\u5367\u5ba4\u7684\u7b14\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "check_desk_first__pen_in_use",
+  "seed": 10,
+  "v6_variant": "check_desk_first",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7b14\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "check_desk_first__pen_in_use",
+  "seed": 13,
+  "v6_variant": "check_desk_first",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7b14\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+  "seed": 10,
+  "v6_variant": "x6_gd_pen_or_pencil_cabinets",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7b14\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+  "seed": 14,
+  "v6_variant": "x6_gd_pen_or_pencil_cabinets",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u7b14\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_missing",
+  "seed": 11,
+  "v6_variant": "lid_on_spoon_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u9505\u76d6\uff08\u6ca1\u6709\uff0c\u7528\u540c\u6837\u5927\u7684\u76d8\u5b50\u76d6\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_missing",
+  "seed": 12,
+  "v6_variant": "lid_on_spoon_away",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u9505\u76d6\uff08\u6ca1\u6709\uff0c\u7528\u540c\u6837\u5927\u7684\u76d8\u5b50\u76d6\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "tomato_in_fridge__big_tomato",
+  "seed": 11,
+  "v6_variant": "tomato_in_fridge",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u9897\u5c0f\u756a\u8304\uff08\u6ca1\u6709\uff0c\u7528\u5927\u756a\u8304\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "tomato_in_fridge__big_tomato",
+  "seed": 14,
+  "v6_variant": "tomato_in_fridge",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7b2c\u4e09\u9897\u5c0f\u756a\u8304\uff08\u6ca1\u6709\uff0c\u7528\u5927\u756a\u8304\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_dining_room__spare_pot",
+  "seed": 10,
+  "v6_variant": "pot_in_dining_room",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u5e38\u7528\u7684\u6c64\u9505\uff08\u4e0d\u5728\uff0c\u7528\u5907\u7528\u9505\uff09"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_dining_room__spare_pot",
+  "seed": 12,
+  "v6_variant": "pot_in_dining_room",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u5e38\u7528\u7684\u6c64\u9505\uff08\u4e0d\u5728\uff0c\u7528\u5907\u7528\u9505\uff09"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "trash_moved__trash_full",
+  "seed": 13,
+  "v6_variant": "trash_moved",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u5783\u573e\u6876\uff08\u6ee1\u4e86\uff09"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "trash_moved__trash_full",
+  "seed": 14,
+  "v6_variant": "trash_moved",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u5783\u573e\u6876\uff08\u6ee1\u4e86\uff09"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_missing",
+  "seed": 13,
+  "v6_variant": "basket_missing",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_missing",
+  "seed": 14,
+  "v6_variant": "basket_missing",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_gone_bowl_there",
+  "seed": 10,
+  "v6_variant": "basket_missing",
+  "side": "B",
+  "reason": "\u770b\u7740\u50cf\u4f46\u4e0d\u80fd\u7528",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u539f\u5904\u662f\u4e2a\u7528\u8fc7\u7684\u7897\uff09"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_gone_bowl_there",
+  "seed": 11,
+  "v6_variant": "basket_missing",
+  "side": "B",
+  "reason": "\u770b\u7740\u50cf\u4f46\u4e0d\u80fd\u7528",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u539f\u5904\u662f\u4e2a\u7528\u8fc7\u7684\u7897\uff09"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__side_left_full",
+  "seed": 10,
+  "v6_variant": "bins_capacity",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u80fd\u88c5\u4e0b\u6240\u6709\u73a9\u5177\u7684\u6536\u7eb3\u7b50\uff08\u6ca1\u6709\uff0c\u5206\u5230\u653e\u5f97\u4e0b\u7684\u7bb1\u5b50\u91cc\uff09"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__side_left_full",
+  "seed": 15,
+  "v6_variant": "bins_capacity",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u80fd\u88c5\u4e0b\u6240\u6709\u73a9\u5177\u7684\u6536\u7eb3\u7b50\uff08\u6ca1\u6709\uff0c\u5206\u5230\u653e\u5f97\u4e0b\u7684\u7bb1\u5b50\u91cc\uff09"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__apart_full_on_tv",
+  "seed": 11,
+  "v6_variant": "bins_capacity",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u80fd\u88c5\u4e0b\u6240\u6709\u73a9\u5177\u7684\u6536\u7eb3\u7b50\uff08\u6ca1\u6709\uff0c\u5206\u5230\u653e\u5f97\u4e0b\u7684\u7bb1\u5b50\u91cc\uff09"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__apart_full_on_tv",
+  "seed": 18,
+  "v6_variant": "bins_capacity",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u80fd\u88c5\u4e0b\u6240\u6709\u73a9\u5177\u7684\u6536\u7eb3\u7b50\uff08\u6ca1\u6709\uff0c\u5206\u5230\u653e\u5f97\u4e0b\u7684\u7bb1\u5b50\u91cc\uff09"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__half_bin_and_tray",
+  "seed": 17,
+  "v6_variant": "bins_capacity",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u80fd\u88c5\u4e0b\u6240\u6709\u73a9\u5177\u7684\u6536\u7eb3\u7b50\uff08\u6ca1\u6709\uff0c\u5206\u5230\u653e\u5f97\u4e0b\u7684\u7bb1\u5b50\u91cc\uff09"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup",
+  "seed": 10,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u676f\u5b50\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup",
+  "seed": 11,
+  "v6_variant": "no_cup",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u676f\u5b50\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "no_lid",
+  "seed": 10,
+  "v6_variant": "no_lid",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u9505\u76d6\uff08\u6ca1\u6709\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "no_lid",
+  "seed": 11,
+  "v6_variant": "no_lid",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u9505\u76d6\uff08\u6ca1\u6709\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_in_use",
+  "seed": 10,
+  "v6_variant": "lid_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u6b63\u76d6\u7740\u522b\u7684\u9505\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_in_use",
+  "seed": 11,
+  "v6_variant": "lid_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u6b63\u76d6\u7740\u522b\u7684\u9505\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_elsewhere__covering_bowl",
+  "seed": 10,
+  "v6_variant": "lid_elsewhere",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u76d6\u7740\u522b\u7684\u7897\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_elsewhere__covering_bowl",
+  "seed": 12,
+  "v6_variant": "lid_elsewhere",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u76d6\u7740\u522b\u7684\u7897\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "no_box",
+  "seed": 10,
+  "v6_variant": "no_box",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u996d\u76d2\uff08\u6ca1\u6709\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "no_box",
+  "seed": 11,
+  "v6_variant": "no_box",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u996d\u76d2\uff08\u6ca1\u6709\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_use",
+  "seed": 10,
+  "v6_variant": "box_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u996d\u76d2\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_use",
+  "seed": 11,
+  "v6_variant": "box_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u996d\u76d2\uff08\u6b63\u88ab\u7528\u7740\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_cabinet__box_full",
+  "seed": 10,
+  "v6_variant": "box_in_cabinet",
+  "side": "B",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u996d\u76d2\uff08\u6ee1\u4e86\uff09"
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_cabinet__box_full",
+  "seed": 14,
+  "v6_variant": "box_in_cabinet",
+  "side": "B",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u996d\u76d2\uff08\u6ee1\u4e86\uff09"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_lid_in_use",
+  "seed": 11,
+  "v6_variant": "h_task_lid_elsewhere",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u76d6\u7740\u7096\u83dc\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_lid_in_use",
+  "seed": 12,
+  "v6_variant": "h_task_lid_elsewhere",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u9505\u76d6\uff08\u76d6\u7740\u7096\u83dc\uff0c\u7528\u76d8\u5b50\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__glass_box",
+  "seed": 11,
+  "v6_variant": "one_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u7897\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__glass_box",
+  "seed": 15,
+  "v6_variant": "one_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u7897\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__mug",
+  "seed": 10,
+  "v6_variant": "one_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u7897\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__mug",
+  "seed": 12,
+  "v6_variant": "one_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u7897\uff08\u53ea\u6709\u4e00\u4e2a\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__tomatoes",
+  "seed": 11,
+  "v6_variant": "bowl_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u4e24\u4e2a\u5e72\u51c0\u7897\uff08\u4e00\u4e2a\u88c5\u7740\u5269\u756a\u8304\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__tomatoes",
+  "seed": 12,
+  "v6_variant": "bowl_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u4e24\u4e2a\u5e72\u51c0\u7897\uff08\u4e00\u4e2a\u88c5\u7740\u5269\u756a\u8304\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__oatmeal",
+  "seed": 10,
+  "v6_variant": "bowl_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u4e24\u4e2a\u5e72\u51c0\u7897\uff08\u4e00\u4e2a\u88c5\u7740\u71d5\u9ea6\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__oatmeal",
+  "seed": 13,
+  "v6_variant": "bowl_in_use",
+  "side": "B",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u4e24\u4e2a\u5e72\u51c0\u7897\uff08\u4e00\u4e2a\u88c5\u7740\u71d5\u9ea6\uff0c\u7528\u73bb\u7483\u76d2\uff09"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "no_tissue",
+  "seed": 10,
+  "v6_variant": "no_tissue",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7eb8\u5dfe\uff08\u6ca1\u6709\uff0c\u7528\u5e72\u6d77\u7ef5\uff09"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "no_tissue",
+  "seed": 11,
+  "v6_variant": "no_tissue",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7eb8\u5dfe\uff08\u6ca1\u6709\uff0c\u7528\u5e72\u6d77\u7ef5\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "basket_missing",
+  "seed": 10,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u5c9b\u53f0\u4e0a\u7684\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "basket_missing",
+  "seed": 14,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u5c9b\u53f0\u4e0a\u7684\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__orange_in_it",
+  "seed": 12,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff0c\u6258\u76d8\u91cc\u6709\u4e2a\u6a59\u5b50\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__orange_in_it",
+  "seed": 15,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff0c\u6258\u76d8\u91cc\u6709\u4e2a\u6a59\u5b50\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__books_on_it",
+  "seed": 11,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff0c\u6258\u76d8\u4e0a\u538b\u7740\u4e66\uff09"
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__books_on_it",
+  "seed": 13,
+  "v6_variant": "tray_elsewhere",
+  "side": "B_open",
+  "reason": "\u88ab\u5360\u7528",
+  "ideal": "\u679c\u7bee\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff0c\u6258\u76d8\u4e0a\u538b\u7740\u4e66\uff09"
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "by_kind__bin_full",
+  "seed": 10,
+  "v6_variant": "by_kind",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u76d2\uff08\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "by_kind__bin_full",
+  "seed": 11,
+  "v6_variant": "by_kind",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u76d2\uff08\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "belongs_on_floor__bin_full",
+  "seed": 12,
+  "v6_variant": "belongs_on_floor",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u76d2\uff08\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "belongs_on_floor__bin_full",
+  "seed": 13,
+  "v6_variant": "belongs_on_floor",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u76d2\uff08\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__none_one_inside",
+  "seed": 11,
+  "v6_variant": "cups_for_two",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u666e\u901a\u676f\u5b50\uff08\u53f0\u9762\u4e0a\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__none_one_inside",
+  "seed": 14,
+  "v6_variant": "cups_for_two",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e24\u4e2a\u666e\u901a\u676f\u5b50\uff08\u53f0\u9762\u4e0a\u53ea\u6709\u4e00\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "where_his_cup_is__no_kid_cup",
+  "seed": 10,
+  "v6_variant": "where_his_cup_is",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4ed6\u7684\u5851\u6599\u676f\uff08\u5bb6\u91cc\u6ca1\u6709\uff0c\u7528\u5bb6\u91cc\u7684\u676f\u5b50\uff09"
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "where_his_cup_is__no_kid_cup",
+  "seed": 17,
+  "v6_variant": "where_his_cup_is",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4ed6\u7684\u5851\u6599\u676f\uff08\u5bb6\u91cc\u6ca1\u6709\uff0c\u7528\u5bb6\u91cc\u7684\u676f\u5b50\uff09"
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "belongs_on_table__no_toy_box",
+  "seed": 12,
+  "v6_variant": "belongs_on_table",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73a9\u5177\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "belongs_on_table__no_toy_box",
+  "seed": 13,
+  "v6_variant": "belongs_on_table",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u73a9\u5177\u7bb1\uff08\u6ca1\u6709\uff0c\u7528\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "several__bin_full",
+  "seed": 13,
+  "v6_variant": "several",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u7bb1\uff08\u6ca1\u6709\uff0c\u73a9\u5177\u76d2\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "several__bin_full",
+  "seed": 14,
+  "v6_variant": "several",
+  "side": "B_open",
+  "reason": "\u80fd\u529b\u4e0d\u8db3",
+  "ideal": "\u73a9\u5177\u7bb1\uff08\u6ca1\u6709\uff0c\u73a9\u5177\u76d2\u6ee1\u4e86\uff0c\u7528\u65c1\u8fb9\u6258\u76d8\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "no_bowl",
+  "seed": 10,
+  "v6_variant": "no_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7897\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "no_bowl",
+  "seed": 11,
+  "v6_variant": "no_bowl",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7897\uff08\u6ca1\u6709\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_put_away__mug_inside",
+  "seed": 10,
+  "v6_variant": "bowl_put_away",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7897\uff08\u5bb6\u91cc\u6ca1\u6709\uff0c\u67dc\u91cc\u53ea\u6709\u76d8\u5b50\u548c\u9a6c\u514b\u676f\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_put_away__mug_inside",
+  "seed": 11,
+  "v6_variant": "bowl_put_away",
+  "side": "B",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u7897\uff08\u5bb6\u91cc\u6ca1\u6709\uff0c\u67dc\u91cc\u53ea\u6709\u76d8\u5b50\u548c\u9a6c\u514b\u676f\uff0c\u7528\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "how_many__two_bowls",
+  "seed": 10,
+  "v6_variant": "how_many",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e09\u4e2a\u7897\uff08\u53ea\u6709\u4e24\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "how_many__two_bowls",
+  "seed": 11,
+  "v6_variant": "how_many",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e09\u4e2a\u7897\uff08\u53ea\u6709\u4e24\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowls_in_cabinet__one_inside",
+  "seed": 10,
+  "v6_variant": "bowls_in_cabinet",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e09\u4e2a\u7897\uff08\u53ea\u6709\u4e24\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowls_in_cabinet__one_inside",
+  "seed": 12,
+  "v6_variant": "bowls_in_cabinet",
+  "side": "B_open",
+  "reason": "\u7f3a\u5931",
+  "ideal": "\u4e09\u4e2a\u7897\uff08\u53ea\u6709\u4e24\u4e2a\uff0c\u8865\u9a6c\u514b\u676f\uff09"
+ }
+]
