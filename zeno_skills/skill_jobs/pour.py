@@ -29,7 +29,6 @@ def pour_job(rig, args, state, skill=None):
     (plan_pour), a park whose arm tilts it less than POUR_MIN_TILT rejected.  done(): at least half the items inside
     the target (SkillFailure otherwise), those returned."""
     from ..motion_skills import Job
-    from ..run import observe
     source, target = args["source"], args["target"]
     side = rig.hand_of(source)
     if side is None:

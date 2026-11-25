@@ -109,16 +109,39 @@ def test_the_job_has_every_direction_and_way_as_goals_each_mode_a_tier(monkeypat
     job = slide_job(rig, {"name": "book", "support": _TABLE, "dirs": [(X, 0.1, 0.3), (Y, 0.1, 0.1)],
                           "modes": ("push", "drag")}, state, skill=SimpleNamespace(build=lambda *a, **k: None))
     goals, tiers, starts = job.problem.goals, job.problem.tiers, job.problem.relay_from
-    assert len(goals) == 2 * 2 * 4
-    assert [g[2] for g in goals[:8]] == pytest.approx([0.3 + VARIANT_COST * i for i in range(4)] * 2)
-    assert [g[2] for g in goals[8:]] == pytest.approx([0.1 + VARIANT_COST * i for i in range(4)] * 2)
-    assert list(tiers) == ([0] * 4 + [1] * 4) * 2                          # every push before any drag
+    assert len(goals) == 2 * (2 * 2 * 4)                                   # both hands empty: each a goal dimension
+    right, left = goals[:16], goals[16:]
+    assert [g[2] for g in right[:8]] == pytest.approx([0.3 + VARIANT_COST * i for i in range(4)] * 2)
+    assert [g[2] for g in right[8:]] == pytest.approx([0.1 + VARIANT_COST * i for i in range(4)] * 2)
+    # HAND_PLAN 3.1: the left in the same search, behind the right by VARIANT_COST only (not tried after it)
+    assert [g[2] for g in left] == pytest.approx([g[2] + VARIANT_COST for g in right])
+    assert {g[3] for g in right} == {"right"} and {g[3] for g in left} == {"left"}
+    assert list(tiers) == ([0] * 4 + [1] * 4) * 2 * 2                      # every push before any drag
     # each relay (the push's end) reached from the push point: a leg may stop short of it
     assert len(starts) == len(goals) and all(np.allclose(p, 0.0) for p in starts) and job.problem.reach_step > 0
     job.found(SimpleNamespace(k=8 + 4 + 2, x=0.0, y=0.0, yaw=0.0, plan=None))  # Y, a drag, the third turn
     rig.at[:2] += 0.07 * Y
     j, travel, planned = job.done()
     assert j == 1 and travel == pytest.approx(0.07) and planned == 0.0
+
+
+def test_a_hand_that_holds_something_is_not_in_the_push_goal_set(monkeypatch):
+    def ways(rig, name, T_obj, n, d, modes=MODES):
+        return [(m, 0, {"obj": name, "T_obj_tcp": np.eye(4), "n": np.r_[n, 0.0], "d": d, "back": 0.02,
+                        "above": 0.1}) for m in modes]
+    monkeypatch.setattr(slide, "slide_ways", ways)
+    rig = _Book(at=(0.2, 0.2, 0.75))
+    rig.held_by = lambda side="right": {"name": "cup"} if side == "right" else None
+    rig.sync_world = lambda: None
+    rig.kin = rig.left_kin = SimpleNamespace(rest=np.zeros(9), drive=np.zeros(9))
+    rig.base_pose = lambda: (0.0, 0.0, 0.0)
+    job = slide_job(rig, {"name": "book", "support": _TABLE, "dirs": [(X, 0.1, 0.3)], "modes": ("push",)},
+                    SimpleNamespace(objects={"book": np.eye(4)}), skill=SimpleNamespace(build=lambda *a, **k: None))
+    assert [g[3] for g in job.problem.goals] == ["left"] and job.problem.hand == "left"
+    rig.held_by = lambda side="right": {"name": "cup"}
+    with pytest.raises(SkillFailure, match="both hands"):
+        slide_job(rig, {"name": "book", "support": _TABLE, "dirs": [(X, 0.1, 0.3)]},
+                  SimpleNamespace(objects={"book": np.eye(4)}), skill=SimpleNamespace(build=lambda *a, **k: None))
 
 
 def _edges(monkeypatch):

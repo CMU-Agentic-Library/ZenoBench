@@ -1,23 +1,12 @@
-"""Gesture policies (they move the arm; not migrated to the motion layers yet -- rig.move_to).
+"""Gesture policies: the point and present skills (motion_skills.run_skill; HAND_PLAN 9e / 9h), either hand.
 
-policy_071 PointAtPolicy       point the closed right fingers at a target
+policy_071 PointAtPolicy       point the closed fingers at a target (the robot turned to it first when it is not in front)
 policy_072 PresentHeldPolicy   hold the carried object in front of the head camera
 """
 
 from __future__ import annotations
 
-import math
-
-import numpy as np
-
 from .base import AtomicPolicy
-from .. import skills
-from ..kinematics import gripper_rot
-from ..perception import look_angles
-from ..predicates import entity_point
-from ..rig import SkillFailure
-from ..skill_jobs.look import drive_head
-from .perceive import record_view
 
 
 class PointAtPolicy(AtomicPolicy):
@@ -27,12 +16,9 @@ class PointAtPolicy(AtomicPolicy):
 
     def execute(self, target):
         from ..motion_skills import SKILLS, run_skill
+        from ..skill_jobs.held import point_in_front
         rig = self.rig
-        p = entity_point(rig, target)
-        x, y, yaw = rig.base_pose()
-        fwd = np.array([math.cos(math.radians(yaw)), math.sin(math.radians(yaw))])
-        d = np.asarray(p, float)[:2] - np.array([x, y])
-        if np.linalg.norm(d) > 1e-6 and (d / np.linalg.norm(d)) @ fwd < 0.2:
+        if not point_in_front(rig, target):        # the skill's own test (one source): else it would refuse
             from .base_motion import FaceTargetPolicy
             FaceTargetPolicy(rig).execute(target)
         return run_skill(rig, SKILLS["point"], {"target": target})

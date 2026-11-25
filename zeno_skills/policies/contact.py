@@ -16,8 +16,6 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import LEGACY
-from ..kinematics import gripper_rot
 from ..predicates import finger_slots_free, neighbour_gap, tilt_deg, GRASP_GAP_M
 from ..rig import SkillFailure
 from ..tolerances import TIP_PAST

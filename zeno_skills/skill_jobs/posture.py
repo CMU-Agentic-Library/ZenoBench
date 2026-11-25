@@ -10,7 +10,7 @@ import numpy as np
 from ..motion_state import ARM, Failure
 from ..primitives import Joint, JointSet
 from ..rig import SkillFailure
-from ..skills import check_both_held, check_held
+from ..skills import check_both_held
 from ..tolerances import STOWED_TOL, TORSO_AT, WAIST_AT
 
 AT = {"torso_lift_joint": TORSO_AT, "waist_pitch_joint": WAIST_AT}   # a body joint this close to its target got there

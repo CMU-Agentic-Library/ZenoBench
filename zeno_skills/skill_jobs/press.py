@@ -166,34 +166,37 @@ KNOCK_AT = ((0.07, 0.0), (-0.07, 0.0), (0.0, 0.08), (0.0, -0.08), (0.10, 0.05)) 
 TOUCH_CLOSES = ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0))   # the closed fingers' axis over a touched top
 
 
-def _empty_hand(rig, what):
+def _empty_hands(rig, what):
+    """The empty hands, the right first: each a dimension of a tap's goal set (HAND_PLAN 3.1)."""
     empty = [sd for sd in ("right", "left") if rig.held_by(sd) is None]
     if not empty:
         raise SkillFailure(f"{what}: both hands hold something")
-    return empty[0]                     # the right where both are (as press)
+    return empty
 
 
 def _tap_job(rig, skill, name, label, targets, after, done_check):
     """The Job of a fingertip tap (touch / knock, HAND_PLAN 9g): plan_press without a toggle or a door -- the closed
     tips straight in along each target's u onto (p, R) (the tips TOUCH_DEPTH into the face; the fingers may touch
-    ``name``), the anchor where it stopped them, the measured exit, the tuck -- each target one goal of the park
-    search.  ``after(r, miss)``: logs the contact once the tips got there (TARGET_TOL); ``done_check()`` the result."""
+    ``name``), the anchor where it stopped them, the measured exit, the tuck -- each target with each empty hand one
+    goal of the park search (the right first by VARIANT_COST only: the ranking decides, HAND_PLAN 3.1).
+    ``after(r, miss)``: logs the contact once the tips got there (TARGET_TOL); ``done_check()`` the result."""
     from ..motion_skills import Job
-    side = _empty_hand(rig, label)
-    kin = rig.arm_kin(side)
+    sides = _empty_hands(rig, label)
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_press as build_with
     presses, goals = [], []
-    for j, (p, R, u) in enumerate(targets):
-        presses.append({"button": name, "p": p, "R": R, "u": u, "approach": PRESS_APPROACH, "toggle": None,
-                        "seen_as": (), "door": None})
-        goals.append(((p - PRESS_APPROACH * u, p), (p, R), VARIANT_COST * j))
-    rest = (kin.rest,)
+    for h, sd in enumerate(sides):
+        for j, (p, R, u) in enumerate(targets):
+            presses.append({"button": name, "p": p, "R": R, "u": u, "approach": PRESS_APPROACH, "toggle": None,
+                            "seen_as": (), "door": None})
+            goals.append(((p - PRESS_APPROACH * u, p), (p, R), VARIANT_COST * (j + h), sd))
+    rest = {sd: (rig.arm_kin(sd).rest,) for sd in sides}
 
     def build(s, k, prior):
-        return build_with(kin, s, presses[k], rest, prior=prior)
-    problem = Problem(tuple(goals), build, PRESS_RELAY, near=rig.base_pose(), label=f"{label} {name}", hand=side)
+        sd = goals[k][3]
+        return build_with(rig.arm_kin(sd), s, presses[k], rest[sd], prior=prior)
+    problem = Problem(tuple(goals), build, PRESS_RELAY, near=rig.base_pose(), label=f"{label} {name}", hand=sides[0])
     ctx = {}
 
     def no_park(diag):
@@ -201,22 +204,24 @@ def _tap_job(rig, skill, name, label, targets, after, done_check):
                             f"({len(goals)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
 
     def found_park(found):
-        ctx["p"] = presses[found.k]["p"]
-        rig.log(f"{label}_plan", target=name, hand=side, goal=found.k,
+        ctx["p"], ctx["side"] = presses[found.k]["p"], problem.side(found.k)
+        rig.log(f"{label}_plan", target=name, hand=ctx["side"], goal=found.k,
                 park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)])
         rig.caption = f"{label.upper()} {name}"
 
     def tapped(r):
+        side = ctx["side"]
         tcp, _ = r.arm_kin(side).tcp(r.chain_q(side))
         ctx["miss"] = float(np.linalg.norm(tcp - ctx["p"]))
         if ctx["miss"] <= TARGET_TOL:
             after(r, ctx["miss"])
 
     def ready(found):
-        press = presses[found.k]
+        press, side = presses[found.k], problem.side(found.k)
+        ctx["side"] = side
 
         def rebuild(state_, frm, prior):
-            return build_with(kin, state_, press, rest, start=frm, prior=prior)
+            return build_with(rig.arm_kin(side), state_, press, rest[side], start=frm, prior=prior)
         return found.plan, rebuild, {"press_in": {"after": tapped}}
 
     def done():

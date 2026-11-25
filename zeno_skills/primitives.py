@@ -302,6 +302,25 @@ def decide_ik(kin, state, spec, p, R, prior, seeds=()):
     return (np.asarray(q, float), "solved") if ok else None
 
 
+def pose_set_scores(kin, state, spec, goal, q_from=None):
+    """free_leg's ranking of the PoseSet ``goal`` from q_from (default the state's arm), in ``state`` by ``spec``:
+    (per goal its score -- the largest weighted joint move from goal.prefer, else q_from, plus the goal's cost; inf
+    where it has no IK --, the IK solutions).  free_leg goes to the cheapest; an in-place skill either hand may make
+    ranks the hands' goal sets by the same score (skill_jobs.held._either_hand, HAND_PLAN 3.1)."""
+    q0 = np.asarray(state.q(kin.side) if q_from is None else q_from, float)
+    with query(kin, state, spec):
+        return _pose_set_scores(kin, goal, q0)
+
+
+def _pose_set_scores(kin, goal, q0):
+    ref = q0 if goal.prefer is None else np.asarray(goal.prefer, float)
+    w = np.ones(len(ref)) if goal.weights is None else np.asarray(goal.weights, float)
+    sols = kin.ik_set(list(goal.goals), ref, weights=w)
+    cost = np.zeros(len(goal.goals)) if goal.cost is None else np.asarray(goal.cost, float)
+    score = np.array([np.inf if q is None else float(np.max(np.abs(q - ref) * w)) + c for q, c in zip(sols, cost)])
+    return score, sols
+
+
 def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
     """Free-space motion of ``kin``'s arm from q_from (default the state's) to ``goal``.
     Joint: the straight joint move when it is free (and keeps a held load level with
@@ -332,12 +351,7 @@ def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
                               info={**seg.info, "chosen": i, "goals": len(goal.goals)})
             return seg
         if isinstance(goal, PoseSet):
-            ref = q0 if goal.prefer is None else np.asarray(goal.prefer, float)
-            w = np.ones(len(ref)) if goal.weights is None else np.asarray(goal.weights, float)
-            sols = kin.ik_set(list(goal.goals), ref, weights=w)
-            cost = np.zeros(len(goal.goals)) if goal.cost is None else np.asarray(goal.cost, float)
-            score = np.array([np.inf if q is None else float(np.max(np.abs(q - ref) * w)) + c
-                              for q, c in zip(sols, cost)])
+            score, sols = _pose_set_scores(kin, goal, q0)
             i = int(np.argmin(score))
             f = _first(first, len(sols))
             if f is not None and sols[f] is not None:

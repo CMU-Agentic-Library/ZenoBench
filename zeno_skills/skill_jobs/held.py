@@ -13,8 +13,8 @@ from ..motion_state import Failure, Plan
 from ..rig import SkillFailure
 from ..predicates import FLIPPED_DOT, HELD_HEIGHT_TOL, POINTING_DEG
 from ..skills import check_held
-from ..tolerances import (FLIP_MIN, FLIP_PAST, FLIP_PUSH_TO, FLIP_RELEASE, ROTATE_NEAR_BASE, ROTATE_TOL_DEG, SHAKE_SLIP,
-                          UPRIGHT_RAISE, WAVE_AMP)
+from ..tolerances import (FLIP_MIN, FLIP_PAST, FLIP_PUSH_TO, FLIP_RELEASE, POINT_FRONT, ROTATE_NEAR_BASE, ROTATE_TOL_DEG,
+                          SHAKE_SLIP, UPRIGHT_RAISE, WAVE_AMP)
 
 # present: the load's centre in front of the base (forward, sideways toward the holding hand's side, height), m.
 # One goal set (any of them presents it), not tried one after another as the old PresentHeldPolicy did
@@ -306,95 +306,168 @@ POINT_SHOULDER = (0.09, 0.18, 1.05)           # m: the pointing ray's origin -- 
 POINT_REACH = (0.45, 0.38, 0.52, 0.30)        # m out along the ray the hand may stand (the old four tries)
 
 
-def _empty_or(rig, default="right"):
-    """The empty hand (the right where both are), else ``default``."""
-    return next((sd for sd in ("right", "left") if rig.held_by(sd) is None), default)
+def _hands_for(rig, may_hold=False):
+    """The hands an in-place gesture may use: the empty ones; with ``may_hold`` (point), both when neither is."""
+    empty = [sd for sd in ("right", "left") if rig.held_by(sd) is None]
+    return empty or (["right", "left"] if may_hold else [])
 
 
-def _gesture_job(rig, label, side, build, done):
+def _either_hand(rig, st, sides, goals_of, spec_of, build_for):
+    """The plan of an in-place skill any of ``sides`` may make (HAND_PLAN 3.1: the hand a dimension of the goal set,
+    not chosen first): every hand's goal set ranked by free_leg's own score (primitives.pose_set_scores, from the arm
+    as it stands in ``st``) -- a hand after the first VARIANT_COST more: the right first only as a weak preference --
+    and built in that order; one that does not build gives way to the next (another goal of the set, not a
+    fallback: rule 3).  ``goals_of(side)``: that hand's PoseSet, ``spec_of(side)`` the Spec its reach is ranked in,
+    ``build_for(side)`` its plan.  Plan or Failure (every hand's reason)."""
+    from ..park_search import VARIANT_COST
+    from ..primitives import pose_set_scores
+    ranked = []
+    for j, sd in enumerate(sides):
+        scores, _ = pose_set_scores(rig.arm_kin(sd), st, spec_of(sd), goals_of(sd))
+        ranked.append((float(np.min(scores)) + VARIANT_COST * j if len(scores) else np.inf, j, sd))
+    why = []
+    for score, _, sd in sorted(ranked):
+        if not np.isfinite(score):
+            why.append(f"{sd}: no goal of its set reachable")
+            continue
+        plan = build_for(sd)
+        if not isinstance(plan, Failure):
+            return plan
+        why.append(f"{sd}: {plan.why}")
+    return Failure("; ".join(why) or "no hand to do it with")
+
+
+def _plan_hand(plan):
+    """The hand a gesture's plan works with (its segments are sided)."""
+    return next((sg.info["side"] for sg in plan.segments if sg.info.get("side")), "right")
+
+
+def _gesture_job(rig, label, build, done, ctx):
+    """The Job of an in-place gesture: ``build(st, frm=None, prior=None)`` makes the plan (the first: either hand, by
+    _either_hand; run's rebuild: the hand ``prior`` has) -- ``ctx["side"]`` the hand it chose, for ``done``."""
     from ..motion_skills import Job
 
     def ready(found):
         plan = build(_observe(rig))
         if isinstance(plan, Failure):
             raise SkillFailure(f"{label}: {plan.why}")
+        side = ctx["side"] = _plan_hand(plan)
         return plan, build, _hooks(plan, side) if rig.held_by(side) is not None else {}
     return Job(ready=ready, done=done)
 
 
 def wave_job(rig, args, state, skill=None):
-    """motion_skills.Job of wave (HAND_PLAN 9h): the empty hand opened, raised fingers up and palm forward in front of
-    the body toward its own side (WAVE_AT: one goal set of three heights), swung WAVE_AMP to each side ``swings`` times
-    (plan_gesture's swing, a task segment), then folded (kin.rest).  done(): memory gestures["wave"]."""
+    """motion_skills.Job of wave (HAND_PLAN 9h): an empty hand opened, raised fingers up and palm forward in front of
+    the body toward its own side (WAVE_AT: one goal set of three heights per hand, either empty hand: _either_hand),
+    swung WAVE_AMP to each side ``swings`` times (plan_gesture's swing, a task segment), then folded (kin.rest).
+    done(): memory gestures["wave"]."""
     from ..kinematics import gripper_rot
     from ..predicates import memory
     from ..primitives import JointSet, PoseSet
     from ..skill_plans import plan_gesture as _default
+    from ..skill_plans._common import FREE_HAND
     plan_gesture = skill.build if skill is not None else _default
     swings = int(args.get("swings", 3))
-    side = _empty_or(rig, None)
-    if side is None:
+    sides = _hands_for(rig)
+    if not sides:
         raise SkillFailure("wave: both hands hold something")
-    kin = rig.arm_kin(side)
-    sgn = 1.0 if side == "right" else -1.0
     x, y, yaw = rig.base_pose()
     c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
     fwd, out, heights = WAVE_AT
     R = gripper_rot([0.0, 0.0, 1.0], [c, s, 0.0])
-    goals = PoseSet(tuple((np.array([x + fwd * c + sgn * out * s, y + fwd * s - sgn * out * c, z]), R) for z in heights))
+
+    def goals_of(sd):
+        sgn = 1.0 if sd == "right" else -1.0
+        return PoseSet(tuple((np.array([x + fwd * c + sgn * out * s, y + fwd * s - sgn * out * c, z]), R)
+                             for z in heights))
+
+    def plan_for(sd, st, frm=None):
+        kin = rig.arm_kin(sd)
+        return plan_gesture(kin, st, "wave", goals=goals_of(sd), swing=((-s, c, 0.0), WAVE_AMP, swings), open_hand=0.04,
+                            back=JointSet((np.asarray(kin.rest, float),)), hold_tilt=False, start=frm)
 
     def build(st, frm=None, prior=None):
-        return plan_gesture(kin, st, "wave", goals=goals, swing=((-s, c, 0.0), WAVE_AMP, swings), open_hand=0.04,
-                            back=JointSet((np.asarray(kin.rest, float),)), hold_tilt=False, start=frm)
+        if frm is not None and prior is not None:          # run's rebuild: the hand the plan has (its decision)
+            return plan_for(_plan_hand(prior), st, frm)
+        return _either_hand(rig, st, sides, goals_of, lambda sd: FREE_HAND, lambda sd: plan_for(sd, st))
+    ctx = {}
 
     def done():
         memory(rig).setdefault("gestures", {})["wave"] = swings
-        rig.log("wave_result", hand=side, swings=swings)
+        rig.log("wave_result", hand=ctx.get("side"), swings=swings)
         return {"swings": swings}
-    return _gesture_job(rig, "wave", side, build, done)
+    return _gesture_job(rig, "wave", build, done, ctx)
+
+
+def _point_ray(rig, p, sd):
+    """(the ``sd`` hand's shoulder -- POINT_SHOULDER from the base, toward that hand's side --, the unit ray from it
+    to the point p, the base's forward unit in the plane)."""
+    x, y, yaw = rig.base_pose()
+    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    f, l, z = POINT_SHOULDER
+    sgn = 1.0 if sd == "right" else -1.0
+    shoulder = np.array([x + f * c + sgn * l * s, y + f * s - sgn * l * c, z])
+    d = np.asarray(p, float) - shoulder
+    return shoulder, d / np.linalg.norm(d), np.array([c, s])
+
+
+def point_in_front(rig, target, p=None):
+    """Whether a hand that may point (_hands_for) has ``target`` in front: its shoulder's ray to it runs at least
+    POINT_FRONT forward.  The one test: the point skill refuses by it, the task layer turns the robot by it
+    (policies.gestures.PointAtPolicy)."""
+    from ..predicates import entity_point
+    p = np.asarray(entity_point(rig, target) if p is None else p, float)
+    return any(_point_ray(rig, p, sd)[1][:2] @ _point_ray(rig, p, sd)[2] >= POINT_FRONT
+               for sd in _hands_for(rig, may_hold=True))
 
 
 def point_job(rig, args, state, skill=None):
     """motion_skills.Job of point (HAND_PLAN 9h): the closed fingers (an empty hand closed first) along the ray from
     the hand's shoulder (POINT_SHOULDER) to ``args["target"]``, the hand anywhere along it at POINT_REACH -- one goal
-    set.  A target not in front (the ray's forward part < 0.2): SkillFailure (the task layer turns the robot first).
+    set per hand, either empty hand (both when neither is: a hand that holds something points with it), _either_hand.
+    A target not in front (the ray's forward part < 0.2): SkillFailure (the task layer turns the robot first).
     done(): the fingers' axis within POINTING_DEG of the target (point_result), the angle returned."""
     from ..kinematics import gripper_rot
     from ..predicates import entity_point
     from ..primitives import PoseSet
     from ..skill_plans import plan_gesture as _default
+    from ..skill_plans._common import FREE_HAND, FREE_LOAD
     plan_gesture = skill.build if skill is not None else _default
     target = args["target"]
-    side = _empty_or(rig)
-    kin = rig.arm_kin(side)
-    sgn = 1.0 if side == "right" else -1.0
+    sides = _hands_for(rig, may_hold=True)
     p = np.asarray(entity_point(rig, target), float)
-    x, y, yaw = rig.base_pose()
-    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-    f, l, z = POINT_SHOULDER
-    shoulder = np.array([x + f * c + sgn * l * s, y + f * s - sgn * l * c, z])
-    d = p - shoulder
-    d /= np.linalg.norm(d)
-    if d[:2] @ np.array([c, s]) < 0.2:
+    if not point_in_front(rig, target, p):
         raise SkillFailure(f"point at {target}: not in front of the robot")
-    across = np.cross(d, [0.0, 0.0, 1.0])
-    across = across / np.linalg.norm(across) if np.linalg.norm(across) > 1e-6 else np.array([0.0, 1.0, 0.0])
-    R = gripper_rot(d, across)
-    goals = PoseSet(tuple((shoulder + d * r, R) for r in POINT_REACH))
-    close = 0.0 if rig.held_by(side) is None else None
+
+    def goals_of(sd):
+        shoulder, d, fwd = _point_ray(rig, p, sd)
+        if d[:2] @ fwd < POINT_FRONT:
+            return PoseSet(())                                   # not in front of this hand's shoulder
+        across = np.cross(d, [0.0, 0.0, 1.0])
+        across = across / np.linalg.norm(across) if np.linalg.norm(across) > 1e-6 else np.array([0.0, 1.0, 0.0])
+        return PoseSet(tuple((shoulder + d * r, gripper_rot(d, across)) for r in POINT_REACH))
+
+    def plan_for(sd, st, frm=None):
+        return plan_gesture(rig.arm_kin(sd), st, "point", goals=goals_of(sd),
+                            open_hand=0.0 if rig.held_by(sd) is None else None, start=frm)
 
     def build(st, frm=None, prior=None):
-        return plan_gesture(kin, st, "point", goals=goals, open_hand=close, start=frm)
+        if frm is not None and prior is not None:          # run's rebuild: the hand the plan has (its decision)
+            return plan_for(_plan_hand(prior), st, frm)
+        return _either_hand(rig, st, sides, goals_of, lambda sd: FREE_HAND if rig.held_by(sd) is None else FREE_LOAD,
+                            lambda sd: plan_for(sd, st))
+    ctx = {}
 
     def done():
-        tcp, R2 = kin.tcp(rig.chain_q(side))
+        side = ctx["side"]
+        tcp, R2 = rig.arm_kin(side).tcp(rig.chain_q(side))
         v = p - np.asarray(tcp, float)
         ang = math.degrees(math.acos(float(np.clip((-R2[:, 2]) @ v / np.linalg.norm(v), -1.0, 1.0))))
         rig.log("point_result", target=target, hand=side, angle_deg=round(ang, 2))
         if ang > POINTING_DEG:
             raise SkillFailure(f"point at {target}: {ang:.1f} deg off")
         return ang
-    return _gesture_job(rig, "point", side, build, done)
+    return _gesture_job(rig, "point", build, done, ctx)
 
 
 def shake_job(rig, args, state, skill=None):
@@ -429,7 +502,7 @@ def shake_job(rig, args, state, skill=None):
         mem[name] = mem.get(name, 0) + cycles
         rig.log("shake_result", obj=name, cycles=cycles)
         return {"cycles": cycles}
-    return _gesture_job(rig, "shake", side, build, done)
+    return _gesture_job(rig, "shake", build, done, {})          # the hand that holds it: no choice
 
 
 

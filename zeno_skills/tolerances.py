@@ -297,6 +297,9 @@ WIPE_CELL = _t("WIPE_CELL", 0.02, "m", "inherited (the old WipeSurfacePolicy's):
 HANDOVER_LONG = _t("HANDOVER_LONG", 0.15, "m", "inherited (the old HandoverRightToLeftPolicy's), unmeasured: a load "
                    "whose longest side is over this is handed over turned across the body (skill_jobs.pick "
                    "HANDOVER_AXIS)")
+POINT_FRONT = _t("POINT_FRONT", 0.2, "1", "chosen (HAND_PLAN 9h): a point's ray from the hand's shoulder to "
+                  "the target runs at least this forward (its unit vector's forward part): in front -- the one test "
+                  "the point skill refuses by and the task layer turns the robot by (skill_jobs.held.point_in_front)")
 TIP_PAST = _t("TIP_PAST", 0.03, "m", "chosen, unmeasured (HAND_PLAN 9h): a tip's poke runs this far past the length "
               "the object lies down over (twice its half-size along the push)")
 
