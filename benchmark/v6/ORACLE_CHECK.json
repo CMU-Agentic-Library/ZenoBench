@@ -3761,7 +3761,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "how_many__three_bowls",
-   "steps": 16,
+   "steps": 18,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],

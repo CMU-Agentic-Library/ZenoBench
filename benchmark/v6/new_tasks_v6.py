@@ -1450,11 +1450,15 @@ def t30():
         "how_many": fam(
             "bowl_on_cabinet", ["count_from_scene", "multi_object_goal", "resource_absent"],
             "how many bowls there are (seed: three; or two and a mug)",
-            "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the "
-            "house has no other bowl)",
+            "three spoons laid out at the dining table; three clean bowls on the low cabinets (two on cabinet 6, "
+            "one on cabinet 4 next to it), or two and a mug (the house has no other bowl)",
             "as many bowls as places at the table: three -- with two bowls, the mug for the third",
-            {"three_bowls": dict(add={**SOUP, **{f"soup_bowl_{i + 1}": on("breakfast_bowl", top6, x, 0.36)
-                                                 for i, x in enumerate((3.29, 3.50, 3.71))}, **spoons3},
+            # 11-25: three 17.8 cm bowls 21 cm apart on cabinet 6 left 3 cm between them: the middle one had no grasp
+            # (GT check, seed 13); two stand 30 cm apart as in bowls_in_cabinet, the third on cabinet 4's top
+            {"three_bowls": dict(add={**SOUP, "soup_bowl_1": on("breakfast_bowl", top6, 3.35, 0.36),
+                                      "soup_bowl_2": on("breakfast_bowl", top6, 3.65, 0.36),
+                                      "soup_bowl_3": on("breakfast_bowl", "kitchen_cabinet_4/top", 1.40, 0.42),
+                                      **spoons3},
                                  remove=["clutter_cereal_a", "clutter_cereal_b"],
                                  watch=["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"],
                                  goal={"all": [bowls("soup_bowl_1", "soup_bowl_2", "soup_bowl_3", n=3), H]},

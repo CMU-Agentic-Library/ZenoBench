@@ -215388,7 +215388,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.29,
+        3.35,
         0.36
        ],
        "yaw_deg": 0.0
@@ -215397,17 +215397,17 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.5,
+        3.65,
         0.36
        ],
        "yaw_deg": 0.0
       },
       "soup_bowl_3": {
        "asset": "breakfast_bowl",
-       "support": "kitchen_cabinet_6/top",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
-        3.71,
-        0.36
+        1.4,
+        0.42
        ],
        "yaw_deg": 0.0
       },
@@ -215508,11 +215508,11 @@
       "spare_mug"
      ],
      "since": "v6",
-     "note": "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the house has no other bowl)",
+     "note": "three spoons laid out at the dining table; three clean bowls on the low cabinets (two on cabinet 6, one on cabinet 4 next to it), or two and a mug (the house has no other bowl)",
      "v6": {
       "family": "how_many",
       "case": "three_bowls",
-      "challenge": "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the house has no other bowl)",
+      "challenge": "three spoons laid out at the dining table; three clean bowls on the low cabinets (two on cabinet 6, one on cabinet 4 next to it), or two and a mug (the house has no other bowl)",
       "rationale": "as many bowls as places at the table: three -- with two bowls, the mug for the third",
       "control": "bowl_on_cabinet",
       "contrast": null,
@@ -215546,16 +215546,42 @@
        },
        {
         "names": [
-         "soup_bowl_1",
-         "soup_bowl_2",
          "soup_bowl_3"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3109,
+         0.3322,
+         1.489,
+         0.5079
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.06,
+         0.06
+        ],
+        "pick": [
+         "soup_bowl_3"
+        ]
+       },
+       {
+        "names": [
+         "soup_bowl_1",
+         "soup_bowl_2"
         ],
         "support": "kitchen_cabinet_6/top",
         "box": [
-         3.201,
+         3.261,
          0.2722,
-         3.799,
+         3.739,
          0.4478
+        ],
+        "dx": [
+         -0.04,
+         0.04
         ],
         "dy": [
          -0.06,
@@ -215563,8 +215589,7 @@
         ],
         "pick": [
          "soup_bowl_1",
-         "soup_bowl_2",
-         "soup_bowl_3"
+         "soup_bowl_2"
         ]
        },
        {
@@ -215648,6 +215673,32 @@
          5.495,
          2.788,
          3.839,
+         0.2
+        ]
+       ],
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
          0.2
         ]
        ],
@@ -216062,11 +216113,11 @@
       "spare_mug"
      ],
      "since": "v6",
-     "note": "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the house has no other bowl)",
+     "note": "three spoons laid out at the dining table; three clean bowls on the low cabinets (two on cabinet 6, one on cabinet 4 next to it), or two and a mug (the house has no other bowl)",
      "v6": {
       "family": "how_many",
       "case": "two_bowls",
-      "challenge": "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the house has no other bowl)",
+      "challenge": "three spoons laid out at the dining table; three clean bowls on the low cabinets (two on cabinet 6, one on cabinet 4 next to it), or two and a mug (the house has no other bowl)",
       "rationale": "as many bowls as places at the table: three -- with two bowls, the mug for the third",
       "control": "bowl_on_cabinet",
       "contrast": null,
@@ -218729,6 +218780,18 @@
          7.86,
          1.675
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_4/top"
        }
       },
       {
