@@ -251,6 +251,31 @@ def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
     assert isinstance(again, Failure) and again.segment == "wipe_stroke"
 
 
+def test_a_wipe_aims_its_press_through_the_hold_the_state_has():
+    # docs 6 / rule 9: the press pose is the sponge's, the TCP derived from the hold in the State -- a sponge that slid
+    # in the hand on the way makes the press no longer hold (WIPE_TOL), and a rebuild aims through the new hold
+    from zeno_skills.motion_state import Aim
+    from zeno_skills.primitives import holds
+    from zeno_skills.skill_plans import plan_wipe
+    q0 = _q(0.4, 0.0, 0.40)
+    T_sponge = np.eye(4)
+    T_sponge[:3, 3] = [0.5, 0.0, 0.05]                                  # the sponge's box frame where it presses
+    hold = np.eye(4)
+    hold[:3, 3] = [0.0, 0.0, -0.05]                                     # held 5 cm below the TCP
+    wipe = {"support": "table", "aim": Aim("sponge", T_sponge, held=True), "d": np.array([0.2, 0.0, 0.0]),
+            "above": 0.016}
+    plan = plan_wipe(FakeKin(), _state(q0, held=Held("sponge", hold)), wipe)
+    assert isinstance(plan, Plan), plan
+    press = _named(plan, "wipe_press")
+    assert np.allclose(press.q_end[:3], [0.5, 0.0, 0.10]) and press.info["aim"] is wipe["aim"]
+    slid = hold.copy()
+    slid[2, 3] = -0.047                                                  # 3 mm up in the pinch
+    assert holds(FakeKin(), _state(press.q_from, held=Held("sponge", hold)), press) is None
+    assert holds(FakeKin(), _state(press.q_from, held=Held("sponge", slid)), press) is not None
+    again = plan_wipe(FakeKin(), _state(q0, held=Held("sponge", slid)), wipe)
+    assert np.allclose(_named(again, "wipe_press").q_end[:3], [0.5, 0.0, 0.097])
+
+
 def test_a_gesture_reaches_its_goal_set_swings_about_where_it_got_and_folds():
     from zeno_skills.primitives import JointSet, PoseSet
     from zeno_skills.skill_plans import plan_gesture

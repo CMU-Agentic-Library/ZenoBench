@@ -135,6 +135,9 @@ PRESS_DEPTH = _t("PRESS_DEPTH", 0.003, "m", "chosen: a press's fingertips go thi
 WIPE_PRESS = _t("WIPE_PRESS", 0.001, "m", "inherited: a wipe presses the sponge's bottom this far into the support (the "
                 "old WipeSurfacePolicy's light press: a 3 mm press dragged the sponge out of the pinch) -- a force's "
                 "geometric stand-in (COLLISION_PLAN.md section 8), HAND_PLAN 9g")
+WIPE_TOL = _t("WIPE_TOL", (0.002, TARGET_TURN), "m, rad", "chosen (rule audit 11-25): a wipe's press pose (the "
+               "sponge's, through the hold the State has) further off than built by more is rebuilt -- 2 mm on the "
+               "WIPE_PRESS of 1 mm presses 3 mm, where the old 3 mm press dragged the sponge out of the pinch; unmeasured")
 TOUCH_DEPTH = _t("TOUCH_DEPTH", 0.002, "m", "chosen: a touch's / knock's closed fingertips go this far into the touched "
                  "face (an object's top, a door's panel) -- a force's geometric stand-in (COLLISION_PLAN.md section 8), "
                  "as PRESS_DEPTH: the arm stops where the tips meet it.  The old touch aimed the TCP 1.6 cm over the "

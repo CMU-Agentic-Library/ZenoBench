@@ -14,7 +14,7 @@ import numpy as np
 from ..clearance import LEAVE_CONTACT, Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, with_arm, with_part, with_width
 from ..primitives import JointSet, Script, free_at, free_leg, pushed, query, scripted, sided, still, straight
-from ..tolerances import SLIDE_TOL, STIR_TOL
+from ..tolerances import SLIDE_TOL, STIR_TOL, WIPE_TOL
 from ._common import FREE_HAND, built_so_far, _aimed, _contact, _kept, _move, _reach, anchor, may_touch
 
 SLIDE_STAGES = ("slide_arrive", "slide_close_hand", "slide_reach", "slide_down", "slide_in", "slide_push",
@@ -427,9 +427,10 @@ def on_surface(side, support):
 
 def plan_wipe(kin, state, wipe, start="wipe_arrive", prior=None, step=0.004):
     """The sponge in ``kin``'s hand wiped along a strip of the support wipe["support"] from ``state``: wipe =
-    {support, p, R (the TCP where the sponge is pressed WIPE_PRESS into the surface at the strip's start), d (the
-    stroke: the horizontal world vector from the strip's start to its end), above (m the press comes straight down
-    from: the sponge LEAVE_GAP + LEAVE_MARGIN clear of the surface there)}:
+    {support, aim (motion_state.Aim, held: the sponge's box frame where it is pressed WIPE_PRESS into the surface at
+    the strip's start -- the TCP derived from the hold the State has, as a place's set-down; or p, R: that TCP given),
+    d (the stroke: the horizontal world vector from the strip's start to its end), above (m the press comes straight
+    down from: the sponge LEAVE_GAP + LEAVE_MARGIN clear of the surface there), need (m the stroke must run)}:
 
         wipe_arrive  anchor: the base and the hold as they are
         wipe_reach   the free leg to ``above`` over the press (decide_ik: _reach), the sponge's tilt held
@@ -443,9 +444,11 @@ def plan_wipe(kin, state, wipe, start="wipe_arrive", prior=None, step=0.004):
         wipe_leave   the straight back up ``above`` (on_surface: it starts on the surface)
         wipe_back    the free leg back to the arm's posture where the wipe arrived (stir_back's rule), tilt held
 
-    The old WipeSurfacePolicy held the arm still and translated the base along the strip, the press a move_to with
-    an approach and a hand-written 8 cm lift: one task segment on the arm instead (HAND_PLAN 9g).  From ``start``
-    on; ``prior`` as plan_stir's.  Plan or Failure; info["stroke_m"] the stroke the plan makes."""
+    The reach and the press carry the Aim and WIPE_TOL (Segment.info: primitives.holds checks them again against the
+    State, so a sponge that slid in the hand on the way rebuilds the press from the arrival on, rule 9).  The old
+    WipeSurfacePolicy held the arm still and translated the base along the strip, the press a move_to with an
+    approach and a hand-written 8 cm lift: one task segment on the arm instead (HAND_PLAN 9g).  From ``start`` on;
+    ``prior`` as plan_stir's.  Plan or Failure; info["stroke_m"] the stroke the plan makes."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
         return _plan_wipe(kin, state, wipe, start, prior, step)
 
@@ -459,7 +462,11 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
     above = float(wipe["above"])
     if state.held(side) is None:
         return Failure("nothing in the hand to wipe with", start)
-    p, R = np.asarray(wipe["p"], float), np.asarray(wipe["R"], float)
+    aim = wipe.get("aim")
+    aimed = aim_pose(state, aim) if aim is not None else (np.asarray(wipe["p"], float), np.asarray(wipe["R"], float))
+    if aimed is None:
+        return Failure(f"{aim.obj} is not in the {side} hand", start)
+    p, R = np.asarray(aimed[0], float), np.asarray(aimed[1], float)
     d = np.asarray(wipe["d"], float)
     length = float(np.linalg.norm(d))
     u = d / length
@@ -484,12 +491,16 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
             seg = anchor(stage, q, s, (), side)
         elif stage == "wipe_reach":
             seg = kept or _reach(kin, s, FREE_LOAD, p, R, -up, above, q, prior.get(stage), stage, step)
+            if not (isinstance(seg, Failure) or kept) and aim is not None:
+                seg = _aimed(kin, seg, aim, (p, R), WIPE_TOL)
             if not isinstance(seg, Failure) and seg.qs:
                 decided[stage] = seg.q_end
         elif stage == "wipe_press":
             seg = kept or straight(kin, s, spec, p, R, stage, step=0.002, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=5)
+                if aim is not None:
+                    seg = _aimed(kin, seg, aim, (p, R), WIPE_TOL)
         elif stage == "wipe_stroke":
             script = Script(still(None), 0.0, length, step=WIPE_STEP, tcp=tcp, carry="arm")
             seg = kept or scripted(kin, with_arm(s, q, side), spec, script, stage, arm_step=step, reach=True)

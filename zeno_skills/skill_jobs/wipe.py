@@ -11,6 +11,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from ..park_search import Problem
+from ..motion_state import Aim
 from ..predicates import WIPED_COVER, memory
 from ..rig import SkillFailure
 from ..skill_plans import WIPE_RELAY
@@ -91,12 +92,17 @@ def wipe_job(rig, args, state, skill=None):
     for c_strip, a, b in strips:
         for psi in WIPE_YAWS:
             Rk = Rotation.from_euler("z", math.radians(psi)).as_matrix() @ np.asarray(R_now, float)
-            # the TCP that puts the sponge's body origin over a, its bottom WIPE_PRESS into the surface
+            # the sponge's box frame pressed at the strip's start: its body origin over a, its bottom WIPE_PRESS into
+            # the surface, the hand turned psi about the vertical -- the plan derives the TCP from it through the hold
+            # the State has (Aim held, as a place's set-down), so a sponge that slid in the hand on the way is seen
+            # at the arrival and the press built again (rule 9); the TCP through this hold ranks the parks
             body_at = np.r_[a, s["z"] - WIPE_PRESS + hang]
+            T_sponge = np.eye(4)
+            T_sponge[:3, :3], T_sponge[:3, 3] = Rk @ T_hold[:3, :3], body_at
             p = body_at - Rk @ T_hold[:3, 3]
             d = np.r_[b - a, 0.0]
-            wipes.append({"support": furniture, "p": p, "R": Rk, "d": d, "above": above, "need": need, "strip": (a, b),
-                          "yaw": psi})
+            wipes.append({"support": furniture, "aim": Aim(tool, T_sponge, held=True, side=side), "d": d, "above": above,
+                          "need": need, "strip": (a, b), "yaw": psi})
             goals.append(((p + [0.0, 0.0, above], p, p + d), (p, Rk), c_strip))
     build_with = skill.build if skill is not None else None
     if build_with is None:
