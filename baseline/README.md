@@ -13,7 +13,7 @@ SHIFT 论文要跑的规划器 baseline。计划见 [`docs/guides/BASELINE_PLAN_
 | `react.py` `ReActHint` | 消融：同上，system prompt 多一句"不可用时可以用合理替代，但能用原物就不换" | 已写 |
 | `react.py` `ReAct` + `--profile sticky/privileged` | 上界：同一个 ReAct，额外看到所有任务物体及位置（GT，仍匿名），不给目标状态 | 已写（profile 在 `episode/profiles/sticky/privileged.yaml`） |
 | `human.py` `Human` | 人类参考：人在终端里看到和 VLM 完全一样的文字和图片路径，输入调用 | 已写 |
-| `graph_manager/` | 5 Graph Manager：子目标 + 每个子目标一个 skill DAG，子目标边界或失败时由 VLM 决定 continue / 重规划 / finish | submodule（`b766b66`），待接入本仓库的技能库和统一设置 |
+| `graph_manager/` | 5 Graph Manager：子目标 + 每个子目标一个 skill DAG，子目标边界或失败时由 VLM 决定 continue / 重规划 / finish | submodule（`26df036`，`feat/recovery-prompt`），待接入本仓库的技能库和统一设置 |
 
 共用组件：`base.py`（技能菜单、调用历史、token 统计）、`vlm.py`（四家模型一个 `chat()`）、`prompt.py`（技能说明、观察、历史的文字）、`parse.py`（从回答里取出调用）。
 
@@ -53,7 +53,8 @@ $PY -m pytest baseline/tests -q                    # 离线测试：假模型、
 
 ## graph_manager/
 
-- git submodule，指向 <https://github.com/CMU-Agentic-Library/Graph_manager>，当前固定在 `main` 的 `b766b66`（2026-10-29）。克隆本仓库后执行 `git submodule update --init baseline/graph_manager`。
+- git submodule，指向 <https://github.com/CMU-Agentic-Library/Graph_manager>，当前固定在 `feat/recovery-prompt` 的 `26df036`（2026-11-25：失败后和 finish 的两句提示与本仓库 baseline 一字不差，见 `tests/test_prompt_parity.py`）。
+- **克隆后、以及每次 `git pull` 之后都要执行** `git submodule update --init --recursive`：`git pull` 只更新本仓库记录的子模块提交，`baseline/graph_manager` 目录里的代码不会跟着变。也可以用 `git pull --recurse-submodules` 一步完成，或者设一次 `git config submodule.recurse true`。检查：`git submodule status baseline/graph_manager` 显示的提交前面没有 `+` 号就是对的。
 - 下面要改的地方提交到 Graph_manager 仓库（或其 fork），再在本仓库更新 submodule 指针：`git -C baseline/graph_manager pull` 后 `git add baseline/graph_manager`。
 - 独立的 Python 包（`pyproject.toml`，Python ≥ 3.12，依赖 `deepseek-harness-sdk==0.1.5rc1`）。安装和运行方法见 `graph_manager/README.md`：
 

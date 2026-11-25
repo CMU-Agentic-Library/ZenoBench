@@ -69,6 +69,7 @@ Requires Isaac Sim 5.1 + Isaac Lab 2.3 and cuRobo 0.7.8.
 
 ```bash
 git lfs install && git clone <this repo> zeno-house && cd zeno-house
+git submodule update --init --recursive      # baseline/graph_manager; run it again after every git pull
 export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
 
 # one episode (task, variant, seed) through its reference contract sequence

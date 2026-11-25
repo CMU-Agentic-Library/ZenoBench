@@ -33,7 +33,7 @@ Harness 的手动模型配置须声明 `contextWindow: 32768` 和 `maxTokens: 40
 先将 Git LFS 场景资产和 `baseline/graph_manager` 子模块取到本地。仓库原协议使用 Isaac Sim 5.1、Isaac Lab 2.3.2 和 cuRobo 0.7.8。vLLM 和规划器各使用独立 Python 环境。下面是一个模型和一个方法的完整分片。其他方法和模型替换对应参数。
 
 ```bash
-git submodule update --init baseline/graph_manager
+git submodule update --init --recursive      # 每次 git pull 之后也要执行
 git lfs pull --include='tasks/**/scene*.usd,scenes/**,sim/**,usd/**,robot_sources/**,assets/**'
 ```
 
