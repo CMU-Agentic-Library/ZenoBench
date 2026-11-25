@@ -42,18 +42,16 @@ def test_every_goal_surface_registered():
     surfaces = {n for n in named if n.split("/", 1)[1].split("/")[0] in
                 ("top", "inside_shelf", "inside_bottom", "inside_floor") or "/shelf_" in n}
     assert surfaces - set(R.surfaces()) == set()
-    assert all(R.surface(s)["affordances"] for s in surfaces)
 
 
 def test_every_surface_has_a_room_but_the_microwave():
-    assert {n for n, s in R.surfaces().items() if s["geometry"]["room"] is None} <= {
+    assert {n for n, s in R.surfaces().items() if s["room"] is None} <= {
         "kitchen_microwave/inside_floor", "kitchen_microwave/top"}
 
 
-def test_geometry_from_spawn_source():
-    g = R.obj("breakfast_bowl")["geometry"]
-    assert g["size_m"] == [round(x, 4) for x in R.assets_json()["breakfast_bowl"]["size"]] and "opening_m" in g
-    json.dumps(R.obj("breakfast_bowl"))                             # serialisable facts
+def test_categories():
+    assert R.obj("breakfast_bowl")["taxonomy"] == {"category": "tableware", "subcategory": "dish"}
+    assert R.surface("kitchen_microwave/top")["taxonomy"]["category"] == "appliance"
 
 
 def test_loosen_keys_name_real_designs():

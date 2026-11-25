@@ -4,7 +4,6 @@ Settings come from the environment, because run_episode builds the planner with 
 
 * SHIFT_MODEL      - model name for baseline.vlm.make_client (default claude-opus-5-5)
 * SHIFT_MAX_CALLS  - the call budget the planner is told (default 60, the benchmark budget)
-* SHIFT_REVEAL     - off | objects | full: registry facts in the prompt (baseline/reveal.py; default off)
 """
 
 from __future__ import annotations
@@ -75,7 +74,6 @@ class BaselinePlanner(Planner):
 
     def summary(self) -> dict:
         """Written to result.json["planner"] by run_episode (totals include the finishing query)."""
-        from baseline.reveal import mode
-        return {"name": self.name, "model": self.model, "max_calls": self.max_calls, "reveal": mode(),
+        return {"name": self.name, "model": self.model, "max_calls": self.max_calls,
                 "stop_reason": self.stop_reason, **self.usage,
                 "final_trace": getattr(self, "trace", [])}   # queries after the last call (finish, parse errors)

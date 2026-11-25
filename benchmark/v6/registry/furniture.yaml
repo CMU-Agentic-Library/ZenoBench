@@ -1,77 +1,23 @@
-# ZenoBench furniture registry (11-24): every piece of furniture and appliance whose surfaces v6 goals name.
-#
-# taxonomy: category -> subcategory -> type (the scene's furniture category) -> instance (dining_table_1, ...).
-# A goal names a surface ("dining_table_1/top", "kitchen_cabinet_4/inside_shelf"), so affordances are given per
-# surface kind: "top", "shelf" (every shelf_k), "inside" (inside_shelf, inside_bottom, inside_floor).
-# Geometry is not written here: object_registry.py reads each surface's height, size, headroom (clearance) and
-# room from the scene annotations, and whether it sits behind a door from the articulated list.
-#
-# A type's affordances can be refined per instance with ``instances`` (matched by name prefix, longest first).
-vocabulary:
-  affordances:
-    support_items: "things can be put down on it (on)"
-    dining_surface: "a dining table"
-    serve_meal: "a top people sit at to eat (dining tables, the island's breakfast bar)"
-    food_prep: "a kitchen work top where food and dishes are handled"
-    work_surface: "a top to work or study at"
-    display: "seen from the room; things put on show stand there"
-    living_serve: "a top within reach of someone seated in the living room"
-    store_open: "open shelf for putting things away"
-    store_books: "a shelf books are kept on"
-    store_closed: "storage behind a door"
-    kitchen_storage: "kitchen storage for dishes and dry food"
-    store_food_cold: "keeps food cold (fridge)"
-    heat_stove: "heats a pot set on it (stove)"
-    heat_microwave: "heats a dish put inside (microwave)"
-    sleep: "a bed"
-  attributes:
-    kid_reach: "at most kid_reach_m high: a child reaches it unaided (computed)"
-
-kid_reach_m: 0.9
+# ZenoBench furniture registry (11-24; classification only since 11-25): every furniture type and appliance whose
+# surfaces v6 goals name.  taxonomy: category -> subcategory -> type (the scene's furniture category); a type can
+# be refined per instance with ``instances`` (matched by name prefix, longest first).
 
 types:
-  TableDining:
-    taxonomy: {category: furniture, subcategory: table}
-    surfaces: {top: [support_items, dining_surface, serve_meal]}
-  SimpleDesk:
-    taxonomy: {category: furniture, subcategory: desk}
-    surfaces: {top: [support_items, work_surface]}
-  KitchenSpace:
-    taxonomy: {category: furniture, subcategory: kitchen_counter}
-    surfaces: {top: [support_items, food_prep, work_surface]}
-  counter:                      # the kitchen island: also a breakfast bar
-    taxonomy: {category: furniture, subcategory: kitchen_island}
-    surfaces: {top: [support_items, food_prep, work_surface, serve_meal]}
-  cooktop:
-    taxonomy: {category: appliance, subcategory: stove}
-    surfaces: {top: [support_items, heat_stove]}
-  TVStand:
-    taxonomy: {category: furniture, subcategory: tv_stand}
-    surfaces: {top: [support_items, display, living_serve], shelf: [store_open]}
-  SimpleBookcase:
-    taxonomy: {category: furniture, subcategory: bookcase}
-    surfaces: {top: [support_items, display, store_books], shelf: [store_open, store_books]}
-  CellShelf:
-    taxonomy: {category: furniture, subcategory: shelf}
-    surfaces: {top: [support_items, display, store_books], shelf: [store_open, store_books]}
-  LargeShelf:
-    taxonomy: {category: furniture, subcategory: shelf}
-    surfaces: {top: [support_items, display, store_books], shelf: [store_open, store_books]}
-  Mattress:
-    taxonomy: {category: furniture, subcategory: bed}
-    surfaces: {top: [sleep]}
+  TableDining: {category: furniture, subcategory: table}
+  SimpleDesk: {category: furniture, subcategory: desk}
+  KitchenSpace: {category: furniture, subcategory: kitchen_counter}
+  counter: {category: furniture, subcategory: kitchen_island}
+  cooktop: {category: appliance, subcategory: stove}
+  TVStand: {category: furniture, subcategory: tv_stand}
+  SimpleBookcase: {category: furniture, subcategory: bookcase}
+  CellShelf: {category: furniture, subcategory: shelf}
+  LargeShelf: {category: furniture, subcategory: shelf}
+  Mattress: {category: furniture, subcategory: bed}
   cabinet_inside:
-    taxonomy: {category: furniture, subcategory: cabinet}
-    surfaces: {top: [support_items, display], inside: [store_closed]}
+    category: furniture
+    subcategory: cabinet
     instances:
-      kitchen_cabinet:
-        taxonomy: {category: furniture, subcategory: kitchen_cabinet}
-        surfaces: {top: [support_items, display, food_prep], inside: [store_closed, kitchen_storage]}
-      breakfast_fridge:
-        taxonomy: {category: appliance, subcategory: fridge}
-        surfaces: {top: [support_items], inside: [store_closed, store_food_cold]}
-      kitchen_microwave:
-        taxonomy: {category: appliance, subcategory: microwave}
-        surfaces: {top: [support_items], inside: [heat_microwave]}
-  # some scenes label a cabinet's top surface with this category: the same furniture
+      kitchen_cabinet: {category: furniture, subcategory: kitchen_cabinet}
+      breakfast_fridge: {category: appliance, subcategory: fridge}
+      kitchen_microwave: {category: appliance, subcategory: microwave}
   cabinet_top: {same_as: cabinet_inside}

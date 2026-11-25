@@ -1,13 +1,8 @@
-"""Object and furniture registry (11-24; affordance judging removed 11-25: the registry is for classification).
+"""Object and furniture registry (11-24; classification only since 11-25).
 
-Data (hand-written, benchmark/v6/registry/):
-  objects.yaml    every movable asset kind: taxonomy (category / subcategory), uses and attributes
-  furniture.yaml  every furniture type and appliance: taxonomy, uses per surface kind
-
-Geometry is never written by hand: objects from annotations/assets.json (the spawn source: size, mass, the
-container opening and depth, graspability), surfaces from the scene annotations (height, size, headroom, room,
-behind a door or not).  Used by taxonomy.py (categories), substitution_eval.py (layout_objects) and the
-SHIFT_REVEAL ablation (baseline/reveal.py).
+registry/objects.yaml and registry/furniture.yaml give the category and subcategory of every movable asset kind
+and every furniture type of v6.  Surfaces get their room from the scene annotations.  Used by taxonomy.py (the
+object-category axis) and substitution_eval.py (layout_objects).
 """
 from __future__ import annotations
 
@@ -54,35 +49,10 @@ def annotation(base: str) -> dict:
 
 
 # -- object facts --------------------------------------------------------------------------------------------
-def _opening(a: dict) -> tuple[float, float, float]:
-    """(wide, narrow, depth) of a container's top opening, in metres."""
-    c = a.get("container")
-    sx, sy, sz = a["size"]
-    if not c:
-        return sx - 0.01, sy - 0.01, sz - 0.005          # a solid-collider box or tray: its walls are thin
-    band = max(c["bands"], key=lambda b: b[1])
-    if c["shape"] == "round":
-        w = n = 2 * band[2]
-    else:                                                # rect: half extents; ellipse: semi-axes
-        w, n = sorted((2 * band[2], 2 * band[3]), reverse=True)
-    return w, n, c.get("rim_height", sz)
-
-
 @lru_cache(None)
 def obj(kind: str) -> dict:
-    """Registry entry of an asset kind with its geometry."""
-    spec = objects_yaml()["objects"][kind]
-    a = assets_json()[kind]
-    size = [round(x, 4) for x in a["size"]]
-    geo = {"size_m": size, "mass_kg": a["mass"], "graspable_by_zeno": a["graspable_by_zeno"],
-           "min_pinch_width_m": round(a["min_pinch_width"], 4)}
-    if "contain_solid" in spec["affordances"]:
-        w, n, d = _opening(a)
-        geo["opening_m"] = [round(w, 4), round(n, 4)]
-        geo["depth_m"] = round(d, 4)
-    geo["portable"] = bool(a["graspable_by_zeno"] and max(size) <= 0.26 and a["mass"] <= 1.0)
-    return {"kind": kind, "taxonomy": spec["taxonomy"], "affordances": list(spec["affordances"]),
-            "attributes": dict(spec.get("attributes") or {}), "geometry": geo}
+    """Registry entry of an asset kind."""
+    return {"kind": kind, "taxonomy": dict(objects_yaml()["objects"][kind])}
 
 
 # -- furniture facts -----------------------------------------------------------------------------------------
@@ -111,11 +81,7 @@ def _type_spec(furniture: str, ftype: str) -> dict:
     for prefix in sorted(inst, key=len, reverse=True):
         if furniture.startswith(prefix):
             return inst[prefix]
-    return spec
-
-
-def _surface_kind(part: str) -> str:
-    return "top" if part == "top" else ("inside" if part.startswith("inside") else "shelf")
+    return {"category": spec["category"], "subcategory": spec["subcategory"]}
 
 
 @lru_cache(None)
@@ -124,20 +90,14 @@ def surfaces() -> dict:
     out = {}
     for base in scene_bases():
         a = annotation(base)
-        doors = {x["name"] for x in a.get("articulated", [])}
         for s in a["supports"]:
             if s["name"] in out:
                 continue
             furn, part = s["name"].split("/", 1)
-            spec = _type_spec(furn, s["category"])
             x0, y0, x1, y1 = s["aabb_xy"]
-            kind = _surface_kind(part)
-            out[s["name"]] = {
-                "surface": s["name"], "furniture": furn, "type": s["category"], "taxonomy": spec["taxonomy"],
-                "affordances": list(spec["surfaces"].get(kind, [])), "attributes": {},
-                "geometry": {"height_m": round(s["z"], 3), "size_m": [round(x1 - x0, 3), round(y1 - y0, 3)],
-                             "clearance_m": s.get("clearance"), "behind_door": kind == "inside" and furn in doors,
-                             "room": _room(a["rooms"], ((x0 + x1) / 2, (y0 + y1) / 2))}}
+            out[s["name"]] = {"surface": s["name"], "furniture": furn, "type": s["category"],
+                              "taxonomy": dict(_type_spec(furn, s["category"])),
+                              "room": _room(a["rooms"], ((x0 + x1) / 2, (y0 + y1) / 2))}
     return out
 
 
@@ -170,18 +130,16 @@ def layout_objects(t: dict, v: dict) -> dict:
     return out
 
 
-# -- vocabulary ----------------------------------------------------------------------------------------------
+# -- check ---------------------------------------------------------------------------------------------------
+CATEGORIES = {"tableware", "cookware", "food_container", "container", "food", "stationery", "toy", "cleaning",
+              "furniture", "appliance"}
+
+
 def check_vocab() -> list[str]:
-    """Affordances and attributes used anywhere must be in the vocabularies; returns problems."""
-    bad = []
-    ov = objects_yaml()["vocabulary"]
-    for k, spec in objects_yaml()["objects"].items():
-        bad += [f"{k}: affordance {a}" for a in spec["affordances"] if a not in ov["affordances"]]
-        bad += [f"{k}: attribute {a}" for a in (spec.get("attributes") or {}) if a not in ov["attributes"]]
-    fv = furniture_yaml()["vocabulary"]["affordances"]
+    """Every category is one of CATEGORIES and every entry has a subcategory; returns problems."""
+    entries = [(k, v) for k, v in objects_yaml()["objects"].items()]
     for t, spec in furniture_yaml()["types"].items():
-        if "same_as" in spec:
-            continue
-        for s in [spec, *(spec.get("instances") or {}).values()]:
-            bad += [f"{t}: {a}" for afs in s["surfaces"].values() for a in afs if a not in fv]
-    return bad
+        if "same_as" not in spec:
+            entries.append((t, spec))
+            entries += list((spec.get("instances") or {}).items())
+    return [k for k, v in entries if v.get("category") not in CATEGORIES or not v.get("subcategory")]
