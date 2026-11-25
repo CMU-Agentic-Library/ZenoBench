@@ -5902,7 +5902,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     },
     {
@@ -5922,17 +5922,17 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -5977,10 +5977,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -6059,7 +6059,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_033",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -8168,7 +8168,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      }
     },
@@ -8203,7 +8203,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      }
     }
@@ -8211,10 +8211,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$source)",
+     "predicate": "holding(hand=any, object=$source)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      },
      "negated": false,
@@ -8298,10 +8298,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "holding(hand=right, object=$source)",
+     "predicate": "holding(hand=any, object=$source)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      },
      "negated": false,
@@ -8376,7 +8376,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "then"
+     "sequence_type": "enables"
     },
     {
      "kind": "sequence",
@@ -8387,7 +8387,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_038",
-     "sequence_type": "then"
+     "sequence_type": "enables"
     },
     {
      "kind": "fallback",
@@ -13079,7 +13079,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_039",
-     "sequence_type": "then"
+     "sequence_type": "enables"
     },
     {
      "kind": "alternative",

@@ -5847,7 +5847,7 @@
       "skill_id": "skill_039",
       "verb": "pour",
       "when": "the empty cup is put down",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_040",
@@ -8207,14 +8207,14 @@
    "outputs": {},
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
+    "summary": "Requires hand_empty(hand=any); base_near(place=$object)."
    },
    "preconditions": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -8256,10 +8256,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -8289,10 +8289,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "hand_empty(hand=right)",
+      "predicate": "hand_empty(hand=any)",
       "name": "hand_empty",
       "args": {
-       "hand": "right"
+       "hand": "any"
       },
       "negated": false,
       "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -8344,7 +8344,7 @@
       "bind": {
        "object": "$object"
       },
-      "type": "enables"
+      "type": "then"
      }
     ],
     "fallback": [
@@ -9446,7 +9446,7 @@
       "skill_id": "skill_028",
       "verb": "flip",
       "when": "the object is left overhanging the edge",
-      "type": "enables"
+      "type": "then"
      }
     ],
     "next": [
@@ -10661,7 +10661,7 @@
       "skill_id": "skill_039",
       "verb": "pour",
       "when": "the poured food is stirred",
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_046",
@@ -10800,14 +10800,14 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires holding(hand=right, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source)."
+    "summary": "Requires holding(hand=any, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source)."
    },
    "preconditions": [
     {
-     "predicate": "holding(hand=right, object=$source)",
+     "predicate": "holding(hand=any, object=$source)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      },
      "negated": false,
@@ -10886,10 +10886,10 @@
      "checked": "after the policy chain on live GT state; the action is reported only if true"
     },
     {
-     "predicate": "holding(hand=right, object=$source)",
+     "predicate": "holding(hand=any, object=$source)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$source"
      },
      "negated": false,
@@ -10925,10 +10925,10 @@
       "scope": "all paths"
      },
      {
-      "predicate": "holding(hand=right, object=$source)",
+      "predicate": "holding(hand=any, object=$source)",
       "name": "holding",
       "args": {
-       "hand": "right",
+       "hand": "any",
        "object": "$source"
       },
       "negated": false,
@@ -10975,7 +10975,7 @@
       "skill_id": "skill_062",
       "verb": "shake",
       "when": "loose contents are poured out",
-      "type": "then"
+      "type": "enables"
      }
     ],
     "next": [
@@ -10986,7 +10986,7 @@
       "bind": {
        "object": "$source"
       },
-      "type": "then"
+      "type": "enables"
      },
      {
       "skill_id": "skill_038",
@@ -10995,7 +10995,7 @@
       "bind": {
        "container": "$target"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [
@@ -16333,7 +16333,7 @@
       "bind": {
        "source": "$object"
       },
-      "type": "then"
+      "type": "enables"
      }
     ],
     "fallback": [],

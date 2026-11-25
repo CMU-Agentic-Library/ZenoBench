@@ -46,14 +46,14 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source)."
+  "summary": "Requires holding(hand=any, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$source)",
+   "predicate": "holding(hand=any, object=$source)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    },
    "negated": false,
@@ -132,10 +132,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$source)",
+   "predicate": "holding(hand=any, object=$source)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    },
    "negated": false,
@@ -171,10 +171,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$source)",
+    "predicate": "holding(hand=any, object=$source)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$source"
     },
     "negated": false,
@@ -221,7 +221,7 @@
     "skill_id": "skill_062",
     "verb": "shake",
     "when": "loose contents are poured out",
-    "type": "then"
+    "type": "enables"
    }
   ],
   "next": [
@@ -232,7 +232,7 @@
     "bind": {
      "object": "$source"
     },
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_038",
@@ -241,7 +241,7 @@
     "bind": {
      "container": "$target"
     },
-    "type": "then"
+    "type": "enables"
    }
   ],
   "fallback": [

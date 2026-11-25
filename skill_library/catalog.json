@@ -793,6 +793,26 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.held:shake_job",
     "skill_id": "skill_062"
+   },
+   {
+    "name": "flip",
+    "shape": "contact",
+    "template": "plan_flip",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.held:flip_job",
+    "skill_id": "skill_028"
+   },
+   {
+    "name": "pour",
+    "shape": "contact",
+    "template": "plan_pour",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.pour:pour_job",
+    "skill_id": "skill_039"
    }
   ]
  }

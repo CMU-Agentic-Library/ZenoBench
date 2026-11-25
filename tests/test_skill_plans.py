@@ -261,6 +261,36 @@ def test_a_gesture_reaches_its_goal_set_swings_about_where_it_got_and_folds():
     assert [sg.name for sg in shake.segments] == ["shake_swing"] and shake.segments[0].spec.hold_tilt
 
 
+def test_a_pour_tilts_about_its_pivot_as_far_as_the_arm_goes_and_back():
+    from zeno_skills.skill_plans import POUR_STAGES, plan_pour
+    q0 = _q(0.4, 0.0, 0.40)
+    pour = {"source": "cup", "target": "pot", "p": np.array([0.5, 0.0, 0.40]), "R": np.eye(3),
+            "pivot": np.array([0.55, 0.0, 0.40]), "axis": np.array([0.0, 0.0, 1.0]), "tilt": np.radians(90.0)}
+    # (the test kin turns about the vertical only: the arc's geometry the same about any axis)
+    plan = plan_pour(FakeKin(), _state(q0, held=Held("cup", np.eye(4))), pour)
+    assert isinstance(plan, Plan), plan
+    assert tuple(sg.name for sg in plan.segments) == POUR_STAGES
+    tilt, untilt = _named(plan, "pour_tilt"), _named(plan, "pour_untilt")
+    assert tilt.kind == "scripted" and not tilt.spec.hold_tilt and plan.info["tilt_rad"] == pytest.approx(np.radians(90))
+    assert np.allclose(tilt.q_end[:3], [0.55, -0.05, 0.40], atol=1e-6)                 # turned about the pivot
+    assert np.allclose(untilt.q_end[:3], [0.5, 0.0, 0.40], atol=1e-6)                   # back where it started
+    assert np.allclose(plan.segments[-1].q_end, q0)
+
+
+def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves():
+    from zeno_skills.skill_plans import plan_flip
+    q0 = _q(0.5, 0.0, 0.10)
+    flip = {"obj": "book", "support": "table", "pivot": np.array([0.6, 0.0, 0.10]), "axis": np.array([0.0, -1.0, 0.0]),
+            "release": np.radians(80.0), "past": np.radians(95.0), "push_to": np.radians(120.0), "pre_open": 0.03}
+    plan = plan_flip(FakeKin(), _state(q0, held=Held("book", np.eye(4))), flip, (np.zeros(9),))
+    assert isinstance(plan, Plan), plan
+    names = [sg.name for sg in plan.segments]
+    assert names[:4] == ["flip_arrive", "flip_arc", "flip_release", "flip_push"] and names[-1] == "flip_settle"
+    assert plan.info["arc_rad"] == pytest.approx(np.radians(80.0))              # short of past: the open hand pushes on
+    assert _named(plan, "flip_arc").spec.touch == (("table", "held"),)
+    assert _named(plan, "flip_release").action[:2] == ("grip", 0.03)
+
+
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
     out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
     assert isinstance(out, Failure) and "nothing in the hand" in out.why

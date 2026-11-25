@@ -57,7 +57,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `brace` (`skill_027`) (then) — the braced container is stirred
-- Previous step: `pour` (`skill_039`) (then) — the poured food is stirred
+- Previous step: `pour` (`skill_039`) (enables) — the poured food is stirred
 - Previous step: `uncover` (`skill_046`) (enables) — the opened pot is stirred
 - Previous step: `dip` (`skill_069`) (enables) — the utensil then stirs
 - Next step: `cover` (`skill_045`) (enables) — the pot is covered again

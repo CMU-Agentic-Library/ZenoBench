@@ -141,7 +141,7 @@
     "skill_id": "skill_028",
     "verb": "flip",
     "when": "the object is left overhanging the edge",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [

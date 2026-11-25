@@ -14,4 +14,4 @@ from .door import (DOOR_ANCHORS, DOOR_RELAY, DOOR_STAGES, DOOR_TOL, PUSH_ANCHORS
                    plan_door, plan_push)
 from .contact import (PRESS_ANCHORS, PRESS_RELAY, PRESS_STAGES, SLIDE_ANCHORS, SLIDE_RELAY, SLIDE_STAGES, SLIDE_STEP,
                       STIR_ANCHORS, STIR_RELAY, STIR_STAGES, WIPE_RELAY, WIPE_STAGES, plan_press, plan_slide, plan_stir,
-                      plan_wipe, slide_travel, stir_tcp)
+                      plan_wipe, slide_travel, stir_tcp, FLIP_STAGES, POUR_RELAY, POUR_STAGES, plan_flip, plan_pour)

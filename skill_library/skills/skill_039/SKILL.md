@@ -28,11 +28,11 @@ Loose contents of a held container must go into another container.
 
 ## Applicability
 
-Requires holding(hand=right, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source).
+Requires holding(hand=any, object=$source); base_near(place=$target); uncovered(container=$target); not container_empty(container=$source).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$target)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `uncovered(container=$target)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 - `not container_empty(container=$source)` — Must be false: No annotated object is inside the container. GT: object_pose, container_profile.
@@ -40,14 +40,14 @@ Requires holding(hand=right, object=$source); base_near(place=$target); uncovere
 ## Postconditions (verified on live GT state)
 
 - `poured_into(source=$source, target=$target)` — At least half of the items that were inside the source are now inside the target. GT: object_pose (before/after), container_profile.
-- `holding(hand=right, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `poured_into(source=$source, target=$target)` (all paths)
-- `holding(hand=right, object=$source)` (all paths)
+- `holding(hand=any, object=$source)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -58,9 +58,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `uncover` (`skill_046`) (enables) — food is poured into the opened pot
-- Previous step: `shake` (`skill_062`) (then) — loose contents are poured out
-- Next step: `place` (`skill_018`) (then) — the empty cup is put down
-- Next step: `stir` (`skill_038`) (then) — the poured food is stirred
+- Previous step: `shake` (`skill_062`) (enables) — loose contents are poured out
+- Next step: `place` (`skill_018`) (enables) — the empty cup is put down
+- Next step: `stir` (`skill_038`) (enables) — the poured food is stirred
 - Fallback on failure: `uncover` (`skill_046`) (repair, repairs uncovered) — the target has its lid on
 - Is a fallback for: `heat` (`skill_043`) (recover) — loose food sits in a held cup and the pot on the burner is the vessel to heat
 

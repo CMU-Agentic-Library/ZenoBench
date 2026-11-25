@@ -144,7 +144,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_039",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "alternative",

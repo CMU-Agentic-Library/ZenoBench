@@ -49,7 +49,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `pour` (`skill_039`) (then) — loose contents are poured out
+- Next step: `pour` (`skill_039`) (enables) — loose contents are poured out
 - Alternative: `rotate` (`skill_025`) — the orientation, not the contents, matters
 
 ## Failure

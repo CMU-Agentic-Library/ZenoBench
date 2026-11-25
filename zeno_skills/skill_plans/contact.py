@@ -524,3 +524,213 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times, "stroke_m": reached},
                 decisions=decided)
+
+
+ARC_STEP = np.radians(5.0)    # rad of a flip's / pour's arc between the task segment's checked samples (docs 2.4)
+
+
+def _arc(T0, pivot, axis):
+    """tcp(a): the TCP pose ``T0`` (4x4, world) turned by angle a about the line through ``pivot`` along the unit
+    ``axis`` -- what a hand holding a load turned about that line does (the world's frame: Still(None))."""
+    from scipy.spatial.transform import Rotation
+    T0, pivot, axis = np.asarray(T0, float), np.asarray(pivot, float), np.asarray(axis, float)
+
+    def tcp(a):
+        Rot = Rotation.from_rotvec(axis * float(a)).as_matrix()
+        T = np.eye(4)
+        T[:3, :3], T[:3, 3] = Rot @ T0[:3, :3], pivot + Rot @ (T0[:3, 3] - pivot)
+        return T
+    return tcp
+
+
+FLIP_STAGES = ("flip_arrive", "flip_arc", "flip_release", "flip_push", "flip_leave", "tuck", "flip_settle")
+FLIP_SETTLE = 150             # physics ticks the turned object settles before it is judged (the old flip's)
+
+
+def plan_flip(kin, state, flip, rest_goals, start="flip_arrive", prior=None, step=0.004):
+    """An edge-held flat object turned over by pivoting it about its far edge (HAND_PLAN 9h; the old FlipFlatPolicy):
+    flip = {obj, support (what it rests on: its far edge stays on it), pivot, axis (the far edge's line on the
+    support), release (rad: the arc goes this far at most), past (rad: past vertical -- released short of it, the open
+    hand pushes on), push_to (rad: the push's end), pre_open (m per finger)}:
+
+        flip_arrive   anchor: the base and the hold as they are
+        flip_arc      task segment: the gripped near edge up and over on the arc about the pivot, the hand turning with
+                      it, the load's tilt not held (it is the motion) and its far edge on the support (Spec.touch,
+                      "held") -- as far as the arm reaches, up to ``release`` (scripted's reach: measured)
+        flip_release  the hand opened (the fingers may touch it)
+        flip_push     released short of ``past``: the open hand on along the same arc to ``push_to``, its rotation as
+                      at the release, the fingers on the raised edge (none when past)
+        flip_leave    out of the contact back along the gripper axis, as far as contact_extent measures
+        tuck          the first free of ``rest_goals``
+        flip_settle   the object settles
+
+    The old flip's straight pushes in three lengths, its base drives and its swallowed withdraw are gone.  ``prior``,
+    ``start``: run's rebuild.  Plan or Failure; info["arc_rad"] how far the arc goes."""
+    with query(kin, state, FREE_HAND):
+        return _plan_flip(kin, state, flip, rest_goals, start, prior, step)
+
+
+def _plan_flip(kin, state, flip, rest_goals, start, prior_plan, step):
+    from ..motion_state import released
+    from ._common import held_frame
+    i0 = FLIP_STAGES.index(start)
+    side, obj, support = kin.side, flip["obj"], flip["support"]
+    held = state.held(side)
+    if held is None and i0 <= FLIP_STAGES.index("flip_arc"):
+        return Failure("nothing in the hand to flip", start)
+    on = Spec(allow=Allow(hand=side, links="fingers", touch=(obj, support), held_on=(support,),
+                          reason="flip: the held book's far edge on its support, the fingers on the book"),
+              fingers=True, exempt=False, touch=((support, "held"),))
+    open_on = Spec(allow=Allow(hand=side, links="fingers", touch=(obj, support), held_on=(),
+                               reason="flip: the open fingers push the raised edge over"),
+                   fingers=True, exempt=False, touch=((obj, "fingers"),))
+    q, s = state.q(side), state
+    segs, times = [], {}
+    reached = decisions_of(prior_plan).get("flip_arc_rad")
+    decided = {}
+    for stage in FLIP_STAGES[i0:]:
+        t0 = time.time()
+        if stage == "flip_arrive":
+            seg = anchor(stage, q, s, (obj,), side)
+        elif stage == "flip_arc":
+            p0, R0 = kin.tcp(q)
+            T0 = np.eye(4)
+            T0[:3, :3], T0[:3, 3] = R0, p0
+            script = Script(still(None), 0.0, float(flip["release"]), step=ARC_STEP,
+                            tcp=_arc(T0, flip["pivot"], flip["axis"]), carry="arm")
+            seg = scripted(kin, with_arm(s, q, side), on, script, stage, arm_step=step, reach=True)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+                reached = float(seg.info["script"].s1)
+                decided["flip_arc_rad"] = reached
+        elif stage == "flip_release":
+            seg = Segment(stage, open_on, q, kind="action", action=("grip", float(flip["pre_open"]), 50, False))
+            if held is not None:
+                s = released(s, side, held.name, held_frame(kin, q, held))
+            s = with_width(s, side, float(flip["pre_open"]))
+        elif stage == "flip_push":
+            if reached is None or reached >= float(flip["past"]):
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            p0, R0 = kin.tcp(q)
+            # the open hand's position on along the arc, its rotation kept as it let go
+            arc = _arc(np.r_[np.c_[R0, p0], [[0, 0, 0, 1]]], flip["pivot"], flip["axis"])
+
+            def tcp(a, arc=arc, R0=R0, r0=reached):
+                T = arc(a - r0)
+                T[:3, :3] = R0
+                return T
+            script = Script(still(None), float(reached), float(flip["push_to"]), step=ARC_STEP, tcp=tcp, carry="arm")
+            seg = scripted(kin, with_arm(s, q, side), open_on, script, stage, arm_step=step)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+        elif stage == "flip_leave":
+            _, R0 = kin.tcp(q)
+            seg = _contact(kin, s, Spec(allow=LEAVE_CONTACT), np.asarray(R0, float)[:, 2], "near_world", stage, step,
+                           q, steps_per_wp=3, smooth=True)
+            if not isinstance(seg, Failure) and not seg.qs:
+                times[stage] = round(time.time() - t0, 3)
+                continue
+        elif stage == "tuck":
+            seg = free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)), stage, q_from=q)
+        else:
+            seg = Segment(stage, Spec(), q, kind="action", action=("wait", FLIP_SETTLE))
+        times[stage] = round(time.time() - t0, 3)
+        if isinstance(seg, Failure):
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
+        segs.append(seg)
+        q = seg.q_end
+    return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times, "arc_rad": reached}, decisions=decided)
+
+
+POUR_STAGES = ("pour_arrive", "pour_reach", "pour_tilt", "pour_hold", "pour_untilt", "pour_back")
+POUR_RELAY = "pour_reach"     # what the park search's ranking IK solves: the pose over the target the tilt starts at
+POUR_HOLD = 180               # physics ticks the cup is held tilted (the old pour's wait)
+
+
+def plan_pour(kin, state, pour, start="pour_arrive", prior=None, step=0.004):
+    """The held cup pour["source"] poured into pour["target"] (HAND_PLAN 9h; the old PourIntoPolicy): pour = {source,
+    target, p, R (the TCP over the target the tilt starts at), pivot (the point the cup turns about: half-way from the
+    hand to its lip), axis (horizontal, across the pour), tilt (rad: at most)}:
+
+        pour_arrive  anchor: the base and the hold as they are
+        pour_reach   the free leg to (p, R), the cup's tilt held (decide_ik: _reach, no straight)
+        pour_tilt    task segment: the cup turned about the pivot, the hand with it, the load's tilt not held (it is the
+                     motion) -- as far as the arm reaches, up to ``tilt`` (scripted's reach: measured)
+        pour_hold    the contents fall out
+        pour_untilt  task segment: back the same arc to upright
+        pour_back    the free leg back to the arm's posture where the pour arrived (stir_back's rule), tilt held
+
+    The old pour's 7 tilts x 10 wrist turns tried for parks one after another, its held_vertical_move raise, its
+    re-measured pose and fallback to the planned one, and its 20-degree move_to steps are gone.  Plan or Failure;
+    info["tilt_rad"] how far it tilts."""
+    with query(kin, state, FREE_HAND):
+        return _plan_pour(kin, state, pour, start, prior, step)
+
+
+def _plan_pour(kin, state, pour, start, prior_plan, step):
+    from ._common import FREE_LOAD
+    i0 = POUR_STAGES.index(start)
+    prior = decisions_of(prior_plan)
+    side = kin.side
+    if state.held(side) is None:
+        return Failure("nothing in the hand to pour from", start)
+    p, R = np.asarray(pour["p"], float), np.asarray(pour["R"], float)
+    T0 = np.eye(4)
+    T0[:3, :3], T0[:3, 3] = R, p
+    tcp = _arc(T0, pour["pivot"], pour["axis"])
+    free = Spec(fingers=True, exempt=False)          # a load turned on purpose: its tilt not held
+    q, s = state.q(side), state
+    back = prior.get("pour_back")
+    reached = prior.get("pour_tilt_rad")
+    segs, decided, times = [], {}, {}
+    if i0 == 0:
+        back = np.asarray(q, float).copy()
+    if back is not None:
+        decided["pour_back"] = np.asarray(back, float)
+    for stage in POUR_STAGES[i0:]:
+        t0 = time.time()
+        kept = _kept(kin, s, q, prior_plan, stage) if stage != "pour_back" else None
+        if stage == "pour_arrive":
+            seg = anchor(stage, q, s, (pour["source"],), side)
+        elif stage == "pour_reach":
+            seg = kept or _reach(kin, s, FREE_LOAD, p, R, np.array([0.0, 0.0, -1.0]), 0.0, q,
+                                 prior.get(stage), stage, step)
+            if not isinstance(seg, Failure) and seg.qs:
+                decided[stage] = seg.q_end
+        elif stage == "pour_tilt":
+            script = Script(still(None), 0.0, float(pour["tilt"]), step=ARC_STEP, tcp=tcp, carry="arm")
+            seg = kept or scripted(kin, with_arm(s, q, side), free, script, stage, arm_step=step, reach=True)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=5, smooth=True)
+            if not isinstance(seg, Failure):
+                reached = float(seg.info["script"].s1)
+                decided["pour_tilt_rad"] = reached
+        elif stage == "pour_hold":
+            seg = Segment(stage, Spec(), q, kind="action", action=("wait", POUR_HOLD))
+        elif stage == "pour_untilt":
+            if not reached:
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            # back the same arc from where the tilt left the hand (its pose, not the tilt's planned end)
+            pq, Rq = kin.tcp(q)
+            Tq = np.eye(4)
+            Tq[:3, :3], Tq[:3, 3] = Rq, pq
+            script = Script(still(None), 0.0, -float(reached), step=ARC_STEP, tcp=_arc(Tq, pour["pivot"], pour["axis"]),
+                            carry="arm")
+            seg = kept or scripted(kin, with_arm(s, q, side), free, script, stage, arm_step=step)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=6, smooth=True)
+        else:
+            if back is None:
+                return Failure("no posture to go back to (the pour's arrival not in its plan)", stage,
+                               {"stage_s": times})
+            seg = free_leg(kin, s, FREE_LOAD, JointSet((np.asarray(back, float),)), stage, q_from=q)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+        times[stage] = round(time.time() - t0, 3)
+        if isinstance(seg, Failure):
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
+        segs.append(seg)
+        q = seg.q_end
+    return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times, "tilt_rad": reached}, decisions=decided)

@@ -30,7 +30,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    }
   },
@@ -65,7 +65,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    }
   }
@@ -73,10 +73,10 @@
  "invalidates": [],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$source)",
+   "predicate": "holding(hand=any, object=$source)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    },
    "negated": false,
@@ -160,10 +160,10 @@
    "scope": "all paths"
   },
   {
-   "predicate": "holding(hand=right, object=$source)",
+   "predicate": "holding(hand=any, object=$source)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$source"
    },
    "negated": false,
@@ -238,7 +238,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_018",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "sequence",
@@ -249,7 +249,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_038",
-   "sequence_type": "then"
+   "sequence_type": "enables"
   },
   {
    "kind": "fallback",

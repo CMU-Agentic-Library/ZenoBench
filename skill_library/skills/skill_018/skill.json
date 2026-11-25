@@ -672,7 +672,7 @@
     "skill_id": "skill_039",
     "verb": "pour",
     "when": "the empty cup is put down",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_040",

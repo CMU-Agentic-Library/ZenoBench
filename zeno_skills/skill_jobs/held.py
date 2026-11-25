@@ -435,3 +435,77 @@ def shake_job(rig, args, state, skill=None):
         rig.log("shake_result", obj=name, cycles=cycles)
         return {"cycles": cycles}
     return _gesture_job(rig, "shake", side, build, done)
+
+
+FLIP_RELEASE = math.radians(105.0)   # rad: the flip's arc goes this far at most (the old release_deg)
+FLIP_PAST = math.radians(95.0)       # rad: past vertical -- the old PAST_VERTICAL_DEG
+FLIP_PUSH_TO = math.radians(120.0)   # rad: the open hand's push ends here (the old release + 15 deg)
+FLIP_MIN = math.radians(60.0)        # rad: an arc shorter than this cannot turn it (the old check) -- a park whose
+#                                      arm turns it less is rejected in the build
+
+
+def flip_job(rig, args, state, skill=None):
+    """motion_skills.Job of flip (HAND_PLAN 9h): what a hand holds by its edge (``args["name"]``, an edge pinch, picked
+    from an overhang) turned over where the robot stands -- the pivot its far edge on the support along the approach,
+    the arc about it (skill_plans.plan_flip); an arm that turns it less than FLIP_MIN fails the build.  done(): its up
+    axis points down (SkillFailure otherwise), the arc returned."""
+    from ..motion_skills import Job
+    from ..evaluator import quat_R
+    from ..policies.contact import _room_along
+    from ..skill_plans import plan_flip as _default
+    plan_flip = skill.build if skill is not None else _default
+    name = args["name"]
+    side, kin = _held(rig, name, "flip")
+    held = rig.held_by(side)
+    if held.get("kind") != "edge":
+        raise SkillFailure(f"flip {name}: needs an edge pinch (pick it from an overhang first)")
+    st = rig.state()
+    _, R0 = kin.tcp(rig.chain_q(side))
+    a = -np.asarray(R0, float)[:, 2]
+    a = np.array([a[0], a[1], 0.0])
+    a /= max(1e-9, float(np.linalg.norm(a)))
+    size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
+    Rb = quat_R(rig.obj_pose(name)[1])
+    length = float(np.abs(Rb[:2, :2].T @ a[:2]) @ size[:2])
+    bottom = np.asarray(rig.geo.bottom(name, st), float)
+    pivot = np.r_[bottom[:2] + a[:2] * length / 2, bottom[2]]
+    # held, it is lifted off its support: the highest annotated one under its footprint, no higher than its bottom
+    s = rig.geo.support_under(name, st) or max(
+        (x for x in rig.ann.supports if x["aabb_xy"][0] <= bottom[0] <= x["aabb_xy"][2]
+         and x["aabb_xy"][1] <= bottom[1] <= x["aabb_xy"][3] and x["z"] <= bottom[2] + 0.01),
+        key=lambda x: x["z"], default=None)
+    if s is None:
+        raise SkillFailure(f"flip {name}: not over an annotated support")
+    if _room_along(rig, name, s, a[:2]) < length * 0.9:
+        raise SkillFailure(f"flip {name}: no room on {s['name']} to land it turned over")
+    k = np.cross(-a, [0.0, 0.0, 1.0])
+    k /= np.linalg.norm(k)
+    flip = {"obj": name, "support": s.get("furniture") or s["name"].split("/")[0], "pivot": pivot, "axis": k,
+            "release": FLIP_RELEASE, "past": FLIP_PAST, "push_to": FLIP_PUSH_TO,
+            "pre_open": float(held.get("pre_open", 0.04))}
+    z0 = Rb[:, 2].copy()
+    rests = (kin.rest, kin.drive)
+    ctx = {}
+
+    def build(st_, frm=None, prior=None):
+        plan = plan_flip(kin, st_, flip, rests, start=frm or "flip_arrive", prior=prior)
+        if frm in (None, "flip_arrive") and not isinstance(plan, Failure) and (plan.info.get("arc_rad") or 0.0) < FLIP_MIN:
+            return Failure(f"the arm turns it only {math.degrees(plan.info.get('arc_rad') or 0.0):.0f} deg", "flip_arc")
+        return plan
+
+    def ready(found):
+        plan = build(_observe(rig))
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"flip {name}: {plan.why}")
+        ctx["arc"] = plan.info.get("arc_rad")
+        return plan, build, {"flip_release": {"after": lambda r: r.set_held(side, None)}}
+
+    def done():
+        z1 = quat_R(rig.obj_pose(name)[1])[:, 2]
+        dot = float(z0 @ z1)
+        rig.log("flip_result", obj=name, hand=side, arc_deg=round(math.degrees(ctx.get("arc") or 0.0), 1),
+                z_dot=round(dot, 3))
+        if dot > -0.7:
+            raise SkillFailure(f"flip {name}: not turned over (z dot {dot:.2f})")
+        return math.degrees(ctx.get("arc") or 0.0)
+    return Job(ready=ready, done=done)

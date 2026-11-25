@@ -188,46 +188,6 @@ def right_hand_only(rig, name, verb):
                            f"migrated (docs/motion/HAND_PLAN.md)")
 
 
-def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True):
-    """Move the held object up (or down) by dz at the current base.  Straight
-    up when the arm allows; otherwise from a staging point pulled toward the
-    body (an arm stretched out after a far pick has no vertical range left)."""
-    tcp, R = rig.kin.tcp(rig.q_cmd)
-    R_goal = R if R_goal is None else R_goal
-    x, y, _ = rig.base_pose()
-    toward = np.array([x, y]) - tcp[:2]
-    dist = float(np.linalg.norm(toward))
-    unit = toward / dist if dist > 1e-6 else np.zeros(2)
-    last = None
-    for pull in ((0.0, 0.08, 0.15, 0.22, 0.30) if allow_pull else (0.0,)):
-        pull = min(pull, max(0.0, dist - 0.30))
-        goal = tcp + np.r_[unit * pull, dz]
-        q_goal, ok = rig.kin.ik_global(goal, R_goal, seeds=[rig.q_cmd])
-        # a held load must not ride a big arm reconfiguration (a 12 s swing
-        # to another IK branch flung a mug 4 m across the kitchen)
-        if not ok or float(np.max(np.abs(np.asarray(q_goal) - rig.q_cmd))) > 1.2:
-            continue
-        stage = tcp + np.r_[unit * pull, max(0.0, dz) * 0.3]
-        if pull > 0:
-            q_stage, ok = rig.kin.ik_global(stage, R, seeds=[rig.q_cmd])
-            if not ok or float(np.max(np.abs(np.asarray(q_stage) - rig.q_cmd))) > 1.0:
-                continue
-        try:
-            if pull > 0:
-                rig.move_to(stage, R, step=step, steps_per_wp=5,
-                            label=f"{label}_stage", allow=FREE_ELSE_STRAIGHT, smooth=True, q_hint=q_stage)
-                check_held(rig, f"{label}_stage")
-            rig.move_to(goal, R_goal, step=step, steps_per_wp=5, label=label, allow=FREE_ELSE_STRAIGHT, smooth=True)
-            check_held(rig, label)
-            return goal
-        except SkillFailure as exc:
-            last = exc
-            if rig.held is None:
-                raise
-            tcp, R = rig.kin.tcp(rig.q_cmd)
-    raise last or SkillFailure(f"{label}: no IK for a {dz:+.2f} m vertical move from any staging point")
-
-
 def check_left_held(rig, label):
     """check_held of the left hand (kept for its callers)."""
     check_held(rig, label, side="left")

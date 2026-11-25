@@ -1016,7 +1016,7 @@
    "to": "skill_033",
    "to_verb": "center",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is left overhanging the edge",
    "bind": {
     "object": "$object"
@@ -1325,7 +1325,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the empty cup is put down",
    "bind": {
     "object": "$source"
@@ -1339,7 +1339,7 @@
    "to": "skill_038",
    "to_verb": "stir",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the poured food is stirred",
    "bind": {
     "container": "$target"
@@ -2099,7 +2099,7 @@
    "to": "skill_039",
    "to_verb": "pour",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "loose contents are poured out",
    "bind": {
     "source": "$object"
