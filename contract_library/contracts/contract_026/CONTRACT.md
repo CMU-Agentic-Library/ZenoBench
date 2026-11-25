@@ -1,6 +1,6 @@
 # contract_026 — Place a held object
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
+Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
 
 Paired SkillNode: `skill_018` (`place-object`).
 
@@ -8,7 +8,6 @@ Paired SkillNode: `skill_018` (`place-object`).
 
 - [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$receptacle)` — GT: base_pose, scene_annotation
-- [path microwave_staged] `is_open(articulated=kitchen_microwave)` — GT: articulation_joint, articulation_annotation
 - [path microwave] `is_open(articulated=kitchen_microwave)` — GT: articulation_joint, articulation_annotation
 - [path cabinet_or_fridge_shelf] `is_open(articulated=@receptacle.appliance)` — GT: articulation_joint, articulation_annotation
 - [path container] `uncovered(container=$receptacle)` — GT: object_pose, container_profile, asset_tags
@@ -16,8 +15,6 @@ Paired SkillNode: `skill_018` (`place-object`).
 ## Verifier
 
 - [all paths] `not holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
-- [path microwave_staged] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
-- [path microwave_staged] `in_appliance(object=$object, appliance=kitchen_microwave)` — GT: object_pose, appliance_annotation
 - [path microwave] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
 - [path microwave] `in_appliance(object=$object, appliance=kitchen_microwave)` — GT: object_pose, appliance_annotation
 - [path cabinet_or_fridge_shelf] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
@@ -30,8 +27,7 @@ Paired SkillNode: `skill_018` (`place-object`).
 
 ## Policy paths
 
-- `microwave_staged` when receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch': `policy_018($object, $receptacle)` -> `policy_019($object)` -> `policy_020($object)`
-- `microwave` when receptacle.kind == 'support' and receptacle.is_microwave_cavity: `policy_021($object, $receptacle)`
+- `microwave` when receptacle.kind == 'support' and receptacle.is_microwave_cavity: `policy_015($object, $receptacle, hint=$hint_xy)`
 - `cabinet_or_fridge_shelf` when receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance: `policy_015($object, $receptacle, hint=$hint_xy)`
 - `container` when receptacle.kind == 'object': `policy_016($object, $receptacle)`
 - `on_the_move` when receptacle.kind == 'support' and args.pass_by: `policy_053($object, $receptacle, $pass_by, xy=$hint_xy)`

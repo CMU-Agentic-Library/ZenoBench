@@ -119,6 +119,35 @@ def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
     assert pull.spec.allow.touch == ("cup",) and pull.spec.allow.links == "fingers"
 
 
+def test_a_place_in_a_cavity_pulls_out_only_off_the_load_then_leaves_through_the_opening(monkeypatch):
+    # the cup's box frame at the TCP, its box 4 cm above it: let go it falls LEAVE_GAP -- the pull-out (up, the
+    # gripper axis) only as far as the fingertips need to pass its top by LEAVE_MARGIN, not a finger's length;
+    # then out of the cavity (open towards +x at x = 0.6) as far as the arm's spheres inside need
+    from zeno_skills.kinematics import finger_model_box
+    from zeno_skills.tolerances import LEAVE_GAP, LEAVE_MARGIN
+    q_p = _q(0.5, 0.0, 0.10)
+    r = 0.02
+    monkeypatch.setattr(P, "robot_spheres", lambda kin, state, spec, q: [[*kin.tcp(q)[0], r, 0.0, "gripper_link"]])
+    cavity = {"box": (0.2, -0.2, 0.0, 0.6, 0.2, 0.5), "out": (1.0, 0.0),
+              "load": (np.array([-0.03, -0.03, -0.05]), np.array([0.03, 0.03, 0.04]))}
+    plan = plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.03,
+                      0.07, (np.zeros(9),), prior={"place_reach": q_p}, obj="cup", cavity=cavity)
+    assert isinstance(plan, Plan), plan
+    names = [sg.name for sg in plan.segments]
+    assert names[names.index("place_pull_out"):] == ["place_pull_out", "place_exit", "tuck", "place_settle"]
+    pull, out = _named(plan, "place_pull_out"), _named(plan, "place_exit")
+    rise = pull.q_end[2] - pull.q_from[2]
+    assert rise == pytest.approx(0.04 - LEAVE_GAP + finger_model_box()[3] + LEAVE_MARGIN, abs=1e-6)
+    assert out.q_end[0] == pytest.approx(0.6 + r + LEAVE_MARGIN, abs=1e-6)
+    assert np.allclose(out.q_end[1:3], pull.q_end[1:3])                 # horizontal, out of the opening
+    # in the open: a finger's length up, no exit
+    plain = plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.03,
+                       0.07, (np.zeros(9),), prior={"place_reach": q_p}, obj="cup")
+    assert "place_exit" not in [sg.name for sg in plain.segments]
+    p = _named(plain, "place_pull_out")
+    assert p.q_end[2] - p.q_from[2] == pytest.approx(0.07, abs=1e-6)
+
+
 def test_an_edge_place_moves_its_open_pads_clear_of_the_load_only_as_far_as_needed():
     # the book's box frame at the TCP, its box 1 cm off along the closing axis (Y_link); the hand opens 4 cm a
     # finger.  A thin book (half 2.2 cm along Y): both pads clear it by EDGE_PAD_CLEAR already -- no move.
@@ -567,7 +596,7 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
         return Plan(())
 
     def plan_place_(kin, state, goal, pre_open, out_len, rest_goals, start="place_reach", prior=None, step=0.003,
-                    obj=None, on=None, edge_box=None):
+                    obj=None, on=None, edge_box=None, cavity=None):
         calls.append(("place", goal, start, prior, on))
         return Plan(())
     found = Plan((Segment("pick_grasp", Spec(), np.zeros(9)),))

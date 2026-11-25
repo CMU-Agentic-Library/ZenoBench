@@ -118,37 +118,30 @@ class EdgePlacePolicy(AtomicPolicy):
         return skills.place(self.rig, name, support, hint)
 
 
-class MicrowavePlacePolicy(AtomicPolicy):
-    """Insert a held item through the front of the microwave cavity."""
+class _RetiredCavity(AtomicPolicy):
+    """The old microwave set-down (hand-written parks and front point, insert / release / withdraw as calls of
+    their own): the microwave's floor is a support behind a door like a cabinet's shelf now, set down by place's
+    one path (policy_015, skill_plans.plan_place; docs 9.3 step 8c) -- retired (skill_library/check.py), the id
+    kept."""
 
-    def execute(self, name, support="kitchen_microwave/inside_floor"):
-        if self.rig.ann.support(support).get("furniture") != "kitchen_microwave":
-            raise SkillFailure(f"microwave place: {support} is not a microwave support")
-        skills.right_hand_only(self.rig, name, "place into the microwave")     # the old cavity code (HAND_PLAN 9d)
-        return skills.place_microwave(self.rig, name, support)
-
-
-class MicrowaveCavityInsertPolicy(AtomicPolicy):
-    """Move a held object through the microwave's front opening without releasing it."""
-
-    def execute(self, name, support="kitchen_microwave/inside_floor"):
-        if self.rig.ann.support(support).get("furniture") != "kitchen_microwave":
-            raise SkillFailure(f"microwave insert: {support} is not a microwave support")
-        return skills.insert_microwave_cavity(self.rig, name, support)
+    def execute(self, *args, **kwargs):
+        raise SkillFailure(f"{type(self).__name__} is retired: place into the microwave with place (policy_015)")
 
 
-class MicrowaveCavityReleasePolicy(AtomicPolicy):
-    """Open the fingers only after a measured cavity insertion."""
-
-    def execute(self, name):
-        return skills.release_microwave_cavity(self.rig, name)
+class MicrowavePlacePolicy(_RetiredCavity):
+    """Retired (policy_021)."""
 
 
-class MicrowaveCavityWithdrawPolicy(AtomicPolicy):
-    """Withdraw from a released object and check its final cavity support."""
+class MicrowaveCavityInsertPolicy(_RetiredCavity):
+    """Retired (policy_018)."""
 
-    def execute(self, name):
-        return skills.withdraw_microwave_cavity(self.rig, name)
+
+class MicrowaveCavityReleasePolicy(_RetiredCavity):
+    """Retired (policy_019)."""
+
+
+class MicrowaveCavityWithdrawPolicy(_RetiredCavity):
+    """Retired (policy_020)."""
 
 
 class PushPolicy(AtomicPolicy):

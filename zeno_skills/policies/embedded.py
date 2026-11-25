@@ -205,106 +205,12 @@ class ReleaseArticulatedHandlePolicy(AtomicPolicy):
 
 
 class PickFromCavityPolicy(AtomicPolicy):
-    """Pick an object in an open annotated cavity, then withdraw beyond its mouth."""
+    """Retired (policy_048): picked back out of the microwave through the arm pose its old set-down recorded.
+    The cavity is a support behind a door like a cabinet's, picked by pick's one path (policy_061,
+    skill_plans.plan_pick; docs 9.3 step 8d)."""
 
-    def execute(self, name, cavity="kitchen_microwave", *, max_candidates=12):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("pick from cavity: right hand is occupied")
-        art = rig.ann.art(cavity)
-        bounds = art.get("cavity_aabb")
-        if bounds is None:
-            raise SkillFailure(f"pick from cavity: {cavity} has no cavity annotation")
-        pos, _ = rig.obj_pose(name)
-        if not all(bounds[i] < pos[i] < bounds[i+3] for i in range(3)):
-            raise SkillFailure(f"pick from cavity: {name} is outside {cavity}")
-        from ..predicates import OPEN_ENOUGH, _art_open
-        if _art_open(rig, cavity)[0] < OPEN_ENOUGH:
-            raise SkillFailure(f"pick from cavity: {cavity} is closed")
-        outward = np.asarray(art.get("handle", {}).get("outward", [0, -1, 0]), float)
-        axis = int(np.argmax(np.abs(outward[:2])))
-        sign = float(np.sign(outward[axis]))
-        if sign == 0:
-            raise SkillFailure(f"pick from cavity: {cavity} has no annotated front direction")
-        stage = getattr(rig, "_microwave_retrieval_stage", None)
-        if stage and stage.get("name") == name and stage.get("phase") == "released":
-            # Reverse the measured insertion approach. Generic rim samples can
-            # be unreachable through the narrow open door even when the pose
-            # that loaded this exact object is reachable.
-            rig.kin.coll_kw = {"ignore_fingers": True}
-            skills.relocate(rig, tuple(stage["release_base"]),
-                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()))],
-                            label="cavity_return_safe", speed=0.12)
-            rig.sync_world()
-            before, _ = rig.obj_pose(name)
-            target = stage["release_tcp"] + before-stage["release_body"]
-            R = stage["R"]
-            rig.grip(stage["pre_open"], 40)
-            front_err = rig.move_to(target+np.array([0, -0.10, 0.06]), R,
-                                    label="cavity_pick_front", allow=FREE_ELSE_STRAIGHT)
-            if front_err > 0.02:
-                raise SkillFailure(f"pick from cavity {name}: front approach missed by {front_err:.3f} m")
-            above_err = rig.move_to(target+np.array([0, 0, 0.045]), R,
-                                    label="cavity_pick_above", allow=FREE_ELSE_STRAIGHT)
-            if above_err > 0.20:
-                raise SkillFailure(f"pick from cavity {name}: upper approach missed by {above_err:.3f} m")
-            if above_err > 0.02:
-                rig.log("cavity_intermediate_tracking", obj=name,
-                        tcp_error_m=round(float(above_err), 4))
-            err = rig.move_to(target, R, step=0.003, steps_per_wp=5,
-                              label="cavity_pick_contact", allow=LEGACY)
-            if err > 0.02:
-                # A measured insertion-reversal pose may be kinematically valid
-                # yet blocked by the shell in dynamics. Replan a different
-                # annotated rim contact before attempting to close the fingers.
-                rig.log("cavity_retrieval_replan", obj=name,
-                        contact_error_m=round(float(err), 4))
-                result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
-                body, _ = rig.obj_pose(name)
-                mouth = bounds[axis] if sign < 0 else bounds[axis+3]
-                if rig.held is None or rig.held["name"] != name or sign*(body[axis]-mouth) < 0.02:
-                    raise SkillFailure(f"pick from cavity {name}: fallback did not withdraw through the front")
-                skills.check_held(rig, "pick_from_cavity_replan")
-                return result
-            fingers = rig.grip(0.0, PHYSICS_HZ)
-            rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
-                        steps_per_wp=5, label="cavity_pick_lift", allow=lifting(name))
-            rig.step(40)
-            after, _ = rig.obj_pose(name)
-            if after[2]-before[2] < 0.015 or fingers.min() < 0.003:
-                raise SkillFailure(f"pick from cavity {name}: did not lift after contact")
-            tcp, actual_R = rig.kin.tcp(rig.q())
-            rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp-after,
-                        "R": actual_R, "pre_open": stage["pre_open"]}
-            # the whole bowl must leave the cavity (centre 1.8 cm past the mouth
-            # left half of it inside; the carry then knocked it out of the pinch)
-            clear = 0.5*float(max(rig.ann.asset_of(rig.ann.objects[name])["size"][:2])) + 0.02
-            for y in (bounds[1]-0.10, bounds[1]-0.16, bounds[1]-0.23, bounds[1]-0.30):
-                tcp, _ = rig.kin.tcp(rig.q())
-                front = tcp.copy()
-                front[1] = y
-                try:
-                    rig.move_to(front, actual_R, label="cavity_pick_withdraw")
-                except SkillFailure as exc:
-                    if rig.held is None:
-                        raise
-                    rig.log("cavity_withdraw_short", y=round(float(y), 3), reason=str(exc))
-                    continue
-                skills.check_held(rig, "cavity_pick_withdraw")
-                body, _ = rig.obj_pose(name)
-                rig.log("cavity_withdraw_check", obj=name,
-                        body=body.round(3).tolist(), mouth=float(bounds[1]))
-                if body[1] < bounds[1]-clear:
-                    break
-            result = True
-        else:
-            result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
-        pos, _ = rig.obj_pose(name)
-        mouth = bounds[axis] if sign < 0 else bounds[axis+3]
-        if rig.held is None or rig.held["name"] != name or sign*(pos[axis]-mouth) < 0.015:
-            raise SkillFailure(f"pick from cavity {name}: did not withdraw through the front")
-        skills.check_held(rig, "pick_from_cavity")
-        return result
+    def execute(self, name, cavity="kitchen_microwave", **kwargs):
+        raise SkillFailure("PickFromCavityPolicy is retired: pick from the microwave with pick (policy_061)")
 
 
 class OpenRevoluteDoorPolicy(AtomicPolicy):

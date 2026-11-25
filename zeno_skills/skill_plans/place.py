@@ -13,7 +13,7 @@ from ..tolerances import EDGE_PAD_CLEAR, LEAVE_GAP, NUMERIC_M, PLACE_TOL
 from ._common import FREE_HAND, built_so_far, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
 PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_clear",
-                "place_pull_out", "tuck", "place_settle")
+                "place_pull_out", "place_exit", "tuck", "place_settle")
 PLACE_ANCHORS = ("place_arrive", "place_landed")   # the base and the hold as they are; where it landed (docs 8.2)
 PLACE_RELAY = "place_reach"   # the decision the park search's ranking IK solves for (park_search.Problem.relay)
 # PLACE_TOL (m, rad): the set-down's start and end may come further off their pose than when built
@@ -51,7 +51,7 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
 
 
 def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arrive", prior=None,
-               step=0.003, obj=None, on=None, edge_box=None):
+               step=0.003, obj=None, on=None, edge_box=None, cavity=None):
     """The set-down of what the hand holds with its box frame at the world pose ``goal`` (4x4) from
     ``state``: the set-down pose (p, R) the TCP that puts it there through the hold the State has
     (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The anchor where
@@ -74,10 +74,16 @@ def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arr
     thickness, the fingers above and below it) -- the load's box (lo, hi) in its box frame: after it
     landed the open pads are moved along their closing axis only as far as they need to clear it by
     EDGE_PAD_CLEAR (place_clear: it fell the gap, the hand did not), and neither they nor the
-    pull-out may touch it, a touch drags it back out with the hand.  From ``start`` on.  Plan (its decisions) or Failure, info["stage_s"] the time per
+    pull-out may touch it, a touch drags it back out with the hand.  ``cavity``: a support inside a cavity
+    closed on five sides (a microwave's: annotated cavity_aabb), {"box": its world aabb (6), "out": the unit
+    horizontal out of its opening, "load": the load's box (lo, hi) in its box frame} -- the pull-out goes only
+    as far as the fingertips need to clear the load (_off_load: a finger's length rose into the cavity's
+    ceiling, HAND_PLAN 9d), then place_exit takes the hand out through the opening (_out_of_cavity) before
+    the tuck, which could not be planned from inside (cuRobo TRAJOPT, 14 of 26 builds).  From ``start`` on.  Plan (its decisions) or Failure, info["stage_s"] the time per
     stage."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj, on, edge_box)
+        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj, on, edge_box,
+                           cavity)
 
 
 def release_spec(side, obj, on=None):
@@ -120,8 +126,48 @@ def _pads_clear(kin, state, q, obj, box, name):
     return seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
 
 
+def _off_load(kin, state, q, obj, u, box):
+    """m along the unit ``u`` (back along the gripper axis) the TCP at ``q`` goes until the fingertips (the
+    planner's finger, finger_model_box: their tips below the TCP) stand LEAVE_MARGIN past the top of
+    ``obj``'s box (lo, hi) in its box frame along u, the load as the State has it -- 0 when they are past
+    it already; None without the load in the State."""
+    from ..kinematics import finger_model_box
+    from ..tolerances import LEAVE_MARGIN
+    T = state.objects.get(obj)
+    if T is None:
+        return None
+    T = np.asarray(T, float)
+    lo, hi = (np.asarray(v, float) for v in box)
+    corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+    top = float(np.max((corners @ T[:3, :3].T + T[:3, 3]) @ u))
+    tips = float(kin.tcp(q)[0] @ u) - finger_model_box()[3]
+    return max(0.0, top - tips) + LEAVE_MARGIN
+
+
+def _out_of_cavity(kin, state, q, cavity, name):
+    """The straight out of ``cavity``'s opening (plan_place), horizontal along cavity["out"], as long as the
+    arm's collision spheres inside the cavity's box need to pass its open face by LEAVE_MARGIN (their
+    radius included) -- the hand at ``q``, checked (FREE_HAND).  None: nothing of the arm inside."""
+    from ..primitives import robot_spheres
+    from ..tolerances import LEAVE_MARGIN
+    b = np.asarray(cavity["box"], float)
+    o = np.r_[np.asarray(cavity["out"], float)[:2], 0.0]
+    o /= np.linalg.norm(o)
+    face = max(float(np.array([x, y, 0.0]) @ o) for x in (b[0], b[3]) for y in (b[1], b[4]))
+    need = 0.0
+    for x, y, z, r, *_ in robot_spheres(kin, state, FREE_HAND, q):
+        c = np.array([x, y, z])
+        if np.all(c > b[:3] - r) and np.all(c < b[3:] + r):
+            need = max(need, face - float(c @ o) + r)
+    if need <= 0.0:
+        return None
+    p, R = kin.tcp(q)
+    seg = straight(kin, state, FREE_HAND, p + (need + LEAVE_MARGIN) * o, R, name, step=0.004, q_from=q)
+    return seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
+
+
 def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None, on=None,
-                edge_box=None):
+                edge_box=None, cavity=None):
     i0 = PLACE_STAGES.index(start)
     prior = decisions_of(prior_plan)
     q = state.q(kin.side)
@@ -195,8 +241,15 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
             p0, R0 = kin.tcp(q)
             u = (R if R is not None else R0)[:, 2]
             spec = FREE_HAND if edge_box is not None else release_spec(kin.side, obj)
-            seg = kept or straight(kin, s, spec, p0 + out_len * u, R0, stage, step=0.004, q_from=q)
+            L = out_len if cavity is None else _off_load(kin, s, q, obj, u, cavity["load"])
+            L = out_len if L is None else L
+            seg = kept or straight(kin, s, spec, p0 + L * u, R0, stage, step=0.004, q_from=q)
             seg = seg if isinstance(seg, Failure) or kept else _move(seg, steps_per_wp=3, smooth=True)
+        elif stage == "place_exit":
+            seg = None if cavity is None else (kept or _out_of_cavity(kin, s, q, cavity, stage))
+            if seg is None:                     # in the open, or nothing of the arm inside the cavity
+                times[stage] = round(time.time() - t0, 3)
+                continue
         elif stage == "tuck":   # the first free of the fold, hanging -- made again whenever it is built,
             # never kept: the last motion, it binds no segment after it (docs 8.1), and the fold is
             # preferred whenever free (a kept one would ride on what was free when it was built)

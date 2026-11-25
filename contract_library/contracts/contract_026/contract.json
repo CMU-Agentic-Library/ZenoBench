@@ -6,7 +6,7 @@
  "verb": "place",
  "noun": "object",
  "name": "Place a held object",
- "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
+ "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -121,22 +121,6 @@
     "articulation_annotation"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "path microwave_staged"
-  },
-  {
-   "predicate": "is_open(articulated=kitchen_microwave)",
-   "name": "is_open",
-   "args": {
-    "articulated": "kitchen_microwave"
-   },
-   "negated": false,
-   "meaning": "Joint at least 60 % of the way from closed to its annotated open value.",
-   "kind": "fluent",
-   "gt_sources": [
-    "articulation_joint",
-    "articulation_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "path microwave"
   },
   {
@@ -192,41 +176,6 @@
    ],
    "checked": "after the policy chain on live GT state; the action is reported only if true",
    "scope": "all paths"
-  },
-  {
-   "predicate": "on(object=$object, support=$receptacle)",
-   "name": "on",
-   "args": {
-    "object": "$object",
-    "support": "$receptacle"
-   },
-   "negated": false,
-   "meaning": "Object bottom within -2..+5 cm of the support height with its centre over the support box.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "asset_annotation",
-    "support_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true",
-   "scope": "path microwave_staged"
-  },
-  {
-   "predicate": "in_appliance(object=$object, appliance=kitchen_microwave)",
-   "name": "in_appliance",
-   "args": {
-    "object": "$object",
-    "appliance": "kitchen_microwave"
-   },
-   "negated": false,
-   "meaning": "Object centre inside the appliance cavity box (microwave) or body box (refrigerator).",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "appliance_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true",
-   "scope": "path microwave_staged"
   },
   {
    "predicate": "on(object=$object, support=$receptacle)",
@@ -419,78 +368,6 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
-    "path_id": "microwave_staged",
-    "when": [
-     {
-      "noun": "receptacle",
-      "field": "kind",
-      "op": "equals",
-      "value": "support"
-     },
-     {
-      "noun": "receptacle",
-      "field": "is_microwave_cavity",
-      "op": "truthy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "right_kind",
-      "op": "equals",
-      "value": "pinch"
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_018",
-      "args": [
-       "$object",
-       "$receptacle"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_019",
-      "args": [
-       "$object"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_020",
-      "args": [
-       "$object"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [
-     {
-      "pred": "is_open",
-      "args": {
-       "articulated": "kitchen_microwave"
-      }
-     }
-    ],
-    "ensures": [
-     {
-      "pred": "on",
-      "args": {
-       "object": "$object",
-       "support": "$receptacle"
-      }
-     },
-     {
-      "pred": "in_appliance",
-      "args": {
-       "object": "$object",
-       "appliance": "kitchen_microwave"
-      }
-     }
-    ],
-    "note": ""
-   },
-   {
     "path_id": "microwave",
     "when": [
      {
@@ -508,12 +385,14 @@
     ],
     "steps": [
      {
-      "policy": "policy_021",
+      "policy": "policy_015",
       "args": [
        "$object",
        "$receptacle"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hint": "$hint_xy"
+      }
      }
     ],
     "requires": [
@@ -540,7 +419,7 @@
       }
      }
     ],
-    "note": ""
+    "note": "The microwave's floor is a support behind its door: set down as on a cabinet's shelf."
    },
    {
     "path_id": "cabinet_or_fridge_shelf",

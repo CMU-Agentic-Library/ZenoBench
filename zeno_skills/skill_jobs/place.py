@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import numpy as np
 
-from ..annotations import rz
+from ..annotations import opening, rz
 from ..evaluator import quat_R, tilt_deg
 from ..kinematics import PAD_TIP
 from ..park_search import Problem
@@ -124,6 +124,9 @@ def place_job(rig, args, state, skill=None):
     # before they pull out, as far as they need (plan_place)
     open_w = float(held_d.get("pre_open", 0.04))
     edge_box = _box_extent(kin, name) if edge else None
+    # inside a cavity closed on five sides (the microwave): out through its opening before the tuck (plan_place)
+    cavity = None if door is None or not door.get("cavity_aabb") else \
+        {"box": tuple(door["cavity_aabb"]), "out": opening(door), "load": _box_extent(kin, name)}
     on = _set_down_on(s)
     rests = (kin.rest, kin.drive)
     # what plan_place takes: the pose of the object's box frame each set-down pose puts it at,
@@ -137,7 +140,7 @@ def place_job(rig, args, state, skill=None):
     # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
     def build(st, k, prior):
         return plan_place(kin, st, targets[k], open_w, pick_approach(), rests, prior=prior, step=APPROACH_STEP,
-                          obj=name, on=on, edge_box=edge_box)
+                          obj=name, on=on, edge_box=edge_box, cavity=cavity)
     # behind a door: the set-downs whose pull-out (back along the gripper axis) leaves straightest
     # through the opening built first (door_access.leave_tier; the pick behind a door takes the most
     # outward grasp first) -- else the 60 builds went on wrist turns with the hand in the back wall
@@ -170,7 +173,7 @@ def place_job(rig, args, state, skill=None):
         ctx["spot"] = goals[found.k][0]
         ctx["kind"] = held_d["kind"]
         ctx["edge"] = None if edges is None else edges[found.k]
-        return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place, edge_box, side)
+        return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place, edge_box, side, cavity)
 
     def done():
         ok = _place_result(rig, name, s, ctx["spot"], ctx["kind"], tray)
@@ -315,13 +318,13 @@ def _plan_place():
     return plan_place
 
 
-def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=None, side="right"):
+def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=None, side="right", cavity=None):
     """The place's plan to run (run.run) to set ``name`` down with its box frame at ``goal`` (the
     park search's plan: a set-down pose the hold no longer gives has run build it again,
     primitives.holds), its builder for the rest, its hooks.  Between the segments the place's own steps:
     the reach checked, the release logged and the load no longer held.  ``edge_box``: an edge hold's
     (plan_place: after it landed, as the place_landed anchor reads it, the pads moved clear of it).  ``side``:
-    the hand that sets it down (HAND_PLAN 9c)."""
+    the hand that sets it down (HAND_PLAN 9c).  ``cavity``: inside a microwave's cavity (plan_place)."""
     kin = rig.kin if side == "right" else rig.left_kin
     plan_place = plan_place or _plan_place()
     out_len, rests = pick_approach(), (kin.rest, kin.drive)
@@ -329,7 +332,7 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=Non
 
     def rebuild(state, frm, prior):
         return plan_place(kin, state, goal, open_w, out_len, rests, start=frm, prior=prior, step=APPROACH_STEP,
-                          obj=name, on=on, edge_box=edge_box)
+                          obj=name, on=on, edge_box=edge_box, cavity=cavity)
 
     def before_pull_out(rig):
         # let go, it may have settled against a finger: allowed on the pull-out, recorded -- a query

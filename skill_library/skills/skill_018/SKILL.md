@@ -1,13 +1,13 @@
 ---
 name: place-object
-description: "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past."
+description: "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past."
 ---
 
 # Place a held object (`skill_018`)
 
 `place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, near: entity_ref?, pass_by: pose2d?)`
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
+Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
 
 ## When to use
 
@@ -33,7 +33,7 @@ A held object must end up resting on a support, in a container or on a burner.
 
 ## Applicability
 
-Requires holding(hand=any, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave_staged (receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'): is_open(articulated=kitchen_microwave); microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle).
+Requires holding(hand=any, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -49,8 +49,6 @@ Requires holding(hand=any, object=$object); base_near(place=$receptacle). Depend
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `not holding(hand=any, object=$object)` (all paths)
-- `on(object=$object, support=$receptacle)` (path microwave_staged)
-- `in_appliance(object=$object, appliance=kitchen_microwave)` (path microwave_staged)
 - `on(object=$object, support=$receptacle)` (path microwave)
 - `in_appliance(object=$object, appliance=kitchen_microwave)` (path microwave)
 - `on(object=$object, support=$receptacle)` (path cabinet_or_fridge_shelf)
@@ -67,21 +65,13 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `microwave_staged` — when receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'
-
-1. `policy_018($object, $receptacle)`
-2. `policy_019($object)`
-3. `policy_020($object)`
-- extra precondition `is_open(articulated=kitchen_microwave)`
-- extra postcondition `on(object=$object, support=$receptacle)`
-- extra postcondition `in_appliance(object=$object, appliance=kitchen_microwave)`
-
 ### `microwave` — when receptacle.kind == 'support' and receptacle.is_microwave_cavity
 
-1. `policy_021($object, $receptacle)`
+1. `policy_015($object, $receptacle, hint=$hint_xy)`
 - extra precondition `is_open(articulated=kitchen_microwave)`
 - extra postcondition `on(object=$object, support=$receptacle)`
 - extra postcondition `in_appliance(object=$object, appliance=kitchen_microwave)`
+- The microwave's floor is a support behind its door: set down as on a cabinet's shelf.
 
 ### `cabinet_or_fridge_shelf` — when receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance
 

@@ -23,23 +23,9 @@ def test_typed_open_rejects_wrong_joint_type(monkeypatch):
         OpenPrismaticDrawerPolicy(rig).execute("cabinet")
 
 
-def test_cavity_pick_checks_open_door_and_withdrawal(monkeypatch):
-    box=[0,0,0,1,1,1]
-    pos=[0.5,0.5,0.5]
-    rig=SimpleNamespace(held=None, ann=SimpleNamespace(art=lambda name: {"cavity_aabb":box,"open_q":1.0,"closed_q":0.0}),
-                        joint=lambda name:0.75, obj_pose=lambda name:(np.array(pos),None))   # 75 % open (a fridge opens to 90 %): open
-    def pick(rig,name,max_candidates):
-        rig.held={"name":name}
-        pos[1]=-0.1
-        return True
-    monkeypatch.setattr(skills,"_pick_pinch",pick)
-    monkeypatch.setattr(skills,"check_held",lambda *a:None)
-    assert PickFromCavityPolicy(rig).execute("bowl")
-    pos[1]=0.5
-    rig.held=None
-    rig.joint=lambda name:0.0
-    with pytest.raises(SkillFailure,match="closed"):
-        PickFromCavityPolicy(rig).execute("bowl")
+def test_the_cavity_pick_is_retired_pick_takes_the_microwave_like_a_cabinet():
+    with pytest.raises(SkillFailure, match="retired"):
+        PickFromCavityPolicy(object()).execute("bowl")
 
 
 def test_release_handle_requires_recorded_grasp_and_open_fingers():

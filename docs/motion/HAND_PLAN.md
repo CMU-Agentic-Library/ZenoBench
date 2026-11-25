@@ -116,23 +116,27 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 3. **左手持物限速、搬运姿态**：直接镜像右手的值。
 4. **边走边取放**（`mobile.py`）：先放着，不在 9a–9j 里；9j 收尾时它仍走旧入口的话单独列出来。
 
-## 7. 进度（11-25 暂停时）
+## 7. 进度（11-25）
 
 | 步 | 状态 | 提交 / 位置 |
 |---|---|---|
 | 9a 持物状态按手 | 做完，检查 4/4（右手不变） | 033f3791 |
 | 9b 契约和评分（`any` / `both`） | 做完，检查 4/4（评分 best 1.0，`hand_empty(both)` 都成立） | a2288b35 |
 | 9c pick 选手 | 做完；强制左手 3/3 整集成功（T11、T04、T22，含冰箱层板） | fe321f67 |
-| 9d 微波炉腔体取放 | **没做完**，改动在 `git stash`："HAND_PLAN 9d attempt 11-25 (on fe321f67)" | `/data/zenobench/hand9d_1125`（含停车点搜索的转储） |
+| 左手放下的收臂起点碰撞（9c 的后续） | 做完：规划器按两根手指各自的实测值（`Hand.fingers`），不再都取较宽的那根；定向 5/5 | 8cba9d98 |
+| 9d 微波炉腔体取放 | 部分做完（用户 11-25：先提交，进 9e）：放入走 place，检查 2/4；microwave_works、broken_oatmeal_away 仍建不出（见下）；取出走 pick 只有单测（v6 种子 10 的路线没有从腔体取出） | 本次提交；`/data/zenobench/hand9d2_1125` |
 | 9e–9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
 
-**9d 停在哪**（`/data/zenobench/hand9d_1125`，T07 microwave_works / broken_oatmeal_away / two_portions__counter，0/3）：微波炉的放入和取出改走 pick / place（policy_015 / 061，退役 018–021、048，删旧腔体代码）以后，pick 在两集里都选了左手拿燕麦；左手放进腔体时伸入、放下、松手都建得出来了（11-24 右手卡在伸入），停车点搜索失败在最后两段：
-- 收臂：松手后左臂从腔体出来的收臂，cuRobo TRAJOPT 失败（一次搜索 10 次构造里 7 次，另 2 次两个收臂目标都碰撞）；
-- 抽出：另一次搜索 16 次构造里 6 次抽出段没有不碰撞的直线。
-取出没跑到。T07 two_portions 左手把锅放上灶时放下段差 6 mm 没到位（另一个问题，没查）。
+**左手放下的收臂起点碰撞**（v6full_1125 的 4 集由成功变失败：T01 seats_c、T14 e1_book_ready、T14 blue_book、T18 bowl_in_use__oatmeal）：State 每只手只记较宽那根手指的宽度，规划器两指都放在那里；左手 edge place 松手后两指实测 0.036 / 0.029 m（命令 0.032），模型里加宽的右指压进刚放下的书 4–5 mm，收臂起点被 cuRobo 拒绝。8cba9d98：`Rig.snapshot` 记两指各自的值（`Hand.fingers`），`with_width`（计划的张开）清掉它，`Motion.query` / `live_locks` 两个指轴各设各的。检查 `/data/zenobench/fingers_1125` 5/5（加 T29 toy_box）。T29 里还有一次左手收臂起点 4 mm 碰撞，两指读数几乎相同，是另一个原因，没查（整集恢复成功）。
 
-**接着做**：看收臂失败的那几个构造（转储里 `built` / `arms`）：左臂收臂的两个目标（`left_kin.rest`、`left_kin.drive`）在腔体前是不是本身就碰（门、控制面板），还是 cuRobo 从腔体里出来的路径找不到。前者要的是收臂之前先沿开口退出来（抽出段的方向 / 长度，或"穿过开口"的进入段反过来，3.5），后者看 cuRobo 的种子。9d 做完以前，9c 选了左手拿的东西放进微波炉会明确报错（旧腔体代码只认右手，T07 microwave_works 11-25）。
+**9d 做到哪**（11-25 第二次，`/data/zenobench/hand9d2_1125`，T07 四集）：stash 的改动（微波炉放入 / 取出改走 place / pick，退役 018–021、048，删旧腔体代码）加上 3.5 的两段，只对标注了 `cavity_aabb` 的腔体（`plan_place(cavity=...)`）：
+- 抽出的长度按模型量（`_off_load`：指尖越过放下的物体的顶 `LEAVE_MARGIN`），不是固定一个手指长；
+- 抽出之后 `place_exit`：沿开口水平出来，长度量到手臂在腔体盒子里的碰撞球都出了开口面 `LEAVE_MARGIN`（`_out_of_cavity`），再收臂。
+
+结果：microwave_holds_pot、two_portions__counter 成功（后者左手把碗放进微波炉，整集成功）；microwave_works、broken_oatmeal_away 失败（停车点搜索 7 / 15 次构造都不成）。转储：碗放在腔体最前沿，手跨在门槛外夹碗沿（手在 y 2.29–2.33，开口面 2.345），所以 `place_exit` 一次都没触发；失败在抽出（沿夹爪轴往上约 8 cm，末端左前臂 `left_arm_link_5` 进开口上方的机身框 1–2 mm）和收臂（TRAJOPT）。这两集 1125 也是失败（当时是旧代码只认右手、直接拒绝），不算回退。取出走 pick 没在仿真里跑过。
+
+**以后接着做 9d**：碗沿捏取在门后的抽出方向（现在只能沿夹爪轴往上；要么让放的目标里有夹爪轴更朝开口的，要么抽出先上到指尖过碗沿、再朝开口），以及找一集从腔体取出的场景验证 pick。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

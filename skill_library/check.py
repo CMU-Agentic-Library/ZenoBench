@@ -145,6 +145,15 @@ RETIRED_POLICIES = {
                   "2026-11-24).",
     "policy_031": "Drive the microwave's hinge with no key pressed (a door closed by no one): the door moves by its "
                   "key, open and close alike (policy_024 / 025, user 2026-11-24).",
+    "policy_018": "Carry a load into the microwave from hand-written parks and a hand-written front point: the "
+                  "microwave's floor is a support behind a door like a cabinet's shelf, set down by place's one "
+                  "path (policy_015: skill_plans.plan_place behind the door, docs 9.3 step 8c, 2026-11-24).",
+    "policy_019": "Let go of a load policy_018 carried into the microwave: place's own release (see policy_018).",
+    "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's "
+                  "own pull-out (see policy_018).",
+    "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+    "policy_048": "Pick from the microwave back through a pose policy_020 recorded: the cavity is a support behind a "
+                  "door like a cabinet's, picked by pick's one path (policy_061, docs 9.3 step 8d, 2026-11-24).",
 }
 
 NOUN_FIELDS = {
