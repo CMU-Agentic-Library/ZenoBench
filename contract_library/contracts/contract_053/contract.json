@@ -61,7 +61,7 @@
  ],
  "invalidates": [
   "uncovered($container)",
-  "holding(right,$lid)"
+  "holding(*,$lid)"
  ],
  "precheck": [
   {

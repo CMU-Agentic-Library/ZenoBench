@@ -104,7 +104,9 @@ def start_coverage(out_root):
 
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
                 images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS, profile=None,
-                track="fixed", skill_dirs=()):
+                track="fixed", skill_dirs=(), pick_hand=None):
+    """``pick_hand`` "right" / "left": a diagnostic, not for the baseline -- every pick of the route asks for that
+    hand (the pick contract's ``hands``, the task constraint of HAND_PLAN 3.2), recorded in config.json."""
     cov = start_coverage(out_root)
     from benchmark.scene import episode_config
     from episode.catalog import resolve_task
@@ -136,6 +138,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
               "tasks_file": tasks_ref(tasks_file), "benchmark_version": task.get("benchmark_version", "v2"),
               "config_hash": cfg["config_hash"], "profile": prof["name"], "profile_hash": prof["hash"],
               "profile_body": prof, "started": time.strftime("%Y-%m-%d %H:%M:%S")}
+    if pick_hand:
+        config["pick_hand"] = pick_hand                # forced: a diagnostic run, not the baseline
     if registry is not None:
         config["skill_track"] = {"track": track, "skill_dirs": [str(d) for d in skill_dirs],
                                  "fingerprint": registry.fingerprint(track),
@@ -204,10 +208,13 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                     continue                           # the oracle knows the failing call is useless (and
                                                        # skips the steps that only undo its side effects)
                 tries = 3 if planner == "retry" else 1
+                args = dict(st.get("args", {}))
+                if pick_hand and st["skill"] == "pick" and "hands" not in args:
+                    args["hands"] = pick_hand          # --pick-hand: the route's own hand constraint, forced
                 for k in range(tries):
                     t0 = time.time()
                     before = state_summary(rig, task)
-                    _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})}, internal=True)
+                    _, fb = ep.call({"contract": st["skill"], "args": args}, internal=True)
                     if task.get("auto_look") and fb["error_code"] == "NOT_IN_VIEW":
                         # probes only: an explicit look at the remembered object, then the call again
                         target = fb["error"].split("'")[1]
@@ -218,8 +225,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                         before = report["calls"][-1]["state"]
                         print("CALL", i, k, lk["action"], "OK" if lk["success"] else f"FAIL {lk['error']}",
                               "(auto look)", flush=True)
-                        _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})}, internal=True)
-                    log_row({"index": i, "try": k, "skill": st["skill"], "args": st.get("args", {}), "expect": expect,
+                        _, fb = ep.call({"contract": st["skill"], "args": args}, internal=True)
+                    log_row({"index": i, "try": k, "skill": st["skill"], "args": args, "expect": expect,
                              "role": st.get("role", ""), "note": st.get("note", ""), "feedback": fb,
                              "wall_s": round(time.time() - t0, 1), "tick": rig.tick,
                              "state_before": before, "state": state_summary(rig, task), "eval": fb.pop("eval")})
@@ -310,12 +317,14 @@ def main():
     ap.add_argument("--batch", help="JSON list of {task, seed, route?, planner?, variant?, video?}")
     ap.add_argument("--jobs", type=int, default=2)
     ap.add_argument("--no-eval", action="store_true", help="--batch: skip benchmark/evaluate.py at the end")
+    ap.add_argument("--pick-hand", choices=["right", "left"],
+                    help="diagnostic, not for the baseline: every pick of the route asks for this hand (its hands arg)")
     a = ap.parse_args()
     if a.batch:
         return run_batch(a)
     tasks = load_tasks(a.tasks)
     run_episode(tasks[a.task], a.seed, a.route, a.planner, a.variant, a.out, a.video, not a.no_images, a.policy,
-                a.difficulty, a.max_calls, a.tasks, a.profile, a.track, a.skills or ())
+                a.difficulty, a.max_calls, a.tasks, a.profile, a.track, a.skills or (), a.pick_hand)
 
 
 def run_batch(a):
@@ -330,7 +339,7 @@ def run_batch(a):
             j = queue.pop(0)
             cmd = [py, __file__, "--tasks", a.tasks, "--task", j["task"], "--seed", str(j.get("seed", 0)),
                    "--planner", j.get("planner", "scripted"), "--out", a.out]
-            for k in ("route", "variant", "policy", "difficulty", "max_calls", "profile", "track"):
+            for k in ("route", "variant", "policy", "difficulty", "max_calls", "profile", "track", "pick_hand"):
                 if j.get(k):
                     cmd += [f"--{k.replace('_', '-')}", str(j[k])]
             for d in j.get("skills", []):

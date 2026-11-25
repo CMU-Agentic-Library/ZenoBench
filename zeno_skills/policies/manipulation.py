@@ -26,43 +26,43 @@ def _require_grasp(rig, name, kind):
 class PickPolicy(AtomicPolicy):
     """Choose pinch or push-then-edge grasp from the concrete object's annotation."""
 
-    def execute(self, name, *, max_candidates=12, grasp=None):
-        return skills.pick(self.rig, name, max_candidates=max_candidates, grasp=grasp)
+    def execute(self, name, *, max_candidates=12, grasp=None, hand=None):
+        return skills.pick(self.rig, name, max_candidates=max_candidates, grasp=grasp, hand=hand)
 
 
 class TopPinchPickPolicy(AtomicPolicy):
     """Pinch an annotated top contact, e.g. a toy's body or a duck's offset top."""
 
-    def execute(self, name, *, max_candidates=12):
+    def execute(self, name, *, max_candidates=12, hand=None):
         _require_grasp(self.rig, name, "top_pinch")
-        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("top_pinch",))
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("top_pinch",), hand=hand)
 
 
 class RoundRimPickPolicy(AtomicPolicy):
     """Pinch a round vessel wall below its annotated rim, e.g. a cup or mug."""
 
-    def execute(self, name, *, max_candidates=12):
+    def execute(self, name, *, max_candidates=12, hand=None):
         _require_grasp(self.rig, name, "rim_pinch")
-        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("rim_pinch",))
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("rim_pinch",), hand=hand)
 
 
 class RectRimPickPolicy(AtomicPolicy):
     """Pinch one annotated side of a rectangular tray or box rim."""
 
-    def execute(self, name, *, max_candidates=12):
+    def execute(self, name, *, max_candidates=12, hand=None):
         _require_grasp(self.rig, name, "rim_pinch_rect")
-        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("rim_pinch_rect",))
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("rim_pinch_rect",), hand=hand)
 
 
 class EdgePickPolicy(AtomicPolicy):
     """Pinch a flat object across its thickness at a side that overhangs its support (the
     pinch flow, thickness_pinch candidates; sliding it to the edge is expose / slide_to_edge)."""
 
-    def execute(self, name, *, max_candidates=12):
+    def execute(self, name, *, max_candidates=12, hand=None):
         _require_grasp(self.rig, name, "thickness_pinch")
         if self.rig.geo.support_under(name, self.rig.state()) is None:
             raise SkillFailure(f"edge pick {name}: not on an annotated support")
-        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("thickness_pinch",))
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("thickness_pinch",), hand=hand)
 
 
 class PlacePolicy(AtomicPolicy):

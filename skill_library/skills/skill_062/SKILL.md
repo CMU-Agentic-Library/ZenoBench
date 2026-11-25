@@ -19,7 +19,7 @@ The grasp must be tested or contents shaken while holding.
 
 ## Inputs
 
-- `object` (`object_ref`): The right-held object.
+- `object` (`object_ref`): The held object (either hand).
 
 ## Applicability
 

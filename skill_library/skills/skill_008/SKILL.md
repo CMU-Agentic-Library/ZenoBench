@@ -1,13 +1,13 @@
 ---
 name: straighten-waist
-description: "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)"
+description: "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when both hands are empty.)"
 ---
 
 # Straighten the waist (`skill_008`)
 
 `straighten()`
 
-Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)
+Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when both hands are empty.)
 
 ## When to use
 

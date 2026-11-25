@@ -19,7 +19,7 @@
    "pass_by"
   ]
  },
- "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
+ "description": "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
  "use_when": "The robot must hold an object for any later hand action.",
  "not_to_be_confused_with": {
   "regrasp": "regrasp improves a grasp on an object that is already held.",
@@ -35,9 +35,11 @@
   "hands": {
    "type": "hand",
    "required": false,
-   "description": "\"both\" requests a two-handed lift for wide items.",
+   "description": "One hand by default: either, the park search's choice (\"any\"); \"right\" / \"left\" only that hand -- a task that keeps the other one for something else; \"both\" requests a two-handed lift for wide items.",
    "enum": [
+    "any",
     "right",
+    "left",
     "both"
    ]
   },
@@ -192,11 +194,10 @@
   "inside($object,*)",
   "on_top_of($object,*)",
   "on_floor($object)",
-  "hand_empty(right)",
   "grasp_clearance($object)",
   "edge_overhang($object)",
   "at_initial_place($object)",
-  "arm_stowed(right)",
+  "arm_stowed(*)",
   "in_appliance($object,*)",
   "on_burner($object,*)",
   "covered(*,$object)"
@@ -226,7 +227,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_061($object, grasp=$grasp)"
+    "policy_061($object, grasp=$grasp, hand=$hands)"
    ],
    "policies": [
     "policy_061"
@@ -243,7 +244,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_055($object)"
+    "policy_055($object, hand=$hands)"
    ],
    "policies": [
     "policy_055"
@@ -274,7 +275,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_061($object, grasp=$grasp)"
+    "policy_061($object, grasp=$grasp, hand=$hands)"
    ],
    "policies": [
     "policy_061"
@@ -440,7 +441,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_010($object)"
+    "policy_010($object, hand=$hands)"
    ],
    "policies": [
     "policy_010"
@@ -473,7 +474,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_013($object)"
+    "policy_013($object, hand=$hands)"
    ],
    "policies": [
     "policy_013"
@@ -489,7 +490,7 @@
    "extra_postconditions": [],
    "chain": [
     "policy_045($object)",
-    "policy_013($object)"
+    "policy_013($object, hand=$hands)"
    ],
    "policies": [
     "policy_013",
@@ -505,7 +506,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_012($object)"
+    "policy_012($object, hand=$hands)"
    ],
    "policies": [
     "policy_012"
@@ -536,7 +537,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_011($object)"
+    "policy_011($object, hand=$hands)"
    ],
    "policies": [
     "policy_011"
@@ -552,7 +553,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_055($object)"
+    "policy_055($object, hand=$hands)"
    ],
    "policies": [
     "policy_055"
@@ -583,7 +584,7 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_010($object)"
+    "policy_010($object, hand=$hands)"
    ],
    "policies": [
     "policy_010"
@@ -598,7 +599,7 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_061($object)"
+    "policy_061($object, hand=$hands)"
    ],
    "policies": [
     "policy_061"

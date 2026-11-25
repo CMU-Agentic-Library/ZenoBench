@@ -144,7 +144,7 @@
   ]
  },
  "invalidates": [
-  "holding(right,$object)"
+  "holding(*,$object)"
  ],
  "policy_paths": [
   {

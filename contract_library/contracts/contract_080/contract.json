@@ -12,7 +12,7 @@
   "object": {
    "type": "object_ref",
    "required": true,
-   "description": "The right-held object the spots are for (its footprint)."
+   "description": "The held object (either hand) the spots are for (its footprint)."
   },
   "support": {
    "type": "support_ref",

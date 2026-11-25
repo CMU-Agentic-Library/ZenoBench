@@ -149,7 +149,7 @@
   ]
  },
  "invalidates": [
-  "arm_stowed(right)",
+  "arm_stowed(*)",
   "reachable(*)"
  ],
  "policy_paths": [

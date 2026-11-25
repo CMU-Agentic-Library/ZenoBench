@@ -44,7 +44,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## May invalidate
 
-`holding(right,$object)`
+`holding(*,$object)`
 
 ## Policy paths (first match on the bound nouns)
 

@@ -681,7 +681,7 @@ def _watching(rig, name):
     return clear.watch(name) if clear is not None and hasattr(clear, "watch") else nullcontext()
 
 
-def pick(rig, name, max_candidates=12, grasp=None):
+def pick(rig, name, max_candidates=12, grasp=None, hand=None):
     """Pinch grasp from the asset's annotation, one flow for every kind (top, side, rim, thickness):
     a flat object wider than the gripper is pinched across its thickness at a side that overhangs
     its support -- sliding it there is expose's job, not pick's.  (The edge pinch's own flow, the
@@ -689,7 +689,8 @@ def pick(rig, name, max_candidates=12, grasp=None):
 
     ``grasp`` "top" / "side" (GRASP_REQUEST) keeps only that pinch kind -- the caller knows where the
     object goes next: a top pinch leaves the palm above the object, too high for a low shelf
-    (docs/skills/place.md).  An object without one fails; it never falls back to another kind."""
+    (docs/skills/place.md).  An object without one fails; it never falls back to another kind.  ``hand``
+    "right" / "left": only that hand (the route's task constraint, HAND_PLAN 3.2); else either."""
     obj = rig.ann.objects[name]
     grasps = rig.ann.asset_of(obj)["grasps"]
     if not grasps:
@@ -698,20 +699,20 @@ def pick(rig, name, max_candidates=12, grasp=None):
     if not any(g["type"] in kinds for g in grasps):
         raise SkillFailure(f"pick {name}: no {grasp + ' ' if grasp else ''}pinch annotated "
                            f"(has {sorted({g['type'] for g in grasps})})")
-    return _pick_pinch(rig, name, max_candidates, kinds)
+    return _pick_pinch(rig, name, max_candidates, kinds, hand=hand)
 
 
 PINCH_KINDS = ("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect", "thickness_pinch")
 GRASP_REQUEST = {"top": ("top_pinch",), "side": ("side_pinch",)}   # pick(grasp=...): the kinds it keeps
 
 
-def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS):
+def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS, hand=None):
     """Pinch pick over the whole waist range, the neighbours in the collision model as they are.
     (The waist used to be capped at 0.2 rad above table height -- a 40-degree bow at a counter
     drove the forearm into an object the arm model then lacked -- and the cap lifted, then the
     neighbour boxes dropped, when no grasp was reachable: 7 and 2 times in the 11-04 full run.
     The arm, its fingers and every object are in the planner's world now.)"""
-    return _pick_pinch_core(rig, name, max_candidates, kinds)
+    return _pick_pinch_core(rig, name, max_candidates, kinds, hand=hand)
 
 
 class ContactUnreachable(SkillFailure):
@@ -759,10 +760,11 @@ def contact_obstacles(rig, name, label):
         yield boxes
 
 
-def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
-    """The pinch pick of ``name`` (motion_skills.run_skill of pick_job)."""
+def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS, hand=None):
+    """The pinch pick of ``name`` (motion_skills.run_skill of pick_job); ``hand``: only that one (pick_hands)."""
     from .motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds})
+    return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds,
+                                           "hand": hand})
 
 
 def _pick_judged(rig, name, g, tcp0, pos, side="right"):

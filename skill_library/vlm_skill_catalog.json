@@ -2024,7 +2024,7 @@
     "noun": "torso",
     "arguments": []
    },
-   "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)",
+   "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when both hands are empty.)",
    "use_when": "After a crouch, before driving or reaching high.",
    "not_to_be_confused_with": {
     "lift": "lift raises a held object, stand raises the body.",
@@ -2391,7 +2391,7 @@
     "noun": "waist",
     "arguments": []
    },
-   "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)",
+   "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when both hands are empty.)",
    "use_when": "After a bend, before driving or carrying.",
    "not_to_be_confused_with": {
     "stand": "stand raises the torso; straighten undoes a waist bend."
@@ -3938,7 +3938,7 @@
     ]
    },
    "invalidates": [
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "reachable(*)"
    ],
    "policy_paths": [
@@ -4293,7 +4293,7 @@
      "pass_by"
     ]
    },
-   "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
+   "description": "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
    "use_when": "The robot must hold an object for any later hand action.",
    "not_to_be_confused_with": {
     "regrasp": "regrasp improves a grasp on an object that is already held.",
@@ -4309,9 +4309,11 @@
     "hands": {
      "type": "hand",
      "required": false,
-     "description": "\"both\" requests a two-handed lift for wide items.",
+     "description": "One hand by default: either, the park search's choice (\"any\"); \"right\" / \"left\" only that hand -- a task that keeps the other one for something else; \"both\" requests a two-handed lift for wide items.",
      "enum": [
+      "any",
       "right",
+      "left",
       "both"
      ]
     },
@@ -4466,11 +4468,10 @@
     "inside($object,*)",
     "on_top_of($object,*)",
     "on_floor($object)",
-    "hand_empty(right)",
     "grasp_clearance($object)",
     "edge_overhang($object)",
     "at_initial_place($object)",
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "in_appliance($object,*)",
     "on_burner($object,*)",
     "covered(*,$object)"
@@ -4500,7 +4501,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_061($object, grasp=$grasp)"
+      "policy_061($object, grasp=$grasp, hand=$hands)"
      ],
      "policies": [
       "policy_061"
@@ -4517,7 +4518,7 @@
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_055($object)"
+      "policy_055($object, hand=$hands)"
      ],
      "policies": [
       "policy_055"
@@ -4548,7 +4549,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_061($object, grasp=$grasp)"
+      "policy_061($object, grasp=$grasp, hand=$hands)"
      ],
      "policies": [
       "policy_061"
@@ -4714,7 +4715,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_010($object)"
+      "policy_010($object, hand=$hands)"
      ],
      "policies": [
       "policy_010"
@@ -4747,7 +4748,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_013($object)"
+      "policy_013($object, hand=$hands)"
      ],
      "policies": [
       "policy_013"
@@ -4763,7 +4764,7 @@
      "extra_postconditions": [],
      "chain": [
       "policy_045($object)",
-      "policy_013($object)"
+      "policy_013($object, hand=$hands)"
      ],
      "policies": [
       "policy_013",
@@ -4779,7 +4780,7 @@
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_012($object)"
+      "policy_012($object, hand=$hands)"
      ],
      "policies": [
       "policy_012"
@@ -4810,7 +4811,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_011($object)"
+      "policy_011($object, hand=$hands)"
      ],
      "policies": [
       "policy_011"
@@ -4826,7 +4827,7 @@
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_055($object)"
+      "policy_055($object, hand=$hands)"
      ],
      "policies": [
       "policy_055"
@@ -4857,7 +4858,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_010($object)"
+      "policy_010($object, hand=$hands)"
      ],
      "policies": [
       "policy_010"
@@ -4872,7 +4873,7 @@
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_061($object)"
+      "policy_061($object, hand=$hands)"
      ],
      "policies": [
       "policy_061"
@@ -5193,7 +5194,7 @@
      "pass_by"
     ]
    },
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
+   "description": "Put the held object (either hand) down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
    "use_when": "A held object must end up resting on a support, in a container or on a burner.",
    "not_to_be_confused_with": {
     "drop": "drop releases above a container opening without lowering.",
@@ -5480,7 +5481,7 @@
     ]
    },
    "invalidates": [
-    "holding(right,$object)",
+    "holding(*,$object)",
     "presenting($object)",
     "base_clear_of(*)"
    ],
@@ -6169,7 +6170,7 @@
     ]
    },
    "invalidates": [
-    "holding(right,$object)"
+    "holding(*,$object)"
    ],
    "policy_paths": [
     {
@@ -6448,7 +6449,7 @@
     ]
    },
    "invalidates": [
-    "holding(right,$object)",
+    "holding(*,$object)",
     "top_clear($base)"
    ],
    "policy_paths": [
@@ -6892,7 +6893,7 @@
     ]
    },
    "invalidates": [
-    "holding(right,$object)"
+    "holding(*,$object)"
    ],
    "policy_paths": [
     {
@@ -11958,7 +11959,7 @@
     ]
    },
    "invalidates": [
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "reachable(*)"
    ],
    "policy_paths": [
@@ -12894,7 +12895,7 @@
    },
    "invalidates": [
     "uncovered($container)",
-    "holding(right,$lid)"
+    "holding(*,$lid)"
    ],
    "policy_paths": [
     {
@@ -15876,7 +15877,7 @@
     "noun": "hand",
     "arguments": []
    },
-   "description": "Raise the empty right hand at head height and swing it (greeting / attention gesture).",
+   "description": "Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best.",
    "use_when": "Greeting or getting attention.",
    "not_to_be_confused_with": {
     "point": "point indicates a target; wave is a greeting."
@@ -16193,7 +16194,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object."
+     "description": "The held object (either hand)."
     }
    },
    "required_inputs": [
@@ -18414,7 +18415,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object the spots are for (its footprint)."
+     "description": "The held object (either hand) the spots are for (its footprint)."
     },
     "support": {
      "type": "support_ref",

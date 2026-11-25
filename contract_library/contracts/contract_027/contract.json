@@ -60,7 +60,7 @@
   }
  ],
  "invalidates": [
-  "holding(right,$object)"
+  "holding(*,$object)"
  ],
  "precheck": [
   {

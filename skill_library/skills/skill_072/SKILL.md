@@ -20,7 +20,7 @@ A held object must go on a large surface and where on it matters (next to someth
 
 ## Inputs
 
-- `object` (`object_ref`): The right-held object the spots are for (its footprint).
+- `object` (`object_ref`): The held object (either hand) the spots are for (its footprint).
 - `support` (`support_ref`): The table, desk, counter or shelf surface to mark.
 
 ## Outputs

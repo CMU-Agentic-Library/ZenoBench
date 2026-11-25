@@ -127,4 +127,4 @@ def test_pick_grasp_request_picks_the_pinch_path(grasp, location, want):
     assert _path("pick", nouns) == want
     step = next(p for p in CONTRACTS["pick"]["policy_plan"]["paths"] if p["path_id"] == want)["steps"][0]
     if want != "top_pinch":
-        assert step["kwargs"] == {"grasp": "$grasp"}
+        assert step["kwargs"] == {"grasp": "$grasp", "hand": "$hands"}       # the route's hand rides along too

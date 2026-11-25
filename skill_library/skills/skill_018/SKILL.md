@@ -1,13 +1,13 @@
 ---
 name: place-object
-description: "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past."
+description: "Put the held object (either hand) down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past."
 ---
 
 # Place a held object (`skill_018`)
 
 `place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, near: entity_ref?, pass_by: pose2d?)`
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
+Put the held object (either hand) down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
 
 ## When to use
 
@@ -61,7 +61,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## May invalidate
 
-`holding(right,$object)`, `presenting($object)`, `base_clear_of(*)`
+`holding(*,$object)`, `presenting($object)`, `base_clear_of(*)`
 
 ## Policy paths (first match on the bound nouns)
 

@@ -144,13 +144,15 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
 
 
 def pick_hands(rig, name, hand=None):
-    """The hands a pick of ``name`` may use (HAND_PLAN 9c): the empty ones, the right first; ``hand`` (the
-    route's: a task that keeps the other hand for something else) only that one; ZENO_PICK_SIDE a diagnostic
-    switch (as ZENO_OPEN_SIDE), not for the baseline.  SkillFailure when none is free."""
-    import os
-    want = hand or os.environ.get("ZENO_PICK_SIDE") or None
+    """The hands a pick of ``name`` may use (HAND_PLAN 9c): the empty ones, the right first (each a dimension of the
+    goal set: _pick_problem); ``hand`` "right" / "left" (the route's -- the pick contract's ``hands``: a task that
+    keeps the other hand for something else, HAND_PLAN 3.2; a diagnostic run forces it there too,
+    benchmark/run_episode.py --pick-hand) only that one -- "any", "both" or None: either.  "Which hand" is never a
+    process-wide switch (HAND_PLAN rule 10: the ZENO_PICK_SIDE environment variable until 11-25).  SkillFailure when
+    none is free."""
+    want = hand if hand in ("right", "left") else None
     empty = [sd for sd in ("right", "left") if (rig.held if sd == "right" else getattr(rig, "left_held", None)) is None]
-    sides = [sd for sd in empty if want in (None, "any", sd)]
+    sides = [sd for sd in empty if want in (None, sd)]
     if not sides:
         raise SkillFailure(f"pick {name}: no empty hand" + (f" ({want} asked)" if want else ""))
     return tuple(sides)

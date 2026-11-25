@@ -6,7 +6,7 @@
  "verb": "pick",
  "noun": "object",
  "name": "Pick an object",
- "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
+ "description": "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -17,9 +17,11 @@
   "hands": {
    "type": "hand",
    "required": false,
-   "description": "\"both\" requests a two-handed lift for wide items.",
+   "description": "One hand by default: either, the park search's choice (\"any\"); \"right\" / \"left\" only that hand -- a task that keeps the other one for something else; \"both\" requests a two-handed lift for wide items.",
    "enum": [
+    "any",
     "right",
+    "left",
     "both"
    ]
   },
@@ -77,11 +79,10 @@
   "inside($object,*)",
   "on_top_of($object,*)",
   "on_floor($object)",
-  "hand_empty(right)",
   "grasp_clearance($object)",
   "edge_overhang($object)",
   "at_initial_place($object)",
-  "arm_stowed(right)",
+  "arm_stowed(*)",
   "in_appliance($object,*)",
   "on_burner($object,*)",
   "covered(*,$object)"
@@ -363,7 +364,8 @@
        "$object"
       ],
       "kwargs": {
-       "grasp": "$grasp"
+       "grasp": "$grasp",
+       "hand": "$hands"
       }
      }
     ],
@@ -406,7 +408,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [],
@@ -433,7 +437,8 @@
        "$object"
       ],
       "kwargs": {
-       "grasp": "$grasp"
+       "grasp": "$grasp",
+       "hand": "$hands"
       }
      }
     ],
@@ -602,7 +607,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [
@@ -638,7 +645,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [
@@ -675,7 +684,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [],
@@ -698,7 +709,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [],
@@ -721,7 +734,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [
@@ -757,7 +772,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [],
@@ -780,7 +797,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [
@@ -810,7 +829,9 @@
       "args": [
        "$object"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hand": "$hands"
+      }
      }
     ],
     "requires": [],

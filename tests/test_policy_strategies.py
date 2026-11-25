@@ -19,7 +19,7 @@ def test_cup_and_toy_select_different_grasp_contacts(monkeypatch):
                           asset_of=lambda obj: assets[obj["asset"]])
     rig = SimpleNamespace(ann=ann, held=None)
     calls = []
-    monkeypatch.setattr(skills, "_pick_pinch", lambda rig, name, n, *, kinds: calls.append((name, kinds)))
+    monkeypatch.setattr(skills, "_pick_pinch", lambda rig, name, n, *, kinds, hand=None: calls.append((name, kinds)))
 
     RoundRimPickPolicy(rig).execute("cup")
     TopPinchPickPolicy(rig).execute("toy")
@@ -68,7 +68,7 @@ def test_pick_grasp_request_keeps_only_that_pinch_and_never_falls_back(monkeypat
     ann = SimpleNamespace(objects={k: {"asset": k} for k in assets}, asset_of=lambda obj: assets[obj["asset"]])
     rig = SimpleNamespace(ann=ann, held=None)
     calls = []
-    monkeypatch.setattr(skills, "_pick_pinch", lambda rig, name, n, kinds: calls.append((name, kinds)))
+    monkeypatch.setattr(skills, "_pick_pinch", lambda rig, name, n, kinds, hand=None: calls.append((name, kinds)))
 
     PickPolicy(rig).execute("block", grasp="side")
     PickPolicy(rig).execute("block", grasp="top")

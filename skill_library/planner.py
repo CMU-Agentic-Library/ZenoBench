@@ -95,6 +95,9 @@ def _key(v):
     return v
 
 
+HANDS = ("right", "left")
+
+
 def ground_atom(atom, binding, attrs, pred_args):
     vals = []
     for name in pred_args[atom["pred"]]:
@@ -193,6 +196,12 @@ class Domain:
             return all(any(("inside", o, rule[t]) in s or ("on", o, rule[t]) in s
                            for t in self.static.get(o, {}).get("tags", []) if t in rule)
                        for o in atom[1])
+        # a hand named by the contracts as either / both (HAND_PLAN 9b): the state names each hand
+        if p in ("hand_empty", "arm_stowed") and len(atom) > 1 and atom[1] in ("any", "both"):
+            per = [(p, sd) in s for sd in HANDS]
+            return any(per) if atom[1] == "any" else all(per)
+        if p == "holding" and len(atom) > 2 and atom[1] == "any":
+            return any(("holding", sd, atom[2]) in s for sd in HANDS)
         return atom in s
 
     def _kind(self, name):
@@ -292,6 +301,7 @@ class Domain:
     def apply(self, s, skill, binding, path, attrs):
         c = self.contracts[skill["skill_id"]]
         s = set(s)
+        loaded = {a[1] for a in s if a[0] == "holding"}      # a hand that lets go of its load is empty again
         for pat in c["invalidates"]:
             name, _, rest = pat.partition("(")
             args = [x.strip() for x in rest.rstrip(")").split(",") if x.strip()]
@@ -305,6 +315,19 @@ class Domain:
             g = ground_atom(a, binding, attrs, self.pred_args)
             if g is None:
                 continue
+            # either hand (HAND_PLAN 9b / 9c): a load taken goes to an empty hand, the right first (the motion
+            # layers choose it in the park search; the symbolic plan only needs one); let go, from whichever holds it
+            if g[0] == "holding" and g[1] == "any":
+                if a.get("negated"):
+                    s = {x for x in s if not (x[0] == "holding" and x[2] == g[2])}
+                    continue
+                g = ("holding", next((sd for sd in HANDS if ("hand_empty", sd) in s), "right"), g[2])
+            if g[0] in ("hand_empty", "arm_stowed") and g[1] in ("any", "both"):
+                if g[1] == "both":
+                    s |= {(g[0], sd) for sd in HANDS}
+                    if g[0] == "hand_empty":
+                        s = {x for x in s if x[0] != "holding"}
+                continue                                  # "any": at least one, already so (it was required)
             if a.get("negated"):
                 s.discard(g)
             elif g[0] == "base_near":
@@ -345,6 +368,9 @@ class Domain:
                 if x[0] == "inside" and x[2] == binding["source"]:
                     s.discard(x)
                     s.add(("inside", x[1], binding["target"]))
+        for sd in loaded:
+            if not any(x[0] == "holding" and x[1] == sd for x in s):
+                s.add(("hand_empty", sd))
         return frozenset(s)
 
 
