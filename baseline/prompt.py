@@ -21,9 +21,12 @@ Rules:
 - Objects you have observed are named <category>_<k> (for example mug_1). Use only names that \
 appear in the observation or the known places; an object the robot has not observed yet cannot be \
 used until it is found (move to or look at places to find things).
-- A call can fail; read its error and decide what to do next.
+- A skill call can fail, and that is normal. Read its error code and what was false, then try \
+another way before you give up: for example another grasp, another position for the robot, or \
+looking or searching again for what you need.
 - You have at most {max_calls} skill calls in total, failed and refused calls included.
-- When the instruction is done, or you decide it cannot be done, finish.
+- Finish only when the task is done, or when you have tried other ways and are sure it cannot be \
+done. Finishing ends the episode, and the result is judged at that moment.
 {extra}
 {answer}
 
