@@ -24,7 +24,7 @@ from baseline.prompt import image_paths, system_prompt, user_prompt
 
 ANSWER = """\
 Write a Python program that carries out the instruction. Each skill is a Python function: call it \
-with keyword arguments, for example navigate(destination="kitchen_island/top"). Every call runs on \
+with keyword arguments, for example navigate(destination="<a place from known_places>"). Every call runs on \
 the robot and returns a result r with r.success (bool), r.error_code, r.error (text), r.outputs \
 (dict) and r.now_visible (names that became visible).
 You can also call observe(), which returns the current observation as a dict (keys \

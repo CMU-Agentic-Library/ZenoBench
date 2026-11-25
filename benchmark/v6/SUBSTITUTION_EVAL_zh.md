@@ -41,7 +41,7 @@ python -m benchmark.v6.substitution_eval \
 ```
 
 - `--run 标签=目录`：读取目录下所有 `result.json`。仿真原生结果带 `calls`，直接读；规划器结果只有 `exp_id`，会到 `--native/<任务>/<exp_id>/result.json` 去找对应的原生结果。
-- 输出包括：
+- 输出包括（漏替代按规划器的结束原因再分成放弃、预算用完、自称完成、出错中断）：
   - A 侧：误替代率
   - B 侧：漏替代率、抢占率、命中率、bad 率、else 率，并按不可用原因分开列
   - 两侧都有：完成率、严格成功率、平均效率 E、每个设计的 pass@1 / pass@k / pass^k

@@ -96,3 +96,15 @@ def test_score_records_the_alternative(tid):
     out = score(t["variants"][lay]["scoring"], t, lay, holds)
     assert out["tier"] == "best" and out["branch_atoms"] == last
     assert set(R.layout_objects(t, t["variants"][lay])) is not None
+
+
+def test_missed_kinds():
+    assert S.missed_kind("budget") == "预算用完"
+    assert S.missed_kind("finish: There is no lid in the house, so the pot cannot be covered.") == "放弃"
+    assert S.missed_kind("finish: The pot is covered.") == "自称完成"
+    assert S.missed_kind("parse_error") == "出错中断"
+    assert S.missed_kind(None) == "未知"
+    t = BY["T15"]
+    row = S.episode_row({"task_id": t["task_id"], "variant": "no_lid", "seed": 10, "calls": [],
+                         "task_success": False, "_stop": "finish: no lid available"}, t)
+    assert row["missed_switch"] and row["missed_kind"] == "放弃"

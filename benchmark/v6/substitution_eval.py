@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import defaultdict
 from math import comb
 from pathlib import Path
@@ -102,6 +103,26 @@ IN_USE = {
 }
 # a used thing that also appears in a "left in place" atom of the same alternative is not the one used
 KEEP = ("covered",)
+
+
+# why an episode ended (planner results, baseline/run_http.py and the planners' stop_reason) -> how a missed
+# substitution looks: gave up, searched until the budget ran out, claimed done, or broke off on an error
+GIVE_UP = re.compile(r"cannot|can't|can not|unable|impossible|could ?n[o']t|not (available|possible|found|there|"
+                     r"present|in the house)|no \w+ (available|anywhere|in the house)|does ?n[o']t exist|missing|"
+                     r"there is no|there are no", re.I)
+
+
+def missed_kind(stop: str | None) -> str:
+    s = (stop or "").strip()
+    if s.startswith(("budget", "search_budget", "service_limit")):
+        return "预算用完"
+    if s.startswith("finish"):
+        return "放弃" if GIVE_UP.search(s) else "自称完成"
+    if s.startswith(("program_done", "plan_done")):
+        return "自称完成"
+    if s.startswith(("parse_error", "call_failed", "program_error")):
+        return "出错中断"
+    return "未知"
 
 
 def catalog() -> dict:
@@ -243,13 +264,14 @@ def episode_row(r: dict, task: dict) -> dict | None:
            "reason": reason_of(task, design, layout) if s == "B" else None,
            "success": success, "score": sc.get("score", 0.0) if success else 0.0, "tier": sc.get("tier"),
            "chosen": name, "grade": grade, "chosen_from": source, "else_held": other if grade is None else None,
-           "best_available": best, "calls": calls, "a_ref": a_ref,
+           "best_available": best, "calls": calls, "a_ref": a_ref, "stop": r.get("_stop"),
            "E": (a_ref / max(calls, a_ref)) if success and a_ref else 0.0}
     if s.startswith("A"):
         row["false_switch"] = switched
         row["right"] = grade == "ideal"
     else:
         row["missed_switch"] = grade is None and other is None
+        row["missed_kind"] = missed_kind(r.get("_stop")) if row["missed_switch"] else None
         row["grab"] = grade == "in_use"
         row["hit"] = grade is not None and grade == best
         row["bad"] = grade == "bad"
@@ -268,11 +290,15 @@ def results(root: Path, native: Path | None):
             continue
         if not isinstance(r, dict) or "task_id" not in r:
             continue
+        stop = r.get("stop_reason")
+        if stop == "planner_done":                 # the planner's own reason (baseline/report.py does the same)
+            stop = (r.get("planner_summary") or {}).get("stop_reason") or stop
         if "calls" not in r and native is not None and r.get("exp_id"):
             n = native / r["task_id"] / r["exp_id"] / "result.json"
             if not n.is_file():
                 continue
             r = json.loads(n.read_text())
+        r["_stop"] = stop if stop and stop != "planner_done" else None
         if "calls" in r and "variant" in r:
             yield path, r
 
@@ -301,6 +327,13 @@ def summarize(label: str, rows: list[dict], k: int) -> list[str]:
                    f"{ratio(rs, 'strict')} | {mean_e(rs)} |")
     out.append(f"| B 原物体用不了 | {len(b)} | — | {ratio(b, 'missed_switch')} | {ratio(b, 'grab')} | {ratio(b, 'hit')} | "
                f"{ratio(b, 'bad')} | {ratio(b, 'else')} | {ratio(b, 'success')} | {ratio(b, 'strict')} | {mean_e(b)} |")
+    kinds = defaultdict(int)
+    for r in b:
+        if r.get("missed_kind"):
+            kinds[r["missed_kind"]] += 1
+    if kinds:
+        out += ["", "漏替代细分（按结束原因；只读原生结果时没有原因，记为未知）：" +
+                "，".join(f"{k} {v}" for k, v in sorted(kinds.items(), key=lambda x: -x[1]))]
     out += ["", "B 按不可用原因：", "", "| 原因 | 局数 | 漏替代率 | 抢占率 | 命中率 | 完成率 | 严格成功率 |", "|---|---|---|---|---|---|---|"]
     by = defaultdict(list)
     for r in b:
