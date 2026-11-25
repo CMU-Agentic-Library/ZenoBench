@@ -10,65 +10,22 @@ from ..clearance import lifting
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..physics import PHYSICS_HZ
-from ..planner import find_park
 from ..rig import SkillFailure
 
 
 class PickCupHandlePolicy(AtomicPolicy):
-    """Approach a mug handle from outside, pinch it, and check a real lift."""
+    """Pick a mug by its handle: the pick on the motion layers with only its annotated handle pinch in the goal set
+    (pick_job kinds ("handle_pinch",); HAND_PLAN 9j), the hold marked a handle grasp (a pour then tips it sideways)."""
 
     def execute(self, name):
+        from ..motion_skills import SKILLS, run_skill
         rig = self.rig
-        if rig.held is not None or rig.left_held is not None:
-            raise SkillFailure("pick cup handle: both hands must be empty")
         if name not in rig.ann.objects:
             raise SkillFailure(f"pick cup handle: unknown object {name}")
-        obj = rig.ann.objects[name]
-        asset = rig.ann.asset_of(obj)
-        spec = next((g for g in asset["grasps"] if g["type"] == "handle_pinch"), None)
-        if spec is None:
-            raise SkillFailure(f"pick cup handle: {obj['asset']} has no handle contact annotation")
-        if not rig.stage.GetPrimAtPath(obj["body"] + "/handle_collider"):
-            raise SkillFailure("pick cup handle: construct the rig with handle_objects=(name,)")
-
-        def contact():
-            pos, quat = rig.obj_pose(name)
-            B = quat_R(quat)
-            p = pos+B @ np.asarray(spec["center"], float)
-            approach = B @ np.asarray(spec["approach"], float)
-            close = B @ np.asarray(spec["close_dir"], float)
-            R = gripper_rot(approach, close)
-            return pos, p, R, approach
-
-        if not rig.tuck():
-            raise SkillFailure(f"pick cup handle {name}: cannot prepare a collision-free arm posture")
-        before, p, R, approach = contact()
-        pre = p-0.10*approach+np.array([0, 0, 0.02])
-        lift = p+np.array([0, 0, 0.08])
-        rig.sync_world()
-        park = find_park(rig.kin, rig.world, [(pre, R), (p, R), (lift, R)],
-                         near=rig.base_pose(), q_start=rig.q_cmd,
-                         travel_q=rig.q_cmd, max_tries=160)
-        if park is None:
-            raise SkillFailure(f"pick cup handle {name}: no reachable contact path")
-        skills._goto_park(rig, park)
-        before, p, R, approach = contact()
-        pre = p-0.10*approach+np.array([0, 0, 0.02])
-        rig.grip(float(spec["pre_open"]), 40)
-        rig.move_to(pre, R, step=0.01, label="handle_pick_pre", smooth=True, q_hint=park[3][0])
-        rig.move_to(p, R, step=0.004, label="handle_pick_contact", smooth=True, q_hint=park[3][1])
-        fingers = rig.grip(0.0, PHYSICS_HZ, gradual=True)
-        rig.move_to(p+np.array([0, 0, 0.08]), R, step=0.004,
-                    steps_per_wp=5, label="handle_pick_lift", smooth=True, allow=lifting(name))
-        rig.step(40)
-        after, _ = rig.obj_pose(name)
-        lift_m = float(after[2]-before[2])
-        if fingers.min() < 0.003 or lift_m < 0.02:
-            raise SkillFailure(f"pick cup handle {name}: failed contact/lift, {lift_m:.3f} m")
-        tcp, actual_R = rig.kin.tcp(rig.q())
-        rig.held = {"name": name, "kind": "pinch", "grasp": "handle", "tcp_minus_body": tcp-after,
-                    "R": actual_R, "pre_open": float(spec["pre_open"])}
-        skills.check_held(rig, "pick_cup_handle")
-        rig.log("pick_cup_handle_result", obj=name, lift_m=round(lift_m, 4),
-                fingers=fingers.tolist())
-        return lift_m
+        run_skill(rig, SKILLS["pick"], {"name": name, "kinds": ("handle_pinch",)})
+        side = rig.hand_of(name)
+        held = rig.held_by(side)
+        held["grasp"] = "handle"
+        lift = float(rig.obj_pose(name)[0][2])
+        rig.log("pick_cup_handle_result", obj=name, hand=side)
+        return lift

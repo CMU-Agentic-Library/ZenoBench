@@ -147,11 +147,9 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_041()",
     "policy_044($object, @object.support, $direction_xy, $distance_m)"
    ],
    "policies": [
-    "policy_041",
     "policy_044"
    ],
    "note": ""
@@ -179,11 +177,9 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_041()",
     "policy_043($object, @object.support, $direction_xy, $distance_m)"
    ],
    "policies": [
-    "policy_041",
     "policy_043"
    ],
    "note": ""

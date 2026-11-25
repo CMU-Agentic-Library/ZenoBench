@@ -1187,7 +1187,7 @@
    "verb": "reset",
    "noun": "posture",
    "name": "Reset the posture",
-   "description": "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.",
+   "description": "Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state.",
    "group": "base_and_body",
    "inputs": {},
    "outputs": {},
@@ -1298,32 +1298,24 @@
       "when": [],
       "steps": [
        {
-        "policy": "policy_040",
-        "args": [],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_003",
         "args": [],
         "kwargs": {}
        },
        {
-        "policy": "policy_095",
+        "policy": "policy_006",
         "args": [],
-        "kwargs": {},
-        "as": "home"
+        "kwargs": {}
        },
        {
-        "policy": "policy_039",
-        "args": [
-         "#home.target"
-        ],
+        "policy": "policy_009",
+        "args": [],
         "kwargs": {}
        }
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "Each step a skill on the motion layers (HAND_PLAN 9j); the old chain of primitives (open the fingers, plan the home joints, a joint move) is gone."
      }
     ]
    },
@@ -6229,11 +6221,6 @@
       ],
       "steps": [
        {
-        "policy": "policy_041",
-        "args": [],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_044",
         "args": [
          "$object",
@@ -6278,11 +6265,6 @@
       "path_id": "from_behind",
       "when": [],
       "steps": [
-       {
-        "policy": "policy_041",
-        "args": [],
-        "kwargs": {}
-       },
        {
         "policy": "policy_043",
         "args": [
@@ -6481,11 +6463,6 @@
       "path_id": "top_drag",
       "when": [],
       "steps": [
-       {
-        "policy": "policy_041",
-        "args": [],
-        "kwargs": {}
-       },
        {
         "policy": "policy_079",
         "args": [
@@ -15126,6 +15103,10 @@
   "policy_019": "Let go of a load policy_018 carried into the microwave: place's own release (see policy_018).",
   "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's own pull-out (see policy_018).",
   "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+  "policy_039": "Move the right arm's joints to a target (a primitive): reset is the tuck, raise and straighten skills (HAND_PLAN 9j, 2026-11-25).",
+  "policy_040": "Open the right fingers (a primitive): every skill opens its hand as a segment of its own plan (HAND_PLAN 9j, 2026-11-25).",
+  "policy_041": "Close the right fingers (a primitive) before a push / pull: the push's plan closes the hand itself (plan_slide slide_close_hand; HAND_PLAN 9j, 2026-11-25).",
+  "policy_095": "Plan the home joint vector for policy_039: reset is the tuck, raise and straighten skills (HAND_PLAN 9j, 2026-11-25).",
   "policy_038": "Move the right TCP to a pose with a joint plan (a primitive): only point's old chain used it; point is the point skill on the motion layers (policy_071, skill_jobs.held.point_job, HAND_PLAN 9h, 2026-11-25).",
   "policy_101": "Compute the right TCP pose that points at a target for policy_038: the point skill's own goal set now (policy_071, HAND_PLAN 9h, 2026-11-25).",
   "policy_048": "Pick from the microwave back through a pose policy_020 recorded: the cavity is a support behind a door like a cabinet's, picked by pick's one path (policy_061, docs 9.3 step 8d, 2026-11-24)."

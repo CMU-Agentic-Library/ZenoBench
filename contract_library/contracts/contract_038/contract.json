@@ -150,11 +150,6 @@
     "when": [],
     "steps": [
      {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_079",
       "args": [
        "$object",

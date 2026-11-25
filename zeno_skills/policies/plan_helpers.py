@@ -17,19 +17,17 @@ import math
 
 import numpy as np
 
-from .base import AtomicPolicy
+from .base import AtomicPolicy, RetiredPolicy
 from ..kinematics import gripper_rot
 from ..predicates import entity_footprint, entity_point, reach_targets
 from ..rig import SkillFailure
 from ..skill_jobs.carry import _carry_bottom_z      # noqa: F401  (policies chain it: PlanStandoffPolicy)
 
 
-class PlanHomePolicy(AtomicPolicy):
-    def execute(self):
-        q = self.rig.kin.rest.copy()
-        q[0] = self.rig.kin.hi[0]
-        q[1] = 0.0
-        return {"target": q.tolist()}
+class PlanHomePolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): reset is the tuck, raise and straighten skills (policy_095)."""
+
+    REPLACED_BY = "reset is the tuck, raise and straighten skills (policy_095)"
 
 
 class PlanStandoffPolicy(AtomicPolicy):
@@ -72,15 +70,9 @@ class PlanRetreatPolicy(AtomicPolicy):
         return {"forward_m": -float(need)}
 
 
-class PlanPointPolicy(AtomicPolicy):
-    def execute(self, target):
-        rig = self.rig
-        p = entity_point(rig, target)
-        x, y, yaw = rig.base_pose()
-        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        shoulder = np.array([x + 0.09 * c + 0.18 * s, y + 0.09 * s - 0.18 * c, 1.05])
-        d = p - shoulder
-        d /= np.linalg.norm(d)
-        side = np.cross(d, [0, 0, 1.0])
-        side = side / np.linalg.norm(side) if np.linalg.norm(side) > 1e-6 else np.array([0, 1.0, 0])
-        return {"position": (shoulder + d * 0.42).tolist(), "rotation": gripper_rot(d, side).tolist()}
+class PlanPointPolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): point's goal set is the point skill's own (policy_071; policy_101)."""
+
+    REPLACED_BY = "point's goal set is the point skill's own (policy_071; policy_101)"
+
+

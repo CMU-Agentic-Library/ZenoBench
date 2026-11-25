@@ -51,8 +51,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `top_drag` — when always (default path)
 
-1. `policy_041()`
-2. `policy_079($object, $distance_m)`
+1. `policy_079($object, $distance_m)`
 
 ## Relations
 

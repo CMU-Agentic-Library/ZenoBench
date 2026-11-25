@@ -28,16 +28,6 @@ def test_the_cavity_pick_is_retired_pick_takes_the_microwave_like_a_cabinet():
         PickFromCavityPolicy(object()).execute("bowl")
 
 
-def test_release_handle_requires_recorded_grasp_and_open_fingers():
-    rig=SimpleNamespace(_handle_grasp=None, grip=lambda width,steps:np.array([width,width]),
-                        kin=SimpleNamespace(coll_kw={"hand_touches_part": True}), log=lambda *a,**k:None)
-    with pytest.raises(SkillFailure,match="no matching"):
-        ReleaseArticulatedHandlePolicy(rig).execute("drawer")
-    rig._handle_grasp={"name":"drawer","pre_open":0.04}
-    assert np.min(ReleaseArticulatedHandlePolicy(rig).execute("drawer")) >=0.02
-    assert rig._handle_grasp is None
-
-
 def test_slide_to_edge_requires_free_hand_and_annotated_support():
     rig=SimpleNamespace(held={"name":"cup"})
     with pytest.raises(SkillFailure,match="empty"):
@@ -50,8 +40,8 @@ def test_slide_to_edge_requires_free_hand_and_annotated_support():
         SlideToEdgePolicy(rig).execute("book")
 
 
-def test_floor_reach_rejects_non_floor_target():
-    rig=SimpleNamespace(held=None,ann=SimpleNamespace(objects={"toy":{}}),state=lambda:{},
-                        geo=SimpleNamespace(bottom=lambda name,st:np.array([0,0,0.3])))
-    with pytest.raises(SkillFailure,match="not on the floor"):
-        PrepareFloorReachPolicy(rig).execute("toy")
+def test_the_retired_handle_and_floor_reach_entries_say_so():
+    for cls in (ReleaseArticulatedHandlePolicy, PrepareFloorReachPolicy):
+        with pytest.raises(SkillFailure, match="retired"):
+            cls(object()).execute("drawer")
+

@@ -7,19 +7,15 @@
   "zeno_skills/motion.py": {"exempt": 1, "ignore_fingers": 1},
   "zeno_skills/motion_skills.py": {"except": 2},
   "zeno_skills/planner.py": {"coll_kw": 5, "ignore_fingers": 1},
-  "zeno_skills/policies/base_motion.py": {"coll_kw": 2, "ignore_fingers": 1},
   "zeno_skills/policies/bimanual.py": {"drive_base": 1, "offset": 2, "except": 1, "old_entry": 7},
-  "zeno_skills/policies/embedded.py": {"coll_kw": 4, "follow": 1, "except": 1, "swallow": 1, "retry": 1, "old_entry": 7},
-  "zeno_skills/policies/handle_grasp.py": {"offset": 2, "old_entry": 6},
-  "zeno_skills/policies/mobile.py": {"coll_kw": 4, "drive_base": 3, "ignore_fingers": 2, "offset": 2, "old_entry": 6},
+  "zeno_skills/policies/mobile.py": {"coll_kw": 4, "drive_base": 2, "ignore_fingers": 2, "offset": 2, "old_entry": 5},
   "zeno_skills/policies/navigation.py": {"except": 1, "swallow": 1},
   "zeno_skills/policies/perceive.py": {"retry": 2},
-  "zeno_skills/policies/primitives.py": {"follow": 1, "old_entry": 5},
   "zeno_skills/predicates.py": {"coll_kw": 2, "ignore_fingers": 1, "except": 2, "swallow": 2},
   "zeno_skills/rig.py": {"coll_kw": 2, "except": 3, "swallow": 2},
   "zeno_skills/run.py": {"except": 1},
   "zeno_skills/skill_runtime.py": {"except": 12, "swallow": 7},
-  "zeno_skills/skills.py": {"coll_kw": 6, "follow": 2, "ignore_fingers": 4, "offset": 2, "except": 3, "swallow": 2, "retry": 1, "old_entry": 13},
+  "zeno_skills/skills.py": {"coll_kw": 1, "ignore_fingers": 2, "old_entry": 1},
   "zeno_skills/sticky.py": {"coll_kw": 1, "ignore_fingers": 1, "except": 4, "swallow": 4, "retry": 3, "old_entry": 8}
  }
 }

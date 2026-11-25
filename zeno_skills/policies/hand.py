@@ -24,14 +24,8 @@ from .. import skills
 from ..annotations import rz
 from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
 from ..physics import PHYSICS_HZ
-from ..planner import find_park
 from ..predicates import lid_on, tilt_deg
 from ..rig import SkillFailure
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _require_held(rig, name, action):

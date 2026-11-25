@@ -29,15 +29,9 @@ from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
 from ..physics import PHYSICS_HZ
-from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
 from ..tolerances import COUNT_YAWS
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _mem(rig, key):

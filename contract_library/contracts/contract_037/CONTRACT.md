@@ -15,8 +15,8 @@ Paired SkillNode: `skill_029` (`push-object`).
 
 ## Policy paths
 
-- `drag_from_top` when object.near_closed_edge: `policy_041()` -> `policy_044($object, @object.support, $direction_xy, $distance_m)`
+- `drag_from_top` when object.near_closed_edge: `policy_044($object, @object.support, $direction_xy, $distance_m)`
 - `thin_auto` when object.flat: `policy_026($object, @object.support, $direction_xy, $distance_m)`
-- `from_behind` when always: `policy_041()` -> `policy_043($object, @object.support, $direction_xy, $distance_m)`
+- `from_behind` when always: `policy_043($object, @object.support, $direction_xy, $distance_m)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

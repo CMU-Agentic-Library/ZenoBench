@@ -152,6 +152,14 @@ RETIRED_POLICIES = {
     "policy_020": "Withdraw from the microwave after policy_019 and record the arm pose for a later pick: place's "
                   "own pull-out (see policy_018).",
     "policy_021": "policy_018 / 019 / 020 as one call (see policy_018).",
+    "policy_039": "Move the right arm's joints to a target (a primitive): reset is the tuck, raise and straighten skills "
+                  "(HAND_PLAN 9j, 2026-11-25).",
+    "policy_040": "Open the right fingers (a primitive): every skill opens its hand as a segment of its own plan "
+                  "(HAND_PLAN 9j, 2026-11-25).",
+    "policy_041": "Close the right fingers (a primitive) before a push / pull: the push's plan closes the hand itself "
+                  "(plan_slide slide_close_hand; HAND_PLAN 9j, 2026-11-25).",
+    "policy_095": "Plan the home joint vector for policy_039: reset is the tuck, raise and straighten skills (HAND_PLAN 9j, "
+                  "2026-11-25).",
     "policy_038": "Move the right TCP to a pose with a joint plan (a primitive): only point's old chain used it; point is "
                   "the point skill on the motion layers (policy_071, skill_jobs.held.point_job, HAND_PLAN 9h, 2026-11-25).",
     "policy_101": "Compute the right TCP pose that points at a target for policy_038: the point skill's own goal set now "

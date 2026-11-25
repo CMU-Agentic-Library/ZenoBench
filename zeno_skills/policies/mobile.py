@@ -12,7 +12,7 @@ import math
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from .base import AtomicPolicy
+from .base import AtomicPolicy, RetiredPolicy
 from ..kinematics import vel_limits
 from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
@@ -62,67 +62,10 @@ def _path(rig, base_path):
     return path
 
 
-class ReachWhileMovingPolicy(AtomicPolicy):
-    """Reach a world-frame TCP pose while the base follows a collision-free path."""
+class ReachWhileMovingPolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): no route uses it (policy_051)."""
 
-    def execute(self, position, rotation, base_path, *, speed=0.08, tolerance=0.04):
-        _refuse("reach while moving")
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("reach while moving: right hand must be empty")
-        target = np.asarray(position, float)
-        R_goal = np.asarray(rotation, float)
-        if target.shape != (3,) or R_goal.shape != (3, 3) or not np.isfinite(target).all():
-            raise ValueError("reach target must be a 3D position and 3x3 rotation")
-        path = _path(rig, base_path)
-        rig.sync_world()
-        bx, by, yaw = rig.base_pose()
-        start_tcp, start_R = rig.kin.tcp(rig.q_cmd)
-        local = _rotation(yaw).T @ (start_tcp-np.array([bx, by, 0.0]))
-        last_update = rig.tick
-        arm_travel = 0.0
-        updates = 0
-        max_vel = 0.6*vel_limits(rig.kin.names)
-
-        def update(progress, pose):
-            nonlocal last_update, arm_travel, updates
-            if rig.tick-last_update < 12 and progress < 0.999:
-                return
-            dt = max(1, rig.tick-last_update) / PHYSICS_HZ
-            last_update = rig.tick
-            x, y, a = pose
-            R_base = _rotation(a)
-            p_follow = np.array([x, y, 0.0])+R_base @ local
-            R_follow = _rotation(a-yaw) @ start_R
-            alpha = min(1.0, max(0.0, (progress-0.10)/0.85))
-            alpha = alpha*alpha*(3-2*alpha)
-            p_des = (1-alpha)*p_follow+alpha*target
-            delta = Rotation.from_matrix(R_goal @ R_follow.T).as_rotvec()
-            R_des = Rotation.from_rotvec(alpha*delta).as_matrix() @ R_follow
-            q, ok = rig.kin.ik(p_des, R_des, rig.q_cmd, iters=90)
-            if not ok:
-                q, ok = rig.kin.ik_global(p_des, R_des, seeds=[rig.q_cmd])
-            if not ok:
-                rig.log("reach_while_moving_ik_failed", progress=round(progress, 3),
-                        desired_tcp=p_des.round(3).tolist(), base_pose=list(pose))
-                raise SkillFailure(f"reach while moving: IK lost at progress {progress:.2f}")
-            step = np.clip(q-rig.q_cmd, -max_vel*dt, max_vel*dt)
-            command = rig.q_cmd+step
-            if not rig.kin.free(command):
-                raise SkillFailure(f"reach while moving: arm collision at progress {progress:.2f}")
-            arm_travel += float(np.max(np.abs(step[2:])))
-            rig.q_cmd = command
-            updates += 1
-
-        rig.drive_base(path, speed=speed, turn=0.35, ramp=0.4, on_step=update)
-        tcp, R = rig.kin.tcp(rig.q())
-        err = float(np.linalg.norm(tcp-target))
-        rot_err = float(np.linalg.norm(Rotation.from_matrix(R_goal @ R.T).as_rotvec()))
-        rig.log("reach_while_moving_result", tcp_err_m=round(err, 4), rot_err_rad=round(rot_err, 4),
-                arm_travel_rad=round(arm_travel, 4), updates=updates)
-        if updates < 2 or arm_travel < 0.02 or err > tolerance or rot_err > 0.15:
-            raise SkillFailure(f"reach while moving: TCP error {err:.3f} m, orientation error {rot_err:.3f} rad")
-        return err
+    REPLACED_BY = "no route uses it (policy_051)"
 
 
 def _track_tcp(rig, position, rotation, dt):

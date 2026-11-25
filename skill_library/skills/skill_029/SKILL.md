@@ -60,8 +60,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `drag_from_top` — when object.near_closed_edge
 
-1. `policy_041()`
-2. `policy_044($object, @object.support, $direction_xy, $distance_m)`
+1. `policy_044($object, @object.support, $direction_xy, $distance_m)`
 
 ### `thin_auto` — when object.flat
 
@@ -70,8 +69,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `from_behind` — when always (default path)
 
-1. `policy_041()`
-2. `policy_043($object, @object.support, $direction_xy, $distance_m)`
+1. `policy_043($object, @object.support, $direction_xy, $distance_m)`
 
 ## Relations
 

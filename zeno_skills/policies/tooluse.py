@@ -20,14 +20,8 @@ from .. import skills
 from ..skill_jobs.carry import carry_posture
 from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, into_contact
 from ..evaluator import quat_R
-from ..planner import find_park, find_park_set
 from ..predicates import memory, objects_inside
 from ..rig import FINGERS_KW, Dropped, SkillFailure
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 class WipeSurfacePolicy(AtomicPolicy):

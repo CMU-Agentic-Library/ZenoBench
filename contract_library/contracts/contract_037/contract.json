@@ -145,11 +145,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_044",
       "args": [
        "$object",
@@ -194,11 +189,6 @@
     "path_id": "from_behind",
     "when": [],
     "steps": [
-     {
-      "policy": "policy_041",
-      "args": [],
-      "kwargs": {}
-     },
      {
       "policy": "policy_043",
       "args": [

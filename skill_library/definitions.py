@@ -263,14 +263,15 @@ skill("tuck", "arm", "Tuck an arm",
                    reason="More room around the base gives the fold a collision-free path.")])
 
 skill("reset", "posture", "Reset the posture",
-      "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked "
-      "joint-space move. Used to recover from an unknown arm state.",
+      "Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in "
+      "turn. Used to recover from an unknown arm state.",
       group=G, inputs={},
       requires=[P("hand_empty", hand="right")],
       ensures=[P("arm_stowed", hand="right"), P("torso_raised"), P("waist_straight")],
       invalidates=["torso_lowered()", "waist_bent(*)", "reachable(*)", "pointing_at(*)", "in_view(*)"],
-      paths=[Path("joint_home", [], [St("policy_040"), St("policy_003"), St("policy_095", out="home"),
-                                     St("policy_039", "#home.target")])],
+      paths=[Path("joint_home", [], [St("policy_003"), St("policy_006"), St("policy_009")],
+                  note="Each step a skill on the motion layers (HAND_PLAN 9j); the old chain of primitives (open the "
+                       "fingers, plan the home joints, a joint move) is gone.")],
       relations=[R("sequence", "navigate", "after a failed manipulation, before driving on",
                    reason="a known posture makes the base path plannable")],
       distinct_from={"tuck": "reset also opens the fingers and verifies torso, waist and arm together; the head is "
@@ -722,12 +723,11 @@ skill("push", "object", "Push an object",
       invalidates=["edge_overhang($object)", "grasp_clearance($object)", "away_from_edge($object,*)",
                    "at_initial_place($object)"],
       paths=[Path("drag_from_top", [W("object", "near_closed_edge", "truthy")],
-                  [St("policy_041"), St("policy_044", "$object", "@object.support", "$direction_xy", "$distance_m")]),
+                  [St("policy_044", "$object", "@object.support", "$direction_xy", "$distance_m")]),
              Path("thin_auto", [W("object", "flat", "truthy")],
                   [St("policy_026", "$object", "@object.support", "$direction_xy", "$distance_m")],
                   note="The dispatcher chooses push or drag for thin items."),
-             Path("from_behind", [], [St("policy_041"),
-                                      St("policy_043", "$object", "@object.support", "$direction_xy", "$distance_m")])],
+             Path("from_behind", [], [St("policy_043", "$object", "@object.support", "$direction_xy", "$distance_m")])],
       relations=[R("sequence", "pick", "the object was pushed into a graspable spot", bind={"object": "$object"}),
                  R("alternative", "pull", "the object should come toward the robot")],
       distinct_from={"pull": "pull drags toward the base to make an object reachable.",
@@ -747,7 +747,7 @@ skill("pull", "object", "Pull an object closer",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("moved_toward_base", object="$object", distance_m="$distance_m"), P("reachable", target="$object")],
       invalidates=["grasp_clearance($object)", "at_initial_place($object)"],
-      paths=[Path("top_drag", [], [St("policy_041"), St("policy_079", "$object", "$distance_m")])],
+      paths=[Path("top_drag", [], [St("policy_079", "$object", "$distance_m")])],
       relations=[R("sequence", "pick", "the object is now close enough to grasp", bind={"object": "$object"})])
 
 skill("expose", "object", "Expose a grasp edge",

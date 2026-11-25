@@ -13,11 +13,10 @@ import math
 
 import numpy as np
 
-from .base import AtomicPolicy
+from .base import AtomicPolicy, RetiredPolicy
 from .. import skills
 from ..skill_jobs.carry import carry_posture
 from .. import viewpoints
-from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
                           reach_targets)
 from ..rig import SkillFailure
@@ -37,11 +36,6 @@ ROOM_SPOT_DEG = 30.0                            # deg between spots on a ring
 FACE_ERR_DEG = 5.0          # deg of heading a turn in place may still miss by before face fails
 RETREAT_PAST = 0.03         # m a retreat goes past the distance asked for
 RETREAT_MIN = 0.01          # m: a retreat shorter than this is not driven
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _box_dist(box, xy):
@@ -137,40 +131,10 @@ class NavigateToPlacePolicy(AtomicPolicy):
         return tuple(rig.base_pose())
 
 
-class ApproachTargetPolicy(AtomicPolicy):
-    """Park the base where the right TCP has an IK solution at the target's
-    reach pose (10 cm above an object or support, handle pre-grasp, 8 cm in
-    front of a button), then verify it from the reached pose."""
+class ApproachTargetPolicy(RetiredPolicy):
+    """Retired (HAND_PLAN 9j): pick chooses its own park (policy_065)."""
 
-    def execute(self, target, *, max_tries=160):
-        rig = self.rig
-        targets = reach_targets(rig, target)
-        ok, _ = ik_reachable(rig, targets)
-        if ok:
-            rig.log("approach_already", target=target)
-            return tuple(rig.base_pose())
-        rig.sync_world()
-        saved = rig.kin.coll_kw
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        try:
-            park = None
-            for p, R in targets:
-                park = find_park(rig.kin, rig.world, [(p, R)], near=rig.base_pose()[:2], max_tries=max_tries,
-                                 travel_q=skills._travel_q(rig))
-                if park:
-                    break
-        finally:
-            rig.kin.coll_kw = saved
-        if park is None:
-            raise SkillFailure(f"approach {target}: no base pose reaches it (rejected: {_park_diag()})")
-        x, y, yaw, _ = park
-        rig.caption = f"APPROACH {target}"
-        skills.navigate(rig, (x, y, yaw), label=f"approach_{target}")
-        ok, where = ik_reachable(rig, reach_targets(rig, target))
-        rig.log("approach_result", target=target, park=[round(x, 3), round(y, 3), round(yaw, 1)], reachable=ok)
-        if not ok:
-            raise SkillFailure(f"approach {target}: parked but IK fails at {where}")
-        return tuple(rig.base_pose())
+    REPLACED_BY = "pick chooses its own park (policy_065)"
 
 
 class FaceTargetPolicy(AtomicPolicy):

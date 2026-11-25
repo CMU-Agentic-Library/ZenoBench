@@ -18,14 +18,8 @@ from .base import AtomicPolicy
 from .. import skills
 from ..clearance import LEGACY
 from ..kinematics import gripper_rot
-from ..planner import find_park
 from ..predicates import finger_slots_free, neighbour_gap, tilt_deg, GRASP_GAP_M
 from ..rig import SkillFailure
-
-
-def _park_diag():
-    from ..planner import LAST_PARK_DIAG
-    return {k: v for k, v in LAST_PARK_DIAG.items() if v}
 
 
 def _support(rig, name):

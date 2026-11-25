@@ -100,7 +100,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9g | 接触类：wipe、touch、knock | wipe (11)、touch (2) 所在的集 | `WIPE_PRESS`、`TOUCH_DEPTH` 登记；`tooluse.WipeSurfacePolicy`、`extra.TouchObjectPolicy`、`KnockPanelPolicy` 只调 `run_skill` |
 | 9h | v6 没用到的接触 / 手势：roll、tip（`_contact_sweep`）、flip、pour、wave、point、shake | 每个技能一个最小场景（`tools/run_skills.py`），各自 ≤ 5 分钟 | 这些文件的 `old_entry` 归零 |
 | 9i | 双臂：handover、brace、双手搬（第 9 步原文：两手一起搬的物体进碰撞模型，闭链约束另议） | v6 的双手搬集（如有）+ handover 最小场景 | `bimanual.py` 的 `old_entry` 归零 |
-| 9j | 收尾（第 10 步）：删旧入口（`Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`）、旧 `planner.find_park`、旧的碰撞上下文；`Right*Policy` 原语、`_move_articulated`、`_swing_arm`、pick / place while moving 的旧实现 | 单测 + 一组跨技能的集 | `old_entry` = 0，`LEGACY` = 0 |
+| 9j 收尾 | 做了一部分：旧入口 52 -> 21，LEGACY 0（剩下的见下） | 本次提交；`/data/zenobench/hand9j_1125` |
 | — | 全量（v6 种子 10，151 集）作为新基线 | — | 和 v6full_1123（136/151）对比，掉的逐集归类 |
 
 9a–9d 是让微波炉取放能做的最短路径；9e–9g 是 v6 用到的旧技能（约 50 次调用）；9h–9j 是 v6 没用到、但目录里有的。9h、9i 每个技能的设计在动手前写进 MOTION_ARCHITECTURE 第 6 节，和之前关门的做法一样。
@@ -161,5 +161,18 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 **9i 做到哪**（11-25）：brace = 左手的 pick，只取 rim / rim_rect / top / handle 捏法，`plan_pick(stop="pick_held")` 抓住就停（不抬、不搬），结果判据：那只手拿着、物体没挪（1.5 cm）；P07 整集成功（杯子只动了 0.7 mm，之后左手 release、收臂也成），11-08 旧代码这一步败在 TRAJOPT。`hand.py` 旧入口 3 -> 0。
 
 **handover**（11-25）：`skill_jobs.pick.handover_job`（catalog 的 `handover`，不找停车点：东西在给的那只手里，底盘一动它跟着动）。目标 = 给的手递到胸前的位置（`HANDOVER_AT`，旧代码的 6 个）× 朝向（长物体转到长轴和正前方成 50 / 60 / 70°、两头都行，夹爪绕自身轴转半圈的等价朝向也算；其他物体 0 / ±90 / 180°）× 接的手的抓法（标注的 pinch，加上 `side_variants`：每个手指水平合拢的 top pinch 派生两个从侧面水平伸入、手指上下合拢的抓法——只给 handover，普通 pick 的目标集合不变）。在原地按代价顺序建：给的手到递出位置的自由段（每个位置建一次），再在东西的新位置上建接的手的 pick（抓住就停）；第一个建得出来的执行，然后给的手 release。`plan_release` 的抽出改成按 `contact_extent` 量（离开 `LEAVE_GAP` 再走 `LEAVE_MARGIN`），不是一个手指长：P06 右手松开时一个手指长的直线没有 IK。检查：P06 接住（侧向抓法，第 25 个递出位姿，试了 444 组）、右手松开，整集 OK（后面开柜门失败，和 11-08 一样）；P07 再跑一次也 OK，但这次 brace 没抓成：停车点搜索的构造预算这次只建了 3 个（上次第 6 个成），是已知的预算问题，不是这次改动。
+
+**9j 做了什么**（11-25）：
+- reset 改成 tuck → stand（policy_006）→ straighten（policy_009），都是运动分层的技能；push / pull 的路径去掉开头的合爪（policy_041：推的计划自己合爪）；杯把手 pick（policy_055）改成 pick 只取 `handle_pinch`，握法记作 handle。
+- 退役：policy_039 / 040 / 041 / 095（reset 和合爪的原语）；类改成 `RetiredPolicy`（调用时说明被什么取代，id、目录、契约图都还在）：Right* 四个原语、PlanHome、PlanPoint、PrepareFloorReach、抓 / 放门把手、ReachWhileMoving、ApproachTarget。
+- `skills.py` 删掉 `_swing_arm`、`_fold_left`、`_move_with_retry(_impl)`、`_move_articulated`、`_ride`、`_ride_check`、`park_over`；微波炉在 `skills.open_articulated` / `close_articulated` 里改成按门键（`press_button(door=...)`，v6 的路线本来就走 powered 路径）；各策略文件里不再用的 `find_park` 导入和 `_park_diag` 删了。
+- 检查（v3 种子 10）：P09 整集 OK（其中 push 从后面推没找到停车点——11-08 用的还是迁移前的旧 push，不能对比）；P01 的 reset 排在 crouch 之后，没跑到。
+
+**还剩的旧入口（21 处）**：
+- 两手搬（`bimanual.py` 7：flat pick、box lift、carry）——用户 11-25 定跳过；
+- 边走边取放（`mobile.py` 5）——策略本来就是关闭的，用户 11-24 定先放着（第 6 节问题 4）；
+- `check_held` 里掉落时张手（`skills.py` 1）——钩子里的副作用，还没变成段；
+- sticky 的 snap 级瞬移、接住掉落（`sticky.py` 8）——计划里说按 Actuator 的写操作处理，还没做。
+所以 `Rig.move_to` / `joint_path` / `follow_both` 等旧入口、旧的 `planner.find_park`（`tools/build_tasks.py` 和它自己的单测还在用）都还不能删。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

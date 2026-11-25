@@ -14,7 +14,7 @@
   "noun": "posture",
   "arguments": []
  },
- "description": "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.",
+ "description": "Return to the home posture: arm folded, torso up, waist straight -- the tuck, raise and straighten skills in turn. Used to recover from an unknown arm state.",
  "use_when": "Start or end of a task, or after a failure, to return to a known posture.",
  "not_to_be_confused_with": {
   "tuck": "reset also opens the fingers and verifies torso, waist and arm together; the head is not moved."
@@ -144,18 +144,16 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_040()",
     "policy_003()",
-    "policy_095() as home",
-    "policy_039(#home.target)"
+    "policy_006()",
+    "policy_009()"
    ],
    "policies": [
     "policy_003",
-    "policy_039",
-    "policy_040",
-    "policy_095"
+    "policy_006",
+    "policy_009"
    ],
-   "note": ""
+   "note": "Each step a skill on the motion layers (HAND_PLAN 9j); the old chain of primitives (open the fingers, plan the home joints, a joint move) is gone."
   }
  ],
  "relations": {

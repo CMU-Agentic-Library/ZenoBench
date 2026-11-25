@@ -27,7 +27,6 @@ from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing,
 from .evaluator import quat_R
 from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
 from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
-from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, clearing, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
@@ -396,44 +395,6 @@ def drive_to(rig, goal, label="drive_to", **drive):
     relocate(rig, goal, (), label=label, **drive)
 
 
-def _swing_arm(rig, side, arm_q, label):
-    """Move one arm's joints (torso and waist kept) to ``arm_q``: straight in joint space when
-    that is clear, else a cuRobo trajectory.  False (logged) when neither exists."""
-    kin = rig.kin if side == "right" else rig.left_kin
-    start = rig.q_cmd.copy() if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-    goal = np.r_[start[:2], np.asarray(arm_q, float)[2:]]
-    if np.max(np.abs(goal - start)) < SAME_POSTURE:
-        return True
-    rig.clear.motion(label, FREE, side=side)
-    if kin.segment_free(start, goal):
-        vias = [goal]
-    else:
-        vias, status = kin.plan(start, goal)
-        if vias is None:
-            rig.log(f"{label}_blocked", side=side, status=str(status))
-            return False
-    if side == "right":
-        rig.follow(rig.joint_path_via(vias))
-    else:
-        qs, qa = [], start
-        for qb in vias:
-            qs += rig._dense(qa, np.asarray(qb, float))
-            qa = qb
-        rig.left_follow(qs)
-    rig.log(label, side=side)
-    return True
-
-
-def _fold_left(rig):
-    """An empty left arm left out (a brace, a hold released) folds to its travel posture
-    before the base drives: straight when that is clear, else a cuRobo trajectory; when
-    neither exists it stays where it is."""
-    if rig.left_held is not None:
-        return
-    rig.sync_world()
-    _swing_arm(rig, "left", rig.left_kin.rest, "left_fold")
-
-
 def _travel_q(rig):
     """Arm posture while driving to a park: tucked, or the current carry pose."""
     return rig.kin.rest if rig.held is None else rig.q_cmd
@@ -488,256 +449,17 @@ def _approach_clear(rig, n_free=2):
     return check
 
 
-def _ride_check(rig, a, q_from, q_to):
-    """Base follows the part rigidly: footprint + arm must stay clear."""
-    ann, kin, world = rig.ann, rig.kin, rig.world
-    M0inv = np.linalg.inv(ann.motion(a, q_from))
-
-    def check(x, y, yaw_deg, q_arm):
-        ok = True
-        saved = world.joint_q[a["name"]]
-        for q in np.linspace(q_from, q_to, 8)[1:]:
-            M = ann.motion(a, q) @ M0inv
-            p = M[:3, :3] @ np.array([x, y, 0.0]) + M[:3, 3]
-            dyaw = math.atan2(M[1, 0], M[0, 0])
-            world.set_joint(a["name"], q)
-            if not world.footprint_clear(p[0], p[1], math.radians(yaw_deg) + dyaw):
-                ok = False
-                break
-            kin.set_base((p[0], p[1], 0.0), math.radians(yaw_deg) + dyaw)
-            # the arm against the part where it will be then (closing, the robot swings
-            # through where the open door is now)
-            motion = getattr(kin, "motion", None)
-            with motion.part_at(a["name"], q) if motion is not None else nullcontext():
-                free = kin.free(q_arm)
-            if not free:
-                ok = False
-                break
-        world.set_joint(a["name"], saved)
-        kin.set_base((x, y, 0.0), math.radians(yaw_deg))
-        return ok
-    return check
-
-
-def _ride(rig, a, goal, lead=0.03, rate=0.25):
-    """Closed loop: read the real joint value, put the base at the pose that
-    keeps the robot rigid w.r.t. the part at (value + lead).  The grasped
-    handle is the only thing that moves the part."""
-    ann = rig.ann
-    x0, y0, yaw0 = rig.base_pose()
-    q_start = rig.joint(a["name"])
-    Minv0 = np.linalg.inv(ann.motion(a, q_start))
-    sign = 1.0 if goal > q_start else -1.0
-    cmd, last, stall = q_start, q_start, 0
-    for it in range(6000):
-        q = rig.joint(a["name"])
-        if sign * (goal - q) <= 0.02 * (1 if a["type"] == "revolute" else 0.3):
-            rig.log("ride_done", q=q)
-            return True
-        target = q + sign * lead if sign * (goal - (q + sign * lead)) > 0 else goal + sign * 0.02
-        cmd += float(np.clip(target - cmd, -rate / PHYSICS_HZ, rate / PHYSICS_HZ))
-        M = ann.motion(a, cmd) @ Minv0
-        p = M[:3, :3] @ np.array([x0, y0, 0.0]) + M[:3, 3]
-        rig.set_base(p[0], p[1], yaw0 + math.degrees(math.atan2(M[1, 0], M[0, 0])))
-        rig.step(1)
-        if it % 60 == 0:
-            rig.log("ride", q=round(q, 4), cmd=round(cmd, 4), fingers=[round(v, 4) for v in rig.fingers()])
-            if abs(q - last) < 0.003 and it:
-                stall += 1
-                if stall >= 4:
-                    return False
-            else:
-                stall = 0
-            last = q
-    return False
-
-
-def _move_articulated(rig, name, goal, verb):
-    a = rig.ann.art(name)
-    if a.get("handle") is None:          # e.g. a PartNet microwave without a handle part
-        raise SkillFailure(f"{verb} {name}: no graspable handle annotated")
-    q0 = rig.joint(name)
-    rig.sync_world()
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    # among feasible parks prefer the one whose arm can pull hardest along the
-    # handle's motion (the 3 N·m wrist joints were the weak link)
-    pull = np.asarray(a["handle"]["outward"], float) * (1 if goal != a["closed_q"] else -1) * 20.0
-
-    failed = getattr(rig, "_failed_art_parks", {}).get(name, [])
-
-    def score(x, y, yaw, qs):
-        if any(math.hypot(x - fx, y - fy) < 0.20 for fx, fy, _ in failed):
-            return 1e9                     # a ride from here already left the part unmoved: last resort
-                                           # (find_park keeps the lowest score)
-        rig.kin.set_base((x, y, 0.0), math.radians(yaw))
-        return torque_ratio(rig.kin, qs[-1], pull)
-    # doors hook from the free side; a drawer pull from either end
-    park = None
-    # untilted first; tilted side hooks for bars close to their panel; last a
-    # front pinch across the bar (held by friction), for a handle whose free
-    # side is blocked (the two middle handles of a double door)
-    hooks = [("side", flip, tilt) for tilt in (0.0, math.radians(10), math.radians(20))
-             for flip in ((False, True) if a["type"] == "prismatic" or a["handle"].get("flip_ok") else (False,))]
-    if a["handle"].get("grasp") == "front":            # round pull: no gap behind it to hook into
-        hooks = []
-    if a["handle"].get("pre_open") is not None:        # imported handles (bar geometry annotated)
-        hooks.append(("front", False, 0.0))
-    for grasp, flip, tilt in hooks:
-        p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
-        if a["category"] == "microwave" and verb == "open" and abs(q0 - a["closed_q"]) < 0.05:
-            # Park beside the hinge sweep. A frontal park can be IK-valid yet
-            # the tucked robot grazes the door while navigating to it.
-            h = a["handle"]
-            side = np.asarray(h["along"], float)
-            outward = np.asarray(h["outward"], float)
-            xy = np.asarray(h["center"], float)[:2] - 0.555 * side[:2] - 0.25 * outward[:2]
-            yaw = math.degrees(math.atan2(outward[1], outward[0])) + 15.0
-            park = find_park(rig.kin, rig.world, targets, near=(xy[0], xy[1], yaw),
-                             q_start=None, travel_q=_travel_q(rig),
-                             ride=_ride_check(rig, a, q0, goal), check=_approach_clear(rig), max_tries=1)
-            if park is not None:
-                rig.kin.set_base((park[0], park[1], 0.0), math.radians(park[2]))
-                if not joint_reachable(rig.kin, _travel_q(rig), park[3][0]):
-                    park = None
-            if park is not None:
-                break
-        park = find_park(rig.kin, rig.world, targets, near=rig.base_pose(), q_start=rig.q_cmd, travel_q=_travel_q(rig),
-                         ride=_ride_check(rig, a, q0, goal), check=_approach_clear(rig), score=score,
-                         n_best=1 if a["category"] == "refrigerator" else 3 if a["category"] == "microwave" else 10)
-        if park is not None:
-            break
-    if park is None:
-        raise SkillFailure(f"{verb} {name}: no base pose can grasp the handle and ride the motion")
-    x, y, yaw, park_qs = park
-    rig._last_art_park = (name, (x, y, yaw))
-    rig.log(f"{verb}_park", park=[round(x, 3), round(y, 3), round(yaw, 1)], hook_side="far" if flip else "near",
-            tilt_deg=round(math.degrees(tilt)), grasp=grasp)
-    rig.caption = f"{verb.upper()} {a['category']}: go to handle"
-    _goto_park(rig, park)
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    q_now = rig.joint(name)
-    rig.log(f"{verb}_at_park", q_before=q0, q_now=q_now)
-    if abs(q_now - q0) > 0.01:          # the part moved meanwhile: re-plan from here
-        q_prev, q0 = q0, q_now
-        rig.sync_world()
-        p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
-        bx, by, byaw = rig.base_pose()
-        if abs(q_now - q_prev) < 0.05 and math.hypot(x - bx, y - by) <= AT_PARK_M:
-            # Only a brush of the base nudged it: stay, and solve the handle
-            # IK afresh from the real base pose instead of reusing stale hints.
-            park_qs = (None, None, None)
-        else:
-            park = find_park(rig.kin, rig.world, targets, near=rig.base_pose(), q_start=rig.q_cmd,
-                             ride=_ride_check(rig, a, q0, goal), check=_approach_clear(rig), score=score, n_best=5)
-            if park is None:
-                raise SkillFailure(f"{verb} {name}: part moved to {q0:.3f} and no base pose reaches it now")
-            _goto_park(rig, park)
-            rig.sync_world()
-            park_qs = park[3]
-    rig.caption = f"{verb.upper()} {a['category']}: grasp handle ({'side hook' if grasp == 'side' else 'front pinch'})"
-    # a bar close to its panel (PartNet handles, ~3 cm gap): open only as far as
-    # keeps the inner pad between panel and bar
-    pre_open = a["handle"].get("pre_open", 0.04)
-    t = a["handle"].get("thickness", 0.025)
-    if grasp == "front":                  # the fingers straddle the bar across its width
-        t = float(np.abs(np.asarray(a["handle"]["bar_size"], float)) @ np.abs(np.asarray(a["handle"]["along"], float)))
-        pre_open = min(0.04, t / 2 + 0.015)
-    rig.grip(pre_open, 90)        # fingers may start closed (after a push or a knock)
-    for (tp, tR), lab, st, qh in zip(targets, ("pre_high", "pre", "handle"), (0.02, 0.01, 0.004), park_qs):
-        # the hand body counts until the last leg onto the handle
-        rig.kin.coll_kw = {"hand_touches_part": True} if lab == "handle" else APPROACH_KW
-        rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "handle" else 3, label=f"{verb}_{lab}", q_hint=qh)
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    f = rig.grip(0.0, PHYSICS_HZ)
-    from .skill_jobs.door import handle_closed_on
-    if not handle_closed_on(f, t):
-        raise SkillFailure(f"{verb} {name}: handle not grasped, fingers {f.round(4).tolist()}")
-    rig.caption = f"{verb.upper()} {a['category']}: base follows the joint motion"
-    if grasp == "front":                  # held by friction only: pull gently
-        _ride(rig, a, goal, lead=0.01, rate=0.12)
-    else:
-        _ride(rig, a, goal)
-    rig.step(30)
-    rig.caption = f"{verb.upper()} {a['category']}: release"
-    rig.grip(pre_open, 70)
-    q = rig.joint(name)
-    p, R, appr = rig.ann.handle_pose(a, q, grasp, flip, tilt)
-    # the hand is free already: back off as far as the arm allows, then up
-    for back in (0.14, 0.08, 0.04):
-        try:
-            rig.move_to(p - back * appr, R, step=0.006, steps_per_wp=4, label=f"{verb}_back", allow=LEAVE_CONTACT)
-            rig.move_to(p - back * appr + np.array([0, 0, 0.12]), R, step=0.01, label=f"{verb}_up",
-                        allow=FREE_ELSE_STRAIGHT)
-            break
-        except SkillFailure as e:
-            rig.log("retreat_short", back=back, reason=str(e))
-    else:                                 # no straight retreat: at least lift the open hand off the handle
-        try:
-            rig.move_to(p + np.array([0, 0, 0.08]), R, step=0.005, label=f"{verb}_up", allow=FREE_ELSE_STRAIGHT)
-        except SkillFailure as e:
-            rig.log("retreat_short", back=0.0, reason=str(e))
-    rig.step(60)
-    q = rig.joint(name)
-    rig.log(f"{verb}_result", name=name, before=q0, after=q, goal=goal)
-    if a["type"] == "revolute":
-        tol = DOOR_OPEN_TOL
-    elif goal == a["closed_q"]:
-        tol = DOOR_CLOSED_TOL
-    else:                    # a released drawer slides back a little
-        tol = DRAWER_OPEN_FRAC * abs(a["open_q"] - a["closed_q"])
-    ok = abs(q - goal) < tol
-    if not ok:
-        raise SkillFailure(f"{verb} {name}: joint {q0:.3f} -> {q:.3f}, goal {goal:.3f}")
-    return q
-
-
-def _move_with_retry(rig, name, goal, verb):
-    """Waist kept nearly upright while the left hand carries a load: bending
-    it swings the left arm (and its load) into the furniture being worked
-    (a 39-degree bow to a cabinet door knocked a rolling pin out)."""
-    if getattr(rig, "left_held", None) is None or not hasattr(rig.kin, "names"):
-        return _move_with_retry_impl(rig, name, goal, verb)
-    widx = rig.kin.names.index("waist_pitch_joint")
-    hi = float(rig.kin.hi[widx])
-    rig.kin.hi[widx] = min(hi, 0.25)
-    try:
-        return _move_with_retry_impl(rig, name, goal, verb)
-    finally:
-        rig.kin.hi[widx] = hi
-
-
-def _move_with_retry_impl(rig, name, goal, verb):
-    """A handle grasp can slide along the bar from some parks (the joint does
-    not move at all): remember that park and try once from another."""
-    q0 = rig.joint(name)
-    try:
-        return _move_articulated(rig, name, goal, verb)
-    except SkillFailure as exc:
-        last = getattr(rig, "_last_art_park", None)
-        progress = abs(rig.joint(name) - q0) / max(1e-6, abs(goal - q0))
-        if rig.held is not None or last is None or last[0] != name or progress > 0.3 \
-                or not ("joint" in str(exc) or "handle not grasped" in str(exc)) \
-                or not getattr(rig, "auto_recovery", True):
-            raise
-        if not hasattr(rig, "_failed_art_parks"):
-            rig._failed_art_parks = {}
-        rig._failed_art_parks.setdefault(name, []).append(last[1])
-        rig.log(f"{verb}_retry_other_park", failed_park=[round(v, 3) for v in last[1]])
-        rig.grip(0.04, 40)              # let go of the handle before the arm folds away from it
-        rig.tuck()
-        return _move_articulated(rig, name, goal, verb)
-
-
 def open_articulated(rig, name, goal=None):
     """Open ``name`` to ``goal`` (default its open value) by its handle: the motion-layer skill "open"
     (skill_jobs.door, skill_plans.plan_door: one grasp, the base riding the part), with the empty hand
-    (the right where both are; the body kept while the other holds something, docs 9.3 step 6b).  Still
-    the old _move_with_retry for a microwave (its park beside the hinge sweep: step 8).  A part at its
+    (the right where both are; the body kept while the other holds something, docs 9.3 step 6b).  And
+    a microwave by its door key (press_button, step 8b).  A part at its
     goal already is left as it is."""
     a = rig.ann.art(name)
     goal = a["open_q"] if goal is None else goal
     if a["category"] == "microwave":
-        return _move_with_retry(rig, name, goal, "open")
+        # its door moves by its key (press_door, step 8b): pressed with the door to go to goal
+        return press_button(rig, f"{name}/door_button", door="open")
     q = rig.joint(name)
     if abs(q - goal) <= (RIDE_DONE_REV if a["type"] == "revolute" else RIDE_DONE_PRIS):
         rig.log("open_result", name=name, before=q, after=q, goal=goal, path="already open")
@@ -750,11 +472,13 @@ def close_articulated(rig, name):
     """Close ``name``: the motion-layer skill "close" (skill_jobs.door.close_job: every empty hand x {push
     the door's outer face shut (skill_plans.plan_push), ride its handle shut (plan_door, the right
     hand)} in one park search, docs 9.3 step 6b).  A microwave, or a part with no handle, still the old
-    _move_with_retry (step 8).  A part closed already is left as it is."""
+    by its door key (press_button, step 8b).  A part closed already is left as it is."""
     a = rig.ann.art(name)
     goal = a["closed_q"]
-    if a["category"] == "microwave" or a.get("handle") is None:
-        return _move_with_retry(rig, name, goal, "close")
+    if a["category"] == "microwave":
+        return press_button(rig, f"{name}/door_button", door="close")
+    if a.get("handle") is None:
+        raise SkillFailure(f"close {name}: no handle annotated")
     q = rig.joint(name)
     if abs(q - goal) <= (RIDE_DONE_REV if a["type"] == "revolute" else RIDE_DONE_PRIS):
         rig.log("close_result", name=name, before=q, after=q, goal=goal, path="already closed")
@@ -1118,32 +842,6 @@ def _carrying(rig, name):
         return nullcontext()           # (a two-hand hold is in neither arm's model: Motion._attach_held)
     rig.sync_world()
     return motion.carrying(rig.kin.side, name, motion.held_in_tcp(rig.kin, rig.q_cmd, name))
-
-
-def park_over(rig, label, anchors, off, R, anchor_cost=None, max_tries=150, check=None):
-    """A park and TCP goal holding the load with its reference point at one of ``anchors`` (a drop
-    above a rim, a hover above a target): those points with the hand turned about the vertical
-    through them in PLACE_YAWS steps are one goal set (find_park_set), each checked with the load
-    in the hand and the fingers in the collision model, as the motion there is (fingers_checked).
-    ``off``: TCP minus the reference point now (world frame), ``R``: the TCP rotation now;
-    ``anchor_cost``: m of park cost per anchor; ``check``: find_park's.  (park, p, R_goal) or None."""
-    anchors = [np.asarray(a, float) for a in (anchors if np.ndim(anchors) == 2 else [anchors])]
-    anchor_cost = [0.0] * len(anchors) if anchor_cost is None else list(anchor_cost)
-    goals = [(a + rz(math.radians(d)) @ off, rz(math.radians(d)) @ R, d, i)
-             for i, a in enumerate(anchors) for d in PLACE_YAWS]
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    with _carrying(rig, rig.held["name"]) if rig.held is not None else nullcontext():
-        found = find_park_set(rig.kin, rig.world, [[(p, Rg, FREE_SPACE_KW)] for p, Rg, _, _ in goals],
-                              [PLACE_YAW_COST * abs(d) / 45.0 + anchor_cost[i] for _, _, d, i in goals],
-                              near=rig.base_pose(), max_tries=max_tries, q_start=rig.q_cmd,
-                              travel_q=_travel_q(rig), carry=rig.held is not None, check=check)
-    if found is None:
-        return None
-    park, k = found
-    p, Rg, d, i = goals[k]
-    rig.log(f"{label}_park", park=[round(v, 3) for v in park[:3]], yaw_deg=d, anchor=i)
-    return park, p, Rg
 
 
 def _is_tray(rig, name):
