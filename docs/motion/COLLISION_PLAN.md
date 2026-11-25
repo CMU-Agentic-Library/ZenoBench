@@ -359,6 +359,7 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | 各技能目标集合的候选：`PRESENT_AT`、`ROTATE_AT`、`UPRIGHT_FRONT` / `UPRIGHT_YAWS`、`WAVE_AT`、`POINT_SHOULDER` / `POINT_REACH`、`HANDOVER_AT` / `HANDOVER_AXIS` / `HANDOVER_TURNS`、`KNOCK_AT`、`TOUCH_CLOSES`、`POUR_YAWS`、`WIPE_YAWS`（都在 `skill_jobs`，目标采样是 job 的事，MOTION_ARCHITECTURE 2.3） | 旧代码依次试的点和转角，现在是一次搜索里的目标集合；点本身是继承的，不是从任务区域生成的 | 有任务区域定义的从区域生成（present 有 `presenting` 谓词的区域）；其余等这些技能有数据 |
 | `WIPE_PRESS` 1 mm、`TOUCH_DEPTH` 2 mm | 力的几何替身（和 `PRESS_DEPTH` 一样）：海绵压进台面、指尖压进被碰的面多深；`WIPE_PRESS` 沿用旧值（压 3 mm 海绵被拖出指间），`TOUCH_DEPTH` 拍定 | 有力控制时换成力 |
 | 容器松手高度：place 沿口上 3 cm、`drop_above` 5 cm；按沿口分流的 `rim > 0.12` | 两处不同、拍定；分流阈值没有出处 | 6.2：松手高度合成一个、写出处；分流阈值删掉（托盘按标注） |
+| `skills.free_spots` 的空位半径余量：任意朝向 1.5 cm、门后 8 mm、托盘 5 mm、窄支撑面 1 cm | 字面量，拍定，没出处（微波炉按家具名把门后的 8 mm 改成 −4 mm 的场景特例 11-25 删了：9d 以后它直接决定腔体里 place 的候选点） | 6.2 |
 | `PICK_LEAVE_CHECK` 3 cm | 和执行不一致（6.1 第 7 项）。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
 | `PICK_REACH_TOL` 5 mm、`GRIP_CLOSED_BY` 3 mm | 依据是一批运行的分布（`pick_checks_1105`）（`follow` 收尾 11-07 改成等 TCP 到 1 mm 或停下，`Rig._settle`） | 6.1 |
 | `SETTLE_STILL` 2 mm/s、`SETTLE_WINDOW` 10 tick | "停下"的判据，按收敛速度估的（5 mm 误差收敛时 10 mm/s 以上），没测过 | 第一次全量后看 `reach` 的误差和收尾耗时 |

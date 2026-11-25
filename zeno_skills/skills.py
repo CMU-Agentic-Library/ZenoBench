@@ -959,11 +959,9 @@ def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     if door is not None:
         # The cavity is narrow. The carried container is held upright, so its
         # actual lateral half-width is more useful than its diagonal radius.
+        # (No microwave's own radius any more: its -4 mm moved the bowl off the old insertion's low right wall --
+        # a scene's special case; the place's plan checks the walls itself.  Rule audit 11-25.)
         r = 0.5 * max(size[0], size[1]) + 0.008
-        if s.get("furniture") == "kitchen_microwave":
-            # The round bowl can safely overhang the flat floor by a few mm.
-            # This shifts it left of the low right wall during insertion.
-            r = 0.5 * max(size[0], size[1]) - 0.004
     tray = s.get("category") == "tray"
     if tray:
         # a tray holds loads side by side: the load's own half-size and a 1 cm gap (with the any-yaw
