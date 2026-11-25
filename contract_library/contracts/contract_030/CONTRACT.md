@@ -1,6 +1,6 @@
 # contract_030 — Hand an object over to the left hand
 
-Transfer a right-held object into the left gripper and open the right gripper.
+Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move).
 
 Paired SkillNode: `skill_022` (`handover-object`).
 

@@ -215,12 +215,14 @@ def test_a_lift_moves_the_load_straight_up_to_the_height_and_nothing_else():
 def test_a_release_opens_where_it_is_and_pulls_out_back_along_the_gripper_axis():
     from zeno_skills.skill_plans import RELEASE_STAGES, plan_release
     q = _q(0.5, 0.0, 0.30)
-    plan = plan_release(FakeKin(), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
+    # the cup's world within LEAVE_GAP of the hand up to z 0.33: the pull-out (TCP +z: back) as far as that, then
+    # LEAVE_MARGIN -- measured, not a finger's length
+    plan = plan_release(FakeKin(near_z=0.33), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
     assert isinstance(plan, Plan) and tuple(s.name for s in plan.segments) == RELEASE_STAGES
     opened, out = plan.segments
     assert opened.action == ("grip", 0.03, 60, True) and opened.spec.allow.touch == ("cup",)
-    assert np.allclose(out.q_end[:3], [0.5, 0.0, 0.37]) and out.spec.allow.touch == ("cup",)   # TCP +z: back
-    blocked = plan_release(FakeKin(wall=lambda p: p[2] > 0.33), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
+    assert 0.33 < out.q_end[2] <= 0.33 + 0.004 + 0.011 and out.spec.allow.touch == ("cup",)   # one 4 mm step
+    blocked = plan_release(FakeKin(near_z=0.33, reach_z=0.32), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
     assert isinstance(blocked, Failure) and blocked.segment == "release_pull_out"   # built before the hand opens
     assert isinstance(plan_release(FakeKin(), _state(q), 0.03, 0.07), Failure)
 

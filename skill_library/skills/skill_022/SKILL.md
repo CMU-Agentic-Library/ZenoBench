@@ -1,13 +1,13 @@
 ---
 name: handover-object
-description: "Transfer a right-held object into the left gripper and open the right gripper."
+description: "Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move)."
 ---
 
 # Hand an object over to the left hand (`skill_022`)
 
 `handover(object: object_ref)`
 
-Transfer a right-held object into the left gripper and open the right gripper.
+Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move).
 
 ## When to use
 

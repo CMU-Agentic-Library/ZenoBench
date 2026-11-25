@@ -4757,7 +4757,7 @@
    "verb": "handover",
    "noun": "object",
    "name": "Hand an object over to the left hand",
-   "description": "Transfer a right-held object into the left gripper and open the right gripper.",
+   "description": "Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in front of the chest, the left takes it there; the base does not move).",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {

@@ -813,6 +813,16 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.pour:pour_job",
     "skill_id": "skill_039"
+   },
+   {
+    "name": "handover",
+    "shape": "bimanual",
+    "template": "plan_pick",
+    "park": false,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.pick:handover_job",
+    "skill_id": "skill_022"
    }
   ]
  }

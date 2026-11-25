@@ -246,6 +246,7 @@ MOTION_SKILLS = [
     {"name": "shake", "shape": "posture", "template": "plan_gesture", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:shake_job"},
     {"name": "flip", "shape": "contact", "template": "plan_flip", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.held:flip_job"},
     {"name": "pour", "shape": "contact", "template": "plan_pour", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.pour:pour_job"},
+    {"name": "handover", "shape": "bimanual", "template": "plan_pick", "park": False, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.pick:handover_job"},
 ]
 
 COMPOSITE_NOTES = [

@@ -129,7 +129,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 本次提交；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
 | 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 本次提交；`/data/zenobench/hand9g_1125` |
 | 9h v6 没用到的接触 / 手势 | 迁完（每个都走 `run_skill`、按手），但 roll、flip、pour 的检查仍失败（见下）；wave、point、shake、tip 成功 | bef85df6、94b60272、本次提交；`/data/zenobench/hand9h_1125` |
-| 9i 双臂 | 进行中：brace 做完（P07 整集成功）；handover 迁了但 P06 失败，退回旧代码（见下）；两手搬没做 | 本次提交；`/data/zenobench/hand9i_1125` |
+| 9i 双臂 | brace、handover 做完（P07、P06 成功）；两手搬没做 | b9a267f4、本次提交；`/data/zenobench/hand9i_1125` |
 | 9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
@@ -160,6 +160,6 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 
 **9i 做到哪**（11-25）：brace = 左手的 pick，只取 rim / rim_rect / top / handle 捏法，`plan_pick(stop="pick_held")` 抓住就停（不抬、不搬），结果判据：那只手拿着、物体没挪（1.5 cm）；P07 整集成功（杯子只动了 0.7 mm，之后左手 release、收臂也成），11-08 旧代码这一步败在 TRAJOPT。`hand.py` 旧入口 3 -> 0。
 
-**handover 卡在哪**（没提交，改动存在 `/data/zenobench/hand9i_1125/handover_wip_job.py`、`handover_wip_policy.patch`）：东西在右手里，底盘一动它跟着动，所以不能走停车点搜索——做成了原地的 `handover_job`：目标 = 右手递出的位置（旧代码的 5 个身前位置 × 手绕竖直轴 0 / ±90°）× 左手的抓法，先建右手的一段，再在东西的新位置上建左手的抓取。P06 擀面杖：90 组都建不出来（右臂到不了 15 个递出位姿里的 11 个；到得了的 4 个上，左手 6 个标注抓法都是从上往下的 top pinch，伸入起点够不着）。旧代码能成，是因为它给左手手写了一个横着伸过去的抓法（`_present_for_horizontal_left`）。要等价，得让抓法候选里有"从侧面水平伸入"的方向（抓法生成的事），所以 handover 先留旧代码，11-08 P06 的 handover 是成的。
+**handover**（11-25）：`skill_jobs.pick.handover_job`（catalog 的 `handover`，不找停车点：东西在给的那只手里，底盘一动它跟着动）。目标 = 给的手递到胸前的位置（`HANDOVER_AT`，旧代码的 6 个）× 朝向（长物体转到长轴和正前方成 50 / 60 / 70°、两头都行，夹爪绕自身轴转半圈的等价朝向也算；其他物体 0 / ±90 / 180°）× 接的手的抓法（标注的 pinch，加上 `side_variants`：每个手指水平合拢的 top pinch 派生两个从侧面水平伸入、手指上下合拢的抓法——只给 handover，普通 pick 的目标集合不变）。在原地按代价顺序建：给的手到递出位置的自由段（每个位置建一次），再在东西的新位置上建接的手的 pick（抓住就停）；第一个建得出来的执行，然后给的手 release。`plan_release` 的抽出改成按 `contact_extent` 量（离开 `LEAVE_GAP` 再走 `LEAVE_MARGIN`），不是一个手指长：P06 右手松开时一个手指长的直线没有 IK。检查：P06 接住（侧向抓法，第 25 个递出位姿，试了 444 组）、右手松开，整集 OK（后面开柜门失败，和 11-08 一样）；P07 再跑一次也 OK，但这次 brace 没抓成：停车点搜索的构造预算这次只建了 3 个（上次第 6 个成），是已知的预算问题，不是这次改动。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

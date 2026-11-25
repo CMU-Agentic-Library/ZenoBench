@@ -254,3 +254,155 @@ def pick_job(rig, args, state, skill=None):
             return ctx["g"]["kind"]
         return _pick_judged(rig, name, ctx["g"], ctx["out"]["tcp0"], ctx["pos"], ctx["side"])
     return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, failed=failed, done=done)
+HANDOVER_AT = ((0.40, -0.08, 1.02), (0.40, -0.10, 0.98), (0.35, -0.10, 1.02), (0.40, -0.05, 1.06),
+               (0.38, 0.0, 0.90), (0.45, 0.0, 0.95))
+# m, base frame (forward, toward the taking hand, height): where the giving hand may hold it out in front of the chest
+# (the old HandoverRightToLeftPolicy's presentation poses: the first four its across-the-body ones) -- one goal set
+# with the taking hand's grasps
+HANDOVER_AXIS = (60.0, 50.0, 70.0)
+# deg, base frame: a long load (longest side over HANDOVER_LONG) is turned about the vertical so its long axis lies
+# this far round from forward toward the taking hand -- across the body, its far end toward the taking hand (the old
+# across-the-body turn); any other load keeps the hand as it is or turned a quarter
+HANDOVER_LONG = 0.15
+HANDOVER_TURNS = (0.0, 90.0, -90.0, 180.0)
+
+
+def side_variants(cands):
+    """For every top pinch whose fingers close horizontally (across a lying load), the same contact taken from the side
+    (HAND_PLAN 9i): the hand coming in horizontally along that closing direction, either way, the fingers closing
+    vertically -- a hand that cannot reach over the load (the taking hand of a handover: the old code built one such
+    grasp by hand, _present_for_horizontal_left).  Not offered to an ordinary pick (its goal set is unchanged)."""
+    from ..kinematics import gripper_rot
+    out = []
+    for g in cands:
+        if g["kind"] != "top_pinch":
+            continue
+        close = np.asarray(g["R"], float)[:, 1]
+        if abs(float(close[2])) > 0.3:
+            continue
+        c = np.array([close[0], close[1], 0.0]) / max(1e-9, float(np.linalg.norm(close[:2])))
+        for appr in (c, -c):
+            out.append({**g, "kind": "side_pinch", "R": gripper_rot(appr, [0.0, 0.0, 1.0]),
+                        "along_rank": g.get("along_rank", 0)})
+    return out
+
+
+def handover_job(rig, args, state, skill=None):
+    """motion_skills.Job of a handover's two hands (HAND_PLAN 9i): the giving hand (the other one) holds its load out in
+    front of the chest -- HANDOVER_AT x HANDOVER_TURNS -- and the taking hand ``args["hand"]`` (default left) picks it
+    there, held where it stands (plan_pick stop="pick_held"), no lift.  Every (presentation, grasp) is one goal, built
+    where the robot stands in cost order, the first that plans run: the giving arm's free leg (the load's tilt held),
+    then the taking hand's pick with the load where that leg leaves it (the giving arm and its load in the collision
+    model reject a grasp too close to that hand).  No park search: the load rides with the base.  The giving hand lets
+    go after (the policy: the release skill).  done(): the taking hand holds it."""
+    from ..motion_skills import Job
+    from ..motion_state import Failure, Plan, with_arm, with_object
+    from ..primitives import PoseSet
+    from ..skill_plans import held_frame, plan_posture
+    name, side = args["name"], args.get("hand", "left")
+    give = "right" if side == "left" else "left"
+    if rig.held_by(side) is not None:
+        raise SkillFailure(f"handover {name}: the {side} hand is not empty")
+    if rig.held_by(give) is None or rig.held_by(give)["name"] != name:
+        raise SkillFailure(f"handover {name}: the {give} hand does not hold it")
+    obj = rig.ann.objects[name]
+    pos, quat = rig.obj_pose(name)
+    st = rig.state()
+    cands, extra = _pinch_candidates(rig, obj, pos, quat, args.get("kinds", PINCH_KINDS), _surface_under(rig, name, st))
+    T_obj = (getattr(state, "objects", None) or {}).get(name)
+    if not cands or T_obj is None:
+        raise SkillFailure(f"handover {name}: no pinch grasp annotated" if not cands else
+                           f"handover {name}: not in the collision model")
+    rig.sync_world()
+    build_with = skill.build if skill is not None else None
+    cands = cands[:args.get("max_candidates", 12)]
+    goal_cands = cands + extra + side_variants(cands)
+    problem, carry_goals, grasps, which = _pick_problem(rig, name, goal_cands, T_obj, rig.base_pose(), (), build_with,
+                                                        sides=(side,), stop="pick_held")
+    gkin = _kin(rig, give)
+    _, R_give = gkin.tcp(rig.chain_q(give))
+    x, y, yaw = rig.base_pose()
+    c, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    sgn = 1.0 if side == "left" else -1.0
+    size = np.asarray(rig.ann.asset_of(obj)["size"], float)
+    turns = HANDOVER_TURNS
+    if float(max(size)) > HANDOVER_LONG:
+        # the turns that lay its long axis HANDOVER_AXIS round from forward toward the taking hand (either end)
+        from ..evaluator import quat_R
+        ax = quat_R(quat)[:, int(np.argmax(size))]
+        now = math.degrees(math.atan2(ax[1], ax[0]))
+        # (the gripper is the same turned half round about its axis: both, the wrist away from its limit in one)
+        turns = tuple(((yaw + sgn * t - now + 90.0) % 180.0) - 90.0 + e for t in HANDOVER_AXIS for e in (0.0, 180.0))
+    presents = []
+    for f, l, z in HANDOVER_AT:
+        p = np.array([x + f * c - sgn * l * s_, y + f * s_ + sgn * l * c, z])
+        for deg in turns:
+            a = math.radians(deg)
+            Rz = np.array([[math.cos(a), -math.sin(a), 0.0], [math.sin(a), math.cos(a), 0.0], [0.0, 0.0, 1.0]])
+            presents.append((p, Rz @ np.asarray(R_give, float)))
+    order = sorted(range(len(problem.goals)), key=lambda k: problem.goals[k][2])
+    ctx = {"out": {}}
+
+    leads = {}
+
+    def build_at(now, i, k, fresh=False):
+        """The giving arm to presentation i, then the taking hand's pick k there: Plan or Failure (the giving leg
+        made once per presentation from ``now``, again when ``fresh``)."""
+        if fresh or i not in leads:
+            leads[i] = plan_posture(gkin, now, PoseSet((presents[i],)), name="handover_present")
+        lead = leads[i]
+        if isinstance(lead, Failure):
+            return lead
+        legs = [sg for sg in lead.segments if sg.kind == "move"]
+        st2 = now
+        if legs:
+            q_end = np.asarray(legs[-1].q_end, float)
+            st2 = with_arm(now, q_end, give)
+            held = now.held(give)
+            if held is not None:
+                st2 = with_object(st2, name, held_frame(gkin, q_end, held))
+        take = problem.build(st2, k, None)
+        if isinstance(take, Failure):
+            return take
+        return Plan(tuple(lead.segments) + tuple(take.segments), decisions=dict(take.decisions))
+
+    def ready(found):
+        now = observe(rig)
+        why = {}
+        for i in range(len(presents)):
+            for k in order:
+                plan = build_at(now, i, k)
+                if isinstance(plan, Failure):
+                    key = f"{plan.segment}: {plan.why[:60]}"
+                    why[key] = why.get(key, 0) + 1
+                    continue
+                g = goal_cands[which[k]]
+                rig.log("handover_take", obj=name, hand=side, kind=g["kind"], present=i, tried=sum(why.values()) + 1,
+                        of=len(presents) * len(order))
+                ctx["g"] = g
+                take_plan, rebuild_take, hooks = _pick_ready(rig, name, g, grasps[which[k]], plan, carry_goals[side],
+                                                             ctx["out"], build_with, side, "pick_held")
+
+                def rebuild(state_, frm, prior, i=i, k=k, rebuild_take=rebuild_take):
+                    if frm == "handover_present":
+                        return build_at(state_, i, k, fresh=True)
+                    return rebuild_take(state_, frm, prior)
+                hooks = {**hooks, "handover_present": {"after": lambda r: check_held(r, "handover_present",
+                                                                                     open_hand=False, side=give)}}
+                return plan, rebuild, hooks
+        from ..primitives import ik_why
+        from ..skill_plans import FREE_LOAD
+        bad = [i for i in range(len(presents)) if isinstance(leads.get(i), Failure)]
+        rig.log("handover_no_grasp", obj=name, hand=side, failed=why, presentations=len(presents),
+                unreached={i: ik_why(gkin, now, FREE_LOAD, presents[i][0], presents[i][1], (now.q(give),))[:120]
+                           for i in bad[:6]})
+        raise SkillFailure(f"handover {name}: no presentation x grasp plans here ({sum(why.values())} tried)")
+
+    def done():
+        held = rig.held_by(side)
+        rig.log("pick_result", obj=name, kind=ctx["g"]["kind"], hand=side, hold=True,
+                held=held is not None and held["name"] == name)
+        if held is None or held["name"] != name:
+            raise SkillFailure(f"handover {name}: not in the {side} hand after the close")
+        return ctx["g"]["kind"]
+    return Job(ready=ready, done=done)

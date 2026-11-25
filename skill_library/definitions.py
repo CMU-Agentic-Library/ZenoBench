@@ -605,7 +605,8 @@ skill("release", "object", "Release an object",
       distinct_from={"drop": "drop moves above a container first; release does not move the object."})
 
 skill("handover", "object", "Hand an object over to the left hand",
-      "Transfer a right-held object into the left gripper and open the right gripper.",
+      "Transfer a right-held object into the left gripper and open the right gripper (the right holds it out in "
+      "front of the chest, the left takes it there; the base does not move).",
       group=G,
       inputs={"object": I("object_ref", "The right-held object.")},
       requires=[P("holding", hand="right", object="$object"), P("hand_empty", hand="left")],

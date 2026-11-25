@@ -360,8 +360,8 @@ RELEASE_TICKS = 60      # physics ticks the hand opens in, gradually (inherited:
 
 def plan_release(kin, state, pre_open, out_len, start="release_open", prior=None, obj=None, step=0.004):
     """release (HAND_PLAN 9f): let go of what ``kin``'s hand holds where it is -- the hand opened to
-    ``pre_open`` (the fingers may touch what they let go: release_spec) -- and the pull-out of length ``out_len``
-    back along the gripper axis, the fingers still allowed on it, as the place's pull-out.  Both built before
+    ``pre_open`` (the fingers may touch what they let go: release_spec) -- and the pull-out back along the gripper axis
+    as far as contact_extent measures (the fingers still allowed on it; ``out_len`` unused, kept for the callers).  Both built before
     anything moves: a pull-out that cannot be made fails the release with the hand still closed (the old
     ReleaseInPlacePolicy opened first and logged a short back-off).  ``obj``: what it lets go (default what the
     State's hand holds; given, a plan built again after the opening).  ``start`` / ``prior``: run's rebuild.
@@ -381,10 +381,13 @@ def plan_release(kin, state, pre_open, out_len, start="release_open", prior=None
                     s = released(s, kin.side, held.name, held_frame(kin, q, held))
                 s = with_width(s, kin.side, pre_open)
             else:
-                p0, R0 = kin.tcp(q)
-                seg = straight(kin, s, spec, p0 + out_len * R0[:, 2], R0, stage, step=step, q_from=q)   # +z: back
-                if not isinstance(seg, Failure):
-                    seg = _move(seg, steps_per_wp=3, smooth=True)
+                # back along the gripper axis as far as contact_extent measures (LEAVE_GAP clear of what it let go and
+                # everything else, then LEAVE_MARGIN; rule 4) -- a finger's length had no IK where a handover's giving
+                # hand let go (P06 11-25)
+                from ._common import _contact
+                _, R0 = kin.tcp(q)
+                seg = _contact(kin, s, spec, np.asarray(R0, float)[:, 2], "near_world", stage, step, q,
+                               steps_per_wp=3, smooth=True)
             if isinstance(seg, Failure):
                 return seg
             segs.append(seg)
