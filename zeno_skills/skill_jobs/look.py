@@ -64,12 +64,13 @@ def _job(rig, state, skill, aims, face, label, on_view=None, done=None):
     from ..skill_plans.look import plan_look as _default
     plan_look = skill.build if skill is not None else _default
     aims = list(aims)
-    carry = _carry(rig, rig.held["name"], None) if rig.held is not None else None
-    if carry is not None:
-        carry = replace(carry, want=None, raise_goals=None)     # a turn keeps the load as it rides
+    # a turn keeps every load as it rides -- the carry constraints of the hand that holds it, either hand (until the
+    # rule audit of 11-25 the right's only: a left-hand load turned with its posture unchecked)
+    carry = tuple(replace(_carry(rig, rig.held_by(sd)["name"], None, sd), want=None, raise_goals=None)
+                  for sd in ("right", "left") if rig.held_by(sd) is not None)
     base = RigBase(rig)
-    stage_of = {"tuck": "arm", "carry_in": "arm", "left_fold": "left_fold", f"{label}_turn": "drive",
-                "arrive": "arrive"}
+    stage_of = {"tuck": "arm", "carry_in": "arm", "left_fold": "left_fold", "left_carry_in": "left_fold",
+                f"{label}_turn": "drive", "arrive": "arrive"}
 
     def build(st, frm=None):
         return plan_look(rig.kin, rig.left_kin, st, base, lambda s: head_aims(s, aims), face=face, carry=carry,

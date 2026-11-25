@@ -118,8 +118,9 @@ def _carry_bottom_z(rig, place):
         st = rig.state()
         names = {rec["name"]}
         tops = []
+        carried = {h["name"] for h in (rig.held_by("right"), rig.held_by("left")) if h is not None}
         for o in rig.ann.objects:
-            if rig.held is not None and o == rig.held["name"]:
+            if o in carried:                    # what a hand holds (either: until 11-25 only the right's)
                 continue
             sup = rig.geo.support_under(o, st)
             if sup is not None and sup["name"] in names:

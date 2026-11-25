@@ -109,6 +109,26 @@ def test_a_load_that_does_not_meet_them_is_planned_to_the_carry_goal_set_or_the_
     assert isinstance(out, Failure) and out.segment == "carry_in" and "too low" in out.why
 
 
+def test_a_load_in_each_hand_has_each_its_own_carry_posture():
+    # HAND_PLAN 3.3 / 3.4: every hand that holds a load is checked against its carry constraints and planned to its
+    # carry goal set when it fails them (until the rule audit of 11-25 the right's only, the left's load unchecked)
+    goal_r = (np.array([0.4, -0.2, 1.0]), np.eye(3))
+    goal_l = (np.array([0.4, 0.2, 1.0]), np.eye(3))
+    low = lambda goal: Carry(check=lambda s: "the load's bottom is too low",
+                             goals=lambda s, q: (PoseSet((goal,)), {"step": 0.01}))
+    right, left = Kin(), Kin("left")
+    right.ik, left.ik = [_q(0.4, -0.2, 1.0)], [np.r_[0.4, 0.2, 1.0, np.zeros(6)]]
+    st = State(base=(0.0, 0.0, 0.0), **chains(_q(0.4, -0.2, 0.9), np.r_[0.4, 0.2, 0.9, np.zeros(4)]),
+               hands={"right": Hand(0.0, Held("cup", np.eye(4))), "left": Hand(0.0, Held("pen", np.eye(4)))})
+    carries = (Carry(**{**low(goal_r).__dict__, "side": "right"}), Carry(**{**low(goal_l).__dict__, "side": "left"}))
+    plan = plan_navigate(right, left, st, (1.0, 2.0, 90.0), Base(), carry=carries)
+    assert [s.name for s in plan.segments][:2] == ["carry_in", "left_carry_in"], plan
+    assert plan.info["carry_by_side"] == {"right": "the load's bottom is too low", "left": "the load's bottom is too low"}
+    # one Carry still takes its own side only
+    one = plan_navigate(right, left, st, (1.0, 2.0, 90.0), Base(), carry=carries[1])
+    assert [s.name for s in one.segments][0] == "left_carry_in" and "carry_in" not in [s.name for s in one.segments]
+
+
 def test_a_blocked_drive_fails_the_plan():
     out = _nav(_state(), base=Base(blocked="no path"))
     assert isinstance(out, Failure) and "no path" in out.why
@@ -177,7 +197,8 @@ def test_navigates_rebuild_takes_the_prior_run_hands_it():
     def plan_nav(kin, left_kin, st, pose, base, carry=None, arrive=None, label=None, start="arm"):
         built.append(start)
         return Plan(())
-    rig = SimpleNamespace(held=None, left_held=None, kin=None, left_kin=None, log=lambda *a, **k: None)
+    rig = SimpleNamespace(held=None, left_held=None, held_by=lambda side="right": None, kin=None, left_kin=None,
+                          log=lambda *a, **k: None)
     job = navigate_job(rig, {"pose": (1.0, 2.0, 90.0)}, _state(), SimpleNamespace(build=plan_nav))
     plan, rebuild, hooks = job.ready(None)
     assert isinstance(rebuild(_state(), "tuck", plan), Plan) and built == ["arm", "arm"]
