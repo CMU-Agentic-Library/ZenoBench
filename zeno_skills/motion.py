@@ -760,8 +760,10 @@ class Motion:
         """{locked joint: value} of the head and the fingers as the robot has them now: a hand
         closed on a load is not the open hand of the robot config (the planner had the fingers
         at FINGER_OPEN, 2.5 cm wider each side than a pinched spoon, and the tilt-held carry of
-        T03 ran that phantom finger into the island).  The second finger mimics the first; the
-        wider of the two is taken."""
+        T03 ran that phantom finger into the island).  Each finger at its own value (the second
+        mimics the first only where a width is given alone, hand_open / a planned opening): the
+        wider of the two taken for both put a phantom finger 4 mm into the book a left edge place
+        had just let go of, and the tuck could not start (v6full 1125)."""
         from .kinematics import FINGER_OPEN
         rig = getattr(self, "rig", None)
         vals = {}
@@ -772,11 +774,13 @@ class Motion:
         elif hasattr(rig, "head_q"):
             vals.update(rig.head_q())
         for side, read in (("right", "fingers"), ("left", "left_fingers")):
-            if side in self.hand_width:
-                vals[f"{side}_gripper_left_finger_axis"] = self.hand_width[side]
-            elif hasattr(rig, read):
-                f = np.asarray(getattr(rig, read)(), float)[:2]
-                vals[f"{side}_gripper_left_finger_axis"] = float(np.clip(f.max(), 0.0, FINGER_OPEN))
+            w = self.hand_width.get(side)
+            if w is None and hasattr(rig, read):
+                w = tuple(float(x) for x in np.clip(np.asarray(getattr(rig, read)(), float)[:2], 0.0, FINGER_OPEN))
+            if isinstance(w, tuple):
+                vals[f"{side}_gripper_left_finger_axis"], vals[f"{side}_gripper_right_finger_axis"] = w
+            elif w is not None:
+                vals[f"{side}_gripper_left_finger_axis"] = vals[f"{side}_gripper_right_finger_axis"] = float(w)
         return vals
 
     @contextmanager
@@ -967,7 +971,7 @@ class Motion:
             kin.set_base((x, y, 0.0), math.radians(yaw))
             if scene is not None:
                 setattr(scene, other_attr, state.q(other))
-            self.hand_width = {s_: h.width for s_, h in state.hands.items()}
+            self.hand_width = {s_: (h.fingers if h.fingers is not None else h.width) for s_, h in state.hands.items()}
             self.head_override = dict(state.head) if state.head else None
             kw = {k: v for k, v in (kin.coll_kw or {}).items() if k not in ("ignore_fingers", "exempt_targets")}
             kw["ignore_fingers"] = not spec.fingers

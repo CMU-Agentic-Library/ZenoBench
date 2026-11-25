@@ -924,7 +924,7 @@ class Rig:
     # ---------------------------------------------------- motion_state.Actuator (run.py's only door)
     def snapshot(self):
         """The State now (motion_state.State): the base, the commanded arm postures, the head, each
-        hand's finger opening (the wider finger, as Motion.live_locks) and what it holds (its box
+        hand's finger opening (the wider finger; each finger as it stands, Hand.fingers) and what it holds (its box
         frame in the TCP frame, Motion.held_in_tcp, both as they really stand: the hand at the arm's
         measured joints, not its command -- a load sags the arm and a contact pushes it off its
         command, and a hold read against the commanded TCP would take that for the load moving in the
@@ -939,7 +939,8 @@ class Rig:
         for side, kin, q, held, fingers in (
                 ("right", self.kin, self.q, self.held, self.fingers),
                 ("left", self.left_kin, self.left_q, self.left_held, self.left_fingers)):
-            width = float(np.clip(np.asarray(fingers(), float)[:2].max(), 0.0, FINGER_OPEN))
+            f = np.clip(np.asarray(fingers(), float)[:2], 0.0, FINGER_OPEN)
+            width = float(f.max())
             h = None
             if held is not None:
                 name = held["name"]
@@ -955,7 +956,7 @@ class Rig:
                 T_tcp[:3, :3], T_tcp[:3, 3] = R, p
                 h = Held(handle["name"], np.linalg.inv(T_tcp) @ self.ann.part_pose(a, self.joint(handle["name"])),
                          "part")
-            hands[side] = Hand(width=width, held=h)
+            hands[side] = Hand(width=width, held=h, fingers=(float(f[0]), float(f[1])))
         return State(base=tuple(self.base_pose()), body=np.asarray(self.q_cmd, float)[:2].copy(),
                      arms={"right": np.asarray(self.q_cmd, float)[2:].copy(),
                            "left": np.asarray(self.left_q_cmd, float).copy()}, head=dict(self.head_q()), hands=hands,

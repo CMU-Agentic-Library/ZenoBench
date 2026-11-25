@@ -80,6 +80,9 @@ class Aim:
 class Hand:
     width: float                     # m per finger, as the fingers stand (or will)
     held: Held | None = None
+    # (left, right) m: each finger as it stands, read from the robot (they part ways when a contact
+    # pushes one: T14 left place, 0.036 / 0.029 m opened to 0.032); None: both at ``width`` (planned)
+    fingers: tuple | None = None
 
 
 @dataclass(frozen=True, eq=False)
@@ -312,7 +315,7 @@ def with_posture(s: State, p, side="right") -> State:
 
 def with_width(s: State, side, width) -> State:
     h = s.hands.get(side, Hand(width=0.0))
-    return replace(s, hands={**s.hands, side: replace(h, width=float(width))})
+    return replace(s, hands={**s.hands, side: replace(h, width=float(width), fingers=None)})
 
 
 def holding(s: State, side, held: Held) -> State:
