@@ -98,7 +98,9 @@ def _plan_slide(kin, state, push, rest_goals, start, prior_plan, step):
         if stage in SLIDE_ANCHORS:
             seg = anchor(stage, q, s, (obj,), side)
         elif stage == "slide_close_hand":
-            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
+            # a second, as pick's close (run: PHYSICS_HZ ticks): 30 ticks left the fingers ~2 cm open each, and the
+            # next segment, built with them closed, was checked with them open (T27 rice, the left hand, 11-25)
+            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, None, False))
             s = with_width(s, side, 0.0)
         elif stage == "slide_reach":
             seg = kept or _reach(kin, s, FREE_HAND, land, R, -up, above, q, prior.get(stage, prior.get(SLIDE_RELAY)),
@@ -355,7 +357,7 @@ def _plan_press(kin, state, press, rest_goals, start, prior_plan, step, base):
         if stage in PRESS_ANCHORS and stage != "press_door_moved":
             seg = anchor(stage, q, s, (), side)
         elif stage == "press_close_hand":
-            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
+            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, None, False))   # closed: as slide's
             s = with_width(s, side, 0.0)
         elif stage == "press_reach":
             seg = kept or _reach(kin, s, FREE_HAND, p, R, u, float(press["approach"]), q,
