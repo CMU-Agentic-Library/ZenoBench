@@ -69,6 +69,7 @@ class WipeSurfacePolicy(AtomicPolicy):
 
     def execute(self, tool, support, *, length=0.30, passes=2):
         rig = self.rig
+        skills.right_hand_only(rig, tool, "wipe")
         if rig.held is None or rig.held["name"] != tool:
             raise SkillFailure(f"wipe: {tool} is not right-held")
         s = rig.ann.support(support)
@@ -195,6 +196,7 @@ class PourIntoPolicy(AtomicPolicy):
 
     def execute(self, source, target, *, max_tilt_deg=120.0):
         rig = self.rig
+        skills.right_hand_only(rig, source, "pour")
         if rig.held is None or rig.held["name"] != source:
             raise SkillFailure(f"pour: {source} is not right-held")
         st = rig.state()

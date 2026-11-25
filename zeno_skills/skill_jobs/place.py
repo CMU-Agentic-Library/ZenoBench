@@ -16,7 +16,7 @@ from ..run import observe
 from ..skill_plans import FREE_HAND, FREE_LOAD, PLACE_RELAY, T_of
 from ..sticky import rest_R
 from ..skills import (APPROACH_STEP, COM_MARGIN, EDGE_MIN_OVERHANG, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST,
-                      _edge_coord, _lowest_z, _open_edges, _overlaps_objects, _perp, check_held, pick_approach)
+                      _edge_coord, _lowest_z, _open_edges, _overlaps_objects, _perp, check_held, pick_approach, right_hand_only)
 from ..tolerances import LEAVE_GAP, PLACE_LEVEL_MIN, PLACE_XY_TOL, PLACE_XY_TOL_CORNER, TARGET_TOL
 from .carry import _carry_bottom_z, carry_posture
 from .door_access import door_ahead, front_of, leave_tier
@@ -44,6 +44,7 @@ def place_job(rig, args, state, skill=None):
     primitives.holds); then the result judged."""
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
+    right_hand_only(rig, name, "place")            # HAND_PLAN 9c gives it the hand
     kin = rig.kin
     # behind a door (a shelf inside a cabinet, the fridge): open enough to reach past it, checked
     # before anything moves -- as the pick behind a door (door_access.door_ahead)

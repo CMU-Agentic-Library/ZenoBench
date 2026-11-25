@@ -90,7 +90,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 
 | 步 | 内容 | 针对性检查 | 完成标准 |
 |---|---|---|---|
-| 9a | 持物状态按手（3.3）：`held_by(side)`、合并 `check_held`、sticky / `carry_posture` / `snapshot` 按手；旧技能遇左手持物报错 | 右手不变：T07 microwave_works、T22 by_kind、T11 一集托盘、T09 lid_off（调用、停车点、锚点同改之前）；FakeKin 左手单测 | 右手行为不变；左手持物的状态读写有单测 |
+| 9a | 持物状态按手（3.3）：`held_by(side)`、合并 `check_held`；旧技能和还只认右手的新层 job（place、drop、stir）遇左手持物报错（`carry_posture` 按手随 9c：它是 `plan_navigate` 搬运段的右臂版；sticky、`snapshot` 已按手） | 右手不变：T07 microwave_works、T22 by_kind、T11 一集托盘、T09 lid_off（调用、停车点、锚点同改之前）；FakeKin 左手单测 | 右手行为不变；左手持物的状态读写有单测 |
 | 9b | 契约按物体（3.2）：`holding(object)`、`hand_empty()`、pick 输出 `hand`、可选 `hand=`；skill 库重新生成 | 同 9a 的集（契约只换写法，行为不变）；`build_skill_library.py --check` | 83 处改完；v6 路线静态检查（bench 的 1510/1510）仍过 |
 | 9c | pick 选手（3.1）：目标集合 × 空着的手；place / drop / stack / cover 用拿着的那只手 | 强制左手开关（诊断，不进基线）跑 3 集左手 pick + place；不强制跑 T07 broken_oatmeal_away 前半、T20、T25 看选到哪只手 | 左手 pick → place 整集成功至少 2/3；右手为主的集成败不变或变好 |
 | 9d | 微波炉腔体取放（第 8c / 8d 步，3.5）：取出 stash，改走 pick / place，退役 018–021、048，删旧腔体代码和 `microwave_retrieval_q` | T07 microwave_works、broken_oatmeal_away、two_portions__counter | 三集里的腔体放入、取出都成；需要的话加 3.5 的穿过开口 |
@@ -108,9 +108,9 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 
 9c 起停车点和手都会变，等于换基线：9c、9d 以后各跑一次针对性检查，9g 以后（v6 用到的都迁完）跑一次全量作为新基线；9h–9j 不影响 v6（没用到），只跑针对性检查。
 
-## 6. 待定（要用户 / bench 作者定的）
+## 6. 用户的决定（11-24）
 
-1. **路线里的手**：v6 路线有没有依赖"东西在右手"的地方（例如右手拿着、左手开门的路线写法）？3.2 的契约改动以后由 bench 作者核一遍 1510 集的静态检查。
-2. **评分里的 `["hand_empty", "right"]`**：改成"两只手都空"还是保持？保持的话，选手以后左手拿着东西结束的集会被判错（现在没有这种结束方式，但语义不对）。
-3. **左手持物限速、搬运姿态**：右手的值（`carry_posture`、持物限速）直接镜像给左手，不另调；先这样，数据不对再说。
-4. **边走边取放**（`mobile.py`，v6 没用到）：迁成 pick / place 的一种（底盘在动的任务段）还是退役？
+1. **路线里的手**：v6 路线不依赖"东西在右手"。3.2 的契约改动以后照常跑 bench 的静态检查即可。
+2. **评分里的 `["hand_empty", "right"]`**：改成"两只手都空"（随 9b 做：评分的谓词和 v6 生成器里写它的地方；生成器在 `benchmark/v6/` 下，是 bench 作者的代码，改的时候在交接文档里写明）。
+3. **左手持物限速、搬运姿态**：直接镜像右手的值。
+4. **边走边取放**（`mobile.py`）：先放着，不在 9a–9j 里；9j 收尾时它仍走旧入口的话单独列出来。

@@ -15,7 +15,7 @@ from ..park_search import VARIANT_COST, Problem
 from ..predicates import memory, objects_inside
 from ..rig import SkillFailure
 from ..skill_plans import STIR_RELAY, stir_tcp
-from ..skills import check_held
+from ..skills import check_held, right_hand_only
 from ..tolerances import STIR_ABOVE, STIR_DEPTH, STIR_RADII, STIR_TILT
 from .carry import carry_posture
 from .tool import free_end, tool_in_tcp
@@ -51,6 +51,7 @@ def stir_job(rig, args, state, skill=None):
     turn).  Then judged: at least one turn inside (memory "stirred"), or for a dip the tip inside ("dipped")."""
     from ..motion_skills import Job
     tool, container, turns = args["tool"], args["container"], float(args.get("turns", 1.25))
+    right_hand_only(rig, tool, "stir")            # HAND_PLAN 9c gives it the hand
     verb = "stir" if turns > 0 else "dip"
     if rig.held is None or rig.held["name"] != tool:
         raise SkillFailure(f"{verb}: {tool} is not right-held")

@@ -47,6 +47,9 @@ class CarryHeightAdjustPolicy(AtomicPolicy):
 
     def execute(self, min_bottom_z=skills.CARRY_Z, *, tolerance=0.02):
         held = self.rig.held
+        left = getattr(self.rig, "left_held", None)
+        if held is None and left is not None:
+            skills.right_hand_only(self.rig, left["name"], "lift")
         if held is None:
             raise SkillFailure("carry height adjust: no held object")
         target = float(min_bottom_z)

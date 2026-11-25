@@ -35,6 +35,7 @@ def _park_diag():
 
 
 def _require_held(rig, name, action):
+    skills.right_hand_only(rig, name, action)
     if rig.held is None or rig.held["name"] != name:
         raise SkillFailure(f"{action} {name}: not right-held")
     skills.check_held(rig, f"{action}_start")

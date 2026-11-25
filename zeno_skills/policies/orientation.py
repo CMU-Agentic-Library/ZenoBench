@@ -20,6 +20,7 @@ class UprightObjectPolicy(AtomicPolicy):
 
     def execute(self, name, *, max_tilt_deg=15.0):
         rig = self.rig
+        skills.right_hand_only(rig, name, "upright")
         if rig.held is None or rig.held["name"] != name or rig.left_held is not None:
             raise SkillFailure(f"upright {name}: requires a right-only grasp of this object")
         skills.check_held(rig, "upright_start")

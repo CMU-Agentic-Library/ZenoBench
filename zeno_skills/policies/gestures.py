@@ -64,6 +64,7 @@ class PresentHeldPolicy(AtomicPolicy):
 
     def execute(self, name):
         rig = self.rig
+        skills.right_hand_only(rig, name, "present")
         if rig.held is None or rig.held["name"] != name:
             raise SkillFailure(f"present {name}: not right-held")
         x, y, yaw = rig.base_pose()

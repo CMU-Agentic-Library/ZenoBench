@@ -228,6 +228,22 @@ class Rig:
     def chain_q(self, side="right"):
         return _chain_q(self, side)
 
+    def held_by(self, side="right"):
+        """What ``side``'s hand holds (the grasp's dict), or None."""
+        return _held_of(self, side)
+
+    def set_held(self, side, value):
+        """Register (a grasp's dict) or clear (None) what ``side``'s hand holds."""
+        setattr(self, "held" if side == "right" else "left_held", value)
+
+    def hand_of(self, name):
+        """The hand that holds ``name`` ("right" / "left"), or None."""
+        for side in ("right", "left"):
+            h = _held_of(self, side)
+            if h is not None and h["name"] == name:
+                return side
+        return None
+
     def chain_cmd(self, side="right"):
         return _chain_cmd(self, side)
 

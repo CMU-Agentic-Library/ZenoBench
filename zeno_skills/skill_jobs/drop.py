@@ -12,7 +12,7 @@ from ..physics import CONTAINER_BASE_T, CONTAINER_WALL
 from ..rig import SkillFailure
 from ..run import observe
 from ..skill_plans import DROP_RELAY, T_of
-from ..skills import PLACE_SPOT_COST, PLACE_YAW_COST, PLACE_YAWS, _lowest_z, check_held
+from ..skills import PLACE_SPOT_COST, PLACE_YAW_COST, PLACE_YAWS, _lowest_z, check_held, right_hand_only
 from ..tolerances import LEAVE_GAP, LEAVE_MARGIN
 from .carry import _carry_bottom_z, carry_posture
 
@@ -36,6 +36,7 @@ def drop_job(rig, args, state, skill=None):
     name, container = args["name"], args["container"]
     kin = rig.kin
     plan_drop = skill.build if skill is not None else _plan_drop()
+    right_hand_only(rig, name, "drop")
     if rig.held is None or rig.held["name"] != name:
         raise SkillFailure(f"drop {name}: not holding it")
     ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")

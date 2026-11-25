@@ -125,34 +125,53 @@ def _carry_goal_set(rig, name, min_bottom_z=None):
     return carry_goals
 
 
-def check_held(rig, label, open_hand=True):
-    """Is the carried object still in the hand?  Its distance to the TCP must
-    match the one measured at the grasp and the fingers must not have shut.  A sticky-hands
-    weld holds it: never dropped.  Dropped: the hand opened here (``open_hand``, the old entries'
-    callers), or -- as a hook of a plan (run.run), which judges and does not move the robot --
-    the Dropped asks run for the failure exit that opens it (motion_state.clearing)."""
-    h = rig.held
-    if h is None or welded(rig, "right", h["name"]):
+def check_held(rig, label, open_hand=True, side="right"):
+    """Is the object in ``side``'s hand still there?  Its distance to that hand's TCP must match the one
+    measured at the grasp and the fingers must not have shut.  A sticky-hands weld holds it: never dropped.
+    Shifted in the pinch but still between the pads: re-anchored.  Dropped: the hand opened here
+    (``open_hand``, the old entries' callers), or -- as a hook of a plan (run.run), which judges and does
+    not move the robot -- the Dropped asks run for the failure exit that opens it (motion_state.clearing).
+    One check for both hands (HAND_PLAN 9a: the left had no re-anchor and stayed shut on a drop)."""
+    from .rig import _chain_q, _fingers_of, _held_of
+    h = _held_of(rig, side)
+    if h is None or welded(rig, side, h["name"]):
         return
-    tcp, _ = rig.kin.tcp(rig.q())
+    kin = rig.kin if side == "right" else rig.left_kin
+    tcp, _ = kin.tcp(_chain_q(rig, side))
     body, _ = rig.obj_pose(h["name"])
     slip = abs(float(np.linalg.norm(tcp - body)) - float(np.linalg.norm(h["tcp_minus_body"])))
-    f = rig.fingers()
+    f = _fingers_of(rig, side)
     gap = float(f.sum())          # an off-centre rim pinch drives one finger to ~0 while holding
     if HELD_SLIP < slip < HELD_SHIFT_MAX and gap > HELD_SHIFT_GAP:
         # shifted in the pinch but still between the pads: re-anchor
-        rig.log("held_shift", obj=h["name"], during=label, slip_m=round(slip, 3), fingers=f.round(4).tolist())
+        rig.log("held_shift", obj=h["name"], side=side, during=label, slip_m=round(slip, 3),
+                fingers=f.round(4).tolist())
         h["tcp_minus_body"] = tcp - body
         return
     if slip > HELD_SLIP or gap < HELD_LOST_GAP:
-        rig.log("dropped", obj=h["name"], during=label, slip_m=round(slip, 3), fingers=f.round(4).tolist(),
-                at=[round(float(v), 3) for v in body])
-        rig.held = None
-        exc = Dropped(f"{label}: {h['name']} slipped out of the hand while carrying it")
+        rig.log("dropped", obj=h["name"], side=side, during=label, slip_m=round(slip, 3),
+                fingers=f.round(4).tolist(), at=[round(float(v), 3) for v in body])
+        setattr(rig, "held" if side == "right" else "left_held", None)
+        exc = Dropped(f"{label}: {h['name']} slipped out of the {'' if side == 'right' else 'left '}hand while carrying it")
         if not open_hand:
             raise clearing(exc, 0.04, leave=False, ticks=20)
-        rig.grip(0.04, 20)
+        rig.grip(0.04, 20, side=side)
         raise exc
+
+
+def check_both_held(rig, label, open_hand=True):
+    """check_held for each hand that holds something."""
+    for side in ("right", "left"):
+        check_held(rig, label, open_hand=open_hand, side=side)
+
+
+def right_hand_only(rig, name, verb):
+    """For a skill still on the old entries (HAND_PLAN 2.2): ``name`` held in the left hand is a
+    SkillFailure that says so -- not "not held", not the right hand's load used instead (HAND_PLAN 3.3)."""
+    left = getattr(rig, "left_held", None)
+    if left is not None and left["name"] == name and (rig.held is None or rig.held["name"] != name):
+        raise SkillFailure(f"{verb}: {name} is in the left hand, and {verb} takes the right hand only until it is "
+                           f"migrated (docs/motion/HAND_PLAN.md)")
 
 
 def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True):
@@ -196,19 +215,8 @@ def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True)
 
 
 def check_left_held(rig, label):
-    """Verify a left-hand load after motion using finger gap and TCP distance."""
-    h = rig.left_held
-    if h is None or welded(rig, "left", h["name"]):
-        return
-    tcp, _ = rig.left_kin.tcp(rig.left_q())
-    body, _ = rig.obj_pose(h["name"])
-    slip = abs(float(np.linalg.norm(tcp-body))-float(np.linalg.norm(h["tcp_minus_body"])))
-    fingers = rig.left_fingers()
-    if slip > HELD_SLIP or float(fingers.sum()) < HELD_LOST_GAP:
-        rig.log("left_dropped", obj=h["name"], during=label, slip_m=round(slip, 3),
-                fingers=fingers.round(4).tolist())
-        rig.left_held = None
-        raise Dropped(f"{label}: {h['name']} slipped from the left hand")
+    """check_held of the left hand (kept for its callers)."""
+    check_held(rig, label, side="left")
 
 
 def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None, raise_load=True):

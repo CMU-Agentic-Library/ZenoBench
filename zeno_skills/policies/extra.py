@@ -47,6 +47,7 @@ def _mem(rig, key):
 class ShakeHeldPolicy(AtomicPolicy):
     def execute(self, name, *, cycles=3, amplitude=0.02):
         rig = self.rig
+        skills.right_hand_only(rig, name, "shake")
         if rig.held is None or rig.held["name"] != name:
             raise SkillFailure(f"shake {name}: not right-held")
         tcp, R = rig.kin.tcp(rig.q_cmd)
@@ -355,6 +356,7 @@ class HoverOverPolicy(AtomicPolicy):
 
     def execute(self, name, target, *, clearance_m=0.06):
         rig = self.rig
+        skills.right_hand_only(rig, name, "hover")
         if rig.held is None or rig.held["name"] != name:
             raise SkillFailure(f"hover {name}: not right-held")
         from .tooluse import stow_load
