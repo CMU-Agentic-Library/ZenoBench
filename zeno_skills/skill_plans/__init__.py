@@ -13,4 +13,5 @@ from .posture import plan_held_move, plan_posture
 from .door import (DOOR_ANCHORS, DOOR_RELAY, DOOR_STAGES, DOOR_TOL, PUSH_ANCHORS, PUSH_RELAY, PUSH_STAGES,
                    plan_door, plan_push)
 from .contact import (PRESS_ANCHORS, PRESS_RELAY, PRESS_STAGES, SLIDE_ANCHORS, SLIDE_RELAY, SLIDE_STAGES, SLIDE_STEP,
-                      STIR_ANCHORS, STIR_RELAY, STIR_STAGES, plan_press, plan_slide, plan_stir, slide_travel, stir_tcp)
+                      STIR_ANCHORS, STIR_RELAY, STIR_STAGES, WIPE_RELAY, WIPE_STAGES, plan_press, plan_slide, plan_stir,
+                      plan_wipe, slide_travel, stir_tcp)

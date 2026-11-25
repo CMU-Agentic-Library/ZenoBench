@@ -129,6 +129,14 @@ PRESS_DEPTH = _t("PRESS_DEPTH", 0.003, "m", "chosen: a press's fingertips go thi
                  "the button is rigid, the arm stops where the tips meet it, less than TARGET_TOL short.  The old "
                  "press aimed the TCP 5 mm off the button's centre, the tips 22-29 mm inside it (stopped short, "
                  "accepted up to 35 mm)")
+WIPE_PRESS = _t("WIPE_PRESS", 0.001, "m", "inherited: a wipe presses the sponge's bottom this far into the support (the "
+                "old WipeSurfacePolicy's light press: a 3 mm press dragged the sponge out of the pinch) -- a force's "
+                "geometric stand-in (COLLISION_PLAN.md section 8), HAND_PLAN 9g")
+TOUCH_DEPTH = _t("TOUCH_DEPTH", 0.002, "m", "chosen: a touch's / knock's closed fingertips go this far into the touched "
+                 "face (an object's top, a door's panel) -- a force's geometric stand-in (COLLISION_PLAN.md section 8), "
+                 "as PRESS_DEPTH: the arm stops where the tips meet it.  The old touch aimed the TCP 1.6 cm over the "
+                 "top with the pad tips ~1.8 cm below it (2 mm in, unchecked); the old knock aimed the TCP itself "
+                 "4 mm off the panel (the tips well inside it, unchecked) -- HAND_PLAN 9g")
 PRESS_APPROACH = _t("PRESS_APPROACH", 0.10, "m", "inherited (old microwave / stove press: the aligned pose 12 cm off "
                     "the button's centre, the press to 5 mm off it): the press comes straight in from this far "
                     "in front of where the tips touch")

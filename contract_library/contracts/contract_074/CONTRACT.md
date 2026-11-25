@@ -6,7 +6,7 @@ Paired SkillNode: `skill_066` (`knock-articulated`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
 - [all paths] `is_closed(articulated=$articulated)` — GT: articulation_joint, articulation_annotation
 

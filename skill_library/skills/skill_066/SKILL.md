@@ -23,11 +23,11 @@ A closed door must be knocked on (check, signal) without opening it.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$articulated); is_closed(articulated=$articulated).
+Requires hand_empty(hand=any); base_near(place=$articulated); is_closed(articulated=$articulated).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$articulated)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `is_closed(articulated=$articulated)` — Joint within 0.10 rad (doors) or 4 cm (drawers) of closed. GT: articulation_joint, articulation_annotation.
 

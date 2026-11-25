@@ -157,7 +157,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `uncover` (`skill_046`) (enables) — something inside is taken out
 - Previous step: `sidestep` (`skill_055`) (then) — the object is now in front of the arm
 - Previous step: `measure` (`skill_058`) (then) — the size decides the grasp
-- Previous step: `touch` (`skill_065`) (then) — the touched object is then grasped
+- Previous step: `touch` (`skill_065`) (enables) — the touched object is then grasped
 - Previous step: `stop` (`skill_068`) (enables) — the food is taken off the heat
 - Next step: `navigate` (`skill_001`) (then) — the object must be carried elsewhere
 - Next step: `place` (`skill_018`) (enables) — the object goes onto a surface or into a container

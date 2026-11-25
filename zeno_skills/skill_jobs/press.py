@@ -158,3 +158,133 @@ def press_job(rig, args, state, skill=None):
         rig.log("button_press", button=button, appliance=app, error_m=round(miss, 4), on=now)
         return now if now is not None else True
     return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, done=done)
+
+
+KNOCK_AT = ((0.07, 0.0), (-0.07, 0.0), (0.0, 0.08), (0.0, -0.08), (0.10, 0.05))   # m beside (along the handle) and
+#                                           above the handle's centre a knock lands, on the panel behind the bar (the old
+#                                           KnockPanelPolicy's), ranked in this order
+KNOCK_STILL = 0.05                          # rad / m a knocked door's joint may move (the knocked predicate's)
+TOUCH_CLOSES = ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0))   # the closed fingers' axis over a touched top
+
+
+def _empty_hand(rig, what):
+    empty = [sd for sd in ("right", "left") if rig.held_by(sd) is None]
+    if not empty:
+        raise SkillFailure(f"{what}: both hands hold something")
+    return empty[0]                     # the right where both are (as press)
+
+
+def _tap_job(rig, skill, name, label, targets, after, done_check):
+    """The Job of a fingertip tap (touch / knock, HAND_PLAN 9g): plan_press without a toggle or a door -- the closed
+    tips straight in along each target's u onto (p, R) (the tips TOUCH_DEPTH into the face; the fingers may touch
+    ``name``), the anchor where it stopped them, the measured exit, the tuck -- each target one goal of the park
+    search.  ``after(r, miss)``: logs the contact once the tips got there (TARGET_TOL); ``done_check()`` the result."""
+    from ..motion_skills import Job
+    side = _empty_hand(rig, label)
+    kin = rig.arm_kin(side)
+    build_with = skill.build if skill is not None else None
+    if build_with is None:
+        from ..skill_plans import plan_press as build_with
+    presses, goals = [], []
+    for j, (p, R, u) in enumerate(targets):
+        presses.append({"button": name, "p": p, "R": R, "u": u, "approach": PRESS_APPROACH, "toggle": None,
+                        "seen_as": (), "door": None})
+        goals.append(((p - PRESS_APPROACH * u, p), (p, R), VARIANT_COST * j))
+    rest = (kin.rest,)
+
+    def build(s, k, prior):
+        return build_with(kin, s, presses[k], rest, prior=prior)
+    problem = Problem(tuple(goals), build, PRESS_RELAY, near=rig.base_pose(), label=f"{label} {name}", hand=side)
+    ctx = {}
+
+    def no_park(diag):
+        return SkillFailure(f"{label} {name}: no base pose reaches it "
+                            f"({len(goals)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
+
+    def found_park(found):
+        ctx["p"] = presses[found.k]["p"]
+        rig.log(f"{label}_plan", target=name, hand=side, goal=found.k,
+                park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)])
+        rig.caption = f"{label.upper()} {name}"
+
+    def tapped(r):
+        tcp, _ = r.arm_kin(side).tcp(r.chain_q(side))
+        ctx["miss"] = float(np.linalg.norm(tcp - ctx["p"]))
+        if ctx["miss"] <= TARGET_TOL:
+            after(r, ctx["miss"])
+
+    def ready(found):
+        press = presses[found.k]
+
+        def rebuild(state_, frm, prior):
+            return build_with(kin, state_, press, rest, start=frm, prior=prior)
+        return found.plan, rebuild, {"press_in": {"after": tapped}}
+
+    def done():
+        miss = ctx.get("miss")
+        if miss is None or miss > TARGET_TOL:
+            raise SkillFailure(f"{label} {name}: the tips stopped {miss if miss is not None else float('nan'):.3f} m "
+                               f"off where they were sent")
+        return done_check()
+    return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, done=done)
+
+
+def touch_job(rig, args, state, skill=None):
+    """motion_skills.Job of touch (HAND_PLAN 9g): the closed fingertips of the empty hand straight down onto the centre
+    of ``args["name"]``'s top, TOUCH_DEPTH into it, the closed fingers' axis any of TOUCH_CLOSES (_tap_job).  Logs
+    touch_contact (the touched predicate's event) when the tips got there; returns how far the object moved."""
+    from ..tolerances import TOUCH_DEPTH
+    name = args["name"]
+    st = rig.state()
+    top = float(rig.geo.bottom(name, st)[2] + rig.ann.asset_of(rig.ann.objects[name])["size"][2])
+    c = np.asarray(rig.geo.centre(name, st), float)
+    u = np.array([0.0, 0.0, -1.0])
+    tips = np.array([c[0], c[1], top]) + TOUCH_DEPTH * u
+    targets = [(tips - PAD_TIP * u, gripper_rot(u, [d[0], d[1], 0.0]), u) for d in TOUCH_CLOSES]
+    p0 = np.asarray(rig.obj_pose(name)[0], float)
+
+    def contact(r, miss):
+        r.log("touch_contact", obj=name, tips_off_m=round(miss, 4))
+
+    def result():
+        moved = float(np.linalg.norm(np.asarray(rig.obj_pose(name)[0], float) - p0))
+        rig.log("touch_result", obj=name, moved_m=round(moved, 4))
+        return {"moved_m": moved}
+    return _tap_job(rig, skill, name, "touch", targets, contact, result)
+
+
+def knock_job(rig, args, state, skill=None):
+    """motion_skills.Job of one knock (HAND_PLAN 9g): the closed fingertips of the empty hand straight in onto the
+    closed panel of ``args["name"]`` (a door or drawer with an annotated handle frame) beside or above its handle
+    (KNOCK_AT, on the panel plane behind the bar), TOUCH_DEPTH into it, the closed fingers' axis vertical or along
+    the handle (_tap_job).  Logs knock_contact (the knocked predicate counts them) when the tips got there; done():
+    the joint moved at most KNOCK_STILL (SkillFailure otherwise).  KnockPanelPolicy knocks ``taps`` times."""
+    from ..tolerances import TOUCH_DEPTH
+    name = args["name"]
+    a = rig.ann.art(name)
+    h = a.get("handle")
+    if not h:
+        raise SkillFailure(f"knock {name}: no annotated panel frame")
+    out = np.asarray(h["outward"], float)
+    along = np.asarray(h["along"], float)
+    hc = np.asarray(h["center"], float)
+    bar = float(np.abs(np.asarray(h.get("bar_size", [0.02, 0.02, 0.02]), float)) @ np.abs(out))
+    u = -out
+    targets = []
+    for da, dz in KNOCK_AT:
+        panel = hc + da * along + np.array([0.0, 0.0, dz]) - out * max(bar, 0.015)
+        tips = panel + TOUCH_DEPTH * u
+        for close in ((0.0, 0.0, 1.0), along):
+            targets.append((tips - PAD_TIP * u, gripper_rot(u, close), u))
+    q0 = rig.joint(name)
+
+    def contact(r, miss):
+        r.log("knock_contact", articulated=name, tips_off_m=round(miss, 4))
+
+    def result():
+        moved = abs(rig.joint(name) - q0)
+        rig.log("knock_result", articulated=name, joint_moved=round(moved, 4))
+        if moved > KNOCK_STILL:
+            raise SkillFailure(f"knock {name}: the joint moved {moved:.3f}")
+        return {"joint_moved": moved}
+    return _tap_job(rig, skill, name, "knock", targets, contact, result)

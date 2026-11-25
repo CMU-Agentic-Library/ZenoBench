@@ -141,94 +141,23 @@ class NodHeadPolicy(AtomicPolicy):
 
 
 class KnockPanelPolicy(AtomicPolicy):
-    """Tap the closed panel of a door/drawer twice, 7 cm beside its handle."""
+    """Tap the closed panel of a door / drawer ``taps`` times beside its handle: the knock skill
+    (skill_jobs.press.knock_job, plan_press; HAND_PLAN 9g) once per tap, with the empty hand."""
 
     def execute(self, name, *, taps=2):
-        rig = self.rig
-        a = rig.ann.art(name)
-        if rig.held is not None:
-            raise SkillFailure("knock: the right hand holds an object")
-        h = a.get("handle")
-        if not h:
-            raise SkillFailure(f"knock {name}: no annotated panel frame")
-        out = np.asarray(h["outward"], float)
-        along = np.asarray(h["along"], float)
-        hc = np.asarray(h["center"], float)
-        bar = float(np.abs(np.asarray(h.get("bar_size", [0.02, 0.02, 0.02]), float)) @ np.abs(out))
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park, panel, pre, R = None, None, None, None
-        # tap beside or above the handle, on the panel plane behind the bar
-        for da, dz in ((0.07, 0.0), (-0.07, 0.0), (0.0, 0.08), (0.0, -0.08), (0.10, 0.05)):
-            cand = hc + da * along + np.array([0.0, 0.0, dz]) - out * max(bar, 0.015)
-            cpre = cand + out * 0.10
-            for close in ((0, 0, 1.0), along):
-                Rc = gripper_rot(-out, close)
-                park = find_park(rig.kin, rig.world, [(cpre, Rc), (cand + out * 0.004, Rc)], near=rig.base_pose(),
-                                 max_tries=80, q_start=rig.q_cmd, travel_q=rig.kin.rest)
-                if park is not None:
-                    panel, pre, R = cand, cpre, Rc
-                    break
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"knock {name}: no reach to the panel (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.grip(0.0, 30)
-        rig.move_to(pre, R, label="knock_pre", q_hint=park[3][0])
-        q0 = rig.joint(name)
-        hits = 0
+        from ..motion_skills import SKILLS, run_skill
         for _ in range(int(taps)):
-            rig.move_to(panel + out * 0.004, R, step=0.004, label="knock_tap", allow=LEGACY)
-            tcp, _ = rig.kin.tcp(rig.q())
-            gap = float((tcp - panel) @ out)
-            if gap < 0.02:
-                hits += 1
-                rig.log("knock_contact", articulated=name, gap_m=round(gap, 4))
-            rig.move_to(panel + out * 0.06, R, step=0.006, label="knock_back", allow=LEGACY)
-        rig.move_to(pre, R, label="knock_retract", allow=LEGACY)
-        rig.grip(0.04, 60)
-        moved = abs(rig.joint(name) - q0)
-        rig.log("knock_result", articulated=name, hits=hits, joint_moved=round(moved, 4))
-        if hits < int(taps) or moved > 0.05:
-            raise SkillFailure(f"knock {name}: {hits} contacts, joint moved {moved:.3f}")
-        return {"taps": hits}
+            run_skill(self.rig, SKILLS["knock"], {"name": name})
+        return {"taps": int(taps)}
 
 
 class TouchObjectPolicy(AtomicPolicy):
+    """Touch an object's top with the closed fingertips: the touch skill (skill_jobs.press.touch_job, plan_press;
+    HAND_PLAN 9g) with the empty hand."""
+
     def execute(self, name):
-        rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("touch: the right hand holds an object")
-        st = rig.state()
-        b = rig.geo.bottom(name, st)
-        top = b[2] + rig.ann.asset_of(rig.ann.objects[name])["size"][2]
-        c = rig.geo.centre(name, st)
-        # closed pad tips sit ~1.8 cm below the TCP
-        contact = np.array([c[0], c[1], top + 0.016])
-        pre = contact + np.array([0, 0, 0.08])
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = None
-        for d in ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0)):
-            R = gripper_rot([0, 0, -1.0], [d[0], d[1], 0.0])
-            park = find_park(rig.kin, rig.world, [(pre, R), (contact, R)], near=rig.base_pose(), max_tries=80,
-                             q_start=rig.q_cmd, travel_q=skills._travel_q(rig))
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"touch {name}: no reach above it (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.grip(0.0, 30)
-        p0 = rig.obj_pose(name)[0]
-        rig.move_to(pre, R, label="touch_pre", q_hint=park[3][0])
-        rig.move_to(contact, R, step=0.002, steps_per_wp=4, label="touch_down", allow=LEGACY)
-        tcp, _ = rig.kin.tcp(rig.q())
-        rig.log("touch_contact", obj=name, tcp_above_top=round(float(tcp[2] - top), 4))
-        rig.move_to(pre, R, step=0.006, label="touch_up", allow=LEGACY)
-        rig.grip(0.04, 60)
-        moved = float(np.linalg.norm(rig.obj_pose(name)[0] - p0))
-        return {"moved_m": moved}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["touch"], {"name": name})
 
 
 class PlanSquareYawPolicy(AtomicPolicy):

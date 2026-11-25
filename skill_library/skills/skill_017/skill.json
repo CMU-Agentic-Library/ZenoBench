@@ -732,7 +732,7 @@
     "skill_id": "skill_065",
     "verb": "touch",
     "when": "the touched object is then grasped",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_068",

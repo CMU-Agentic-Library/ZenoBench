@@ -127,7 +127,8 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9d 微波炉腔体取放 | 部分做完（用户 11-25：先提交，进 9e）：放入走 place，检查 2/4；microwave_works、broken_oatmeal_away 仍建不出（见下）；取出走 pick 只有单测（v6 种子 10 的路线没有从腔体取出） | 本次提交；`/data/zenobench/hand9d2_1125` |
 | 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp 还在用，随 9f 删 | 本次提交；`/data/zenobench/hand9e_1125` |
 | 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 本次提交；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
-| 9g–9j | 没开始 | — |
+| 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 本次提交；`/data/zenobench/hand9g_1125` |
+| 9h–9j | 没开始 | — |
 
 都没推送（rhm 比 origin 多 8a 起的提交）。
 
@@ -144,5 +145,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 **9e 做了什么**（11-25）：lift / lower = `plan_held_move`（原地，TCP 竖直一条直线到目标高度，手的朝向不变，`FREE_LOAD`；旧代码往身体拉回的 5 个中间点和 3 次闭环重试删了）；present = `plan_posture` 到身前 4 个位置组成的一个目标集合（左手横向镜像）+ 转头段 `present_look`；hover = `plan_hover`（`plan_drop` 只留 arrive / reach，停车点搜索同 drop，物体底面在目标顶面上方 6 cm）。job 在 `skill_jobs/held.py`、`skill_jobs/drop.py:hover_job`，catalog 加 lift / lower / present / hover；policy_034 / 093 / 115 / 072 只调 `run_skill`；契约 `holding(any)`，谓词 `held_above` / `held_below` / `presenting` / `hovering_over` 认任一只手。检查 `/data/zenobench/hand9e_1125`：T10 trash_moved__dining（1125 败在 lift 只认右手）、can_on_island、keep_kids_can（左手 lift + hover）、guests_coming，T05 e1_pencil_asked（左手 present）成功；after_dinner 败在 pick takeout_tray（no reachable grasp，1125 同一个 pick 失败）。lower 在 v6 没用到，只有单测。
 
 **9f 做了什么**（11-25）：rotate = `plan_posture` 到一个目标集合（手的朝向绕竖直轴转给定角度，位置是现在的 TCP 或旧代码的 4 个往底盘拉回 / 抬高的点，保持倾角）；upright = `plan_posture(hold_tilt=False)` 到"物体竖直"的目标集合（8 个朝向 × 原地抬高或胸前 8 个点），旧代码的大网格、IK 连续性搜索和放下撬起 / 挂直两级退路删了；release = `plan_release`（张开 + 沿夹爪轴退一个手指长，动之前都建好）；regrasp = place + pick（都走运动分层），旧的"直接竖直放下"分支删了。square 不再 pick 之后单独 rotate：**摆正的转角放进 place 的目标集合**（`place(square=True)`：按放下那一刻手里物体的朝向算出摆正需要的转角，加 0 / ±90 / 180），因为 pick 之前量的转角会随搬运姿态漂（检查里第一次左手放下选了 135° 转角，块偏 44°；改成 rotate 后只许 90° 倍数仍偏 44°，就是这个漂移）。路线 id `pick_rotate_place` 保留（覆盖、验证数据引用它），步骤里已经没有 rotate。强制左手（`ZENO_PICK_SIDE=left`，诊断，不进基线）T06 display_row 整集成功，6 次 pick 都是左手，三块都摆正（`/data/zenobench/hand9f3_1125/runs_left`）。`orientation.py` 的旧入口 24 -> 0，`hand.py` 19 -> 12（剩下的是 flip、LeftSteady 等，9h / 9i）。
+
+**9g 做了什么**（11-25）：touch / knock 直接用 `plan_press`（指尖沿 u 压进被碰的面 `TOUCH_DEPTH` 2 mm，锚点，按测量退出，收臂；touch 是物体顶面，4 个合爪方向；knock 是门板上把手旁的 5 个点 × 2 个合爪方向，`KnockPanelPolicy` 每敲一次跑一次技能），job 在 `skill_jobs/press.py`，记 `touch_contact` / `knock_contact`。wipe = `plan_wipe`（`skill_plans/contact.py`，stir 的形状）：到达 → 自由段到按压位姿上方 → 直线压下 `WIPE_PRESS` → 任务段沿带子擦（`scripted`，世界坐标系的 `Still`，`carry="arm"`，`reach`：能擦多长量出来）→ 擦回 → 锚点 → 抬起 → 回到来时的姿态；擦不到半条带子的停车点在构造里拒掉；覆盖率在两段任务段执行时每 4 个物理步采一次。旧代码是手臂不动、底盘平移，按压有接近段，抬起是写死的 8 cm 不查碰撞，都删了。为此加了两样东西：静态家具能按名字放进 `Spec.touch`（`Motion._touch_key`：静态碰撞体按所属家具记作 `furniture:<名字>`，和接触监控报的名字同一条规则），`Still(None)` 是世界坐标系。检查：右手 5 次 wipe 手臂擦 12–16 cm，覆盖率 0.6–0.73（旧代码平移底盘擦满 30 cm）；强制左手那次擦满 30 cm，覆盖率 1.0。`extra.py` 的旧入口 17 -> 6，`tooluse.py` 11 -> 8（剩下的是 pour 等，9h）。
 
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。

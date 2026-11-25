@@ -24,24 +24,24 @@ An object must be touched lightly (tap, confirm contact) without moving it.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object).
+Requires hand_empty(hand=any); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `touched(object=$object)` — A measured fingertip contact with the object's top during the Contract; it moved < 1.5 cm. GT: event_log (fingertip contact), object_pose (before/after).
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `touched(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -51,7 +51,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `pick` (`skill_017`) (then) — the touched object is then grasped
+- Next step: `pick` (`skill_017`) (enables) — the touched object is then grasped
 - Alternative: `point` (`skill_015`) — contact is not allowed
 - Alternative: `knock` (`skill_066`) — use touch instead when an object, not a door, is to be tapped
 

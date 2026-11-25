@@ -670,7 +670,13 @@ class Motion:
         for c in self.cols.items:
             ctr = self._centre(c)
             near = np.hypot(*(ctr[:2] - self.cull_at)) - self._extent[c.name][1] < CULL
-            self._set_enabled(c, near and c.owner not in held and c.owner not in allow)
+            self._set_enabled(c, near and c.owner not in held and self._touch_key(c) not in allow)
+
+    def _touch_key(self, c):
+        """What a Spec.touch names collider ``c`` by: its owner -- a static one by the furniture it belongs to,
+        "furniture:<name>" (_entity, the name the contact monitor reports it under): a sponge pressed on the
+        island may touch the island's colliders, not every static one (HAND_PLAN 9g)."""
+        return c.owner if c.owner != "static" else f"furniture:{self._entity(c)}"
 
     def _live_poses(self, rig, record=True, owners=None):
         """{body: 4x4} of the object and part bodies whose simulator pose differs from the synced
@@ -1416,14 +1422,17 @@ class Motion:
 
     def touch_owner(self, name):
         """The collider owner of a Spec.touch name: the object, else the articulated part of that name,
-        else the annotated button ("<appliance>/<key>": scene_geometry.buttons)."""
+        else the annotated button ("<appliance>/<key>": scene_geometry.buttons), else the static furniture of that
+        name (_touch_key)."""
         if self.by_owner.get(f"object:{name}") or name in self.ann.objects:
             return f"object:{name}"
         if any(a["name"] == name for a in self.ann.articulated):
             return f"part:{name}"
         if self.by_owner.get(f"button:{name}"):
             return f"button:{name}"
-        raise KeyError(f"touch {name}: neither an object, an articulated part nor a button")
+        if any(self._entity(c) == name for c in self.by_owner.get("static", ())):
+            return f"furniture:{name}"
+        raise KeyError(f"touch {name}: neither an object, an articulated part, a button nor static furniture")
 
     @_timed("check_s")
     def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
@@ -1449,13 +1458,13 @@ class Motion:
                         for c in on:
                             self._set_enabled(c, False)
                         for c in self.cols.items:
-                            if c.owner in owners:
+                            if self._touch_key(c) in owners:
                                 self._set_enabled(c, True)
                         if not self._segments_free(arm, [np.asarray(q, float) for q in qs]):
                             return False
                     finally:
                         for c in self.cols.items:
-                            if c.owner in owners:
+                            if self._touch_key(c) in owners:
                                 self._set_enabled(c, False)
                         for c in on:
                             self._set_enabled(c, True)

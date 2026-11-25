@@ -1257,7 +1257,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the sponge is put back",
    "bind": {
     "object": "$tool"
@@ -2193,7 +2193,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "then",
+   "sequence_type": "enables",
    "when": "the touched object is then grasped",
    "bind": {
     "object": "$object"

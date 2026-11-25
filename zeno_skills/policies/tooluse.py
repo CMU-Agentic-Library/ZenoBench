@@ -52,132 +52,17 @@ def _tcp_for_body(R_goal, body_goal, body_in_tcp):
     return body_goal - R_goal @ body_in_tcp
 
 
-WIPE_INSETS = (0.08, 0.045)   # m in from a support edge a wipe strip runs (the second when objects line the first)
-WIPE_STEP = 0.10              # m between strip centres sampled along an edge
-WIPE_STRIPS = 8               # cheapest free strips in the park goal set (x 4 sponge yaws)
-WIPE_DIST_COST = 0.3          # park cost per m from the robot to a strip's centre
-WIPE_INSET_COST = 0.05        # park cost of the closer-to-the-edge inset
 
 
 class WipeSurfacePolicy(AtomicPolicy):
-    """Wipe a free 30 cm strip along an edge of a support with a held sponge.
-
-    The arm presses the sponge and holds still while the holonomic base
-    translates along the strip. The sponge bottom is pressed 1 mm below the surface; coverage is the
-    fraction of 2 cm strip cells under the sponge footprint while its bottom
-    was within 8 mm of the surface."""
+    """Wipe a free 30 cm strip along an edge of a support with a held sponge: the wipe skill (skill_jobs.wipe.wipe_job,
+    skill_plans.plan_wipe; HAND_PLAN 9g) with the hand that holds it -- the sponge pressed WIPE_PRESS into the
+    surface and stroked there and back by the arm (the old policy held the arm and drove the base).  ``passes``:
+    kept for the call's signature; a wipe is one stroke and its return."""
 
     def execute(self, tool, support, *, length=0.30, passes=2):
-        rig = self.rig
-        skills.right_hand_only(rig, tool, "wipe")
-        if rig.held is None or rig.held["name"] != tool:
-            raise SkillFailure(f"wipe: {tool} is not right-held")
-        s = rig.ann.support(support)
-        st = rig.state()
-        x, y, _ = rig.base_pose()
-        x0, y0, x1, y1 = s["aabb_xy"]
-        size = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["size"], float)
-        width = float(min(size[:2]))
-        # the strips are sampled over the whole support, along each edge (fingers-down reach at
-        # counter height ends ~10 cm past an edge): 8 cm in, or 4.5 cm when objects stand on that
-        # line; the cheapest free ones (nearest the robot) go into the goal set
-        strips = []
-        for inward in (np.array([1.0, 0.0]), np.array([-1.0, 0.0]), np.array([0.0, 1.0]), np.array([0.0, -1.0])):
-            along = np.array([-inward[1], inward[0]])
-            k = 0 if inward[0] else 1                       # the edge's line is x (k = 0) or y = const
-            lo, hi = ((y0, y1) if k == 0 else (x0, x1))
-            for inset in WIPE_INSETS:
-                line = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
-                for t in np.arange(lo + 0.03 + length / 2, hi - 0.03 - length / 2 + 1e-6, WIPE_STEP):
-                    c = np.array([line, t]) if k == 0 else np.array([t, line])
-                    a, b = c - along * length / 2, c + along * length / 2
-                    box_lo = np.minimum(a, b) - width / 2
-                    box_hi = np.maximum(a, b) + width / 2
-                    box = [box_lo[0], box_lo[1], box_hi[0], box_hi[1], s["z"], s["z"] + 0.2]   # _overlaps_objects order
-                    if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
-                        continue
-                    cost = WIPE_DIST_COST * math.hypot(c[0] - x, c[1] - y) + (WIPE_INSET_COST if inset != WIPE_INSETS[0] else 0.0)
-                    strips.append((cost, a, b))
-        strips.sort(key=lambda t: t[0])
-        strips = strips[:WIPE_STRIPS]
-        if not strips:
-            raise SkillFailure(f"wipe {support}: no free strip")
-        stow_load(rig)
-        tcp, R, body_in_tcp, _ = _held_frame(rig, tool)
-        body, _ = rig.obj_pose(tool)
-        st = rig.state()                     # after stow_load lifted it
-        hang = float(body[2] - skills._lowest_z(rig, tool, st))
-        z_body = s["z"] - 0.001 + hang      # light press: a 3 mm press dragged the sponge out of the pinch
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        # A long fingers-down stroke at counter height has almost no IK; the
-        # base is holonomic, so the arm holds the pressed pose and the base
-        # translates along the strip (one IK solution, a straight stroke).
-        # Strip x sponge yaw (it does not matter) is one goal set of the park search.
-        goals, leg_sets, cost = [], [], []
-        for c_strip, a, b in strips:
-            for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):
-                Rk = Rotation.from_euler("z", psi).as_matrix() @ R
-                goals.append((a, b, Rk))
-                press = _tcp_for_body(Rk, np.r_[a, z_body], body_in_tcp)
-                # the press and the start of its straight approach down (fingers checked)
-                leg_sets.append([(press + np.array([0, 0, skills.PLACE_APPROACH]), Rk, FINGERS_KW), (press, Rk)])
-                cost.append(c_strip)
-
-        def stroke_clear(k, x, y, yaw, q_last):
-            stroke = goals[k][1] - goals[k][0]
-            return all(rig.world.footprint_clear(x + stroke[0] * u, y + stroke[1] * u, math.radians(yaw))
-                       for u in np.linspace(0, 1, 7))
-        found = find_park_set(rig.kin, rig.world, leg_sets, cost, near=rig.base_pose(), max_tries=80,
-                              q_start=rig.q_cmd, travel_q=skills._travel_q(rig), ride_set=stroke_clear)
-        if found is None:
-            raise SkillFailure(f"wipe {support}: no base pose reaches any of {len(strips)} free strips "
-                               f"{[np.round((a_ + b_) / 2, 2).tolist() for _, a_, b_ in strips]} "
-                               f"(rejected: {_park_diag()})")
-        park, k = found
-        a, b, R = goals[k]
-        legs = leg_sets[k]
-        stroke = b - a
-        rig.log("wipe_plan", strip=[np.round(a, 3).tolist(), np.round(b, 3).tolist()], z_body=round(float(z_body), 4),
-                body_in_tcp=np.round(body_in_tcp, 4).tolist(), tcp_R=np.round(R, 3).tolist(),
-                base=[round(v, 3) for v in rig.base_pose()], strips=len(strips), goals=len(leg_sets), chosen=k)
-        skills._goto_park(rig, park)
-        rig.caption = f"WIPE {support} with {tool}"
-        # one motion onto the strip: planned with the fingers, straight down at its end, the sponge
-        # pressed on (its contact segment by the collision model)
-        rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", smooth=True, q_hint=park[3][1],
-                    approach=(np.array([0.0, 0.0, -1.0]), skills.PLACE_APPROACH, park[3][0]),
-                    allow=into_contact(held_on=(support.split("/")[0],)))
-        n_cells = max(1, int(round(length / 0.02)))
-        covered = np.zeros(n_cells, bool)
-        px, py, pyaw = rig.base_pose()
-
-        def mark():
-            st2 = rig.state()
-            bottom = rig.geo.bottom(tool, st2)
-            if abs(float(skills._lowest_z(rig, tool, st2)) - s["z"]) <= 0.008:
-                u = float((bottom[:2] - a) @ (b - a) / (length ** 2))
-                half = 0.5 * float(max(size[:2])) / length
-                i0, i1 = int(max(0, (u - half) * n_cells)), int(min(n_cells, math.ceil((u + half) * n_cells)))
-                covered[i0:i1] = True
-        mark()
-        for k in range(passes):
-            us = np.linspace(0, 1, 7)[1:] if k % 2 == 0 else np.linspace(1, 0, 7)[1:]
-            for u in us:
-                rig.drive_base([(px + stroke[0] * u, py + stroke[1] * u, pyaw)], speed=0.05, ramp=0.4)
-                rig.log("wipe_stroke", u=round(float(u), 2), sponge=np.round(rig.obj_pose(tool)[0], 3).tolist(),
-                        fingers=np.round(rig.fingers(), 4).tolist(), base=[round(v, 3) for v in rig.base_pose()])
-                mark()
-        skills.check_held(rig, "wipe")
-        t, R1 = rig.kin.tcp(rig.q_cmd)
-        rig.move_to(t + np.array([0, 0, 0.08]), R1, step=0.01, label="wipe_lift", allow=LEGACY)
-        cov = float(covered.mean())
-        memory(rig)["wiped"][support] = max(cov, memory(rig)["wiped"].get(support, 0.0))
-        rig.log("wipe_result", tool=tool, support=support, coverage=round(cov, 3),
-                strip=[np.round(a, 3).tolist(), np.round(b, 3).tolist()])
-        if cov < 0.5:
-            raise SkillFailure(f"wipe {support}: contact coverage {cov:.2f}")
-        return cov
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["wipe"], {"tool": tool, "support": support, "length": float(length)})
 
 
 class StirContainerPolicy(AtomicPolicy):

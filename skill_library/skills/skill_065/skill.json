@@ -35,14 +35,14 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$object)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -85,10 +85,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -119,10 +119,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
+    "predicate": "hand_empty(hand=any)",
     "name": "hand_empty",
     "args": {
-     "hand": "right"
+     "hand": "any"
     },
     "negated": false,
     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -163,7 +163,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "then"
+    "type": "enables"
    }
   ],
   "fallback": [],

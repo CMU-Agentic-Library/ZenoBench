@@ -355,7 +355,8 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 常数 | 问题 | 什么时候处理 |
 |---|---|---|
-| `PLACE_APPROACH` 5 cm | place 已不用（放下段由碰撞模型量）；只剩 wipe 的按压直线在用，没有出处 | 6.3（wipe） |
+| `PLACE_APPROACH` 5 cm | 11-25 起没人用了：wipe 迁到 `plan_wipe`，按压前停在海绵离台面 `LEAVE_GAP + LEAVE_MARGIN` 处（HAND_PLAN 9g） | 删（随 9j 收尾） |
+| `WIPE_PRESS` 1 mm、`TOUCH_DEPTH` 2 mm | 力的几何替身（和 `PRESS_DEPTH` 一样）：海绵压进台面、指尖压进被碰的面多深；`WIPE_PRESS` 沿用旧值（压 3 mm 海绵被拖出指间），`TOUCH_DEPTH` 拍定 | 有力控制时换成力 |
 | 容器松手高度：place 沿口上 3 cm、`drop_above` 5 cm；按沿口分流的 `rim > 0.12` | 两处不同、拍定；分流阈值没有出处 | 6.2：松手高度合成一个、写出处；分流阈值删掉（托盘按标注） |
 | `PICK_LEAVE_CHECK` 3 cm | 和执行不一致（6.1 第 7 项）。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
 | `PICK_REACH_TOL` 5 mm、`GRIP_CLOSED_BY` 3 mm | 依据是一批运行的分布（`pick_checks_1105`）（`follow` 收尾 11-07 改成等 TCP 到 1 mm 或停下，`Rig._settle`） | 6.1 |

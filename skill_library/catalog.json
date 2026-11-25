@@ -733,6 +733,36 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.held:release_job",
     "skill_id": "skill_021"
+   },
+   {
+    "name": "touch",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:touch_job",
+    "skill_id": "skill_065"
+   },
+   {
+    "name": "knock",
+    "shape": "contact",
+    "template": "plan_press",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.press:knock_job",
+    "skill_id": "skill_066"
+   },
+   {
+    "name": "wipe",
+    "shape": "contact",
+    "template": "plan_wipe",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.wipe:wipe_job",
+    "skill_id": "skill_037"
    }
   ]
  }

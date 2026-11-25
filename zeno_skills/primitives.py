@@ -463,9 +463,9 @@ class PartAt:
 
 @dataclass(frozen=True, eq=False)
 class Still:
-    """Nothing moves with s; the frame is the object ``obj`` where the State has it (a pot stirred in,
-    a table wiped)."""
-    obj: str
+    """Nothing moves with s; the frame is the object ``obj`` where the State has it (a pot stirred in), or the
+    world's (``obj`` None: a table wiped -- static furniture is in no State)."""
+    obj: str | None
     kind: str = "still"
 
     def value(self, state):
@@ -475,7 +475,7 @@ class Still:
         return state
 
     def frame(self, state, s):
-        return np.asarray(state.objects[self.obj], float)
+        return np.eye(4) if self.obj is None else np.asarray(state.objects[self.obj], float)
 
 
 @dataclass(frozen=True, eq=False)

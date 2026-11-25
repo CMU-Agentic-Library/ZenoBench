@@ -666,7 +666,7 @@
     "skill_id": "skill_037",
     "verb": "wipe",
     "when": "the sponge is put back",
-    "type": "then"
+    "type": "enables"
    },
    {
     "skill_id": "skill_039",

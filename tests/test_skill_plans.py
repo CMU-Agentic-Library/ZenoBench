@@ -225,6 +225,23 @@ def test_a_release_opens_where_it_is_and_pulls_out_back_along_the_gripper_axis()
     assert isinstance(plan_release(FakeKin(), _state(q), 0.03, 0.07), Failure)
 
 
+def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
+    from zeno_skills.skill_plans import WIPE_STAGES, plan_wipe
+    q0 = _q(0.4, 0.0, 0.40)
+    wipe = {"support": "table", "p": np.array([0.5, 0.0, 0.10]), "R": np.eye(3), "d": np.array([0.2, 0.0, 0.0]),
+            "above": 0.016}
+    plan = plan_wipe(FakeKin(), _state(q0, held=Held("sponge", np.eye(4))), wipe)
+    assert isinstance(plan, Plan), plan
+    assert tuple(sg.name for sg in plan.segments) == WIPE_STAGES
+    press, stroke, back_ = (_named(plan, n) for n in ("wipe_press", "wipe_stroke", "wipe_return"))
+    assert np.allclose(press.q_end[:3], [0.5, 0.0, 0.10]) and press.spec.touch == (("table", "held"),)
+    assert stroke.kind == "scripted" and np.allclose(stroke.q_end[:3], [0.7, 0.0, 0.10])     # along d, on the surface
+    assert plan.info["stroke_m"] == pytest.approx(0.2) and np.allclose(back_.q_end[:3], [0.5, 0.0, 0.10])
+    assert np.allclose(_named(plan, "wipe_leave").q_end[:3], [0.5, 0.0, 0.116])
+    assert np.allclose(plan.segments[-1].q_end, q0)                                      # back where it arrived
+    assert isinstance(plan_wipe(FakeKin(), _state(q0), wipe), Failure)                    # nothing to wipe with
+
+
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
     out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
     assert isinstance(out, Failure) and "nothing in the hand" in out.why
