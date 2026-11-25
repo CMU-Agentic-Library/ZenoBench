@@ -73,7 +73,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `place` (`skill_018`) (enables) — the object went into a cabinet or appliance whose door must be shut
+- Previous step: `place` (`skill_018`) (then) — the object went into a cabinet or appliance whose door must be shut
 - Previous step: `open` (`skill_040`) (then) — the door must be shut afterwards
 - Previous step: `collect` (`skill_048`) (then) — the container sits in a cabinet that must be closed
 - Previous step: `sort` (`skill_049`) (then) — a sorted container sits in a cabinet

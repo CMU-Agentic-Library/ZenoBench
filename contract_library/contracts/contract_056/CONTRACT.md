@@ -6,7 +6,7 @@ Paired SkillNode: `skill_048` (`collect-objects`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier

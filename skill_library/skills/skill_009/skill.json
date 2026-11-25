@@ -141,7 +141,7 @@
     "skill_id": "skill_018",
     "verb": "place",
     "when": "the hand is empty and the robot drives next",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_021",
@@ -159,19 +159,19 @@
     "skill_id": "skill_053",
     "verb": "restore",
     "when": "the robot drives on",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_054",
     "verb": "swap",
     "when": "the robot drives on",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_070",
     "verb": "hide",
     "when": "the robot leaves",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [

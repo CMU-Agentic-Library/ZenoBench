@@ -6,13 +6,13 @@ Paired SkillNode: `skill_046` (`uncover-container`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
 
 ## Verifier
 
 - [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [path knob_lift_aside] `on(object=@container.lid, support=@container.aside_support)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths

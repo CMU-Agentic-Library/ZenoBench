@@ -53,7 +53,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `place` (`skill_018`) (enables) — the object is put away after showing it
+- Next step: `place` (`skill_018`) (then) — the object is put away after showing it
 - Next step: `handover` (`skill_022`) (enables) — the object is passed to the left hand
 - Alternative: `lift` (`skill_023`) — only the height of the load matters
 

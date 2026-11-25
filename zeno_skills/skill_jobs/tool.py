@@ -18,20 +18,21 @@ def free_end(rig, state, name, frames):
 
 
 def tool_in_tcp(rig, state, name, frame):
-    """T_tcp_tool (4x4) of the ``frame`` of the object ``name`` the right hand holds in ``state``: its
+    """T_tcp_tool (4x4) of the ``frame`` of the object ``name`` a hand holds in ``state`` (HAND_PLAN 9c: either): its
     annotated point (in the asset's body frame, identity rotation) through the hold the State has.
     Held.T_tcp_obj is the load's box frame (the collision model's frame of its first collider, where
     State.objects puts it); the annotation is in the body frame the simulator reports (rig.obj_pose):
     the two related as they stand now.  SkillFailure: not held, or no such frame annotated."""
-    held = state.held(rig.kin.side)
-    if held is None or held.name != name:
-        raise SkillFailure(f"{name} is not in the {rig.kin.side} hand")
+    side = next((sd for sd in ("right", "left") if state.held(sd) is not None and state.held(sd).name == name), None)
+    if side is None:
+        raise SkillFailure(f"{name} is not in a hand")
+    held = state.held(side)
     frames = rig.ann.asset_of(rig.ann.objects[name]).get("tool_frame") or {}
     if frame not in frames:
         raise SkillFailure(f"{name}: no tool frame {frame!r} annotated (has {sorted(frames)})")
     # the box frame where the hold puts it (the TCP measured . T_tcp_obj) and the body frame where the
     # simulator has it: T_obj_tool written in the body frame, carried into the box frame the hold is in
-    tcp, R = rig.kin.tcp(rig.q())
+    tcp, R = rig.arm_kin(side).tcp(rig.chain_q(side))
     T_tcp = np.eye(4)
     T_tcp[:3, :3], T_tcp[:3, 3] = R, tcp
     T_box = T_tcp @ np.asarray(held.T_tcp_obj, float)

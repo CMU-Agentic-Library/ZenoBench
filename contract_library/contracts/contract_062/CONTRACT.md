@@ -6,12 +6,12 @@ Paired SkillNode: `skill_054` (`swap-objects`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Verifier
 
 - [all paths] `positions_swapped(a=$a, b=$b)` — GT: object_pose (before/after)
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 
 ## Policy paths
 

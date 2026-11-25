@@ -56,7 +56,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `clear` (`skill_050`) (then) — the cleared surface is wiped
-- Next step: `place` (`skill_018`) (enables) — the sponge is put back
+- Next step: `place` (`skill_018`) (then) — the sponge is put back
 - Fallback on failure: `clear` (`skill_050`) (recover) — objects cover the surface
 
 ## Failure

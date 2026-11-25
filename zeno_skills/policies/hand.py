@@ -41,6 +41,14 @@ def _require_held(rig, name, action):
     skills.check_held(rig, f"{action}_start")
 
 
+def _require_held_any(rig, name, action):
+    """``name`` in either hand, checked (the skills on the motion layers that set it down: HAND_PLAN 9c)."""
+    side = skills._hand_of(rig, name)
+    if side is None:
+        raise SkillFailure(f"{action} {name}: not held")
+    skills.check_held(rig, f"{action}_start", side=side)
+
+
 @contextmanager
 def virtual_support(rig, name, z, box, category="object_top"):
     """Temporarily expose a horizontal face (an object's top, a rim plane) as
@@ -65,7 +73,7 @@ class DropIntoPolicy(AtomicPolicy):
     """Let the held object go over a container's opening (skills.drop_into)."""
 
     def execute(self, name, container):
-        _require_held(self.rig, name, "drop")
+        _require_held_any(self.rig, name, "drop")
         return skills.drop_into(self.rig, name, container)
 
 
@@ -74,7 +82,7 @@ class StackOnPolicy(AtomicPolicy):
 
     def execute(self, name, base):
         rig = self.rig
-        _require_held(rig, name, "stack")
+        _require_held_any(rig, name, "stack")
         st = rig.state()
         top = object_top(rig, base, st)
         fp = rig.geo.footprint(base, st)
@@ -413,7 +421,7 @@ class CoverWithLidPolicy(AtomicPolicy):
 
     def execute(self, lid, container):
         rig = self.rig
-        _require_held(rig, lid, "cover")
+        _require_held_any(rig, lid, "cover")
         ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
         if not ca:
             raise SkillFailure(f"cover: {container} is not a container")

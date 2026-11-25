@@ -72,14 +72,14 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
  },
  "preconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=any)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "any"
    },
    "negated": false,
    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -107,10 +107,10 @@
  ],
  "postconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -129,10 +129,10 @@
   "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
   "checks": [
    {
-    "predicate": "holding(hand=right, object=$object)",
+    "predicate": "holding(hand=any, object=$object)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$object"
     },
     "negated": false,
@@ -667,19 +667,19 @@
     "skill_id": "skill_019",
     "verb": "drop",
     "when": "more items go into the same container",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_020",
     "verb": "stack",
     "when": "a taller stack is built",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_022",
     "verb": "handover",
     "when": "a second object is picked with the free right hand",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_029",
@@ -727,7 +727,7 @@
     "skill_id": "skill_036",
     "verb": "upright",
     "when": "the standing object is then grasped by its top",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_040",
@@ -763,7 +763,7 @@
     "skill_id": "skill_065",
     "verb": "touch",
     "when": "the touched object is then grasped",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_068",
@@ -797,7 +797,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [

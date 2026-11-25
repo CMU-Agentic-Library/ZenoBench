@@ -187,7 +187,7 @@
     "when": "a second object is picked with the free right hand",
     "bind": {},
     "reason": "right hand free",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

@@ -27,24 +27,24 @@ A lid must be removed before reaching into or pouring into a container.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$container).
+Requires hand_empty(hand=any); base_near(place=$container).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `uncovered(container=$container)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 - `on(object=@container.lid, support=@container.aside_support)` (path knob_lift_aside)
 
 ## May invalidate

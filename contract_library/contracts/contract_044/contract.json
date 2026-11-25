@@ -232,7 +232,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_017",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   },
   {
    "kind": "alternative",

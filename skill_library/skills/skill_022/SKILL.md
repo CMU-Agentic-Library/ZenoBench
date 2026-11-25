@@ -56,7 +56,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - Previous step: `present` (`skill_016`) (enables) — the object is passed to the left hand
 - Next step: `open` (`skill_040`) (enables) — the right hand must open a door while the left carries the load
-- Next step: `pick` (`skill_017`) (enables) — a second object is picked with the free right hand
+- Next step: `pick` (`skill_017`) (then) — a second object is picked with the free right hand
 - Is a fallback for: `open` (`skill_040`) (repair) — the right hand still holds a load
 - Alternative: `brace` (`skill_027`) — the left hand should hold an object that stays on its support
 

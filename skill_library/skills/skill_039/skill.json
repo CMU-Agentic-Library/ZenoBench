@@ -232,7 +232,7 @@
     "bind": {
      "object": "$source"
     },
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_038",
@@ -241,7 +241,7 @@
     "bind": {
      "container": "$target"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [

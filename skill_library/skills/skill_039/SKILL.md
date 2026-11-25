@@ -59,8 +59,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - Previous step: `uncover` (`skill_046`) (enables) — food is poured into the opened pot
 - Previous step: `shake` (`skill_062`) (enables) — loose contents are poured out
-- Next step: `place` (`skill_018`) (enables) — the empty cup is put down
-- Next step: `stir` (`skill_038`) (enables) — the poured food is stirred
+- Next step: `place` (`skill_018`) (then) — the empty cup is put down
+- Next step: `stir` (`skill_038`) (then) — the poured food is stirred
 - Fallback on failure: `uncover` (`skill_046`) (repair, repairs uncovered) — the target has its lid on
 - Is a fallback for: `heat` (`skill_043`) (recover) — loose food sits in a held cup and the pot on the burner is the vessel to heat
 

@@ -15,7 +15,7 @@ from ..park_search import VARIANT_COST, Problem
 from ..predicates import memory, objects_inside
 from ..rig import SkillFailure
 from ..skill_plans import STIR_RELAY, stir_tcp
-from ..skills import check_held, right_hand_only
+from ..skills import check_held
 from ..tolerances import STIR_ABOVE, STIR_DEPTH, STIR_RADII, STIR_TILT
 from .carry import carry_posture
 from .tool import free_end, tool_in_tcp
@@ -51,15 +51,15 @@ def stir_job(rig, args, state, skill=None):
     turn).  Then judged: at least one turn inside (memory "stirred"), or for a dip the tip inside ("dipped")."""
     from ..motion_skills import Job
     tool, container, turns = args["tool"], args["container"], float(args.get("turns", 1.25))
-    right_hand_only(rig, tool, "stir")            # HAND_PLAN 9c gives it the hand
+    side = rig.hand_of(tool) or "right"            # the hand that holds it (HAND_PLAN 9c)
     verb = "stir" if turns > 0 else "dip"
-    if rig.held is None or rig.held["name"] != tool:
+    if rig.held_by(side) is None or rig.held_by(side)["name"] != tool:
         raise SkillFailure(f"{verb}: {tool} is not right-held")
     ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
     if not ca:
         raise SkillFailure(f"{verb}: {container} is not a container")
-    carry_posture(rig, label=f"{verb}_carry")
-    check_held(rig, f"{verb}_carry", open_hand=False)
+    carry_posture(rig, label=f"{verb}_carry", side=side)
+    check_held(rig, f"{verb}_carry", open_hand=False, side=side)
     rig.sync_world()
     from ..run import observe
     st0 = observe(rig)
@@ -77,7 +77,7 @@ def stir_job(rig, args, state, skill=None):
     depth = min(STIR_DEPTH[0], float(ca["rim_height"]) - STIR_DEPTH[1])
     centre_w = np.r_[cb[:2], rim_top - depth]
     centre = (np.linalg.inv(T_pot) @ np.r_[centre_w, 1.0])[:3]        # in the pot's box frame
-    _, R0 = rig.kin.tcp(rig.q())
+    _, R0 = rig.arm_kin(side).tcp(rig.chain_q(side))
     R_tilt = _tilted(np.asarray(R0, float), t_tool)
     radii = (min(STIR_RADII[0], 0.45 * rim_r),) + tuple(STIR_RADII[1:])
     touch = (container,) + tuple(objects_inside(rig, container, st))
@@ -95,7 +95,7 @@ def stir_job(rig, args, state, skill=None):
             stirs.append(stir)
             goals.append(((top,) + tuple(T[:3, 3] for T in pts), (dip[:3, 3], dip[:3, :3]), VARIANT_COST * j))
             tiers.append(i)
-    kin = rig.kin
+    kin = rig.arm_kin(side)
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_stir as build_with
@@ -103,7 +103,7 @@ def stir_job(rig, args, state, skill=None):
     def build(s, k, prior):
         return build_with(kin, s, stirs[k], prior=prior)
     problem = Problem(tuple(goals), build, STIR_RELAY, near=rig.base_pose(), label=f"{verb} {container}",
-                      tiers=tuple(tiers))
+                      tiers=tuple(tiers), hand=side)
     ctx = {"swept": 0.0, "prev": None, "dipped": False, "n": 0}
     tip_local = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["tool_frame"][end], float)
 
@@ -160,7 +160,7 @@ def stir_job(rig, args, state, skill=None):
             r.log("dip_sample", tool=tool, container=container, tip=np.round(tip, 3).tolist(), inside=inside)
         return found.plan, rebuild, {"stir_dip": {"around": _Sampling, "after": after_dip},
                                      "stir_circle": {"around": _Sampling},
-                                     "stir_back": {"after": lambda r: check_held(r, verb, open_hand=False)}}
+                                     "stir_back": {"after": lambda r: check_held(r, verb, open_hand=False, side=side)}}
 
     def done():
         if ctx["dipped"]:

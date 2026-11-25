@@ -33,23 +33,23 @@ Runs these Skill Contracts inside one call: `fetch`, `navigate`, `pick`, `cover`
 
 ## Applicability
 
-Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: container_with_lid (receptacle.kind == 'object' and args.lid): uncovered(container=$receptacle).
+Requires hand_empty(hand=any). Depending on the bound nouns, the chosen path also needs: container_with_lid (receptacle.kind == 'object' and args.lid): uncovered(container=$receptacle).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Postconditions (verified on live GT state)
 
 - `hidden(object=$object)` — Object is inside a lid-covered container or on a shelf inside a closed cabinet. GT: object_pose, container_profile, articulation_joint, support_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `hidden(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `hand_empty(hand=any)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -71,7 +71,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `tuck` (`skill_009`) (enables) — the robot leaves
+- Next step: `tuck` (`skill_009`) (then) — the robot leaves
 - Alternative: `fetch` (`skill_047`) — the object only needs to move
 
 ## Failure

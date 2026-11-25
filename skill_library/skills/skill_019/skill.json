@@ -41,14 +41,14 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object); base_near(place=$container); uncovered(container=$container)."
+  "summary": "Requires holding(hand=any, object=$object); base_near(place=$container); uncovered(container=$container)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -112,16 +112,20 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
+   "predicate": "not holding(hand=any, object=$object)",
+   "name": "holding",
    "args": {
-    "hand": "right"
+    "hand": "any",
+    "object": "$object"
    },
-   "negated": false,
-   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+   "negated": true,
+   "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
-    "gripper_state"
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
    ],
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   }
@@ -147,16 +151,20 @@
     "scope": "all paths"
    },
    {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
+    "predicate": "not holding(hand=any, object=$object)",
+    "name": "holding",
     "args": {
-     "hand": "right"
+     "hand": "any",
+     "object": "$object"
     },
-    "negated": false,
-    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+    "negated": true,
+    "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
-     "gripper_state"
+     "gripper_state",
+     "finger_joints",
+     "object_pose",
+     "arm_fk"
     ],
     "checked": "after the policy chain on live GT state; the action is reported only if true",
     "scope": "all paths"
@@ -189,13 +197,13 @@
     "skill_id": "skill_023",
     "verb": "lift",
     "when": "the object is released over a tall container",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_063",
     "verb": "hover",
     "when": "the object is released into the container under it",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [
@@ -205,7 +213,7 @@
     "when": "more items go into the same container",
     "bind": {},
     "reason": "the hand is free again",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

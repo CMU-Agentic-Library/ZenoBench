@@ -6,7 +6,7 @@ Paired SkillNode: `skill_017` (`pick-object`).
 
 ## Precheck
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `hand_empty(hand=any)` — GT: gripper_state
 - [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 - [path microwave_cavity] `is_open(articulated=@object.appliance)` — GT: articulation_joint, articulation_annotation
 - [path inside_cabinet_or_fridge] `is_open(articulated=@object.appliance)` — GT: articulation_joint, articulation_annotation
@@ -21,7 +21,7 @@ Paired SkillNode: `skill_017` (`pick-object`).
 
 ## Verifier
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [path two_hand_box] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [path two_hand_flat] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 

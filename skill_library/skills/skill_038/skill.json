@@ -46,14 +46,14 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$tool); base_near(place=$container); uncovered(container=$container)."
+  "summary": "Requires holding(hand=any, object=$tool); base_near(place=$container); uncovered(container=$container)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,
@@ -115,10 +115,10 @@
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   },
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,
@@ -152,10 +152,10 @@
     "scope": "all paths"
    },
    {
-    "predicate": "holding(hand=right, object=$tool)",
+    "predicate": "holding(hand=any, object=$tool)",
     "name": "holding",
     "args": {
-     "hand": "right",
+     "hand": "any",
      "object": "$tool"
     },
     "negated": false,
@@ -202,7 +202,7 @@
     "skill_id": "skill_039",
     "verb": "pour",
     "when": "the poured food is stirred",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_046",

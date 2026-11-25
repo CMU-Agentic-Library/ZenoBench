@@ -12,7 +12,7 @@ from ..physics import CONTAINER_BASE_T, CONTAINER_WALL
 from ..rig import SkillFailure
 from ..run import observe
 from ..skill_plans import DROP_RELAY, T_of
-from ..skills import PLACE_SPOT_COST, PLACE_YAW_COST, PLACE_YAWS, _lowest_z, check_held, right_hand_only
+from ..skills import PLACE_SPOT_COST, PLACE_YAW_COST, PLACE_YAWS, _lowest_z, check_held
 from ..tolerances import LEAVE_GAP, LEAVE_MARGIN
 from .carry import _carry_bottom_z, carry_posture
 
@@ -34,10 +34,10 @@ def drop_job(rig, args, state, skill=None):
     first.  After the drive the plan run with the drop's hooks; then the load judged inside."""
     from ..motion_skills import Job
     name, container = args["name"], args["container"]
-    kin = rig.kin
+    side = rig.hand_of(args["name"]) or "right"      # the hand that holds it (HAND_PLAN 9c)
+    kin = rig.arm_kin(side)
     plan_drop = skill.build if skill is not None else _plan_drop()
-    right_hand_only(rig, name, "drop")
-    if rig.held is None or rig.held["name"] != name:
+    if rig.held_by(side) is None or rig.held_by(side)["name"] != name:
         raise SkillFailure(f"drop {name}: not holding it")
     ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
     if not ca:
@@ -55,18 +55,18 @@ def drop_job(rig, args, state, skill=None):
     travel = {}
     if here:
         rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
-        tcp, R = kin.tcp(rig.q())
+        tcp, R = kin.tcp(rig.chain_q(side))
         poses, cost, fall = [(np.asarray(tcp, float), np.asarray(R, float), 0, 0)], [0.0], low - floor_z
     else:
         carry_bottom_z = _carry_bottom_z(rig, container)
-        carry_posture(rig, min_bottom_z=carry_bottom_z, label="drop_carry")
-        check_held(rig, "drop_carry", open_hand=False)
+        carry_posture(rig, min_bottom_z=carry_bottom_z, label="drop_carry", side=side)
+        check_held(rig, "drop_carry", open_hand=False, side=side)
         rig.sync_world()
         travel = {"min_bottom_z": carry_bottom_z, "raise_load": False}
         st = rig.state()
         # the TCP measured (rig.q()), as the State's hold is (place_job: the arm's sag under the load
         # read against the command is a shifted hold)
-        tcp, R = kin.tcp(rig.q())
+        tcp, R = kin.tcp(rig.chain_q(side))
         body = np.asarray(rig.obj_pose(name)[0], float)
         hang = float(body[2] - _lowest_z(rig, name, st))
         osz = rig.ann.asset_of(rig.ann.objects[name])["size"]
@@ -89,7 +89,7 @@ def drop_job(rig, args, state, skill=None):
     held = observe(rig).held(kin.side)
     T_hold = np.eye(4) if held is None else np.asarray(held.T_tcp_obj, float)
     targets = [T_of(Rg, p) @ T_hold for p, Rg, _, _ in poses]
-    open_w = float(rig.held.get("pre_open", 0.04))
+    open_w = float(rig.held_by(side).get("pre_open", 0.04))
     rests = (kin.rest, kin.drive)
     near = rig.base_pose()
     if not here and math.hypot(near[0] - cb[0], near[1] - cb[1]) > FAR_M:
@@ -98,7 +98,7 @@ def drop_job(rig, args, state, skill=None):
     def build(st_, k, prior):
         return plan_drop(kin, st_, targets[k], open_w, rests, container, fall, prior=prior, obj=name)
     problem = Problem(tuple(((p,), (p, Rg), c) for (p, Rg, _, _), c in zip(poses, cost)), build, DROP_RELAY,
-                      near=None if near is None else tuple(near), label=f"drop {name}")
+                      near=None if near is None else tuple(near), label=f"drop {name}", hand=side)
 
     def no_park(diag):
         return SkillFailure(f"drop {name}: no base pose above {container} "
@@ -117,10 +117,10 @@ def drop_job(rig, args, state, skill=None):
             return plan_drop(kin, state_, targets[k], open_w, rests, container, fall, start=frm, prior=prior, obj=name)
 
         def after_reach(r):
-            check_held(r, "drop_above", open_hand=False)
+            check_held(r, "drop_above", open_hand=False, side=side)
 
         def after_release(r):
-            r.held = None
+            r.set_held(side, None)
         return found.plan, rebuild, {"drop_reach": {"after": after_reach}, "drop_release": {"after": after_release}}
 
     def done():

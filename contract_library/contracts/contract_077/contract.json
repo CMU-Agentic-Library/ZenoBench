@@ -25,7 +25,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    }
   },
@@ -52,7 +52,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    }
   }
@@ -60,10 +60,10 @@
  "invalidates": [],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,
@@ -129,10 +129,10 @@
    "scope": "all paths"
   },
   {
-   "predicate": "holding(hand=right, object=$tool)",
+   "predicate": "holding(hand=any, object=$tool)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$tool"
    },
    "negated": false,

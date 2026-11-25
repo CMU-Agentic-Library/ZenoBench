@@ -191,7 +191,7 @@
     "bind": {
      "object": "$tool"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [

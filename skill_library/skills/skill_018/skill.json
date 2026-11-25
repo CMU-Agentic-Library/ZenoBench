@@ -66,14 +66,14 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires holding(hand=right, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave_staged (receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'): is_open(articulated=kitchen_microwave); microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle)."
+  "summary": "Requires holding(hand=any, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave_staged (receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'): is_open(articulated=kitchen_microwave); microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle)."
  },
  "preconditions": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,
@@ -105,16 +105,20 @@
  ],
  "postconditions": [
   {
-   "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
+   "predicate": "not holding(hand=any, object=$object)",
+   "name": "holding",
    "args": {
-    "hand": "right"
+    "hand": "any",
+    "object": "$object"
    },
-   "negated": false,
-   "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+   "negated": true,
+   "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
    "kind": "fluent",
    "gt_sources": [
-    "gripper_state"
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
    ],
    "checked": "after the policy chain on live GT state; the action is reported only if true"
   }
@@ -123,16 +127,20 @@
   "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
   "checks": [
    {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
+    "predicate": "not holding(hand=any, object=$object)",
+    "name": "holding",
     "args": {
-     "hand": "right"
+     "hand": "any",
+     "object": "$object"
     },
-    "negated": false,
-    "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+    "negated": true,
+    "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
     "kind": "fluent",
     "gt_sources": [
-     "gripper_state"
+     "gripper_state",
+     "finger_joints",
+     "object_pose",
+     "arm_fk"
     ],
     "checked": "after the policy chain on live GT state; the action is reported only if true",
     "scope": "all paths"
@@ -614,7 +622,7 @@
    "path_id": "edge_held_flat",
    "when": [
     "receptacle.kind == 'support'",
-    "robot.right_kind == 'edge'"
+    "object.held_kind == 'edge'"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [
@@ -734,7 +742,7 @@
     "skill_id": "skill_016",
     "verb": "present",
     "when": "the object is put away after showing it",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_017",
@@ -746,31 +754,31 @@
     "skill_id": "skill_024",
     "verb": "lower",
     "when": "the object goes onto a low shelf or into the fridge",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_025",
     "verb": "rotate",
     "when": "the object is set down in the new orientation",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_026",
     "verb": "regrasp",
     "when": "the corrected grasp is used to place precisely",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_037",
     "verb": "wipe",
     "when": "the sponge is put back",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_039",
     "verb": "pour",
     "when": "the empty cup is put down",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_040",
@@ -792,7 +800,7 @@
     "when": "the object went into a cabinet or appliance whose door must be shut",
     "bind": {},
     "reason": "appliance cycles and task goals require closed doors",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_043",
@@ -810,7 +818,7 @@
     "bind": {
      "hand": "right"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [

@@ -56,7 +56,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `place` (`skill_018`) (enables) — the object goes onto a low shelf or into the fridge
+- Next step: `place` (`skill_018`) (then) — the object goes onto a low shelf or into the fridge
 - Alternative: `lift` (`skill_023`) — opposite direction
 
 ## Failure

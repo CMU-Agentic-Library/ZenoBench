@@ -10,8 +10,11 @@ from ..rig import SkillFailure
 
 
 def _require_grasp(rig, name, kind):
-    if rig.held is not None:
-        raise SkillFailure(f"pick {name}: already holding {rig.held['name']}")
+    left = getattr(rig, "left_held", None)
+    if rig.held is not None and left is not None:              # a free hand picks (HAND_PLAN 9c)
+        raise SkillFailure(f"pick {name}: both hands hold something ({rig.held['name']}, {left['name']})")
+    if name in {h["name"] for h in (rig.held, left) if h is not None}:
+        raise SkillFailure(f"pick {name}: already holding it")
     obj = rig.ann.objects.get(name)
     if obj is None:
         raise SkillFailure(f"pick {name}: object is not annotated")
@@ -80,7 +83,7 @@ class SurfacePlacePolicy(AtomicPolicy):
         if support.startswith("in:"):
             raise ValueError("surface place needs a support name, not a container")
         rig = self.rig
-        if rig.held is None:
+        if skills._hand_of(rig, name) is None:
             # already set down by the previous policy (upright stands the
             # object back itself): verify instead of placing again
             on, why = rig.geo.on(name, support, rig.state())
@@ -108,8 +111,9 @@ class EdgePlacePolicy(AtomicPolicy):
     """Slide an edge-held flat object onto a support and verify it settled."""
 
     def execute(self, name, support, *, hint=None):
-        held = self.rig.held
-        if held is None or held["name"] != name or held["kind"] != "edge":
+        side = skills._hand_of(self.rig, name)
+        held = None if side is None else self.rig.held if side == "right" else self.rig.left_held
+        if held is None or held["kind"] != "edge":
             raise SkillFailure(f"edge place {name}: object is not edge-held")
         return skills.place(self.rig, name, support, hint)
 
@@ -120,6 +124,7 @@ class MicrowavePlacePolicy(AtomicPolicy):
     def execute(self, name, support="kitchen_microwave/inside_floor"):
         if self.rig.ann.support(support).get("furniture") != "kitchen_microwave":
             raise SkillFailure(f"microwave place: {support} is not a microwave support")
+        skills.right_hand_only(self.rig, name, "place into the microwave")     # the old cavity code (HAND_PLAN 9d)
         return skills.place_microwave(self.rig, name, support)
 
 

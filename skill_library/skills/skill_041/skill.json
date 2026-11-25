@@ -216,7 +216,7 @@
     "skill_id": "skill_018",
     "verb": "place",
     "when": "the object went into a cabinet or appliance whose door must be shut",
-    "type": "enables"
+    "type": "then"
    },
    {
     "skill_id": "skill_040",

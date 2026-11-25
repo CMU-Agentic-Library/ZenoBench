@@ -28,25 +28,25 @@ The contents of a container must be stirred with a held utensil.
 
 ## Applicability
 
-Requires holding(hand=right, object=$tool); base_near(place=$container); uncovered(container=$container).
+Requires holding(hand=any, object=$tool); base_near(place=$container); uncovered(container=$container).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$tool)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$tool)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
 ## Postconditions (verified on live GT state)
 
 - `stirred(container=$container)` — A held utensil tip completed one full circle inside the container below its rim. GT: robot_memory (tool-tip samples).
-- `holding(hand=right, object=$tool)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$tool)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
 - `stirred(container=$container)` (all paths)
-- `holding(hand=right, object=$tool)` (all paths)
+- `holding(hand=any, object=$tool)` (all paths)
 
 ## Policy paths (first match on the bound nouns)
 
@@ -57,7 +57,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `brace` (`skill_027`) (then) — the braced container is stirred
-- Previous step: `pour` (`skill_039`) (enables) — the poured food is stirred
+- Previous step: `pour` (`skill_039`) (then) — the poured food is stirred
 - Previous step: `uncover` (`skill_046`) (enables) — the opened pot is stirred
 - Previous step: `dip` (`skill_069`) (enables) — the utensil then stirs
 - Next step: `cover` (`skill_045`) (enables) — the pot is covered again

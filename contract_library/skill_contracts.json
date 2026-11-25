@@ -2369,7 +2369,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "sequence",
@@ -2457,7 +2457,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     },
     {
@@ -2471,7 +2471,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     }
@@ -2492,10 +2492,10 @@
    ],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -2684,10 +2684,10 @@
    ],
    "verifier": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -3299,7 +3299,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_023",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -3449,7 +3449,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     },
@@ -3462,10 +3462,12 @@
    ],
    "ensures": [
     {
-     "pred": "hand_empty",
+     "pred": "holding",
      "args": {
-      "hand": "right"
-     }
+      "hand": "any",
+      "object": "$object"
+     },
+     "negated": true
     }
    ],
    "invalidates": [
@@ -3475,10 +3477,10 @@
    ],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -3577,16 +3579,20 @@
    ],
    "verifier": [
     {
-     "predicate": "hand_empty(hand=right)",
-     "name": "hand_empty",
+     "predicate": "not holding(hand=any, object=$object)",
+     "name": "holding",
      "args": {
-      "hand": "right"
+      "hand": "any",
+      "object": "$object"
      },
-     "negated": false,
-     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+     "negated": true,
+     "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
-      "gripper_state"
+      "gripper_state",
+      "finger_joints",
+      "object_pose",
+      "arm_fk"
      ],
      "checked": "after the policy chain on live GT state; the action is reported only if true",
      "scope": "all paths"
@@ -4083,8 +4089,8 @@
         "value": "support"
        },
        {
-        "noun": "robot",
-        "field": "right_kind",
+        "noun": "object",
+        "field": "held_kind",
         "op": "equals",
         "value": "edge"
        }
@@ -4204,7 +4210,7 @@
      "bind": {},
      "reason": "appliance cycles and task goals require closed doors",
      "to_skill_id": "skill_041",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "sequence",
@@ -4226,7 +4232,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_009",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -4331,7 +4337,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     },
@@ -4357,10 +4363,12 @@
      }
     },
     {
-     "pred": "hand_empty",
+     "pred": "holding",
      "args": {
-      "hand": "right"
-     }
+      "hand": "any",
+      "object": "$object"
+     },
+     "negated": true
     }
    ],
    "invalidates": [
@@ -4368,10 +4376,10 @@
    ],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -4439,16 +4447,20 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
-     "name": "hand_empty",
+     "predicate": "not holding(hand=any, object=$object)",
+     "name": "holding",
      "args": {
-      "hand": "right"
+      "hand": "any",
+      "object": "$object"
      },
-     "negated": false,
-     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+     "negated": true,
+     "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
-      "gripper_state"
+      "gripper_state",
+      "finger_joints",
+      "object_pose",
+      "arm_fk"
      ],
      "checked": "after the policy chain on live GT state; the action is reported only if true",
      "scope": "all paths"
@@ -4504,7 +4516,7 @@
      "bind": {},
      "reason": "the hand is free again",
      "to_skill_id": "skill_017",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -4554,7 +4566,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     },
@@ -4580,10 +4592,12 @@
      }
     },
     {
-     "pred": "hand_empty",
+     "pred": "holding",
      "args": {
-      "hand": "right"
-     }
+      "hand": "any",
+      "object": "$object"
+     },
+     "negated": true
     }
    ],
    "invalidates": [
@@ -4592,10 +4606,10 @@
    ],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,
@@ -4662,16 +4676,20 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
-     "name": "hand_empty",
+     "predicate": "not holding(hand=any, object=$object)",
+     "name": "holding",
      "args": {
-      "hand": "right"
+      "hand": "any",
+      "object": "$object"
      },
-     "negated": false,
-     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+     "negated": true,
+     "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
-      "gripper_state"
+      "gripper_state",
+      "finger_joints",
+      "object_pose",
+      "arm_fk"
      ],
      "checked": "after the policy chain on live GT state; the action is reported only if true",
      "scope": "all paths"
@@ -4727,7 +4745,7 @@
      "bind": {},
      "reason": "the hand is free for the next block",
      "to_skill_id": "skill_017",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -5091,7 +5109,7 @@
      "bind": {},
      "reason": "right hand free",
      "to_skill_id": "skill_017",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -5287,7 +5305,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_019",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     }
    ],
    "failure": {
@@ -5469,7 +5487,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -5646,7 +5664,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -5831,7 +5849,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     }
    ],
    "failure": {
@@ -7820,7 +7838,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_017",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -8031,7 +8049,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -8086,7 +8104,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      }
     },
@@ -8113,7 +8131,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      }
     }
@@ -8121,10 +8139,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$tool)",
+     "predicate": "holding(hand=any, object=$tool)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      },
      "negated": false,
@@ -8190,10 +8208,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "holding(hand=right, object=$tool)",
+     "predicate": "holding(hand=any, object=$tool)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      },
      "negated": false,
@@ -8540,7 +8558,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_018",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "sequence",
@@ -8551,7 +8569,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_038",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "fallback",
@@ -10218,7 +10236,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$lid"
      }
     },
@@ -10244,10 +10262,12 @@
      }
     },
     {
-     "pred": "hand_empty",
+     "pred": "holding",
      "args": {
-      "hand": "right"
-     }
+      "hand": "any",
+      "object": "$lid"
+     },
+     "negated": true
     }
    ],
    "invalidates": [
@@ -10256,10 +10276,10 @@
    ],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$lid)",
+     "predicate": "holding(hand=any, object=$lid)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$lid"
      },
      "negated": false,
@@ -10327,16 +10347,20 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
-     "name": "hand_empty",
+     "predicate": "not holding(hand=any, object=$lid)",
+     "name": "holding",
      "args": {
-      "hand": "right"
+      "hand": "any",
+      "object": "$lid"
      },
-     "negated": false,
-     "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
+     "negated": true,
+     "meaning": "Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
      "kind": "fluent",
      "gt_sources": [
-      "gripper_state"
+      "gripper_state",
+      "finger_joints",
+      "object_pose",
+      "arm_fk"
      ],
      "checked": "after the policy chain on live GT state; the action is reported only if true",
      "scope": "all paths"
@@ -10446,7 +10470,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     },
     {
@@ -10466,7 +10490,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -10475,10 +10499,10 @@
    ],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10525,10 +10549,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10694,7 +10718,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -10702,7 +10726,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -10715,10 +10739,10 @@
    ],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10749,10 +10773,10 @@
    ],
    "verifier": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -10997,7 +11021,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     },
     {
@@ -11019,10 +11043,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11168,7 +11192,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -11184,10 +11208,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11317,7 +11341,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -11332,10 +11356,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11477,7 +11501,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     },
     {
@@ -11498,10 +11522,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11679,7 +11703,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -11696,10 +11720,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11838,7 +11862,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -11852,17 +11876,17 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11892,10 +11916,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -11994,7 +12018,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_009",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     }
    ],
    "failure": {
@@ -12033,7 +12057,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -12048,17 +12072,17 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -12088,10 +12112,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -12227,7 +12251,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_009",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     }
    ],
    "failure": {
@@ -13443,7 +13467,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_019",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "sequence",
@@ -13847,7 +13871,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_017",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     },
     {
      "kind": "alternative",
@@ -14456,7 +14480,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      }
     },
@@ -14483,7 +14507,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      }
     }
@@ -14491,10 +14515,10 @@
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$tool)",
+     "predicate": "holding(hand=any, object=$tool)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      },
      "negated": false,
@@ -14560,10 +14584,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "holding(hand=right, object=$tool)",
+     "predicate": "holding(hand=any, object=$tool)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$tool"
      },
      "negated": false,
@@ -14694,7 +14718,7 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
@@ -14708,17 +14732,17 @@
     {
      "pred": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      }
     }
    ],
    "invalidates": [],
    "precheck": [
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -14767,10 +14791,10 @@
      "scope": "all paths"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=any)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "any"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing (any: at least one does not; both: neither does).",
@@ -14940,7 +14964,7 @@
      },
      "reason": "",
      "to_skill_id": "skill_009",
-     "sequence_type": "enables"
+     "sequence_type": "then"
     }
    ],
    "failure": {
@@ -15122,7 +15146,7 @@
     {
      "pred": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      }
     }
@@ -15143,10 +15167,10 @@
    ],
    "precheck": [
     {
-     "predicate": "holding(hand=right, object=$object)",
+     "predicate": "holding(hand=any, object=$object)",
      "name": "holding",
      "args": {
-      "hand": "right",
+      "hand": "any",
       "object": "$object"
      },
      "negated": false,

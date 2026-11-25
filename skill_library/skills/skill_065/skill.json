@@ -163,7 +163,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

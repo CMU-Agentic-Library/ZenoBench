@@ -455,7 +455,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is put away after showing it",
    "bind": {
     "object": "$object"
@@ -522,7 +522,7 @@
    "to": "skill_023",
    "to_verb": "lift",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object must clear a high rim while carried",
    "bind": {
     "object": "$object"
@@ -644,7 +644,7 @@
    "to": "skill_041",
    "to_verb": "close",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object went into a cabinet or appliance whose door must be shut",
    "bind": {},
    "automatic": false
@@ -670,7 +670,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the hand is empty and the robot drives next",
    "bind": {
     "hand": "right"
@@ -768,7 +768,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "more items go into the same container",
    "bind": {},
    "automatic": false
@@ -794,7 +794,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "a taller stack is built",
    "bind": {},
    "automatic": false
@@ -870,7 +870,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "a second object is picked with the free right hand",
    "bind": {},
    "automatic": false
@@ -905,7 +905,7 @@
    "to": "skill_019",
    "to_verb": "drop",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is released over a tall container",
    "bind": {
     "object": "$object"
@@ -919,7 +919,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object goes onto a low shelf or into the fridge",
    "bind": {
     "object": "$object"
@@ -946,7 +946,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is set down in the new orientation",
    "bind": {
     "object": "$object"
@@ -973,7 +973,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the corrected grasp is used to place precisely",
    "bind": {
     "object": "$object"
@@ -1232,7 +1232,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the standing object is then grasped by its top",
    "bind": {
     "object": "$object"
@@ -1257,7 +1257,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the sponge is put back",
    "bind": {
     "object": "$tool"
@@ -1325,7 +1325,7 @@
    "to": "skill_018",
    "to_verb": "place",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the empty cup is put down",
    "bind": {
     "object": "$source"
@@ -1339,7 +1339,7 @@
    "to": "skill_038",
    "to_verb": "stir",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the poured food is stirred",
    "bind": {
     "container": "$target"
@@ -1891,7 +1891,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot drives on",
    "bind": {
     "hand": "right"
@@ -1916,7 +1916,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot drives on",
    "bind": {
     "hand": "right"
@@ -2126,7 +2126,7 @@
    "to": "skill_019",
    "to_verb": "drop",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the object is released into the container under it",
    "bind": {
     "object": "$object",
@@ -2193,7 +2193,7 @@
    "to": "skill_017",
    "to_verb": "pick",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the touched object is then grasped",
    "bind": {
     "object": "$object"
@@ -2333,7 +2333,7 @@
    "to": "skill_009",
    "to_verb": "tuck",
    "kind": "sequence",
-   "sequence_type": "enables",
+   "sequence_type": "then",
    "when": "the robot leaves",
    "bind": {
     "hand": "right"

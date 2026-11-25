@@ -33,22 +33,22 @@ A held object must end up resting on a support, in a container or on a burner.
 
 ## Applicability
 
-Requires holding(hand=right, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave_staged (receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'): is_open(articulated=kitchen_microwave); microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle).
+Requires holding(hand=any, object=$object); base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: microwave_staged (receptacle.kind == 'support' and receptacle.is_microwave_cavity and robot.right_kind == 'pinch'): is_open(articulated=kitchen_microwave); microwave (receptacle.kind == 'support' and receptacle.is_microwave_cavity): is_open(articulated=kitchen_microwave); cabinet_or_fridge_shelf (receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance): is_open(articulated=@receptacle.appliance); container (receptacle.kind == 'object'): uncovered(container=$receptacle).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$receptacle)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
 ## Postconditions (verified on live GT state)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `not holding(hand=any, object=$object)` — Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
 after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-- `hand_empty(hand=right)` (all paths)
+- `not holding(hand=any, object=$object)` (all paths)
 - `on(object=$object, support=$receptacle)` (path microwave_staged)
 - `in_appliance(object=$object, appliance=kitchen_microwave)` (path microwave_staged)
 - `on(object=$object, support=$receptacle)` (path microwave)
@@ -100,7 +100,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_053($object, $receptacle, $pass_by, xy=$hint_xy)`
 - extra postcondition `on(object=$object, support=$receptacle)`
 
-### `edge_held_flat` — when receptacle.kind == 'support' and robot.right_kind == 'edge'
+### `edge_held_flat` — when receptacle.kind == 'support' and object.held_kind == 'edge'
 
 1. `policy_017($object, $receptacle, hint=$hint_xy)`
 - extra postcondition `on(object=$object, support=$receptacle)`
@@ -119,18 +119,18 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `present` (`skill_016`) (enables) — the object is put away after showing it
+- Previous step: `present` (`skill_016`) (then) — the object is put away after showing it
 - Previous step: `pick` (`skill_017`) (enables) — the object goes onto a surface or into a container
-- Previous step: `lower` (`skill_024`) (enables) — the object goes onto a low shelf or into the fridge
-- Previous step: `rotate` (`skill_025`) (enables) — the object is set down in the new orientation
-- Previous step: `regrasp` (`skill_026`) (enables) — the corrected grasp is used to place precisely
-- Previous step: `wipe` (`skill_037`) (enables) — the sponge is put back
-- Previous step: `pour` (`skill_039`) (enables) — the empty cup is put down
+- Previous step: `lower` (`skill_024`) (then) — the object goes onto a low shelf or into the fridge
+- Previous step: `rotate` (`skill_025`) (then) — the object is set down in the new orientation
+- Previous step: `regrasp` (`skill_026`) (then) — the corrected grasp is used to place precisely
+- Previous step: `wipe` (`skill_037`) (then) — the sponge is put back
+- Previous step: `pour` (`skill_039`) (then) — the empty cup is put down
 - Previous step: `open` (`skill_040`) (enables) — an object must go inside
 - Previous step: `mark_spots` (`skill_072`) (then) — the object goes to the chosen spot
-- Next step: `close` (`skill_041`) (enables) — the object went into a cabinet or appliance whose door must be shut
+- Next step: `close` (`skill_041`) (then) — the object went into a cabinet or appliance whose door must be shut
 - Next step: `heat` (`skill_043`) (enables) — the food went into the microwave or onto the stove
-- Next step: `tuck` (`skill_009`) (enables) — the hand is empty and the robot drives next
+- Next step: `tuck` (`skill_009`) (then) — the hand is empty and the robot drives next
 - Fallback on failure: `drop` (`skill_019`) (substitute) — the hand cannot reach the robot-side release spot inside the container
 - Fallback on failure: `open` (`skill_040`) (repair, repairs is_open) — the receptacle is behind a closed door
 - Fallback on failure: `uncover` (`skill_046`) (repair, repairs uncovered) — the container has its lid on

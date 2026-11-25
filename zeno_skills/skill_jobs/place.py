@@ -16,7 +16,7 @@ from ..run import observe
 from ..skill_plans import FREE_HAND, FREE_LOAD, PLACE_RELAY, T_of
 from ..sticky import rest_R
 from ..skills import (APPROACH_STEP, COM_MARGIN, EDGE_MIN_OVERHANG, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST,
-                      _edge_coord, _lowest_z, _open_edges, _overlaps_objects, _perp, check_held, pick_approach, right_hand_only)
+                      _edge_coord, _lowest_z, _open_edges, _overlaps_objects, _perp, check_held, pick_approach)
 from ..tolerances import LEAVE_GAP, PLACE_LEVEL_MIN, PLACE_XY_TOL, PLACE_XY_TOL_CORNER, TARGET_TOL
 from .carry import _carry_bottom_z, carry_posture
 from .door_access import door_ahead, front_of, leave_tier
@@ -44,8 +44,10 @@ def place_job(rig, args, state, skill=None):
     primitives.holds); then the result judged."""
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
-    right_hand_only(rig, name, "place")            # HAND_PLAN 9c gives it the hand
-    kin = rig.kin
+    side = rig.hand_of(name)                       # the hand that holds it (HAND_PLAN 9c)
+    if side is None:
+        raise SkillFailure(f"place {name}: not held")
+    kin, held_d = rig.arm_kin(side), rig.held_by(side)
     # behind a door (a shelf inside a cabinet, the fridge): open enough to reach past it, checked
     # before anything moves -- as the pick behind a door (door_access.door_ahead)
     door = None if tray else door_ahead(rig, s, None, f"place {name}")
@@ -54,11 +56,11 @@ def place_job(rig, args, state, skill=None):
     # the carry posture of the drive to the park, before the park search checks it there -- not for an
     # edge hold: it drives in the posture it came in (as place_flat did; raised to the support's top
     # beside a bookcase the arm stopped 0.5 m short, T26 whose 11-15)
-    edge = rig.held["kind"] == "edge"
+    edge = held_d["kind"] == "edge"
     clear_z = _carry_bottom_z(rig, tray or s["name"])
     carry_bottom_z = max(s["z"] + 0.03, clear_z or 0.0)
     if not edge:
-        carry_posture(rig, min_bottom_z=carry_bottom_z)
+        carry_posture(rig, min_bottom_z=carry_bottom_z, side=side)
     rig.sync_world()
     # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
     # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
@@ -69,10 +71,10 @@ def place_job(rig, args, state, skill=None):
     p_obj, q_obj = rig.obj_pose(name)
     p_obj = np.asarray(p_obj, float)
     R_obj = quat_R(q_obj)
-    tcp, R_tcp = kin.tcp(rig.q())
+    tcp, R_tcp = kin.tcp(rig.chain_q(side))
     relations = [(tcp - p_obj, R_tcp, None, float(p_obj[2] - _lowest_z(rig, name, st)))]
     over = math.degrees(math.acos(max(-1.0, min(1.0, float(R_obj[2, 2])))))
-    if rig.held["kind"] != "corner" and over > PLACE_LEVEL_MIN:
+    if held_d["kind"] != "corner" and over > PLACE_LEVEL_MIN:
         R_lvl = rest_R(q_obj) @ R_obj.T
         relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
                              -float(asset["origin_to_bottom_center"][2])))
@@ -103,7 +105,7 @@ def place_job(rig, args, state, skill=None):
     # edge hold every position and overhang over an open edge and relation, the hand square to the edge
     edges = None                            # an edge hold: per goal, (the edge's outward normal, the overhang)
     if edge:
-        goals, leg_sets, cost, edges = _edge_goals(rig, name, s, relations, args.get("hint"), st)
+        goals, leg_sets, cost, edges = _edge_goals(rig, name, s, relations, args.get("hint"), st, held_d)
         if not goals:
             raise SkillFailure(f"place {name}: no free edge spot on {s['name']}")
     else:
@@ -120,7 +122,7 @@ def place_job(rig, args, state, skill=None):
     # the hand opens to the grasp's width (an edge hold too: opened to FINGER_OPEN a finger went 1 mm into the
     # table's edge, T01 11-15); an edge hold's box in its box frame, which the open pads are moved clear of
     # before they pull out, as far as they need (plan_place)
-    open_w = float(rig.held.get("pre_open", 0.04))
+    open_w = float(held_d.get("pre_open", 0.04))
     edge_box = _box_extent(kin, name) if edge else None
     on = _set_down_on(s)
     rests = (kin.rest, kin.drive)
@@ -142,7 +144,7 @@ def place_job(rig, args, state, skill=None):
     tiers = () if door is None else tuple(leave_tier(door, ls[0][1][:, 2]) for ls in leg_sets)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
                       PLACE_RELAY, near=search_near, prefer=prefer, tiers=tiers,
-                      relay_free=FREE_LOAD if door is not None else None, label=f"place {name}")
+                      relay_free=FREE_LOAD if door is not None else None, label=f"place {name}", hand=side)
     ctx = {}
 
     def no_park(diag):
@@ -166,9 +168,9 @@ def place_job(rig, args, state, skill=None):
         # held at the rim, spoons): the plan's set-down checks its pose against the hold the State
         # has now (primitives.holds) and is built again from there when it is off
         ctx["spot"] = goals[found.k][0]
-        ctx["kind"] = rig.held["kind"]
+        ctx["kind"] = held_d["kind"]
         ctx["edge"] = None if edges is None else edges[found.k]
-        return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place, edge_box)
+        return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place, edge_box, side)
 
     def done():
         ok = _place_result(rig, name, s, ctx["spot"], ctx["kind"], tray)
@@ -181,7 +183,7 @@ def place_job(rig, args, state, skill=None):
                ready=ready, done=done)
 
 
-def _edge_goals(rig, name, s, relations, hint, st):
+def _edge_goals(rig, name, s, relations, hint, st, held=None):
     """The set-down goals of an edge hold (a flat load pinched at its thickness, the fingers above and
     below it): its gripped face over an open edge of ``s``, the hand square to it (approaching -n), at
     each position along the edge (EDGE_STEP, clear of its ends) and each overhang from the least that
@@ -193,8 +195,8 @@ def _edge_goals(rig, name, s, relations, hint, st):
     the plan's checks decide).  Ranked by the distance to ``hint`` (else to the robot) and on shelving
     the middle of its long edge, as place_flat was; EDGE_SPOTS of them, each with every relation.
     (goals, leg_sets, costs) as place_job's, and per goal (the edge's outward normal, the overhang):
-    skills.place pushes the load on from there."""
-    held = rig.held
+    skills.place pushes the load on from there.  ``held``: the hold (default the right hand's)."""
+    held = held or rig.held
     h, depth, lat_half = float(held["h"]), float(held["depth"]), float(held["lat_half"])
     size = rig.ann.asset_of(rig.ann.objects[name])["size"]
     x0, y0, x1, y1 = s["aabb_xy"]
@@ -313,13 +315,14 @@ def _plan_place():
     return plan_place
 
 
-def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=None):
+def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=None, side="right"):
     """The place's plan to run (run.run) to set ``name`` down with its box frame at ``goal`` (the
     park search's plan: a set-down pose the hold no longer gives has run build it again,
     primitives.holds), its builder for the rest, its hooks.  Between the segments the place's own steps:
     the reach checked, the release logged and the load no longer held.  ``edge_box``: an edge hold's
-    (plan_place: after it landed, as the place_landed anchor reads it, the pads moved clear of it)."""
-    kin = rig.kin
+    (plan_place: after it landed, as the place_landed anchor reads it, the pads moved clear of it).  ``side``:
+    the hand that sets it down (HAND_PLAN 9c)."""
+    kin = rig.kin if side == "right" else rig.left_kin
     plan_place = plan_place or _plan_place()
     out_len, rests = pick_approach(), (kin.rest, kin.drive)
     on = _set_down_on(s)
@@ -344,7 +347,7 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=Non
         if err > TARGET_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
-        check_held(rig, "place_down", open_hand=False)
+        check_held(rig, "place_down", open_hand=False, side=side)
         rig.caption = f"PLACE {name}: release"
         before_release, _ = rig.obj_pose(name)
         rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
@@ -353,7 +356,7 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None, edge_box=Non
     def after_release(rig):
         after_open, _ = rig.obj_pose(name)
         rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
-        rig.held = None
+        setattr(rig, "held" if side == "right" else "left_held", None)
 
     def set_down_caption(rig):
         rig.caption = f"PLACE {name}: set down"

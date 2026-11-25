@@ -36,11 +36,11 @@ Runs these Skill Contracts inside one call: `navigate`, `place`.
 
 ## Applicability
 
-Requires hand_empty(hand=right); uncovered(container=$container).
+Requires hand_empty(hand=any); uncovered(container=$container).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
+- `hand_empty(hand=any)` — The given gripper holds nothing (any: at least one does not; both: neither does). GT: gripper_state.
 - `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
 ## Postconditions (verified on live GT state)

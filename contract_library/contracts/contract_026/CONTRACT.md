@@ -6,7 +6,7 @@ Paired SkillNode: `skill_018` (`place-object`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$receptacle)` — GT: base_pose, scene_annotation
 - [path microwave_staged] `is_open(articulated=kitchen_microwave)` — GT: articulation_joint, articulation_annotation
 - [path microwave] `is_open(articulated=kitchen_microwave)` — GT: articulation_joint, articulation_annotation
@@ -15,7 +15,7 @@ Paired SkillNode: `skill_018` (`place-object`).
 
 ## Verifier
 
-- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `not holding(hand=any, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [path microwave_staged] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
 - [path microwave_staged] `in_appliance(object=$object, appliance=kitchen_microwave)` — GT: object_pose, appliance_annotation
 - [path microwave] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
@@ -35,7 +35,7 @@ Paired SkillNode: `skill_018` (`place-object`).
 - `cabinet_or_fridge_shelf` when receptacle.kind == 'support' and receptacle.category == 'cabinet_inside' and receptacle.appliance: `policy_015($object, $receptacle, hint=$hint_xy)`
 - `container` when receptacle.kind == 'object': `policy_016($object, $receptacle)`
 - `on_the_move` when receptacle.kind == 'support' and args.pass_by: `policy_053($object, $receptacle, $pass_by, xy=$hint_xy)`
-- `edge_held_flat` when receptacle.kind == 'support' and robot.right_kind == 'edge': `policy_017($object, $receptacle, hint=$hint_xy)`
+- `edge_held_flat` when receptacle.kind == 'support' and object.held_kind == 'edge': `policy_017($object, $receptacle, hint=$hint_xy)`
 - `stove_burner` when receptacle.kind == 'support' and receptacle.category == 'cooktop': `policy_015($object, $receptacle, hint=@receptacle.burner_xy)`
 - `surface` when receptacle.kind == 'support': `policy_015($object, $receptacle, hint=$hint_xy)`
 

@@ -6,14 +6,14 @@ Paired SkillNode: `skill_038` (`stir-container`).
 
 ## Precheck
 
-- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 - [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
 - [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
 ## Verifier
 
 - [all paths] `stirred(container=$container)` — GT: robot_memory (tool-tip samples)
-- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `holding(hand=any, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 

@@ -34,7 +34,7 @@
   {
    "pred": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    }
   }
@@ -55,10 +55,10 @@
  ],
  "precheck": [
   {
-   "predicate": "holding(hand=right, object=$object)",
+   "predicate": "holding(hand=any, object=$object)",
    "name": "holding",
    "args": {
-    "hand": "right",
+    "hand": "any",
     "object": "$object"
    },
    "negated": false,

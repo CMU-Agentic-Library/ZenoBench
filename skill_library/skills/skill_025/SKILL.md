@@ -50,7 +50,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `place` (`skill_018`) (enables) — the object is set down in the new orientation
+- Next step: `place` (`skill_018`) (then) — the object is set down in the new orientation
 - Alternative: `regrasp` (`skill_026`) — the grasp, not the yaw, must change
 - Alternative: `shake` (`skill_062`) — use rotate instead when the orientation, not the contents, matters
 - Alternative: `square` (`skill_064`) — use rotate instead when the object is already in the hand

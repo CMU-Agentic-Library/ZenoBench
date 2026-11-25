@@ -174,7 +174,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_019",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   }
  ],
  "failure": {

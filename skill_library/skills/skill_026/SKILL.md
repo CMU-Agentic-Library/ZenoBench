@@ -54,7 +54,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `place` (`skill_018`) (enables) — the corrected grasp is used to place precisely
+- Next step: `place` (`skill_018`) (then) — the corrected grasp is used to place precisely
 - Is a fallback for: `place` (`skill_018`) (recover) — the object turned in the hand and no longer clears the target
 - Alternative: `pick` (`skill_017`) — use regrasp instead when the object is already in the hand but badly held
 - Alternative: `rotate` (`skill_025`) — use regrasp instead when the grasp, not the yaw, must change

@@ -57,9 +57,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `pick` (`skill_017`) (enables) — the object must clear a high rim while carried
+- Previous step: `pick` (`skill_017`) (then) — the object must clear a high rim while carried
 - Next step: `navigate` (`skill_001`) (then) — the object is carried over furniture
-- Next step: `drop` (`skill_019`) (enables) — the object is released over a tall container
+- Next step: `drop` (`skill_019`) (then) — the object is released over a tall container
 - Is a fallback for: `navigate` (`skill_001`) (recover) — a carried object hangs too low for the doorway clearance
 - Alternative: `present` (`skill_016`) — use lift instead when only the height of the load matters
 - Alternative: `lower` (`skill_024`) — use lift instead when opposite direction

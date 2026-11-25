@@ -60,7 +60,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `pick` (`skill_017`) (enables) — the standing object is then grasped by its top
+- Next step: `pick` (`skill_017`) (then) — the standing object is then grasped by its top
 - Is a fallback for: `pick` (`skill_017`) (recover) — a tall object fell over and its top pinch is gone
 - Alternative: `tip` (`skill_035`) — opposite effect
 

@@ -52,7 +52,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `drop` (`skill_019`) (enables) — the object is released into the container under it
+- Next step: `drop` (`skill_019`) (then) — the object is released into the container under it
 - Next step: `release` (`skill_021`) (enables) — the object is let go right there
 - Alternative: `lift` (`skill_023`) — only a height matters
 

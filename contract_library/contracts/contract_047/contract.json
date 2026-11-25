@@ -238,7 +238,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_018",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   },
   {
    "kind": "sequence",
@@ -249,7 +249,7 @@
    },
    "reason": "",
    "to_skill_id": "skill_038",
-   "sequence_type": "enables"
+   "sequence_type": "then"
   },
   {
    "kind": "fallback",

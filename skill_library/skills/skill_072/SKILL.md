@@ -30,11 +30,11 @@ A held object must go on a large surface and where on it matters (next to someth
 
 ## Applicability
 
-Requires holding(hand=right, object=$object).
+Requires holding(hand=any, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 

@@ -29,7 +29,7 @@ NAV_STAGES = ("arm", "left_fold", "drive", "arrive")
 
 @dataclass(frozen=True)
 class Carry:
-    """What a load in the right hand asks of the posture it is driven in.
+    """What a load in the ``side`` hand asks of the posture it is driven in (HAND_PLAN 9c: either hand).
     check(state) -> None when the posture meets the carry constraints, else why not;
     goals(state, q) -> (PoseSet, {step, steps_per_wp, smooth}): the carry goal set when it does not.
     want(state) -> None, or why the load should ride higher (a rim the destination asks to clear:
@@ -39,6 +39,7 @@ class Carry:
     goals: Callable
     want: Callable | None = None
     raise_goals: Callable | None = None
+    side: str = "right"
 
 
 def travel_chain(kin, left_kin, state, arrive=None):
@@ -81,6 +82,29 @@ def plan_navigate(kin, left_kin, state, goal, base, carry=None, arrive=None, lab
     return _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start, stop, drive_kw)
 
 
+def _carry_leg(k, s, carry, name, info):
+    """The carry posture of the load in ``k``'s hand: none when the posture now meets the carry constraints
+    (and no higher ride is wanted), else the free leg to the carry goal set (the tilt held) -- a Segment, None,
+    or a Failure (the constraints broken and no carry goal reached)."""
+    q = s.q(k.side)
+    why = carry.check(s)            # the State now: k at its base already
+    want = None if why is not None or carry.want is None else carry.want(s)
+    info["carry"] = "kept" if why is None and want is None else (why or want)
+    if why is None and want is None:
+        return None
+    with query(k, s, FREE_LOAD):
+        goals, how = (carry.goals if why is not None else carry.raise_goals)(s, q)
+    seg = free_leg(k, s, FREE_LOAD, goals, name, step=how.get("step", 0.01)) \
+        if goals.goals else Failure("no carry goal", name)
+    if isinstance(seg, Failure) and why is None:
+        # the constraints hold, only the higher ride is out of reach: as it is
+        info["carry"] = f"kept: {want}; no higher goal reachable ({seg.why})"
+        return None
+    if isinstance(seg, Failure):
+        return Failure(f"{why}; to the carry pose: {seg.why}", name, {"carry": why})
+    return _move(seg, steps_per_wp=how.get("steps_per_wp", 4), smooth=how.get("smooth", False))
+
+
 def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start, stop, drive_kw):
     segs, s, skipped, info = [], state, {}, {}
     for stage in NAV_STAGES[NAV_STAGES.index(start):NAV_STAGES.index(stop) + 1]:
@@ -92,31 +116,27 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
                     seg = free_leg(kin, s, FREE_HAND, JointSet((kin.rest, kin.drive)), "tuck")
                     if isinstance(seg, Failure):
                         skipped["tuck"], seg = seg.why, None
-            elif carry is not None:
-                why = carry.check(s)            # the State now: kin at its base already
-                want = None if why is not None or carry.want is None else carry.want(s)
-                info["carry"] = "kept" if why is None and want is None else (why or want)
-                if why is not None or want is not None:
-                    with query(kin, s, FREE_LOAD):
-                        goals, how = (carry.goals if why is not None else carry.raise_goals)(s, q)
-                    seg = free_leg(kin, s, FREE_LOAD, goals, "carry_in", step=how.get("step", 0.01)) \
-                        if goals.goals else Failure("no carry goal", "carry_in")
-                    if isinstance(seg, Failure) and why is None:
-                        # the constraints hold, only the higher ride is out of reach: as it is
-                        info["carry"], seg = f"kept: {want}; no higher goal reachable ({seg.why})", None
-                    elif isinstance(seg, Failure):
-                        return Failure(f"{why}; to the carry pose: {seg.why}", "carry_in", {"carry": why})
-                    else:
-                        seg = _move(seg, steps_per_wp=how.get("steps_per_wp", 4), smooth=how.get("smooth", False))
+            elif carry is not None and carry.side == "right":
+                seg = _carry_leg(kin, s, carry, "carry_in", info)
+                if isinstance(seg, Failure):
+                    return seg
         elif stage == "left_fold":
             ql = s.q("left")
-            goal_l = np.r_[ql[:2], np.asarray(left_kin.rest, float)[2:]]
-            if s.held("left") is None and np.max(np.abs(goal_l - ql)) >= SAME_POSTURE:
-                seg = free_leg(left_kin, s, Spec(fingers=True), Joint(goal_l), "left_fold")
+            if s.held("left") is not None and carry is not None and carry.side == "left":
+                # the load in the left hand: its carry posture, as the right's (HAND_PLAN 9c)
+                seg = _carry_leg(left_kin, s, carry, "left_carry_in", info)
                 if isinstance(seg, Failure):
-                    skipped["left_fold"], seg = seg.why, None
-                else:
+                    return seg
+                if seg is not None:
                     seg = _move(seg, side="left")
+            else:
+                goal_l = np.r_[ql[:2], np.asarray(left_kin.rest, float)[2:]]
+                if s.held("left") is None and np.max(np.abs(goal_l - ql)) >= SAME_POSTURE:
+                    seg = free_leg(left_kin, s, Spec(fingers=True), Joint(goal_l), "left_fold")
+                    if isinstance(seg, Failure):
+                        skipped["left_fold"], seg = seg.why, None
+                    else:
+                        seg = _move(seg, side="left")
         elif stage == "drive":
             seg = drive(base, s, goal, travel_chain(kin, left_kin, s, arrive), label, **drive_kw)
             if isinstance(seg, Failure):

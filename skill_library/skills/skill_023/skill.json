@@ -174,7 +174,7 @@
     "skill_id": "skill_017",
     "verb": "pick",
     "when": "the object must clear a high rim while carried",
-    "type": "enables"
+    "type": "then"
    }
   ],
   "next": [
@@ -193,7 +193,7 @@
     "bind": {
      "object": "$object"
     },
-    "type": "enables"
+    "type": "then"
    }
   ],
   "fallback": [],

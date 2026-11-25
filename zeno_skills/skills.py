@@ -63,21 +63,32 @@ CARRY_YAWS = 8                # hand turns about the world vertical tried at eac
 CARRY_BODY_W = 3.0            # torso and waist off upright count this many times an arm joint's travel
 
 
-def _carry_goals(base, tcp, R, z_lo):
+def _carry_goals(base, tcp, R, z_lo, side="right"):
     """The carry goal set at base pose ``base`` (x, y, yaw_deg) for a load held at (tcp, R): the
     CARRY_SPOTS at heights from z_lo (the TCP's lowest) up, the hand turned about the world
-    vertical in CARRY_YAWS steps.  (goals [(p, R)], cost per goal)."""
+    vertical in CARRY_YAWS steps; for the left hand the spots mirrored (y), as the arms are (HAND_PLAN
+    9c, the user: the left mirrors the right's carry values).  (goals [(p, R)], cost per goal)."""
+    my = 1.0 if side == "right" else -1.0
     zs = sorted({round(z, 3) for z in (z_lo, max(z_lo, tcp[2]), z_lo + CARRY_RISE)})
     x, y, yaw = base
     c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
     turns = [Rotation.from_euler("z", 2 * math.pi * k / CARRY_YAWS).as_matrix() @ R for k in range(CARRY_YAWS)]
     goals, cost = [], []
     for lx, ly in CARRY_SPOTS:
+        ly = my * ly
         for z in zs:
             for Rk in turns:
                 goals.append((np.array([x + c * lx - s * ly, y + s * lx + c * ly, z]), Rk))
-                cost.append(CARRY_SPOT_COST * math.hypot(lx - CARRY_SPOTS[0][0], ly - CARRY_SPOTS[0][1]))
+                cost.append(CARRY_SPOT_COST * math.hypot(lx - CARRY_SPOTS[0][0], ly - my * CARRY_SPOTS[0][1]))
     return goals, cost
+
+
+def _hand_of(rig, name):
+    """The hand that holds ``name`` ("right" / "left"), or None (Rig.hand_of; the tests' stand-ins too)."""
+    for side, h in (("right", getattr(rig, "held", None)), ("left", getattr(rig, "left_held", None))):
+        if h is not None and h.get("name") == name:
+            return side
+    return None
 
 
 def _carry_ref(kin, q):
@@ -95,19 +106,22 @@ def _carry_floor(rig, name, min_bottom_z=None):
     way (step 3c: the droop goes into the held object's model with the edge place)."""
     z = CARRY_Z
     if min_bottom_z is not None:
-        h = rig.held if rig.held is not None and rig.held.get("name") == name else {}
+        side = _hand_of(rig, name)
+        h = (rig.held if side == "right" else getattr(rig, "left_held", None)) if side else {}
         z = max(z, float(min_bottom_z) + (0.06 if h.get("kind") == "edge" else 0.0))
     return z
 
 
-def _carry_goal_set(rig, name, min_bottom_z=None):
+def _carry_goal_set(rig, name, min_bottom_z=None, side=None):
     """carry_goals for skill_plans.plan_pick / plan_navigate: at a State with ``name`` held and the
     hand at q, the carry goal set (CARRY_SPOTS from the base, heights from the load's bottom at
     _carry_floor up, the turns about the vertical), sought near the upright body (_carry_ref); a
-    container on a rim pinch slower and smooth (it swings out of the pads on a fast sweep)."""
+    container on a rim pinch slower and smooth (it swings out of the pads on a fast sweep).  ``side``: the
+    hand (default: the one that holds ``name``, else the right -- a pick's carry, before the close)."""
     from .primitives import PoseSet
     from .skill_plans import held_frame
-    kin = rig.kin
+    side = side or _hand_of(rig, name) or "right"
+    kin = rig.kin if side == "right" else rig.left_kin
     frame, lo, hi = kin.motion._box_of(name)
     corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
     rim = bool(rig.ann.asset_of(rig.ann.objects[name]).get("container"))
@@ -118,7 +132,7 @@ def _carry_goal_set(rig, name, min_bottom_z=None):
         tcp, R = kin.tcp(np.asarray(q, float))
         T = held_frame(kin, q, held)
         hang = max(0.0, float(tcp[2] - (corners @ T[:3, :3].T + T[:3, 3])[:, 2].min()))
-        goals, cost = _carry_goals(state.base, tcp, R, floor + hang)
+        goals, cost = _carry_goals(state.base, tcp, R, floor + hang, side)
         upright, weights = _carry_ref(kin, q)
         return PoseSet(tuple(goals), tuple(cost), upright, weights), \
             {"step": 0.005 if rim else 0.01, "steps_per_wp": 6 if rim else 4, "smooth": rim}
@@ -1068,23 +1082,24 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
     return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds})
 
 
-def _pick_judged(rig, name, g, tcp0, pos):
-    """Did the pick bring ``name`` along to the carry pose (the hand at tcp0 when it closed, the
+def _pick_judged(rig, name, g, tcp0, pos, side="right"):
+    """Did the pick bring ``name`` along to the carry pose (``side``'s hand at tcp0 when it closed, the
     object at pos before)?  SkillFailure, the hand opened, when not."""
+    from .rig import _chain_q, _fingers_of
     after, _ = rig.obj_pose(name)
-    tcp, _ = rig.kin.tcp(rig.q())
+    tcp, _ = (rig.kin if side == "right" else rig.left_kin).tcp(_chain_q(rig, side))
     rise, lift = float(tcp[2] - tcp0[2]), float(after[2] - pos[2])
-    f = rig.fingers()
+    f = _fingers_of(rig, side)
     # it came along: the fingers not shut, and a sticky-hands weld holds it (as check_held has it)
     # or the object up with the hand (a carry pose kept where the arm stood checks the contact
     # exit's few cm).  A weld alone is not held: it carries what slid out of the pads (fingers
     # [0, 0], T13 no_cup mug, T09 spoon), and `holding` judges the fingers
-    held = bool(f.min() > SHUT) and (welded(rig, "right", name) or rise < PICK_RISE_MIN or lift > PICK_LIFT_FRAC * rise)
-    rig.log("pick_result", obj=name, kind=g["kind"], lift_m=round(lift, 4), hand_rise_m=round(rise, 4),
+    held = bool(f.min() > SHUT) and (welded(rig, side, name) or rise < PICK_RISE_MIN or lift > PICK_LIFT_FRAC * rise)
+    rig.log("pick_result", obj=name, kind=g["kind"], hand=side, lift_m=round(lift, 4), hand_rise_m=round(rise, 4),
             fingers=f.round(4).tolist(), held=held)
     rig.focus_z = None
     if not held:
-        rig.held = None              # the hand opened by the failure exit (run_skill: motion_state.clearing)
+        setattr(rig, "held" if side == "right" else "left_held", None)   # opened by the failure exit (clearing)
         raise clearing(SkillFailure(f"pick {name}: not held (lift {lift:.3f} m, hand {rise:.3f} m)"), 0.04,
                        leave=False)
     return True
@@ -1382,9 +1397,12 @@ def place(rig, name, support, xy=None, spots=None):
 
     One relay pose, the set-down pose: the load's lowest point LEAVE_GAP above the support.  The
     set-down is pick's lift reversed (skill_plans.set_down_length), the pull-out pick's reach-in reversed
-    (pick_approach() long); both are checked straight lines, nothing on the way may be touched."""
-    if rig.held is None or rig.held["name"] != name:
+    (pick_approach() long); both are checked straight lines, nothing on the way may be touched.  Either hand's
+    load (HAND_PLAN 9c)."""
+    side = _hand_of(rig, name)
+    if side is None:
         raise SkillFailure(f"place {name}: not holding it")
+    held = rig.held if side == "right" else rig.left_held
     if support.startswith("in:"):
         container = support[3:]
         if not _is_tray(rig, container):
@@ -1402,8 +1420,9 @@ def place(rig, name, support, xy=None, spots=None):
         return _set_down(rig, name, floor, spots[:4], tray=container)
     s = rig.ann.support(support)
     if s.get("furniture") == "kitchen_microwave":
+        right_hand_only(rig, name, "place into the microwave")      # the old cavity code (HAND_PLAN 9d)
         return place_microwave(rig, name, support)
-    if rig.held["kind"] == "edge":
+    if held["kind"] == "edge":
         # set down over an open edge (skill_jobs.place._edge_goals; xy, if given, ranks the positions), the
         # fingers clear of the support; then pushed on with the catalog's push until its gripped face is
         # EDGE_PUSH_IN inside the edge (place_flat's final push, now checked) -- or, given xy further in,
@@ -1533,8 +1552,10 @@ def free_spots(rig, name, support, hint=None, k=8, exclude=()):
 def place_on(rig, name, support, hint=None, tries=4):
     """Place the held object on a support at the best free spot."""
     if rig.ann.support(support).get("furniture") == "kitchen_microwave":
+        right_hand_only(rig, name, "place into the microwave")      # the old cavity code (HAND_PLAN 9d)
         return place_microwave(rig, name, support)
-    if rig.held is not None and rig.held["kind"] == "edge":
+    held = rig.held if _hand_of(rig, name) == "right" else getattr(rig, "left_held", None)
+    if held is not None and held["kind"] == "edge":
         return place(rig, name, support, hint)
     spots = free_spots(rig, name, support, hint)
     if not spots:
