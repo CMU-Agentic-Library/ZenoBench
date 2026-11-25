@@ -122,7 +122,9 @@ def test_every_vessel_in_the_house_counts(tid, vid, kinds):
     t = TASKS[tid]
     for lid in t["v6_variants"][vid]["layouts"]:
         w = World(t, lid)
-        counted = {n for a in t["variants"][lid]["goal"]["all"] if a[0].startswith("count_on") for n in a[1]}
+        g = t["variants"][lid]["goal"]
+        counted = {n for a in g["all"] + [x for b in g.get("any", []) for x in b] if a[0].startswith("count_on")
+                   for n in a[1]}
         fallback = any(w.obj[n]["asset"] != kinds[0] for n in counted if n in w.obj)   # mugs allowed here?
         vessels = {n for n, o in w.obj.items() if o["asset"] in (kinds if fallback else kinds[:1])}
         assert vessels <= counted, (lid, sorted(vessels - counted))

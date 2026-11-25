@@ -161,7 +161,7 @@ def run_one(server, job, policy, profile, out_root, model, menu):
             res = (resp.get("results") or [{}])[0]
             obs = save_images(resp.get("observation"), out / "images", counter, f"step{i}")
             row = {"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": res,
-                   "planner_note": act.get("note", ""), "planner_s": planner_s, "planner_usage": act.get("usage"),
+                   "planner_note": act.get("note", ""), "planner_s": planner_s, "planner_usage": act.get("usage"), "planner_trace": act.get("trace"),
                    "wall_s": round(time.time() - t1, 1)}
             report["calls"].append(row)
             calls_f.write(json.dumps(row, default=str) + "\n")

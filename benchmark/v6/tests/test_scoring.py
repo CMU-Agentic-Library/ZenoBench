@@ -12,8 +12,8 @@ TASKS = json.loads((Path(__file__).resolve().parents[1] / "tasks.json").read_tex
 KEYS = sorted(set(SCORING) | set(BUILT))
 
 
-def _spec(key):
-    t = next(t for t in TASKS["tasks"] if t["task_id"].startswith(key[0]))
+def _spec(key, doc=None):
+    t = next(t for t in (doc or TASKS)["tasks"] if t["task_id"].startswith(key[0]))
     return t, scoring_for(t["task_id"], key[1], t)
 
 
@@ -24,7 +24,8 @@ def test_spec(key):
 
 @pytest.mark.parametrize("key", KEYS, ids=lambda k: f"{k[0]}-{k[1]}")
 def test_in_tasks_json(key):
-    t, spec = _spec(key)
+    from benchmark.v6.tests.conftest import pre_loosen
+    t, spec = _spec(key, pre_loosen())       # the 11-20 stage; loosen_1124 on top is test_loosen_1124_applied
     info = t["v6_variants"][key[1]]
     got = dict(info.get("scoring") or {})
     got.pop("D_by_layout", None), got.pop("top_by_layout", None)     # 11-17: per-seed summaries
@@ -78,3 +79,26 @@ def test_every_substitution_seed_has_its_ideal():
                 if sc and sc.get("ideal_present"):
                     assert sc["top"] == "ideal", lid
     assert missing == []
+
+
+def test_loosen_1124_applied():
+    """tasks.json is the pre-loosening catalog with every goal through benchmark/v6/loosen_1124.py"""
+    import copy
+    from benchmark.v6.loosen_1124 import apply
+    from benchmark.v6.tests.conftest import pre_loosen
+    doc = copy.deepcopy(pre_loosen())
+    apply(doc)
+    assert json.loads(json.dumps(doc)) == TASKS
+
+
+def test_loosen_1124_rules():
+    """no hand_empty; is_closed only where the instruction says close; near_start at least 10 cm"""
+    from benchmark.v6.loosen_1124 import _branches
+    for t in TASKS["tasks"]:
+        for lid, v in t["variants"].items():
+            instr = (v.get("instruction") or t["instruction"]).lower()
+            for g in [v.get("goal")] + [tr["goal"] for tr in v["scoring"]["tiers"]]:
+                for a in [a for b in _branches(g or {}) for a in b]:
+                    assert a[0] != "hand_empty", lid
+                    assert a[0] != "is_closed" or "close" in instr, lid
+                    assert a[0] != "near_start" or min(a[2:]) >= 0.10, lid

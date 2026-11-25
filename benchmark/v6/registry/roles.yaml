@@ -1,0 +1,353 @@
+# Substitution roles (11-24): what each substitution layout needs, in affordances, so that the registry can say
+# which stand-ins are legal and how they rank.  The task decides what is required (task-dependent substitution,
+# not a fixed object-to-object map): the same mug is a legal soup vessel in T30 and an illegal pot cover in T15.
+#
+# YAML note: quote "on" in slots (bare on is read as true).
+#
+# Fields
+#   id, kind        object | place | appliance | specific
+#                   specific: the instruction names one particular thing (his cup, the book asked for); no
+#                   other thing is a substitute whatever its affordances.  Recorded so the check can list where
+#                   the hand tiers still give partial credit to another one.
+#   tasks           {task prefix: [designs]}; "*" for every design of the task
+#   slot            goal-atom patterns that hold the stand-in: "?" captures it (in a list, each element), "*"
+#                   matches anything.  The tier a captured thing first appears in is its hand score.
+#   exclude         names that match a slot but are what the task is about, not a stand-in; "kind:x" drops
+#                   every object of kind x
+#   ideal           kinds (object roles) or surfaces (place roles) of the ideal; empty: no single ideal
+#   requires        affordances a legal stand-in must have (all of them)
+#   requires_any    ... or at least one of these
+#   prefer          raise the rank of a legal stand-in, one step each: an affordance, an attribute ("for_kids",
+#                   "not:breakable"), or "taxonomy:<subcategory>"
+#   fits            (object) the stand-in must take this object inside (opening and depth, 5 % slack)
+#   covers          (object) the stand-in must close this object's opening
+#   room_of         (place) the stand-in surface must be in the same room as this surface (bedroom and living
+#                   room roles only: the kitchen is open-plan, food_prep already keeps a role in it)
+#   taxonomy_any    (object) the stand-in's subcategory must be one of these
+#   near            (place) [surface, metres]: within that distance of the surface (room labels of the scene do
+#                   not always follow what a room is used for)
+#   ideal_unavailable (place) layout-id parts where the ideal place is full or taken (the registry does not
+#                   model how full a surface is)
+#   prefer kid_reach (place) a surface at most kid_reach_m high ranks higher
+#   vessel_slot     (appliance) the pattern whose "?" is the dish being heated
+#   why             one line on the requirement
+roles:
+  # -- object roles ------------------------------------------------------------------------------------------
+  - id: tower_piece
+    kind: object
+    tasks: {T02: [third_toy_elsewhere, tower_for_kid_duck, block_put_away]}
+    slot: [[on_top_of, "?", "*"]]
+    exclude: [wooden_block_a, wooden_block_b]
+    ideal: [wooden_block]
+    requires: [stack_top]
+    prefer: [play, stack_on]
+    why: "the third piece of the kid's tower: it must sit on top; a toy that also carries a piece is better"
+
+  - id: utensil_storage
+    kind: object
+    tasks: {T03: [no_bin_substitute, utensils_apart, small_bin_or_bedroom_bin]}
+    slot: [[inside, rolling_pin, "?"]]
+    ideal: [wide_storage_bin]
+    requires: [contain_solid]
+    requires_any: [store_items, carry_multiple]
+    fits: rolling_pin
+    prefer: [store_items]
+    why: "put the kitchen utensils away in a box they fit in; a storage box beats a fruit basket"
+
+  - id: guest_glass
+    kind: object
+    tasks: {T04: [no_cup, two_guests, cup_available, x6_gd_cup_in_cabinets]}
+    slot: [["on", "?", "kitchen_cabinet_6/top"]]
+    exclude: [cup_counter_b]
+    ideal: [breakfast_cup]
+    requires: [drink_from]
+    prefer: ["not:for_kids"]
+    why: "a glass for a grown-up guest: any drinking vessel, a child's plastic cup last"
+
+  - id: writing_tool
+    kind: object
+    tasks: {T05: [no_pen_pencil_away, x6_gd_pen_or_pencil_cabinets]}
+    slot: [["on", "?", "desk_1/top"]]
+    exclude: [kind:notebook]
+    ideal: [pen, pencil]
+    requires: [write]
+    why: "something to write with"
+
+  - id: wiper
+    kind: object
+    tasks: {T08: [far_sponge_tv]}
+    slot: [["on", "?", "kitchen_island/top"]]
+    ideal: [kitchen_sponge]
+    requires: [wipe]
+    why: "something that wipes the island; the foam cube looks like a sponge but does not wipe"
+
+  - id: pot_cover
+    kind: object
+    tasks: {T09: [lid_on_spoon_away], T15: [lid_elsewhere, no_lid, lid_in_use], T17: [h_task_lid_elsewhere]}
+    slot: [[covered, handled_cooking_pot, "?"]]
+    ideal: [pot_lid]
+    requires: [cover_opening]
+    covers: handled_cooking_pot
+    prefer: [food_safe, "not:breakable"]
+    why: "close the pot: a flat rigid piece wider than its opening; one safe on food is better"
+
+  - id: cooking_pot
+    kind: object
+    tasks: {T09: [pot_in_dining_room, pot_in_use]}
+    slot: [[inside, cherry_tomato_1, "?"]]
+    ideal: [handled_cooking_pot]
+    requires: [cook_in]
+    fits: cherry_tomato_1
+    why: "a pot the soup is cooked in on the stove"
+
+  - id: soup_ingredient
+    kind: object
+    tasks: {T09: [tomato_in_fridge]}
+    slot: [[inside, "?", handled_cooking_pot]]
+    exclude: [cherry_tomato_1, cherry_tomato_2]
+    ideal: [cherry_tomato]
+    requires: [edible]
+    taxonomy_any: [vegetable]
+    why: "the third tomato for the soup: another tomato before any other food"
+
+  - id: rubbish_bin
+    kind: object
+    tasks: {T10: [trash_moved]}
+    slot: [[inside, soda_can, "?"]]
+    ideal: [trash_can]
+    requires: [dispose]
+    fits: soda_can
+    why: "a bin the empty can is thrown into"
+
+  - id: fruit_holder
+    kind: object
+    tasks: {T11: [fruits_on_table, basket_missing]}
+    slot: [[inside, apple, "?"]]
+    ideal: [fruit_basket]
+    requires: [contain_solid]
+    requires_any: [carry_multiple, serve_food, store_items]
+    fits: apple
+    prefer: [carry_multiple, food_safe]
+    why: "something the fruit is kept in; one meant to hold several things and safe on food is better"
+
+  - id: table_drink_vessel
+    kind: object
+    tasks: {T13: ["*"]}
+    slot: [[grouped, "?", "*", "*"]]
+    exclude: [kind:breakfast_bowl, kind:breakfast_spoon, kind:breakfast_plate]
+    ideal: [breakfast_cup]
+    requires: [drink_from]
+    prefer: ["not:for_kids"]
+    why: "the drink at a grown-up's place setting"
+
+  - id: table_bowl
+    kind: object
+    tasks: {T13: ["*"]}
+    slot: [[grouped, "?", "*", "*"]]
+    exclude: [kind:breakfast_cup, kind:breakfast_mug, kind:plastic_cup, kind:breakfast_spoon, kind:breakfast_plate]
+    ideal: [breakfast_bowl]
+    requires: [serve_food, contain_solid]
+    why: "the bowl of a place setting"
+
+  - id: lunch_container
+    kind: object
+    tasks: {T16: [box_in_cabinet, no_box, box_in_use]}
+    slot: [[inside, school_apple, "?"]]
+    ideal: [small_storage_bin]
+    requires: [contain_solid]
+    requires_any: [store_items, serve_food]
+    fits: school_apple
+    prefer: [portable, food_safe]
+    why: "a container the apple goes to school in: small enough to carry, safe on food"
+
+  - id: soup_vessel
+    kind: object
+    tasks: {T18: [one_bowl, bowl_in_use]}
+    slot: [["on", "?", "*"], [on_any, "?", "*"]]
+    exclude: [dinner_bowl_1, kind:breakfast_spoon, kind:cherry_tomato]
+    ideal: [breakfast_bowl]
+    requires: [hold_liquid]
+    requires_any: [serve_food, drink_from]
+    prefer: [serve_food, "taxonomy:dish"]
+    why: "a second vessel for soup: it must hold liquid; a dish one eats from is better"
+
+  - id: soup_bowl_extra
+    kind: object
+    tasks: {T30: [how_many, bowls_in_cabinet]}
+    slot: [[count_on_at_least, "?", "*", "*"]]
+    exclude: [soup_bowl_1, soup_bowl_2, soup_bowl_3]
+    ideal: [breakfast_bowl]
+    requires: [hold_liquid]
+    requires_any: [serve_food, drink_from]
+    prefer: [serve_food, "taxonomy:dish"]
+    why: "the extra soup vessel: it must hold liquid; a dish is better"
+
+  - id: soup_bowl_one
+    kind: object
+    tasks: {T30: [bowl_put_away, no_bowl, bowl_not_plate]}
+    slot: [[count_on_at_least, "?", "*", "*"], ["on", "?", "*"]]
+    ideal: [breakfast_bowl]
+    requires: [hold_liquid]
+    requires_any: [serve_food, drink_from]
+    prefer: [serve_food, "taxonomy:dish"]
+    why: "a vessel for soup: it must hold liquid; a dish is better"
+
+  - id: snack
+    kind: object
+    tasks: {T24: [no_apples_for_him, dinner_soon]}
+    slot: [["on", "?", "desk_1/top"]]
+    ideal: [apple]
+    requires: [edible]
+    prefer: ["taxonomy:fruit"]
+    why: "a snack before dinner: fruit before a packaged snack"
+
+  - id: kid_drink_vessel
+    kind: object
+    tasks: {T25: [little_guest]}
+    slot: [[count_on_at_least, "?", "*", "*"], ["on", "?", "*"]]
+    exclude: [guest_juice]
+    ideal: [plastic_cup]
+    requires: [drink_from]
+    prefer: ["not:breakable"]
+    why: "a cup for a small child: one that does not break"
+
+  - id: toy_storage
+    kind: object
+    tasks: {T26: [scattered]}
+    slot: [[inside, living_car, "?"]]
+    ideal: [storage_basket]
+    requires: [store_items]
+    fits: living_car
+    why: "a box or basket the toys are put away in"
+
+  # -- place roles -------------------------------------------------------------------------------------------
+  - id: dining_place
+    kind: place
+    tasks:
+      T02: [tower_for_kid]
+      T13: [dishes_on_tv_stand, no_cup]
+      T20: ["*"]
+      T21: [tissue_on_tv_stand, no_tissue]
+    slot: [["on", "*", "?"], [on_any, "*", "?"]]
+    ideal: []
+    requires: [dining_surface]
+    why: "'the dining table': either dining table"
+
+  - id: soup_table
+    kind: place
+    tasks: {T18: ["*"]}
+    slot: [["on", dinner_bowl_1, "?"], [on_any, dinner_bowl_1, "?"]]
+    ideal: []
+    requires: [dining_surface]
+    why: "the soup is served at the dining table: either dining table"
+
+  - id: soup_serving_place
+    kind: place
+    tasks: {T30: ["*"]}
+    slot: [[count_on_at_least, "*", "?", "*"], ["on", "*", "?"]]
+    ideal: [kitchen_island/top]
+    requires: [serve_meal]
+    why: "bring a bowl over for the soup: the island where the pot is or a dining table"
+
+  - id: guest_drink_place
+    kind: place
+    tasks: {T25: [drink_on_island, cup_elsewhere, cold_one, drink_in_fridge, two_guests, little_guest]}
+    slot: [["on", "*", "?"], [count_on_at_least, "*", "?", "*"]]
+    ideal: []
+    requires: [living_serve]
+    why: "within reach of the seated guest: either TV stand"
+
+  - id: fruit_put_away
+    kind: place
+    tasks: {T11: [fruits_on_table, basket_missing], T22: [tray_elsewhere]}
+    slot: [[on_any, apple, "?"], [on_any, bought_apple, "?"]]
+    ideal: []
+    requires_any: [kitchen_storage, store_food_cold]
+    why: "fruit put away: kitchen storage or the fridge"
+
+  - id: display_spot
+    kind: place
+    tasks: {T06: [display_row, display_spot_or_tv]}
+    slot: [["on", "*", "?"], [on_any, "*", "?"]]
+    ideal: []
+    requires: [display]
+    room_of: kitchen_cabinet_4/top
+    why: "on show, seen from the room the low cabinet is in"
+
+  - id: bedside_spot
+    kind: place
+    tasks: {T06: [seen_from_bed]}
+    slot: [["on", wooden_block_a, "?"]]
+    ideal: [bookcase_3/top]
+    requires_any: [support_items, store_open]
+    near: [bookcase_3/top, 3.2]
+    prefer: [display]
+    why: "where the kid finds it from bed: in the bedroom, seen best on a top"
+
+  - id: kid_shelf
+    kind: place
+    tasks: {T14: [within_kids_reach]}
+    slot: [["on", book_red, "?"], [on_any, book_red, "?"]]
+    ideal: []
+    requires: [store_books]
+    prefer: [kid_reach]
+    why: "put away on a book shelf; one the child reaches on his own is better"
+
+  - id: kitchen_top_return
+    kind: place
+    tasks: {T23: [dropped_out_of_view]}
+    slot: [["on", dropped_spoon, "?"], [on_any, dropped_spoon, "?"]]
+    ideal: [kitchen_counter_2/top]
+    requires: [food_prep]
+    ideal_unavailable: [counter_full, no_room_for_bowl]
+    why: "back on a kitchen work top"
+
+  - id: cup_return
+    kind: place
+    tasks: {T23: [only_this_room]}
+    slot: [["on", dropped_cup, "?"], [on_any, dropped_cup, "?"]]
+    ideal: [kitchen_cabinet_4/top]
+    requires_any: [food_prep, kitchen_storage]
+    ideal_unavailable: [cabinet_full]
+    why: "where cups belong in the kitchen: on his cabinet, else a kitchen top or cabinet"
+
+  - id: kid_book_shelf
+    kind: place
+    tasks: {T26: [whose]}
+    slot: [[on_any, kid_book, "?"]]
+    ideal: [bookcase_2/top]
+    requires_any: [store_books, work_surface]
+    prefer: [store_books]
+    room_of: bookcase_2/top
+    why: "a bookshelf in the kid's room"
+
+  # -- appliance role ----------------------------------------------------------------------------------------
+  - id: heating_appliance
+    kind: appliance
+    tasks: {T07: [vessel_decides_appliance]}
+    slot: [[not exposed_in, "*", "?", "*"]]
+    vessel_slot: [temperature_at_least, "?", "*"]
+    requires_any: [heat_microwave, heat_stove]
+    why: "heat the dish in an appliance it may go into: no metal in the microwave, no glass or ceramic on the stove"
+
+  # -- named things (no substitute) --------------------------------------------------------------------------
+  - id: asked_book
+    kind: specific
+    tasks: {T01: [which_book]}
+    slot: [[on_any, "?", "*"]]
+    ideal: [paperback_book]
+    why: "the book the guest asked for; another book is not it"
+
+  - id: his_cup
+    kind: specific
+    tasks: {T28: [where_his_cup_is]}
+    slot: [[on_any, "?", "*"]]
+    ideal: [plastic_cup]
+    why: "the kid's own cup"
+
+  - id: next_book
+    kind: specific
+    tasks: {T14: [next_in_series]}
+    slot: [["on", "?", "desk_1/top"]]
+    ideal: [book_red]
+    why: "the next book of the same series"

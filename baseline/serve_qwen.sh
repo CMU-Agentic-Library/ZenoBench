@@ -8,6 +8,7 @@
 # Environment (defaults in brackets):
 #   VLLM_PY        python of the vLLM venv   [../.venvs/vllm-qwen/bin/python]
 #   QWEN_WEIGHTS   model directory           [../models/Qwen3.5-4B]
+#   SHIFT_VLLM_HOST  bind address            [127.0.0.1: loopback only; 0.0.0.0 exposed it to network scanners]
 #   SHIFT_VLLM_PORT                          [8001]
 #   SHIFT_VLLM_GPU_UTIL  share of GPU memory [0.60 ~ 14.7 GB: 9.3 GB weights + ~3 GB KV cache; 0.45 left no
 #                        KV cache. The rest of the 24 GB card is for Isaac Sim]
@@ -22,7 +23,7 @@ export VLLM_USE_FLASHINFER_SAMPLER=${VLLM_USE_FLASHINFER_SAMPLER:-0}
 exec "$VLLM_PY" -m vllm.entrypoints.openai.api_server \
   --model="$QWEN_WEIGHTS" \
   --served-model-name=qwen3.5-4b \
-  --host=0.0.0.0 \
+  --host="${SHIFT_VLLM_HOST:-127.0.0.1}" \
   --port="${SHIFT_VLLM_PORT:-8001}" \
   --gpu-memory-utilization="${SHIFT_VLLM_GPU_UTIL:-0.60}" \
   --max-model-len=32768 \

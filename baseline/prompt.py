@@ -2,7 +2,8 @@
 
 Only what the episode's observation holds goes into the prompt (sticky/benchmark: head image,
 visible objects, observation cache, known places, robot state, last result; names anonymized).
-Nothing here reads the task's goal, variant or GT state.
+Nothing here reads the task's goal, variant or GT state.  With SHIFT_REVEAL on (baseline/reveal.py) the
+observation also carries kind-level registry facts for the observed objects (and, in mode full, the surfaces).
 """
 
 from __future__ import annotations
@@ -70,8 +71,9 @@ def render_menu(skills) -> str:
 
 
 def system_prompt(skills, max_calls, substitution_hint=False, answer=REACT_ANSWER) -> str:
+    from baseline.reveal import system_note
     return SYSTEM_TEMPLATE.format(max_calls=max_calls, menu=render_menu(skills), answer=answer,
-                                  extra=SUBSTITUTION_HINT if substitution_hint else "")
+                                  extra=(SUBSTITUTION_HINT if substitution_hint else "") + system_note())
 
 
 def _j(v) -> str:
@@ -90,6 +92,7 @@ def _obj(o) -> str:
 
 
 def render_places(places) -> str:
+    from baseline.reveal import place_tags
     rooms: dict[str, list[str]] = {}
     for name, rec in sorted((places or {}).items()):
         kind = rec.get("kind", "")
@@ -101,6 +104,9 @@ def render_places(places) -> str:
             extra.append(f"z={rec['z']:.2f}")
         if rec.get("articulated"):
             extra.append(f"opens ({rec.get('joint')})")
+        tags = place_tags(name) if kind == "support" else ""   # SHIFT_REVEAL=full only
+        if tags:
+            extra.append(tags)
         rooms.setdefault(rec.get("room") or "?", []).append(f"{name} [{', '.join(e for e in extra if e)}]")
     return "\n".join(f"- {r}: " + "; ".join(v) for r, v in rooms.items())
 
@@ -115,6 +121,10 @@ def render_observation(obs: dict) -> str:
     seen = [o for o in obs.get("observation_cache") or [] if o["name"] not in vis_names]
     if seen:
         out.append("Seen before (last known):\n" + "\n".join(_obj(o) for o in seen))
+    from baseline.reveal import object_section           # SHIFT_REVEAL=objects/full only
+    facts = object_section(obs)
+    if facts:
+        out.append(facts)
     if "objects" in obs:                                   # privileged profile only (GT object list)
         out.append("All task objects (ground truth):\n" + "\n".join(
             f"- {o['name']} ({o.get('kind')}) at {o.get('position')}" for o in obs["objects"]))

@@ -45,7 +45,7 @@ $PY -m pytest baseline/tests -q                    # 离线测试：假模型、
 - key：`cp baseline/.env.example baseline/.env` 后自己填（已 gitignore），或在 shell 里 export。
 - 调试也可以在进程内跑：`SHIFT_MODEL=... $ISAACLAB_PYTHON benchmark/run_episode.py --planner recovery --policy baseline.react:ReAct --profile sticky/benchmark ...`。isaaclab 环境里装的是旧版 SDK（anthropic 0.85、openai 1.109）：新版要求 typing_extensions>=4.14，和 Isaac Sim 锁的 4.12.2 / idna 3.10 冲突，不要 `pip install -U`。人类参考只能用这条路径（要终端）。
 
-- 设置都从环境变量或 `baseline/.env` 读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。论文用 Qwen3.5-4B、Claude Opus 5.5、GPT-6 三个模型（Gemini 不跑）；GPT-6 的模型 id 暂写 `gpt-6`，有 key 后用 `check_models` 确认，可用 `SHIFT_GPT_MODEL` 改。
+- 设置都从环境变量或 `baseline/.env` 读（runner 不给 planner 传参数）：`SHIFT_MODEL`（默认 `claude-opus-5-5`；`claude-*` / `gpt-*` / `gemini-*` / 其他走本地 vLLM），`SHIFT_MAX_CALLS`（默认 60）。`SHIFT_REVEAL`（默认 `off`）是物体注册表的消融开关：`objects` 时，观测里附上 robot 已经看到过的每种物体的分类、用途、材质和尺寸；`full` 时再给每个已知支撑面附上用途和净空。只给种类层面的事实，不给哪个实例被占用，也不给任务要求和替代判断（`baseline/reveal.py`），所选模式记在 `result.json` 的 planner 里。主结果用 `off`。Graph Manager 子模块还没有接这个开关。论文用 Qwen3.5-4B、Claude Opus 5.5、GPT-6 三个模型（Gemini 不跑）；GPT-6 的模型 id 暂写 `gpt-6`，有 key 后用 `check_models` 确认，可用 `SHIFT_GPT_MODEL` 改。
 - 四家模型拿到完全相同的文字和 JSON 回答格式，不用各家的原生工具调用。每次请求都是无状态的一问一答，历史由 planner 自己写进 prompt（最近 8 步完整，更早的压成一行）。
 - 回答解析不了时再问一次，最多 2 次；这算 VLM 查询，不算技能调用。
 - `calls.jsonl` 每行多了 `planner_usage`（这一步的 token），`result.json` 多了 `planner_summary`（整局的 VLM 查询数、token、停止原因，含最后 finish 那一问）。
