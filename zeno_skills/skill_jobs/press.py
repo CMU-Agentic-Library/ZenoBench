@@ -73,15 +73,19 @@ def press_target(rig, button):
 
 def press_job(rig, args, state, skill=None):
     """motion_skills.Job of pressing ``args["button"]`` ("<appliance>/<key>", predicates.entity_kind) with
-    the closed right fingertips; ``args["on"]`` what the press switches its appliance to (None: nothing --
-    the microwave's door key, whose door the open skill drives).  The microwave's start key switches the
+    the closed fingertips of the empty hand (the right where both are); ``args["on"]`` what the press switches
+    its appliance's heat source to (None: nothing); ``args["door"]`` ("open" / "close", a door key): the press
+    then drives the appliance's powered door there, from a park clear of its swing (plan_press press_door).  The microwave's start key switches the
     cycle on, only with its door closed and food inside (microwave_food).  Judged by where the arm got:
     a press that stopped short (run: TARGET_TOL) fails; the event the contracts read (EVENTS, else
     "button_press") logged after it."""
     from ..motion_skills import Job
+    from .base import RigBase
     button = args["button"]
-    if rig.held is not None:
-        raise SkillFailure("press: release the held object first")
+    empty = [sd for sd in ("right", "left") if (rig.held if sd == "right" else getattr(rig, "left_held", None)) is None]
+    if not empty:
+        raise SkillFailure("press: both hands hold something")
+    side = empty[0]                     # the empty hand, the right where both are (as a door: door_hand)
     rec, p, R0, u = press_target(rig, button)
     app, key = rec["appliance"], rec["button"]
     on = args.get("on")
@@ -93,21 +97,27 @@ def press_job(rig, args, state, skill=None):
     # (the microwave's "kitchen_microwave/body/door_button"), never the appliance's whole box
     seen_as = tuple(o["name"] for o in rig.ann.obstacles
                     if o["name"].startswith(app + "/") and o["name"].rsplit("/", 1)[-1] == key)
+    door = None
+    if args.get("door") is not None:    # a door key: the press drives the appliance's powered door there
+        if key != "door_button":
+            raise SkillFailure(f"press {button}: only a door key moves a door")
+        a = rig.ann.art(app)
+        door = {"part": app, "to": float(a["open_q"] if args["door"] == "open" else a["closed_q"])}
     presses, goals = [], []
     for j, deg in enumerate(PRESS_ROLLS):
         R = R0 @ _rz(deg)
         presses.append({"button": button, "p": p, "R": R, "u": u, "approach": PRESS_APPROACH, "toggle": toggle,
-                        "seen_as": seen_as, "roll": deg})
+                        "seen_as": seen_as, "door": door, "roll": deg})
         goals.append(((p - PRESS_APPROACH * u, p), (p, R), VARIANT_COST * j))
-    kin = rig.kin
+    kin, base = rig.arm_kin(side), RigBase(rig)
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_press as build_with
     rest = (kin.rest,)
 
     def build(s, k, prior):
-        return build_with(kin, s, presses[k], rest, prior=prior)
-    problem = Problem(tuple(goals), build, PRESS_RELAY, near=rig.base_pose(), label=f"press {button}")
+        return build_with(kin, s, presses[k], rest, prior=prior, base=base)
+    problem = Problem(tuple(goals), build, PRESS_RELAY, near=rig.base_pose(), label=f"press {button}", hand=side)
     ctx = {}
 
     def no_park(diag):
@@ -117,19 +127,21 @@ def press_job(rig, args, state, skill=None):
 
     def found_park(found):
         ctx["press"] = presses[found.k]
-        rig.log("press_plan", button=button, roll_deg=presses[found.k]["roll"], toggle=list(toggle) if toggle else None,
+        rig.log("press_plan", button=button, hand=side, roll_deg=presses[found.k]["roll"],
+                toggle=list(toggle) if toggle else None, door=door,
                 end=np.round(p, 4).tolist(), park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)])
         rig.caption = f"PRESS {button}"
 
     def pressed(r):
-        tcp, _ = r.kin.tcp(r.q())
+        k = r.arm_kin(side)
+        tcp, _ = k.tcp(r.q() if side == "right" else r.left_q())
         ctx["miss"] = float(np.linalg.norm(tcp - p))
 
     def ready(found):
         press = presses[found.k]
 
         def rebuild(state_, frm, prior):
-            return build_with(kin, state_, press, rest, start=frm, prior=prior)
+            return build_with(kin, state_, press, rest, start=frm, prior=prior, base=base)
         return found.plan, rebuild, {"press_in": {"after": pressed}}
 
     def done():

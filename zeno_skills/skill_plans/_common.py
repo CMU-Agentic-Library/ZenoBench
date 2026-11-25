@@ -120,6 +120,13 @@ def _contact(kin, state, spec, u, touching, name, step, q_from, **info):
     return _move(contact_segment(spec, ext, name), u=np.asarray(u, float), touching=touching, step=step, **info)
 
 
+def built_so_far(segs, side, decided):
+    """The segments a builder made before one failed, as a Plan (Failure.info["partial"]): what run keeps when
+    only the tuck after them could not be made yet -- its trajectory is made when the arm gets there (docs 1,
+    rule 8: a transition's path is made late; run._late_tuck)."""
+    return Plan(tuple(sided(sg, side) for sg in segs), decisions=dict(decided))
+
+
 def held_frame(kin, q, held):
     """World pose of a held object's box frame with the hand at q."""
     p, R = kin.tcp(np.asarray(q, float))

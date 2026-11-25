@@ -140,6 +140,11 @@ RETIRED_POLICIES = {
                   "pose was reachable (T07 microwave_works, 2026-11-24).",
     "policy_028": "Press a microwave key from policy_027's aligned pose: one plan with the approach (see policy_027).",
     "policy_029": "Withdraw from a microwave key after policy_028: one plan with the press (see policy_027).",
+    "policy_030": "Drive to a hand-written pose clear of the microwave door's swing: the door key's press parks "
+                  "where its plan finds the robot clear of the swing (skill_plans.plan_press press_door, "
+                  "2026-11-24).",
+    "policy_031": "Drive the microwave's hinge with no key pressed (a door closed by no one): the door moves by its "
+                  "key, open and close alike (policy_024 / 025, user 2026-11-24).",
 }
 
 NOUN_FIELDS = {

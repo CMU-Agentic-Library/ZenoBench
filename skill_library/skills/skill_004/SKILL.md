@@ -50,11 +50,6 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `microwave_door_sweep` — when obstacle.instance == 'kitchen_microwave'
-
-1. `policy_030($obstacle)`
-- The microwave's measured hinge-clearance pose (also when loaded).
-
 ### `away` — when always (default path)
 
 1. `policy_067($obstacle, $distance_m)`

@@ -10,7 +10,7 @@ from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
 from ..primitives import sided, JointSet, Pose, contact_extent, decide_ik, free_leg, ik_why, off_support, query, straight
 from ..tolerances import EDGE_PAD_CLEAR, LEAVE_GAP, NUMERIC_M, PLACE_TOL
-from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
+from ._common import FREE_HAND, built_so_far, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
 PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_clear",
                 "place_pull_out", "tuck", "place_settle")
@@ -208,7 +208,7 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
         if isinstance(seg, Failure):
             # the set-down pose's solution once decided (a debug view shows the arm there: park_search dump)
             q_rel = (seg.info or {}).get("q_relay", decided.get("place_reach"))
-            return Failure(seg.why, seg.segment, {"stage_s": times, **({"q_relay": q_rel} if q_rel is not None else {})})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, kin.side, decided), **({"q_relay": q_rel} if q_rel is not None else {})})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)
@@ -280,7 +280,7 @@ def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_
                            q_from=q)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, kin.side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)

@@ -59,23 +59,19 @@ class MicrowaveButtonRetractPolicy(_RetiredStage):
 
 
 class MicrowaveDoorClearPolicy(AtomicPolicy):
-    """Move clear of the hinge sweep; tuck empty arm or verify held load."""
+    """Retired (policy_030): move clear of the door's swing to a hand-written pose.  The door key's press plans
+    its park clear of the swing itself (skills.press_button door=, skill_plans.plan_press press_door)."""
 
     def execute(self, name="kitchen_microwave"):
-        return skills.clear_microwave_door_sweep(self.rig, name)
+        raise SkillFailure("MicrowaveDoorClearPolicy is retired: open / close the microwave (its door key's press "
+                           "parks clear of the door's swing)")
 
 
 class MicrowaveHingeDrivePolicy(AtomicPolicy):
-    """Move a powered hinge only from the measured door-clear pose."""
+    """Retired (policy_031): drive the powered hinge with no press -- the door moves only by its key now."""
 
     def execute(self, name="kitchen_microwave", *, target="open"):
-        art = self.rig.ann.art(name)
-        if art.get("category") != "microwave" or "door_button" not in art:
-            raise SkillFailure(f"microwave hinge: {name} is not a powered microwave door")
-        if target not in ("open", "close"):
-            raise ValueError("microwave hinge target must be open or close")
-        q = art["open_q"] if target == "open" else art["closed_q"]
-        return skills._set_microwave_hinge(self.rig, name, q, f"{target.upper()} microwave: powered door")
+        raise SkillFailure("MicrowaveHingeDrivePolicy is retired: the door moves by its key (open / close)")
 
 
 class MicrowaveDoorCycle:

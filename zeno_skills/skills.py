@@ -1535,98 +1535,39 @@ def place_on(rig, name, support, hint=None, tries=4):
     return place(rig, name, support, spots=spots[:tries])
 
 
-def press_button(rig, button, on=None):
-    """Press the annotated button ``button`` ("<appliance>/<key>") with the closed right fingertips:
+def press_button(rig, button, on=None, door=None):
+    """Press the annotated button ``button`` ("<appliance>/<key>") with the closed fingertips of the empty hand:
     run_skill of the catalog's press (skill_jobs.press, skill_plans.plan_press) -- the reach, the press and
     the way back out one plan, from a park whose search checks the press itself.  ``on``: what the press
-    switches its appliance's heat source to (None: nothing; the microwave's start key: on)."""
+    switches its appliance's heat source to (None: nothing; the microwave's start key: on).  ``door``
+    ("open" / "close", a door key): the press drives the appliance's powered door there too."""
     from .motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS["press"], {"button": button, "on": on})
+    return run_skill(rig, SKILLS["press"], {"button": button, "on": on, "door": door})
 
 
-def clear_microwave_door_sweep(rig, name="kitchen_microwave"):
-    """Move an empty or loaded robot to the existing hinge-clearance pose."""
-    rig._microwave_clear = None
-    target = (5.1, 1.6, 150.0)
-    navigate(rig, target)
-    x, y, yaw = rig.base_pose()
-    if math.hypot(x - target[0], y - target[1]) > 0.05 or abs((yaw - target[2] + 180) % 360 - 180) > 5:
-        raise SkillFailure("microwave hinge: base did not reach clearance pose")
-    if rig.held is None:
-        q = rig.q()
-        if min(np.max(np.abs(q - rig.kin.rest)), np.max(np.abs(q))) > 0.07:
-            rig.tuck(hang=False)           # the arm can be left half-folded after a place
-            q = rig.q()
-            if min(np.max(np.abs(q - rig.kin.rest)), np.max(np.abs(q))) > 0.07:
-                raise SkillFailure("microwave hinge: arm is not tucked")
-    else:
-        check_held(rig, "microwave_door_clear")
-    rig._microwave_clear = {"name": name, "held": rig.held["name"] if rig.held else None}
-    rig.log("microwave_sweep_clear", base=[round(x, 3), round(y, 3), round(yaw, 3)])
-    return (x, y, yaw)
-
-
-def _set_microwave_hinge(rig, name, target, caption):
-    """Drive the physical hinge only after the robot has cleared its sweep."""
-    clear = getattr(rig, "_microwave_clear", None)
-    if not isinstance(clear, dict) or clear.get("name") != name:
-        raise SkillFailure("microwave hinge: clear the door sweep before driving the hinge")
-    held_name = rig.held["name"] if rig.held else None
-    if held_name != clear["held"]:
-        raise SkillFailure("microwave hinge: grasp state changed after clearance")
-    if rig.held is None:
-        q = rig.q()
-        if min(np.max(np.abs(q - rig.kin.rest)), np.max(np.abs(q))) > 0.07:
-            raise SkillFailure("microwave hinge: arm left its tucked pose")
-    else:
-        check_held(rig, "microwave_hinge_drive")
-    x, y, yaw = rig.base_pose()
-    if math.hypot(x - 5.1, y - 1.6) > 0.05 or abs((yaw - 150.0 + 180) % 360 - 180) > 5:
-        raise SkillFailure("microwave hinge: robot left the clearance pose")
-    rig._microwave_clear = None
-    from isaacsim.core.utils.types import ArticulationAction
-    motor = rig._arts[name]
-    start = rig.joint(name)
-    previous_camera = rig.camera_override
-    rig.camera_override = ([4.78, 1.44, 1.42], [4.5, 2.5, 0.94])
-    try:
-        rig.caption = caption
-        for i in range(1, 301):
-            q = start + (target - start) * i / 300
-            motor.apply_action(ArticulationAction(joint_positions=rig.torch.tensor([q], dtype=rig.torch.float32),
-                                                  joint_indices=rig.torch.tensor([rig._dof[name]])))
-            rig.step(1)
-        rig.step(PHYSICS_HZ)
-        actual = rig.joint(name)
-        rig.log("microwave_door_motion", target=round(target, 3), actual=round(actual, 3))
-        if abs(actual - target) > 0.10:
-            raise SkillFailure(f"microwave: powered door stopped at {actual:.3f}, target {target:.3f}")
-    finally:
-        rig.camera_override = previous_camera
-    return actual
+def _powered_door(rig, name, verb):
+    """Open (``verb`` "open") or close a powered door -- the microwave's -- by its door key: one press whose plan
+    ends with the door driven by its motor, from a park clear of its swing (skill_plans.plan_press press_door).
+    The empty hand presses (the right where both are).  Already there: nothing moves."""
+    a = rig.ann.art(name)
+    goal = a["open_q"] if verb == "open" else a["closed_q"]
+    q = rig.joint(name)
+    if abs(q - goal) <= 0.10:
+        return q
+    if verb == "open" and abs(q - a["closed_q"]) > 0.10:
+        raise SkillFailure(f"microwave: door is neither closed nor open ({q:.3f})")
+    press_button(rig, f"{name}/door_button", door=verb)
+    return rig.joint(name)
 
 
 def open_microwave_door(rig, name="kitchen_microwave"):
-    """Press the door release and open the powered physical hinge."""
-    a = rig.ann.art(name)
-    q = rig.joint(name)
-    if abs(q - a["open_q"]) <= 0.10:
-        return q
-    if abs(q - a["closed_q"]) > 0.10:
-        raise SkillFailure(f"microwave: door is neither closed nor open ({q:.3f})")
-    press_button(rig, f"{name}/door_button")
-    clear_microwave_door_sweep(rig, name)
-    return _set_microwave_hinge(rig, name, a["open_q"], "OPEN microwave: powered door")
+    """Press the door key: the door's motor opens it (_powered_door)."""
+    return _powered_door(rig, name, "open")
 
 
 def close_microwave_door(rig, name="kitchen_microwave"):
-    """Move clear and close the powered physical hinge."""
-    a = rig.ann.art(name)
-    q = rig.joint(name)
-    if abs(q - a["closed_q"]) <= 0.10:
-        return q
-    clear_microwave_door_sweep(rig, name)
-    return _set_microwave_hinge(rig, name, a["closed_q"], "CLOSE microwave: powered door")
+    """Press the door key: the door's motor closes it (_powered_door)."""
+    return _powered_door(rig, name, "close")
 
 
 def cycle_microwave_door(rig, name="kitchen_microwave"):

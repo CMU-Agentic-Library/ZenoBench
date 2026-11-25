@@ -470,10 +470,10 @@ Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives
 - `grip(width)`：合爪 → `holding`，松手 → `released`；
 - `wait(ticks)`：物体停稳，什么都不动（`place_settle`）；
 - `head(yaw, pitch, steps)`：转头（`perceive.head_segment`，感知类和 `run_skill` 开头的头摆正都经它，11-16）；手臂、底盘、手里的东西都不动，所以不向接触监视声明，前一段的 `Allow` 照旧；
-- `drive_part(部件, 值)`：电机开关门〔待加，第 8 步〕；
+- `drive_part(部件, 值)`：电机开关门（`Actuator.drive_part` → `Rig.drive_part`：关节目标在 300 个物理步里匀速给到、再等一秒，离目标超过 `DOOR_OPEN_TOL` 技能失败），开门键按键计划里的一个动作（8b，11-24）；
 - `toggle(电器, on/off)`：电器的热源开 / 关（`Actuator.toggle` → `Rig.toggle`，任务级的 `thermal.py`），按键计划在手按到按钮以后的一个动作（8a，11-24）。
 
-现在有 `grip`、`wait`、`head`、`toggle`；`run.execute` 遇到别的动作抛 `ValueError`。
+现在有 `grip`、`wait`、`head`、`toggle`、`drive_part`；`run.execute` 遇到别的动作抛 `ValueError`。
 
 锚点不是动作，是单独的段种类（4.3、8.2）。
 
@@ -899,6 +899,9 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 8. **微波炉和电器动作**：`drive_part`、`toggle`、电机开门前让开的检查。删 `withdraw_microwave_cavity` 记的 `microwave_retrieval_q`（pick 已经不读；`policies/embedded.py` 的 `PickFromCavity` 还在用）。
    **8a 按键已迁（11-24）**：catalog `press`（形状 contact，`skill_jobs/press.py` 的 `press_job` + `skill_plans/contact.py` 的 `plan_press`）：到达锚点 → 自由段到按钮前 `PRESS_APPROACH`（10 cm）→ 在那里合爪（在原地合，刚放到灶上的锅被夹住，T07 microwave_holds_pot）→ 直线按进去，指尖压进按钮碰撞体正面 `PRESS_DEPTH`（3 mm）→ `toggle` 动作 → 锚点 → 按 `contact_extent` 量出来的直线退出 → 收臂。按钮的碰撞体有了自己的 owner（`scene_geometry.buttons`：`button:<电器>/<键>`，`Spec.touch` 只放开它；底盘占地、支撑面、监视仍把它当静态，`is_static`），监视还认按钮自己的标注障碍物盒（`kitchen_microwave/body/door_button`），不放开整台电器。停车点搜索：按的终点、手绕按的方向转 0 / 90 / -90 / 180° 四个目标；删了写死的首选站位（75°）和"首选站位不行就退到不查按的搜索"（T07 microwave_works 失败的原因，01ea02cc 的补丁随旧函数一起删）。微波炉开门键、启动键、灶的电源键（policy_032 / 033 / 094）都调 `skills.press_button`；分步的 027 / 028 / 029 退役，press 的启动键路径改成 policy_032。
    检查（`/data/zenobench/press8a_1124/runs2`，v6 sticky/gt，单测 533）：T07 microwave_works、microwave_holds_pot（灶）、T09 lid_off（灶开、关）整集成功；按键 8 次，7 次一次成功，1 次在 `press_pressed` 锚点重做收臂时 cuRobo TRAJOPT_FAIL（和 T02 / T19 关柜门同一类，收臂每个锚点都重做）。T07 two_portions、vessel_decides_appliance 在按键之前、往灶上放东西时失败：两集的第一次停车点搜索计数和 v6full_1123 一样（占地、碰撞相同）、选中的停车点不同，是 cuRobo IK 历史（这次是进程里第一集），不是按键的改动。
+   **8b 开关门都按开门键（11-24，用户：不再"隔空"关门）**：微波炉的门只由它的开门键动：`plan_press` 在收臂以后多 `press_door`（门从现在的值转到目标的一路上，每 `PRESS_DOOR_STEP` 0.1 rad 查底盘 `BaseModel.clear` 和手臂 `free_at`（两臂都不动，和 ride 的查法一样），都让得开才排一个 `drive_part` 动作）和 `press_door_moved` 锚点。停车点搜索在每个候选上建整份计划，所以选出来的停车点既按得到键、又让得开门：删了写死的让开位置 (5.1, 1.6, 150°)、`clear_microwave_door_sweep`、`_set_microwave_hinge`（进了 `Rig.drive_part`）和它的固定机位。按键用空着的手（两只都空用右手；右手拿着东西时左手按，v6 里没有这种集，没在仿真里跑过）。policy_030（开到让开位置）、031（不按键直接转门）退役；close 的 `powered_loaded` 路径和 retreat 的 `microwave_door_sweep` 路径删了，都走 policy_025 / 067。单独的 `press(door_button)` 仍只按、不动门（开关门是 open / close）。
+   **收臂晚做（11-24，第 1 节第 8 条）**：锚点（或某段不成立）处从这里重做剩下的计划时，如果只有收臂做不出来（cuRobo TRAJOPT_FAIL），保留前面重做好的各段（builder 的 `Failure.info["partial"]`），收臂留到手臂真走到那里再按实测状态建（`run._late_tuck`，事件 `late`）；那时还建不出来技能失败（第 3 条）。停车点搜索仍要求整份计划连收臂都能建。T19 x6_gd_can_put_away__in_4 的关柜门因此过了（`door_moved` 锚点收臂重做失败，走到时建成），T02 gone_toy_block、T07 microwave_holds_pot 照旧成功（`/data/zenobench/latetuck_1124`）。
+   检查（`/data/zenobench/door8b_1124`，单测 535）：T07 microwave_works、microwave_holds_pot、two_portions__counter、T10 x6_gd_can_put_away__in_cabinet 整集成功，10 次按键开关门全到位（-1.399 / -0.001）；T07 broken_oatmeal_away 失败在旧的腔体取物（`PickFromCavity` 读 `microwave_retrieval_q`，8d）。
 9. **两臂**：两手一起搬的物体进碰撞模型（闭链约束另议）；pick / place 选手（6a 末尾）。手臂对称、`q_body`、共用躯干的规则、另一只手的东西进查询已在第 6a 步做；两只手一起动时手里的东西对另一条手臂查不到（held link 只对躯干和头有自碰撞，4.4），两手搬要另想办法。
 10. **收尾**：删 `Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`、旧的 `planner.find_park`，以及旧的按用途分的碰撞上下文（`Motion.scope` / `hand_open` / `carrying` / `released`、`Rig._planning` / `_fingers_checked`；`Motion.query` 6a 起已经是直接实现，4.4）。
 

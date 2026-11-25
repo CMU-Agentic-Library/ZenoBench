@@ -14,7 +14,6 @@ Paired SkillNode: `skill_004` (`retreat-obstacle`).
 
 ## Policy paths
 
-- `microwave_door_sweep` when obstacle.instance == 'kitchen_microwave': `policy_030($obstacle)`
 - `away` when always: `policy_067($obstacle, $distance_m)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

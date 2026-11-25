@@ -707,3 +707,29 @@ def test_the_skill_jobs_hooks_do_not_move_the_robot():
                  and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
                  and n.func.value.id in ("rig", "r") and n.func.attr in moves]
         assert not calls, (f.name, [(c.lineno, c.func.attr) for c in calls])
+
+
+def test_a_rest_failing_only_at_the_tuck_runs_and_makes_the_tuck_when_the_arm_gets_there(monkeypatch):
+    # docs 1 rule 8: the tuck's trajectory is made late -- an anchor's rebuild that makes everything but it
+    # keeps what it made; the tuck is built from the State when it is reached, and fails the skill then
+    from zeno_skills.skill_plans._common import anchor
+    rig = FakeRig(FakeKin(), np.zeros(9))
+    monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd))
+    plan = Plan((anchor("held", np.zeros(9), _state(np.zeros(9))), _seg("ride", np.zeros(9), np.full(9, 0.1)),
+                 _seg("tuck", np.full(9, 0.1), np.full(9, 0.2))))
+    asked = []
+
+    def rebuild(state, name, prior):
+        asked.append(name)
+        if name == "ride":                      # at the anchor: the ride made again, its tuck not (TRAJOPT_FAIL)
+            return Failure("TRAJOPT_FAIL", "tuck", {"partial": Plan((_seg("ride", state.q("right"), np.full(9, 0.15)),))})
+        return Plan((_seg("tuck", state.q("right"), np.full(9, 0.2)),))
+    done = RUN.run(rig, plan, rebuild)
+    assert asked == ["ride", "tuck"] and [s.name for s in done] == ["held", "ride", "tuck"]
+    assert np.allclose(done[1].q_end, 0.15) and np.allclose(done[2].q_from, 0.15)
+    assert any(ev == "late" and kw["segment"] == "tuck" for ev, kw in rig.events)
+    rig = FakeRig(FakeKin(), np.zeros(9))
+    no_tuck = lambda state, name, prior: Failure("TRAJOPT_FAIL", "tuck", {"partial": Plan(
+        (_seg("ride", state.q("right"), np.full(9, 0.15)),) if name == "ride" else ())})
+    with pytest.raises(SkillFailure, match="tuck.*TRAJOPT_FAIL"):      # reached and still not made: the skill fails
+        RUN.run(rig, plan, no_tuck)

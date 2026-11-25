@@ -1676,21 +1676,6 @@
    ],
    "policy_paths": [
     {
-     "path_id": "microwave_door_sweep",
-     "when": [
-      "obstacle.instance == 'kitchen_microwave'"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_030($obstacle)"
-     ],
-     "policies": [
-      "policy_030"
-     ],
-     "note": "The microwave's measured hinge-clearance pose (also when loaded)."
-    },
-    {
      "path_id": "away",
      "when": [
       "always (default path)"
@@ -11205,7 +11190,7 @@
      "articulated"
     ]
    },
-   "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
+   "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
    "use_when": "A door, drawer or appliance must be opened before reaching inside.",
    "not_to_be_confused_with": {
     "press": "press only pushes a button; open guarantees the door is open."
@@ -11632,7 +11617,7 @@
      "articulated"
     ]
    },
-   "description": "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.",
+   "description": "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), also while the right hand carries a load.",
    "use_when": "A door, drawer or appliance must be closed (before heating, after taking out).",
    "not_to_be_confused_with": {
     "open": "opposite direction."
@@ -11720,24 +11705,6 @@
    ],
    "policy_paths": [
     {
-     "path_id": "powered_loaded",
-     "when": [
-      "articulated.powered",
-      "robot.right_held"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_030($articulated)",
-      "policy_031($articulated, target=close)"
-     ],
-     "policies": [
-      "policy_030",
-      "policy_031"
-     ],
-     "note": ""
-    },
-    {
      "path_id": "powered",
      "when": [
       "articulated.powered"
@@ -11750,7 +11717,7 @@
      "policies": [
       "policy_025"
      ],
-     "note": ""
+     "note": "The door key pressed by the empty hand (the left while the right holds a load)."
     },
     {
      "path_id": "loaded",

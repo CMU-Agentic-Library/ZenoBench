@@ -10,19 +10,13 @@ from zeno_skills.policies import MicrowaveHingeDrivePolicy
 from zeno_skills.rig import SkillFailure
 
 
-def test_hinge_driver_requires_clearance_before_motor_motion(monkeypatch):
-    art = {"category": "microwave", "door_button": {}, "open_q": 1.0, "closed_q": 0.0}
-    rig = SimpleNamespace(ann=SimpleNamespace(art=lambda name: art), _microwave_clear=None,
-                          base_pose=lambda: (5.1, 1.6, 150.0))
-    with pytest.raises(SkillFailure, match="clear the door sweep"):
-        MicrowaveHingeDrivePolicy(rig).execute("oven", target="open")
-    calls = []
-    monkeypatch.setattr(skills, "_set_microwave_hinge", lambda rig, name, q, caption: calls.append(q) or q)
-    rig._microwave_clear = {"name": "oven", "held": None}
-    assert MicrowaveHingeDrivePolicy(rig).execute("oven", target="close") == 0.0
-    assert calls == [0.0]
-    with pytest.raises(ValueError, match="open or close"):
-        MicrowaveHingeDrivePolicy(rig).execute("oven", target="half")
+def test_the_door_moves_only_by_its_key_the_clearance_and_hinge_policies_are_retired():
+    # 9.3 step 8b: the door key's press parks clear of the swing and drives the door (plan_press press_door)
+    from zeno_skills.policies import MicrowaveDoorClearPolicy
+    with pytest.raises(SkillFailure, match="retired"):
+        MicrowaveHingeDrivePolicy(object()).execute("oven", target="close")
+    with pytest.raises(SkillFailure, match="retired"):
+        MicrowaveDoorClearPolicy(object()).execute("oven")
 
 
 def test_cavity_release_requires_insertion_and_measured_open_fingers():

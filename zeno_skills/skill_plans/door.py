@@ -19,7 +19,7 @@ from ..motion_state import (ARM, Aim, Failure, Held, Plan, Segment, Spec, aim_po
 from ..tolerances import BODY_SAME, DOOR_LEAVE, DOOR_TOL
 from ..primitives import (sided, Joint, JointSet, PartAt, Script, decide_ik, free_leg, ik_why, query, ride_base, scripted,
                           straight)
-from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor, may_touch
+from ._common import FREE_HAND, built_so_far, T_of, _aimed, _kept, _move, _reach, anchor, may_touch
 
 DOOR_STAGES = ("door_arrive", "door_open_hand", "door_reach", "door_grasp", "door_close_hand", "door_held",
                "door_ride", "door_moved", "door_release", "door_leave", "tuck", "door_settle")
@@ -141,7 +141,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
             seg = Segment(stage, Spec(), q, kind="action", action=("wait", DOOR_SETTLE_TICKS))
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)
@@ -266,7 +266,7 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
             seg = Segment(stage, Spec(), q, kind="action", action=("wait", DOOR_SETTLE_TICKS))
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)

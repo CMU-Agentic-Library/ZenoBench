@@ -1,13 +1,13 @@
 ---
 name: open-articulated
-description: "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load."
+description: "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load."
 ---
 
 # Open a door or drawer (`skill_040`)
 
 `open(articulated: articulated_ref)`
 
-Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
+Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
 
 ## When to use
 

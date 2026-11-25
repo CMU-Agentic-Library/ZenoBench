@@ -186,9 +186,6 @@ skill("retreat", "obstacle", "Retreat from an obstacle",
       ensures=[P("base_clear_of", place="$obstacle", distance_m="$distance_m")],
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
       paths=[
-          Path("microwave_door_sweep", [W("obstacle", "instance", "equals", "kitchen_microwave")],
-               [St("policy_030", "$obstacle")],
-               note="The microwave's measured hinge-clearance pose (also when loaded)."),
           Path("away", [], [St("policy_067", "$obstacle", "$distance_m")],
                note="Straight away from the obstacle footprint, checked over the whole robot; a load stays held "
                     "and the base drives slower."),
@@ -898,7 +895,7 @@ G = "articulated_and_appliance"
 
 skill("open", "articulated", "Open a door or drawer",
       "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the "
-      "part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door "
+      "part: powered microwave (its door key: the motor opens the door, the robot parked clear of its swing), refrigerator handle, drawer handle pull, hinged door "
       "side-hook ride, or a door opened by the right hand while the left hand holds a load.",
       group=G,
       inputs={"articulated": I("articulated_ref", "The door, drawer or appliance door.")},
@@ -944,7 +941,8 @@ skill("open", "articulated", "Open a door or drawer",
 
 skill("close", "articulated", "Close a door or drawer",
       "Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door "
-      "closes from its hinge-clearance pose, also while the robot carries a load.",
+      "closes by its door key (pressed by the empty hand, from where the robot is clear of the door's swing), "
+      "also while the right hand carries a load.",
       group=G,
       inputs={"articulated": I("articulated_ref", "The open part.")},
       outputs={"joint": O("number", "Measured joint value.")},
@@ -952,9 +950,8 @@ skill("close", "articulated", "Close a door or drawer",
       ensures=[P("is_closed", articulated="$articulated")],
       invalidates=["is_open($articulated)", "base_near(*)", "reachable(*)", "facing(*)"],
       paths=[
-          Path("powered_loaded", [W("articulated", "powered", "truthy"), HELD_R],
-               [St("policy_030", "$articulated"), St("policy_031", "$articulated", target="close")]),
-          Path("powered", [W("articulated", "powered", "truthy")], [St("policy_025", "$articulated")]),
+          Path("powered", [W("articulated", "powered", "truthy")], [St("policy_025", "$articulated")],
+               note="The door key pressed by the empty hand (the left while the right holds a load)."),
           Path("loaded", [W("articulated", "has_handle", "truthy"), HELD_R], [St("policy_023", "$articulated")],
                requires=[P("hand_empty", hand="left")],
                note="The right hand holds a load: the left hand pushes the door shut (the body kept still)."),

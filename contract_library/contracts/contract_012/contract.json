@@ -83,29 +83,6 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
-    "path_id": "microwave_door_sweep",
-    "when": [
-     {
-      "noun": "obstacle",
-      "field": "instance",
-      "op": "equals",
-      "value": "kitchen_microwave"
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_030",
-      "args": [
-       "$obstacle"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": "The microwave's measured hinge-clearance pose (also when loaded)."
-   },
-   {
     "path_id": "away",
     "when": [],
     "steps": [

@@ -1013,6 +1013,26 @@ class Rig:
         self.thermal.on[appliance] = bool(on)
         self.log("toggle", appliance=appliance, on=bool(on))
 
+    def drive_part(self, part, value, ticks=300):
+        """``part`` (a powered articulated part: the microwave's door) driven by its own motor to ``value``
+        (Actuator.drive_part: the door key's action) -- its joint target ramped over ``ticks`` physics ticks
+        (the old _set_microwave_hinge's 300), a second to settle, then judged: further than DOOR_OPEN_TOL off
+        ``value`` fails the skill.  The robot does not move (the plan checked it clear of the swing)."""
+        from isaacsim.core.utils.types import ArticulationAction
+        from .tolerances import DOOR_OPEN_TOL
+        motor, start = self._arts[part], self.joint(part)
+        for i in range(1, int(ticks) + 1):
+            q = start + (float(value) - start) * i / int(ticks)
+            motor.apply_action(ArticulationAction(joint_positions=self.torch.tensor([q], dtype=self.torch.float32),
+                                                  joint_indices=self.torch.tensor([self._dof[part]])))
+            self.step(1)
+        self.step(PHYSICS_HZ)
+        actual = self.joint(part)
+        self.log("drive_part", part=part, target=round(float(value), 3), actual=round(actual, 3))
+        if abs(actual - float(value)) > DOOR_OPEN_TOL:
+            raise SkillFailure(f"{part}: its motor stopped it at {actual:.3f}, sent to {float(value):.3f}")
+        return actual
+
     def aim_head(self, yaw, pitch, steps=90):
         """The head to (yaw, pitch) rad (a head action segment): the command set, then at most ``steps``
         physics ticks, in tens, until both head joints are within HEAD_AT of it."""

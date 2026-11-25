@@ -12,10 +12,10 @@ import time
 import numpy as np
 
 from ..clearance import LEAVE_CONTACT, Allow
-from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, with_arm, with_width
-from ..primitives import JointSet, Script, free_leg, pushed, query, scripted, sided, still, straight
+from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, with_arm, with_part, with_width
+from ..primitives import JointSet, Script, free_at, free_leg, pushed, query, scripted, sided, still, straight
 from ..tolerances import SLIDE_TOL, STIR_TOL
-from ._common import FREE_HAND, _aimed, _contact, _kept, _move, _reach, anchor, may_touch
+from ._common import FREE_HAND, built_so_far, _aimed, _contact, _kept, _move, _reach, anchor, may_touch
 
 SLIDE_STAGES = ("slide_arrive", "slide_close_hand", "slide_reach", "slide_down", "slide_in", "slide_push",
                 "slide_moved", "slide_leave", "tuck", "slide_open_hand")
@@ -151,7 +151,7 @@ def _plan_slide(kin, state, push, rest_goals, start, prior_plan, step):
             s = with_width(s, side, SLIDE_OPEN)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)
@@ -275,20 +275,22 @@ def _plan_stir(kin, state, stir, start, prior_plan, step):
                 seg = _move(seg, steps_per_wp=4, smooth=True)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)
 
 
 PRESS_STAGES = ("press_arrive", "press_reach", "press_close_hand", "press_in", "press_toggle", "press_pressed",
-                "press_leave", "tuck")
-PRESS_ANCHORS = ("press_arrive", "press_pressed")   # the base as it stopped; the hand where the button stopped it
+                "press_leave", "tuck", "press_door", "press_door_moved")
+PRESS_ANCHORS = ("press_arrive", "press_pressed", "press_door_moved")   # the base as it stopped; the hand where the
+#                                                     button stopped it; the door where its motor left it
+PRESS_DOOR_STEP = 0.1         # rad of the door's swing between the checked samples (docs 2.4: by angle; not measured)
 PRESS_RELAY = "press_end"     # what the park search's ranking IK solves: the press's end (the tips on the button) --
                               # a seed of press_reach's IK at the straight's start, as SLIDE_RELAY
 
 
-def plan_press(kin, state, press, rest_goals, start="press_arrive", prior=None, step=0.003):
+def plan_press(kin, state, press, rest_goals, start="press_arrive", prior=None, step=0.003, base=None):
     """The button press["button"] ("<appliance>/<key>": a collider owner of its own, scene_geometry.buttons)
     pressed by ``kin``'s closed fingertips from ``state``: press = {button, p, R (the TCP where the press ends:
     the tips PRESS_DEPTH into the button's face, the hand turned R -- skill_jobs.press), u (the unit the press
@@ -308,15 +310,34 @@ def plan_press(kin, state, press, rest_goals, start="press_arrive", prior=None, 
         press_leave       out of the contact: straight back along -u as far as contact_extent measures
                           (near_world: LEAVE_GAP clear, then LEAVE_MARGIN)
         tuck              the first free of ``rest_goals`` (JointSet; never kept)
+        press_door        the key's door driven by its motor to press["door"]["to"] (an action, drive_part) --
+                          only where the robot, as the tuck leaves it, stands clear of the door all along its
+                          swing (every PRESS_DOOR_STEP: the base by ``base``, BaseModel.clear; the arm, free_at
+                          with both arms still, as a ride checks it); none when press["door"] is None
+        press_door_moved  anchor: where the door went
 
     The button is static (the appliance's body): no Aim -- the press's end is a world pose.  From ``start``
     on; ``prior`` as plan_slide's (a Plan: its motions that still hold kept, its decisions tried first; else
     the park search's ranking solution of the press's end, PRESS_RELAY).  Plan or Failure."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_press(kin, state, press, rest_goals, start, prior, step)
+        return _plan_press(kin, state, press, rest_goals, start, prior, step, base)
 
 
-def _plan_press(kin, state, press, rest_goals, start, prior_plan, step):
+def _sweep_clear(kin, state, part, v0, v1, q, base):
+    """Why the robot (the arm at q, the base where ``state`` has it) is not clear of ``part`` swinging from v0 to
+    v1, or None: the base (BaseModel.clear) and the arm (free_at, both arms still) at every PRESS_DOOR_STEP."""
+    n = max(2, int(np.ceil(abs(v1 - v0) / PRESS_DOOR_STEP)) + 1)
+    spec = Spec(arms_still=True)
+    for v in np.linspace(v0, v1, n):
+        st = with_part(state, part, float(v))
+        if base is not None and not base.clear(st, [st.base])[0]:
+            return f"the base is in its way at {v:.2f}"
+        if not free_at(kin, st, spec, q):
+            return f"the arm is in its way at {v:.2f}"
+    return None
+
+
+def _plan_press(kin, state, press, rest_goals, start, prior_plan, step, base):
     i0 = PRESS_STAGES.index(start)
     prior = decisions_of(prior_plan)
     side, button = kin.side, press["button"]
@@ -331,7 +352,7 @@ def _plan_press(kin, state, press, rest_goals, start, prior_plan, step):
     for stage in PRESS_STAGES[i0:]:
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "tuck" else None
-        if stage in PRESS_ANCHORS:
+        if stage in PRESS_ANCHORS and stage != "press_door_moved":
             seg = anchor(stage, q, s, (), side)
         elif stage == "press_close_hand":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
@@ -357,12 +378,31 @@ def _plan_press(kin, state, press, rest_goals, start, prior_plan, step):
             if not isinstance(seg, Failure) and not seg.qs:    # touching nothing: no exit
                 times[stage] = round(time.time() - t0, 3)
                 continue
+        elif stage == "press_door":
+            door = press.get("door")
+            if door is None:
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            v0 = s.parts.get(door["part"])
+            if v0 is None:
+                return Failure(f"{door['part']} is not in the State", stage, {"stage_s": times})
+            why = _sweep_clear(kin, s, door["part"], float(v0), float(door["to"]), q, base)
+            if why is not None:
+                seg = Failure(f"{door['part']} swinging to {float(door['to']):.2f}: {why}", stage)
+            else:
+                seg = Segment(stage, Spec(), q, kind="action", action=("drive_part", door["part"], float(door["to"])))
+                s = with_part(s, door["part"], float(door["to"]))
+        elif stage == "press_door_moved":
+            if press.get("door") is None:
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            seg = anchor(stage, q, s, (press["door"]["part"],), side)
         else:                   # tuck: the first free of the fold, hanging -- chosen again whenever it is built
             seg = free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)), stage,
                            q_from=q)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            return Failure(seg.why, seg.segment, {"stage_s": times, "partial": built_so_far(segs, side, decided)})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)

@@ -98,21 +98,6 @@
  ],
  "policy_paths": [
   {
-   "path_id": "microwave_door_sweep",
-   "when": [
-    "obstacle.instance == 'kitchen_microwave'"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_030($obstacle)"
-   ],
-   "policies": [
-    "policy_030"
-   ],
-   "note": "The microwave's measured hinge-clearance pose (also when loaded)."
-  },
-  {
    "path_id": "away",
    "when": [
     "always (default path)"
