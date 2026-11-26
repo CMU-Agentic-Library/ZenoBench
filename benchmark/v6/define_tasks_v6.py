@@ -1370,7 +1370,9 @@ def T07(t):
             + ([S("expose", object=x), look(x)] if x in FLAT else []) + [pick(x)]
 
     def to_microwave(x, region=None, temp=40, heat=True):
-        return [nav(MW), S("open", articulated=MW), look(ISL)] + grab(x, region) \
+        # 11-25 (gt_check in_ceramic_bowl s11, in_glass_box s15): turning at the microwave to face the island put the
+        # left arm into the wall (17 mm); the base drives to the island before it looks
+        return [nav(MW), S("open", articulated=MW), nav(ISL), look(ISL)] + grab(x, region) \
             + [nav("kitchen_microwave/inside_floor"), place(x, "kitchen_microwave/inside_floor"),
                S("close", articulated=MW)] + ([S("heat", food=x, appliance=MW, temp_c=temp)] if heat else [])
 

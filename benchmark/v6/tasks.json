@@ -85712,6 +85712,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
@@ -85772,6 +85778,12 @@
        "skill": "open",
        "args": {
         "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -86098,6 +86110,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
@@ -86228,6 +86246,12 @@
        "skill": "open",
        "args": {
         "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {

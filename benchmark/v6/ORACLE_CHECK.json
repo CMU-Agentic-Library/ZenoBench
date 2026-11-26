@@ -1364,7 +1364,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "vessel_decides_appliance__in_ceramic_bowl",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1374,7 +1374,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "vessel_decides_appliance__in_glass_box",
-   "steps": 11,
+   "steps": 12,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1414,7 +1414,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "two_portions__dining",
-   "steps": 21,
+   "steps": 22,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1424,7 +1424,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "two_portions__counter",
-   "steps": 20,
+   "steps": 21,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
