@@ -61,6 +61,7 @@
 | T01 捏边平放（再 1 次） | T01 `reader_seat__mug_1` s16 重跑（开局收臂已过）：#7 `place(paperback_book, dining_table_2/top)` | `tuck: its path collides now at 1/223: left_gripper_right_finger_link 4 mm … INVALID_START_STATE_WORLD_COLLISION` | 同上面 T01 那一行：抽手后手指贴着书。 |
 | 搬运中滑落 | T29 `which_table__west` s11（挪桌后重跑；之前同种子 3 次都过） | `left_carry: toy_west slipped out of the left hand while carrying it`（#6 `explore_room(living_room_0_0)`） | 拿着玩具车去客厅时从左手滑掉。 |
 | 从托盘里拿碗，收进搬运姿态差几毫米 | T22 `tray_elsewhere__bowls_in_it` s11（一只碗，碗离托盘沿 ≥3 cm）；两只碗时 s12 差 13 mm、s11 没有可达抓取 | `carry_in: the arm stopped 0.005 m short of where it was sent`（#12 `pick(tray_bowl_1)`） | 碗抓起来了，往回收时停住；托盘沿高 6.3 cm，怀疑抬升不够、碗擦到托盘沿。bench 已把两只碗减成一只、靠机器人一侧。同一局 s12 拿果汁 `pick_arrive: TRAJOPT_FAIL`（同位置 s11 能拿）。 |
+| **判成没拿着：T25 马克杯放电视柜（又 2 次，同一停车点）** | T25 `cups_for_two__none_one_inside` s14（#18）、`two_guests__one_cup` s11（#14）：`place(mug_shelf, tv_stand_2/top)` | `PRECONDITION_FAILED: holding(hand=any, object=mug_shelf) is false (slip 0.008 / 0.015 m, fingers [0.0, 0.0])` | 都在 [6.381, 1.014, -30°] 放杯子前判成没拿着，物体只滑了 1–2 cm、手指读数 0。加上前面 T25 两次，这个动作已 4 次；像是捏杯柄时手指读数 / holding 判定不对。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
