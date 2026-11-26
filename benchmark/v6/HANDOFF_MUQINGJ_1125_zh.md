@@ -42,6 +42,8 @@
 | T29 `homework_on_table__desk_covered` s12 | #3 `pick(hw_notebook)`（推到桌边） | `slide_push: the arm stopped 0.006 m short` | 差 6 mm 判失败，和 T08 wipe 7 mm、T18 抽手 5 mm 同类：到位容差太紧。 |
 | T29 `several__bin_full` s13 | #5 `navigate(toy_bin)`（拿着东西） | `no base path to any of 37 stand-off poses (even the column's inscribed circle cannot get there)` | 机器人在 [7.17, 4.07, 24°]，37 个站位 reachable 0；前一步导航成功开到这里，像是开进了出不来的角落（拿着东西时占地更大）。 |
 | T10 `trash_moved__trash_full` s13 | #7 `explore_room(living_room_0_0)`（拿着罐子） | `explore living_room_0_0: coverage 0.24` | explore_result 只有 1 个视角（home_0，原地），其余视点都没去；机器人在 [10.11, 1.09, 124°]（东边靠墙）。`trash_moved__dining` 你三次全量过两次。 |
+| T07 `vessel_decides_appliance__in_ceramic_bowl` s11 | #2 `look(kitchen_island/top)` | `face kitchen_island/top: the goal pose collides in the arrival posture (left_arm_link_3 in World/mesh 17 mm)` | 开微波炉后在 [4.457, 1.691, 75°] 原地转身看岛台，转到的朝向左臂碰墙体；look 没换个位置再转。 |
+| T09 `pot_in_dining_room__pot_away` s11 | #12 `sweep([cherry_tomato_1, cherry_tomato_2], 0.12)` | `tuck: its path collides now at 121/200: world left_gripper_left_finger_link 0 mm; … TRAJOPT_FAIL` | 扫完后收臂中途擦到东西，重建也失败。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
