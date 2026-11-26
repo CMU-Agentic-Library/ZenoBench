@@ -1,4 +1,5 @@
 import fcntl
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -78,6 +79,38 @@ def test_named_batch_pairs_every_seed_across_methods(tmp_path):
     invalid.write_text(json.dumps([{**declared[0], "seed": -1234}]))
     with pytest.raises(ValueError, match="outside"):
         episodes(invalid)
+
+
+def test_substitution_report_uses_native_held_state_after_failed_task(tmp_path):
+    from baseline.report_substitution import collect
+
+    job = {"task": "T04_cup_or_mug_to_cabinet", "variant": "no_cup", "seed": 10}
+    batch = tmp_path / "batch.json"
+    batch.write_text(json.dumps([job]))
+    digest = hashlib.sha256(batch.read_bytes()).hexdigest()
+    runtime = {"isaacsim": "6.2.0.0"}
+    run_http.write_report(tmp_path / "manifest.json", {"packages": runtime, "runner_commit": "commit", "batch_sha256": digest})
+    model, method = "qwen3.5-4b", "ReAct"
+    protocol = tmp_path / "planner/protocol" / model / method / "0-of-1"
+    protocol.mkdir(parents=True)
+    run_http.write_report(protocol / "protocol.json", {"commit": "commit", "batch_sha256": digest})
+    identity = {"task_id": job["task"], "variant": job["variant"], "seed": 10, "exp_id": "exp", "profile": MAIN}
+    score = {"score": 0, "tier": "not_ok"}
+    meta = {"config_hash": "scene", "episode_hash": "initial", "runtime": runtime}
+    directory = result_path(tmp_path / "planner", model, method, job)
+    directory.mkdir(parents=True)
+    run_http.write_report(directory / "result.json", {**identity, "score": score, "episode": meta, "model": model,
+                          "policy": METHODS[method][0], "max_calls": 60, "planner_summary": {}, "success": False,
+                          "wall_s": 1, "calls": [{"skill": "pick", "args": {"object": "kid_cup"}}]})
+    native = tmp_path / "native" / job["task"] / "exp"
+    native.mkdir(parents=True)
+    run_http.write_report(native / "result.json", {**identity, **meta, "score": score, "task_success": False,
+                          "incomplete": False, "skill_calls": 1, "calls": [{"skill": "pick", "feedback": {"success": True},
+                          "eval": {}, "state": {"held": ["mug"]}}]})
+    _, rows = collect(tmp_path, batch)
+    scored, = (r for r in rows if r["status"] == "scored")
+    assert (scored["chosen"], scored["hit"], scored["success"], scored["strict"]) == ("mug", True, False, False)
+    assert sum(r["status"] == "outstanding" for r in rows) == len(METHODS) * len(MODELS) - 1
 
 
 def test_reference_table_matches_native_layout_and_distinguishes_missing_from_zero(tmp_path):
