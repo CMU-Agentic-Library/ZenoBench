@@ -195,7 +195,7 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "tuck" else None
         if stage in PLACE_ANCHORS:
-            seg = anchor(stage, q, s, (obj,) if obj else (), kin.side)
+            seg = anchor(stage, q, s, (obj,) if obj else (), kin.side, stages=PLACE_STAGES)
         elif stage == "place_reach" and kept:
             seg = kept
         elif stage == "place_reach":

@@ -241,7 +241,9 @@ def _run(act, plan, rebuild, hooks):
             if rebuild is not None and i + 1 < len(segs):
                 # the rest checked whole from the State now -- the builder keeps every motion that
                 # still holds as it is and builds the others again
-                nxt, t0 = segs[i + 1].name, time.time()
+                # from the stage after the anchor in its builder's order (anchor info["then"]): one the plan
+                # left out is decided again from the State read here
+                nxt, t0 = seg.info.get("then") or segs[i + 1].name, time.time()
                 new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
                 if isinstance(new, Failure) and new.segment != nxt:    # the one next: made now, or the skill fails
                     new = _late_tuck(act, new, segs[i + 1:], seg.name) or new

@@ -200,6 +200,20 @@ def test_an_edge_places_pads_clear_by_each_finger_as_it_stands():
     assert np.allclose(seg.q_end[:3] - q[:3], [0.0, -(0.008 - (0.034 - 0.025 - EDGE_PAD_CLEAR)), 0.0], atol=1e-3)
     assert seg.spec.allow.touch == ("rice",)
 
+
+def test_the_place_anchors_name_the_stage_run_builds_again_from():
+    # the anchor where it landed names place_clear, not the plan's next segment (place_pull_out when the
+    # plan saw nothing to clear): run builds the rest again from there, the clearing decided from the State
+    # read after the release (s11 11-26: the left pad left under the load, dragged by the pull-out)
+    q_p = _q(0.5, 0.0, 0.10)
+    plan = plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.04,
+                      0.07, (np.zeros(9),), prior={"place_reach": q_p}, obj="cup")
+    assert isinstance(plan, Plan), plan
+    names = [sg.name for sg in plan.segments]
+    assert "place_clear" not in names
+    assert _named(plan, "place_landed").info["then"] == "place_clear"
+    assert _named(plan, "place_arrive").info["then"] == "place_reach"
+
 # ------------------------------------------------------------------- drop (docs/skills/drop_hover.md)
 def test_a_drop_reaches_over_the_opening_lets_go_waits_and_tucks():
     q_p = _q(0.5, 0.0, 0.30)
@@ -767,10 +781,16 @@ def test_a_place_anchor_logs_no_rebuild_for_a_tuck_made_again_the_same(monkeypat
     rig = FakeRig(kin, q0)
     rig.grip = rig.wait = lambda *a, **k: None
     monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd, held=Held("cup", np.eye(4))))
-    RUN.run(rig, plan, lambda state, frm, prior: plan_place(kin, state, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),),
-                                                           start=frm, prior=prior, obj="cup"))
+    froms = []
+
+    def rebuild(state, frm, prior):
+        froms.append(frm)
+        return plan_place(kin, state, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),), start=frm, prior=prior, obj="cup")
+    RUN.run(rig, plan, rebuild)
     arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "place_arrive")
     assert arrive["kept"] == ["place_reach", "place_down", "place_pull_out"] and arrive["rebuilt"] == []
+    # each anchor builds the rest again from the stage after it, place_clear too though the plan has none
+    assert froms == ["place_reach", "place_clear"]
 
 
 def _job_rig():
