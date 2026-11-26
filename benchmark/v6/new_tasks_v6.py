@@ -135,7 +135,7 @@ def t21():
                   "it up.", "餐桌上洒了点汤，拿点擦的东西过去。", "tissue_on_tv_stand", ctl,
                   {"all": [["on", TIS, T2], H]}, fetch(TIS, T2, [3.30, 6.65]), [TIS, "soup_bowl"])
     to_table = lambda x=TIS, sup=T2, hint=(3.30, 6.65): fetch(x, sup, hint)  # noqa: E731
-    west_meal = {"soup_bowl": on("oatmeal_bowl", T1, -7.95, 7.60), "meal_spoon": on("breakfast_spoon", T1, -7.95, 7.79)}
+    west_meal = {"soup_bowl": on("oatmeal_bowl", T1, -8.35, 7.60), "meal_spoon": on("breakfast_spoon", T1, -8.35, 7.79)}
     side = {"bowl_side_table", "cup_side_table", "spoon_side_table"}
     kid_n = {"kid_bowl": on("oatmeal_bowl", T2, 3.35, 7.45), "kid_cup": on("plastic_cup", T2, 3.60, 7.45),
              "adult_bowl": on("oatmeal_bowl", T2, 3.35, 6.40), "adult_mug": on("breakfast_mug", T2, 3.60, 6.40)}
@@ -159,7 +159,7 @@ def t21():
                           route=[nav(TIS), pick(TIS), look(T1), nav(T2), place(TIS, T2, [3.30, 6.65])]),
              "west": dict(add={TIS: on("tissue_box", TV, 7.60, 0.36), **west_meal}, remove=sorted(side),
                           goal={"all": [["on", TIS, T1], H]},
-                          route=[nav(TIS), pick(TIS), look(T2), nav(T1), place(TIS, T1, [-7.75, 7.40])])}),
+                          route=[nav(TIS), pick(TIS), look(T2), nav(T1), place(TIS, T1, [-8.15, 7.40])])}),
         "no_tissue": fam(
             "tissue_on_tv_stand", ["resource_absent"], "the seed's layout only",
             "there are no tissues in the house; a dry kitchen sponge lies on the island",
@@ -240,7 +240,7 @@ def t22():
 
     def inside_tray(asset, dx, dy):
         """lying in the serving tray on the west dining table (table top 0.71 m, tray floor 1 cm up)"""
-        return {"asset": asset, "support": None, "z": 0.72, "xy": [round(-8.00 + dx, 3), round(7.40 + dy, 3)],
+        return {"asset": asset, "support": None, "z": 0.72, "xy": [round(-8.40 + dx, 3), round(7.40 + dy, 3)],
                 "yaw_deg": 0.0}
     # fruit and snacks may both go in the fruit basket or in a low cabinet: any such pairing is put away
     keep_spots = lambda x: [["inside", x, BASKET], ["on", x, f"{C6}/inside_shelf"], ["on", x, f"{C4}/inside_shelf"]]  # noqa: E731
@@ -334,7 +334,7 @@ def t22():
             "on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); "
             "books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
             {c: dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
-                          TRAY: on("serving_tray", T1, -8.00, 7.40), **on_tray},
+                          TRAY: on("serving_tray", T1, -8.40, 7.40), **on_tray},
                      watch=[J, A, TRAY, *on_tray],
                      # 11-25 (gt_check s12): inside, not fully_inside -- an apple stands 2.3 cm over the shallow
                      # serving tray's rim when it is in it (T11's apple in the same tray is "inside")
@@ -1429,14 +1429,14 @@ def t29():
             "car_on_table", ["destination_unnamed"], "where the meal is served (seed: east or west dining room)",
             "a toy on each dining table; the pot of soup stands on one of them",
             "clear the table the meal is served on; the other table is left as it is",
-            {c: dict(add={"toy_east": on("toy_car", T2, 3.30, 6.70), "toy_west": on("toy_car", T1, -7.95, 7.40),
+            {c: dict(add={"toy_east": on("toy_car", T2, 3.30, 6.70), "toy_west": on("toy_car", T1, -8.35, 7.40),
                           "dinner_pot": on("soup_pot", sup, *xy), **tb},
                      remove=["bowl_side_table", "cup_side_table", "spoon_side_table"],
                      watch=["toy_east", "toy_west", "dinner_pot"],
                      goal={"all": [["inside", here, BOX], ["near_start", there, 0.03], H]},
                      route=[look(T2), look(T1)] + into(here, BOX))
              for c, sup, xy, here, there in (("east", T2, (3.35, 7.30), "toy_east", "toy_west"),
-                                             ("west", T1, (-7.95, 8.20), "toy_west", "toy_east"))}),
+                                             ("west", T1, (-8.35, 8.20), "toy_west", "toy_east"))}),
     }
     return t, fams
 

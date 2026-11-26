@@ -150,7 +150,7 @@ T01_BOOK_AT = {"living": ("tv_stand_2/top", [7.40, 0.484]),     # overhangs the 
 T01_BOOK_OTHER = {"living": ("bookcase_2/top", [1.00, -0.43]), "bedroom": ("tv_stand_2/top", [7.60, 0.36])}
 # which_table: the other dining table (the west dining room, 16 m from the island); its east edge faces the room
 FAR_DINING = "dining_table_1/top"
-T01_TABLES = {DINING: (T01_TABLE_Y0, T01_TABLE_Y1, 3.839), FAR_DINING: (6.89, 8.83, -7.488)}   # y0, y1, east edge x
+T01_TABLES = {DINING: (T01_TABLE_Y0, T01_TABLE_Y1, 3.839), FAR_DINING: (6.89, 8.83, -7.888)}   # y0, y1, east edge x
 T01_FAR_LAYOUTS = {   # the shorter table: one cereal box; narrow between seats 1 and 2, wide between 2 and 3
     "far_a": ([0.05, "clutter_cereal_a", 0.05, "plate_counter_a", 0.04, "cup_counter_b", NARROW, "bowl_side_table",
                0.04, "cup_side_table", WIDE, "plate_counter_b", 0.04, "mug_dining_cabinet"], 5, "plate_counter_b"),
@@ -161,7 +161,7 @@ T01_FAR_LAYOUTS = {   # the shorter table: one cereal box; narrow between seats 
 # the table nobody eats at: the kid's toys and the storage bin, east-edge slots free, no tableware
 T01_IDLE = {DINING: {"wide_storage_bin": [2.985, 6.6], "clutter_cereal_b": [3.70, 6.0],
                      "wooden_block_a": [3.75, 6.9], "wooden_block_b": [3.62, 7.3]},
-            FAR_DINING: {"wide_storage_bin": [-8.0, 7.9], "wooden_block_a": [-7.6, 7.2], "wooden_block_b": [-7.72, 7.6]}}
+            FAR_DINING: {"wide_storage_bin": [-8.4, 7.9], "wooden_block_a": [-8.0, 7.2], "wooden_block_b": [-8.12, 7.6]}}
 
 
 def T01(t):
@@ -407,22 +407,22 @@ T02_FULL_TABLE = {
 # T02 tower_for_kid both_full (11-17): the west dining room's table piled full too (benchmark/v6/slots.py-style
 # check: no 4 cm base keeps 10 cm from its edge and from these); name -> (asset, x, y, yaw), all added
 T02_FAR_FULL = {
-    "far_wide_storage_bin": ("wide_storage_bin", -7.717, 7.604, 0),
-    "far_clutter_cereal_a": ("cereal_box", -8.014, 7.387, 0),
-    "far_clutter_toy_box": ("toy_box", -8.277, 7.071, 90),
-    "far_clutter_tray": ("serving_tray", -7.707, 7.063, 0),
-    "far_clutter_basket": ("storage_basket", -8.296, 7.618, 0),
-    "far_clutter_fruit_basket": ("fruit_basket", -8.331, 8.1, 0),
-    "far_clutter_bowl": ("breakfast_bowl", -8.018, 7.932, 0),
-    "far_clutter_plate_1": ("breakfast_plate", -7.683, 8.098, 0),
-    "far_clutter_sorting_tray": ("shallow_sorting_tray", -8.342, 8.464, 0),
-    "far_clutter_plate_2": ("breakfast_plate", -8.003, 8.448, 0),
-    "far_clutter_small_bin": ("small_storage_bin", -7.657, 8.449, 0),
-    "far_clutter_cereal_e": ("cereal_box", -7.995, 8.167, 0),
-    "far_extra_0": ("cereal_box", -8.42, 8.69, 0),
-    "far_extra_1": ("notebook", -8.24, 8.69, 0),
-    "far_extra_2": ("book_blue", -8.01, 8.7, 0),
-    "far_extra_3": ("cereal_box", -7.78, 8.73, 90),
+    "far_wide_storage_bin": ("wide_storage_bin", -8.117, 7.604, 0),
+    "far_clutter_cereal_a": ("cereal_box", -8.414, 7.387, 0),
+    "far_clutter_toy_box": ("toy_box", -8.677, 7.071, 90),
+    "far_clutter_tray": ("serving_tray", -8.107, 7.063, 0),
+    "far_clutter_basket": ("storage_basket", -8.696, 7.618, 0),
+    "far_clutter_fruit_basket": ("fruit_basket", -8.731, 8.1, 0),
+    "far_clutter_bowl": ("breakfast_bowl", -8.418, 7.932, 0),
+    "far_clutter_plate_1": ("breakfast_plate", -8.083, 8.098, 0),
+    "far_clutter_sorting_tray": ("shallow_sorting_tray", -8.742, 8.464, 0),
+    "far_clutter_plate_2": ("breakfast_plate", -8.403, 8.448, 0),
+    "far_clutter_small_bin": ("small_storage_bin", -8.057, 8.449, 0),
+    "far_clutter_cereal_e": ("cereal_box", -8.395, 8.167, 0),
+    "far_extra_0": ("cereal_box", -8.82, 8.69, 0),
+    "far_extra_1": ("notebook", -8.64, 8.69, 0),
+    "far_extra_2": ("book_blue", -8.41, 8.7, 0),
+    "far_extra_3": ("cereal_box", -8.18, 8.73, 90),
 }
 
 
@@ -527,7 +527,7 @@ def T02(t):
         if top == "best":
             route = place_route(*r2, *r3, DINING, base_xy)
         elif top == "second":
-            route = place_route(*r2, *r3, FAR_DINING, [-7.64, 7.80], past=(DINING,))
+            route = place_route(*r2, *r3, FAR_DINING, [-8.04, 7.80], past=(DINING,))
         else:                                    # both dining tables full: the island, clear of the bowl and pin
             route = place_route(*r2, *r3, "kitchen_island/top", [7.70, 1.75], past=(DINING, FAR_DINING))
         tk_cases[case] = dict(move=mv, add=add, goal=copy.deepcopy(tiers[top]), watch=[A, B, F, *kept],
@@ -1479,7 +1479,7 @@ def T08(t):
                              "yaw_deg": 0.0}}
     left = {"dining": (P(DINING, 3.7, 6.3), "dining_room_0_1"),
             "study": (P("desk_1/top", -0.7, -6.0), "living_room_0_1"),
-            "far_dining": (P(FAR_DINING, -7.8, 7.6), "dining_room_0_0")}
+            "far_dining": (P(FAR_DINING, -8.2, 7.6), "dining_room_0_0")}
     home_cases = {c: dict(
         move={X: pose}, add=tray,
         route=[look(ISL), S("search", object=X, region=region), nav(X), pick(X), nav(ISL), S("approach", target=ISL),

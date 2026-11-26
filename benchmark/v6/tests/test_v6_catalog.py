@@ -257,7 +257,7 @@ def _t01_suitable(cfg, sup="dining_table_2/top"):
     from benchmark.v6 import layout as L
     boxes = {n: L._box(L._asset_of(cfg["base"], n, {}), m) for n, m in cfg["move"].items()
              if m.get("support") == sup}
-    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.468)}[sup]
+    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.868)}[sup]
 
     def gap(a, b):
         return math.hypot(max(0, max(a[0], b[0]) - min(a[2], b[2])), max(0, max(a[1], b[1]) - min(a[3], b[3])))

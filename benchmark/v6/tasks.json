@@ -3836,7 +3836,7 @@
       "wide_storage_bin": {
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.9
        ],
        "yaw_deg": 0.0
@@ -3844,7 +3844,7 @@
       "wooden_block_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.6,
+        -8.0,
         7.2
        ],
        "yaw_deg": 0.0
@@ -3852,7 +3852,7 @@
       "wooden_block_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.72,
+        -8.12,
         7.6
        ],
        "yaw_deg": 0.0
@@ -4472,7 +4472,7 @@
       "wide_storage_bin": {
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.9
        ],
        "yaw_deg": 0.0
@@ -4480,7 +4480,7 @@
       "wooden_block_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.6,
+        -8.0,
         7.2
        ],
        "yaw_deg": 0.0
@@ -4488,7 +4488,7 @@
       "wooden_block_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.72,
+        -8.12,
         7.6
        ],
        "yaw_deg": 0.0
@@ -5036,7 +5036,7 @@
       "clutter_cereal_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.002
        ],
        "yaw_deg": 0.0
@@ -5044,7 +5044,7 @@
       "plate_counter_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         7.239
        ],
        "yaw_deg": 0.0
@@ -5052,7 +5052,7 @@
       "cup_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.458
        ],
        "yaw_deg": 0.0
@@ -5060,7 +5060,7 @@
       "bowl_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.771
        ],
        "yaw_deg": 0.0
@@ -5068,7 +5068,7 @@
       "cup_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.954
        ],
        "yaw_deg": 0.0
@@ -5076,7 +5076,7 @@
       "plate_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         8.473
        ],
        "yaw_deg": 0.0
@@ -5084,7 +5084,7 @@
       "mug_dining_cabinet": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.7
        ],
        "yaw_deg": 0.0
@@ -5092,7 +5092,7 @@
       "spoon_target_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.927,
+        -8.327,
         8.473
        ],
        "yaw_deg": 0.0
@@ -5665,7 +5665,7 @@
       "plate_counter_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         7.064
        ],
        "yaw_deg": 0.0
@@ -5673,7 +5673,7 @@
       "cup_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.283
        ],
        "yaw_deg": 0.0
@@ -5681,7 +5681,7 @@
       "bowl_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.766
        ],
        "yaw_deg": 0.0
@@ -5689,7 +5689,7 @@
       "cup_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.949
        ],
        "yaw_deg": 0.0
@@ -5697,7 +5697,7 @@
       "plate_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         8.298
        ],
        "yaw_deg": 0.0
@@ -5705,7 +5705,7 @@
       "mug_dining_cabinet": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.525
        ],
        "yaw_deg": 0.0
@@ -5713,7 +5713,7 @@
       "clutter_cereal_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.701
        ],
        "yaw_deg": 0.0
@@ -5721,7 +5721,7 @@
       "spoon_target_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.927,
+        -8.327,
         7.064
        ],
        "yaw_deg": 0.0
@@ -6366,7 +6366,7 @@
       "wide_storage_bin": {
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.9
        ],
        "yaw_deg": 0.0
@@ -6374,7 +6374,7 @@
       "wooden_block_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.6,
+        -8.0,
         7.2
        ],
        "yaw_deg": 0.0
@@ -6382,7 +6382,7 @@
       "wooden_block_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.72,
+        -8.12,
         7.6
        ],
        "yaw_deg": 0.0
@@ -7003,7 +7003,7 @@
       "wide_storage_bin": {
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.9
        ],
        "yaw_deg": 0.0
@@ -7011,7 +7011,7 @@
       "wooden_block_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.6,
+        -8.0,
         7.2
        ],
        "yaw_deg": 0.0
@@ -7019,7 +7019,7 @@
       "wooden_block_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.72,
+        -8.12,
         7.6
        ],
        "yaw_deg": 0.0
@@ -7568,7 +7568,7 @@
       "clutter_cereal_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.002
        ],
        "yaw_deg": 0.0
@@ -7576,7 +7576,7 @@
       "plate_counter_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         7.239
        ],
        "yaw_deg": 0.0
@@ -7584,7 +7584,7 @@
       "cup_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.458
        ],
        "yaw_deg": 0.0
@@ -7592,7 +7592,7 @@
       "bowl_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.771
        ],
        "yaw_deg": 0.0
@@ -7600,7 +7600,7 @@
       "cup_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.954
        ],
        "yaw_deg": 0.0
@@ -7608,7 +7608,7 @@
       "plate_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         8.473
        ],
        "yaw_deg": 0.0
@@ -7616,7 +7616,7 @@
       "mug_dining_cabinet": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.7
        ],
        "yaw_deg": 0.0
@@ -7624,7 +7624,7 @@
       "spoon_target_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.927,
+        -8.327,
         8.473
        ],
        "yaw_deg": 0.0
@@ -8198,7 +8198,7 @@
       "plate_counter_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         7.064
        ],
        "yaw_deg": 0.0
@@ -8206,7 +8206,7 @@
       "cup_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.283
        ],
        "yaw_deg": 0.0
@@ -8214,7 +8214,7 @@
       "bowl_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.766
        ],
        "yaw_deg": 0.0
@@ -8222,7 +8222,7 @@
       "cup_side_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         7.949
        ],
        "yaw_deg": 0.0
@@ -8230,7 +8230,7 @@
       "plate_counter_b": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.667,
+        -8.067,
         8.298
        ],
        "yaw_deg": 0.0
@@ -8238,7 +8238,7 @@
       "mug_dining_cabinet": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.525
        ],
        "yaw_deg": 0.0
@@ -8246,7 +8246,7 @@
       "clutter_cereal_a": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.627,
+        -8.027,
         8.701
        ],
        "yaw_deg": 0.0
@@ -8254,7 +8254,7 @@
       "spoon_target_table": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.927,
+        -8.327,
         7.064
        ],
        "yaw_deg": 0.0
@@ -17471,7 +17471,7 @@
         "object": "paperback_book",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.607,
+         -8.007,
          8.179
         ]
        }
@@ -17543,7 +17543,7 @@
         "object": "paperback_book",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.607,
+         -8.007,
          7.508
         ]
        }
@@ -17750,7 +17750,7 @@
         "object": "paperback_book",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.607,
+         -8.007,
          8.179
         ]
        }
@@ -17827,7 +17827,7 @@
         "object": "paperback_book",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.607,
+         -8.007,
          7.508
         ]
        }
@@ -27782,7 +27782,7 @@
        "asset": "wide_storage_bin",
        "support": "dining_table_1/top",
        "xy": [
-        -7.717,
+        -8.117,
         7.604
        ],
        "yaw_deg": 0
@@ -27791,7 +27791,7 @@
        "asset": "cereal_box",
        "support": "dining_table_1/top",
        "xy": [
-        -8.014,
+        -8.414,
         7.387
        ],
        "yaw_deg": 0
@@ -27800,7 +27800,7 @@
        "asset": "toy_box",
        "support": "dining_table_1/top",
        "xy": [
-        -8.277,
+        -8.677,
         7.071
        ],
        "yaw_deg": 90
@@ -27809,7 +27809,7 @@
        "asset": "serving_tray",
        "support": "dining_table_1/top",
        "xy": [
-        -7.707,
+        -8.107,
         7.063
        ],
        "yaw_deg": 0
@@ -27818,7 +27818,7 @@
        "asset": "storage_basket",
        "support": "dining_table_1/top",
        "xy": [
-        -8.296,
+        -8.696,
         7.618
        ],
        "yaw_deg": 0
@@ -27827,7 +27827,7 @@
        "asset": "fruit_basket",
        "support": "dining_table_1/top",
        "xy": [
-        -8.331,
+        -8.731,
         8.1
        ],
        "yaw_deg": 0
@@ -27836,7 +27836,7 @@
        "asset": "breakfast_bowl",
        "support": "dining_table_1/top",
        "xy": [
-        -8.018,
+        -8.418,
         7.932
        ],
        "yaw_deg": 0
@@ -27845,7 +27845,7 @@
        "asset": "breakfast_plate",
        "support": "dining_table_1/top",
        "xy": [
-        -7.683,
+        -8.083,
         8.098
        ],
        "yaw_deg": 0
@@ -27854,7 +27854,7 @@
        "asset": "shallow_sorting_tray",
        "support": "dining_table_1/top",
        "xy": [
-        -8.342,
+        -8.742,
         8.464
        ],
        "yaw_deg": 0
@@ -27863,7 +27863,7 @@
        "asset": "breakfast_plate",
        "support": "dining_table_1/top",
        "xy": [
-        -8.003,
+        -8.403,
         8.448
        ],
        "yaw_deg": 0
@@ -27872,7 +27872,7 @@
        "asset": "small_storage_bin",
        "support": "dining_table_1/top",
        "xy": [
-        -7.657,
+        -8.057,
         8.449
        ],
        "yaw_deg": 0
@@ -27881,7 +27881,7 @@
        "asset": "cereal_box",
        "support": "dining_table_1/top",
        "xy": [
-        -7.995,
+        -8.395,
         8.167
        ],
        "yaw_deg": 0
@@ -27890,7 +27890,7 @@
        "asset": "cereal_box",
        "support": "dining_table_1/top",
        "xy": [
-        -8.42,
+        -8.82,
         8.69
        ],
        "yaw_deg": 0
@@ -27899,7 +27899,7 @@
        "asset": "notebook",
        "support": "dining_table_1/top",
        "xy": [
-        -8.24,
+        -8.64,
         8.69
        ],
        "yaw_deg": 0
@@ -27908,7 +27908,7 @@
        "asset": "book_blue",
        "support": "dining_table_1/top",
        "xy": [
-        -8.01,
+        -8.41,
         8.7
        ],
        "yaw_deg": 0
@@ -27917,7 +27917,7 @@
        "asset": "cereal_box",
        "support": "dining_table_1/top",
        "xy": [
-        -7.78,
+        -8.18,
         8.73
        ],
        "yaw_deg": 90
@@ -33260,7 +33260,7 @@
         "object": "wooden_block_a",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.64,
+         -8.04,
          7.8
         ]
        }
@@ -89906,7 +89906,7 @@
       "kitchen_sponge": {
        "support": "dining_table_1/top",
        "xy": [
-        -7.641,
+        -8.041,
         7.609
        ],
        "yaw_deg": 0.0
@@ -89982,9 +89982,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -7.686,
+         -8.086,
          7.579,
-         -7.596,
+         -7.996,
          7.639
         ],
         "dx": [
@@ -90030,22 +90030,22 @@
       "static": {
        "dining_table_1/top": [
         [
-         -8.2047,
+         -8.6047,
          7.3463,
-         -7.9953,
+         -8.3953,
          7.5539
         ],
         [
-         -7.8993,
+         -8.2993,
          8.1799,
-         -7.7606,
+         -8.1606,
          8.3197
         ],
         [
-         -8.3347,
-         8.0461,
-         -8.1681,
-         8.1947
+         -8.7339,
+         8.0463,
+         -8.5678,
+         8.1957
         ]
        ]
       },
@@ -90054,9 +90054,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],
@@ -162921,7 +162945,7 @@
        "asset": "oatmeal_bowl",
        "support": "dining_table_1/top",
        "xy": [
-        -7.95,
+        -8.35,
         7.6
        ],
        "yaw_deg": 0.0
@@ -162930,7 +162954,7 @@
        "asset": "breakfast_spoon",
        "support": "dining_table_1/top",
        "xy": [
-        -7.95,
+        -8.35,
         7.79
        ],
        "yaw_deg": 0.0
@@ -162967,9 +162991,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -8.0407,
+         -8.4407,
          7.512,
-         -7.8593,
+         -8.2593,
          7.8105
         ],
         "dx": [
@@ -163008,9 +163032,9 @@
       "static": {
        "dining_table_1/top": [
         [
-         -7.681,
+         -8.081,
          7.379,
-         -7.561,
+         -7.961,
          7.439
         ]
        ]
@@ -163020,9 +163044,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],
@@ -163992,7 +164040,7 @@
         "object": "tissue",
         "receptacle": "dining_table_1/top",
         "hint_xy": [
-         -7.621,
+         -8.021,
          7.409
         ]
        }
@@ -167245,7 +167293,7 @@
        "asset": "serving_tray",
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.4
        ],
        "yaw_deg": 0.0
@@ -167255,7 +167303,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -8.12,
+        -8.52,
         7.48
        ],
        "yaw_deg": 0.0
@@ -167332,9 +167380,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -8.21,
+         -8.61,
          7.2209,
-         -7.79,
+         -8.19,
          7.5792
         ],
         "dx": [
@@ -167402,22 +167450,22 @@
       "static": {
        "dining_table_1/top": [
         [
-         -8.2047,
+         -8.6047,
          7.3463,
-         -7.9953,
+         -8.3953,
          7.5539
         ],
         [
-         -7.8993,
+         -8.2993,
          8.1799,
-         -7.7606,
+         -8.1606,
          8.3197
         ],
         [
-         -8.3347,
-         8.0461,
-         -8.1681,
-         8.1947
+         -8.7339,
+         8.0463,
+         -8.5678,
+         8.1957
         ]
        ]
       },
@@ -167426,9 +167474,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],
@@ -167568,7 +167640,7 @@
        "asset": "serving_tray",
        "support": "dining_table_1/top",
        "xy": [
-        -8.0,
+        -8.4,
         7.4
        ],
        "yaw_deg": 0.0
@@ -167578,7 +167650,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -8.1,
+        -8.5,
         7.325
        ],
        "yaw_deg": 0.0
@@ -167588,7 +167660,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -7.9,
+        -8.3,
         7.325
        ],
        "yaw_deg": 0.0
@@ -167598,7 +167670,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -8.1,
+        -8.5,
         7.475
        ],
        "yaw_deg": 0.0
@@ -167608,7 +167680,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -7.9,
+        -8.3,
         7.475
        ],
        "yaw_deg": 0.0
@@ -167871,9 +167943,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -8.21,
+         -8.61,
          7.2209,
-         -7.79,
+         -8.19,
          7.5792
         ],
         "dx": [
@@ -167947,22 +168019,22 @@
       "static": {
        "dining_table_1/top": [
         [
-         -8.2047,
+         -8.6047,
          7.3463,
-         -7.9953,
+         -8.3953,
          7.5539
         ],
         [
-         -7.8993,
+         -8.2993,
          8.1799,
-         -7.7606,
+         -8.1606,
          8.3197
         ],
         [
-         -8.3347,
-         8.0461,
-         -8.1681,
-         8.1947
+         -8.7339,
+         8.0463,
+         -8.5678,
+         8.1957
         ]
        ]
       },
@@ -167971,9 +168043,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],
@@ -169062,8 +169158,8 @@
         "object": "tray_book_1",
         "receptacle": "bookcase_1/top",
         "hint_xy": [
-         -9.59,
-         6.52
+         -9.569,
+         6.528
         ]
        }
       },
@@ -213296,7 +213392,7 @@
        "asset": "toy_car",
        "support": "dining_table_1/top",
        "xy": [
-        -7.95,
+        -8.35,
         7.4
        ],
        "yaw_deg": 0.0
@@ -213361,9 +213457,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -7.9766,
+         -8.3766,
          7.34,
-         -7.9234,
+         -8.3234,
          7.46
         ],
         "dx": [
@@ -213427,9 +213523,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],
@@ -213561,7 +213681,7 @@
        "asset": "toy_car",
        "support": "dining_table_1/top",
        "xy": [
-        -7.661,
+        -8.061,
         7.409
        ],
        "yaw_deg": 0.0
@@ -213570,7 +213690,7 @@
        "asset": "soup_pot",
        "support": "dining_table_1/top",
        "xy": [
-        -7.95,
+        -8.35,
         8.2
        ],
        "yaw_deg": 0.0
@@ -213627,9 +213747,9 @@
         ],
         "support": "dining_table_1/top",
         "box": [
-         -8.08,
+         -8.48,
          7.349,
-         -7.6344,
+         -8.0344,
          8.35
         ],
         "dx": [
@@ -213692,9 +213812,33 @@
         [
          0,
          1,
-         -7.488,
-         7.018,
-         8.605,
+         -7.888,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.941,
+         7.266,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.941,
+         -7.888,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.941,
+         -7.888,
          0.2
         ]
        ],

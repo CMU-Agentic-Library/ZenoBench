@@ -496,7 +496,8 @@ class Episode:
 
     # a name the call could not resolve: the error lists the spellings that would work (11-26), only from what
     # the planner already knows (skills, static places, observed objects), so nothing new is revealed
-    NAME_ERRORS = {"INPUT_UNKNOWN", "NOUN_INVALID", "UNKNOWN_CONTRACT"}
+    NAME_ERRORS = {"INPUT_UNKNOWN", "NOUN_INVALID", "UNKNOWN_CONTRACT", "NOT_OBSERVED"}   # a misspelled
+    # place is refused by the observation gate (NOT_OBSERVED) before the runner's noun check
     OBJECT_TYPES = {"object_ref", "container_ref", "lid_ref", "tool_ref"}
 
     def _known_objects(self):

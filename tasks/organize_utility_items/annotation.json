@@ -42243,10 +42243,10 @@
    "name": "dining_table_1",
    "kind": "furniture",
    "aabb": [
-    -8.544,
+    -8.944,
     6.86,
     -0.012,
-    -7.484,
+    -7.884,
     8.862,
     0.702
    ]
@@ -53783,9 +53783,9 @@
    "category": "TableDining",
    "z": 0.711,
    "aabb_xy": [
-    -8.541,
+    -8.941,
     6.869,
-    -7.488,
+    -7.888,
     8.853
    ],
    "clearance": 1.0
@@ -57520,15 +57520,15 @@
    "body": "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl",
    "asset": "breakfast_bowl",
    "position": [
-    -8.1,
+    -8.5,
     7.45,
     0.7562
    ],
    "aabb": [
-    -8.2047,
+    -8.6047,
     7.3463,
     0.7111,
-    -7.9953,
+    -8.3953,
     7.5539,
     0.8011
    ],
@@ -57583,15 +57583,15 @@
    "body": "/World/TaskAssets/cup_side_table/Asset/breakfast_cup",
    "asset": "breakfast_cup",
    "position": [
-    -7.83,
+    -8.23,
     8.2499,
-    0.7862
+    0.7861
    ],
    "aabb": [
-    -7.8993,
+    -8.2993,
     8.1799,
     0.7111,
-    -7.7606,
+    -8.1606,
     8.3198,
     0.8611
    ],
@@ -57709,17 +57709,17 @@
    "body": "/World/TaskAssets/spoon_side_table/Asset/breakfast_spoon",
    "asset": "breakfast_spoon",
    "position": [
-    -8.2513,
-    8.1203,
-    0.7192
+    -8.651,
+    8.1209,
+    0.7186
    ],
    "aabb": [
-    -8.3347,
-    8.0461,
-    0.6966,
-    -8.1681,
-    8.1947,
-    0.7412
+    -8.7338,
+    8.0458,
+    0.6959,
+    -8.5683,
+    8.196,
+    0.7408
    ],
    "room": "dining_room_0_0",
    "support": "dining_table_1/top"
@@ -57877,15 +57877,15 @@
    "body": "/World/Tasks/plastic_cup/Asset/plastic_cup",
    "asset": "plastic_cup",
    "position": [
-    -7.6835,
-    6.9923,
+    -8.0835,
+    6.9924,
     0.7586
    ],
    "aabb": [
-    -7.7242,
-    6.9515,
+    -8.1242,
+    6.9516,
     0.7111,
-    -7.6428,
+    -8.0428,
     7.0329,
     0.8061
    ],
@@ -57940,15 +57940,15 @@
    "body": "/World/Tasks/rolling_pin/Asset/rolling_pin",
    "asset": "rolling_pin",
    "position": [
-    -7.7102,
+    -8.1102,
     8.6717,
     0.7324
    ],
    "aabb": [
-    -7.8219,
+    -8.2219,
     8.6322,
     0.6997,
-    -7.5984,
+    -7.9984,
     8.711,
     0.7649
    ],
