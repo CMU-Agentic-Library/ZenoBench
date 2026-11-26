@@ -48,6 +48,7 @@
 | T19 `m_can_in_dining_room` s11 | #8 `navigate(wide_storage_bin)`（拿着罐子） | `carry_in: the arm stopped 0.814 m short` | 停在 `bookcase_2` 东侧 [1.846, -0.429, 180°]，右侧 0.43 m 是墙。和 T19 `juice_full`（[2.259, -0.428] tuck 差 0.333 m）、T26 熊（bench 已绕开）是同一处：**靠墙站时 tuck / carry_in 的手臂扫动撞墙，扫动没做碰撞检查**。这只收纳箱（BEDROOM_BIN）被 T19、T03 很多设计共用、多数能过，bench 没挪它。 |
 | T02 `tower_for_kid__counter` s12 | #11 `stack(wooden_block_b, wooden_block_a)` | `tuck: the arm is not where the segment starts; … TRAJOPT_FAIL` | 叠完积木收臂时手臂不在段起点，重建失败。 |
 | T04 `two_guests__glass_in_cabinet` s12 | #3 `pick(cup_counter_b)`（岛台，离北沿 8 cm） | `pick_arrive: no collision-free path to the pose (TRAJOPT_FAIL)` | `two_guests__mug` 你三次全量都过；轨迹优化偶发失败，没换站位。 |
+| T07 `vessel_decides_appliance__in_ceramic_bowl` s11（路线改好后重跑） | #8 `close(kitchen_microwave)` | `press kitchen_microwave/door_button: no base pose reaches the button (… built 12, no_path 11)` | 碗放进微波炉后，按门按钮的 12 个站位里 11 个开不过去；机器人在 [4.827, 1.894, -165°]。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -68,4 +69,5 @@
 - T26 `whose`：图画书横放时宽 14 cm，朝外伸出最多 5.495 cm < 捏边要的 5.5 cm，没有可推的边 → 和 `scattered` 一样转 90° 长边朝外。
 - T14 `within_kids_reach__set_on_large_shelf_4`：书架中段放第二层时拿着的书撞书架 → 放置点挪到离东头 20 cm（同 large_shelf_5 能过的位置），s13 重跑成功。
 - T30 `bowl_put_away__bowl_inside`：碗在 4 号柜里面（上方有柜顶板，捏碗沿进不去，违反 11-19 的限制）→ 照 11-21 `mug_inside` 的先例放到 4 号柜顶。
+- T30 `bowl_inside` 改到柜顶后 s12 重跑成功。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
