@@ -56,6 +56,16 @@ def test_a_pick_is_planned_in_order_and_holds_the_load_after_closing():
     assert seen and seen[0].held("right").name == "cup"            # the carry is planned with the load held
 
 
+def test_a_hold_only_pick_stops_at_the_grasp_anchor():
+    # HAND_PLAN 9i (brace, a handover's taking hand): plan_pick(stop="pick_held") -- the same pick up to the close and
+    # its anchor, no lift, no carry
+    kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
+    plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP,
+                     _carry([]), stop="pick_held")
+    names = tuple(s.name for s in plan.segments)
+    assert names == PICK_STAGES[:PICK_STAGES.index("pick_held") + 1] and plan.segments[-1].kind == "anchor"
+
+
 def test_a_pick_from_a_later_stage_starts_there():
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     held = Held("cup", np.eye(4))

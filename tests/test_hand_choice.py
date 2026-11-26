@@ -88,3 +88,40 @@ def test_a_touch_has_every_target_with_every_empty_hand_in_one_park_search(monke
     rig.held_by = lambda side="right": {"name": "pen"} if side == "right" else None
     job = P.touch_job(rig, {"name": "cup"}, None, skill=SimpleNamespace(build=lambda *a, **k: None))
     assert {g[3] for g in job.problem.goals} == {"left"} and job.problem.hand == "left"
+
+
+def test_a_picks_goal_set_has_every_empty_hand_and_the_route_may_name_one(monkeypatch):
+    # HAND_PLAN 3.1 / 3.2: each grasp candidate with each empty hand one goal (the left VARIANT_COST behind); the
+    # route's hands "right" / "left" keeps only that one, "any" / "both" / none both; a full hand never
+    from zeno_skills.skill_jobs import pick as PJ
+    rig = SimpleNamespace(held=None, left_held=None, kin=SimpleNamespace(side="right"), left_kin=SimpleNamespace(side="left"))
+    assert PJ.pick_hands(rig, "cup") == ("right", "left") == PJ.pick_hands(rig, "cup", "any") == PJ.pick_hands(rig, "cup", "both")
+    assert PJ.pick_hands(rig, "cup", "left") == ("left",)
+    rig.held = {"name": "pen"}
+    assert PJ.pick_hands(rig, "cup") == ("left",)
+    with pytest.raises(Exception, match="no empty hand"):
+        PJ.pick_hands(rig, "cup", "right")
+    monkeypatch.setattr(PJ, "_carry_goal_set", lambda rig, name, side="right": f"carry-{side}")
+    monkeypatch.setattr(PJ, "_grasp_of", lambda name, g, T: g)
+    monkeypatch.setattr(PJ, "_grasp_approach", lambda g: (np.array([0.0, 0.0, -1.0]), 0.07))
+    cands = [{"p": np.array([0.5, 0.0, 0.8]), "R": np.eye(3)}, {"p": np.array([0.5, 0.1, 0.8]), "R": np.eye(3)}]
+    problem, carry, grasps, which = PJ._pick_problem(rig, "cup", cands, np.eye(4), (0.0, 0.0), sides=("right", "left"))
+    assert [g[3] for g in problem.goals] == ["right", "right", "left", "left"] and which == [0, 1, 0, 1]
+    assert [g[2] for g in problem.goals[2:]] == pytest.approx([g[2] + VARIANT_COST for g in problem.goals[:2]])
+    assert carry == {"right": "carry-right", "left": "carry-left"} and problem.side(2) == "left"
+
+
+def test_a_handover_offers_the_taking_hand_side_grasps_of_a_lying_loads_top_pinch():
+    # HAND_PLAN 9i: a top pinch whose fingers close horizontally gives two side pinches, in along that closing
+    # direction either way, the fingers closing vertically; a top pinch closing vertically gives none
+    from zeno_skills.skill_jobs.pick import side_variants
+    flat = {"kind": "top_pinch", "R": np.array([[0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, -1.0]]),
+            "p": np.zeros(3)}
+    out = side_variants([flat, {"kind": "rim_pinch", "R": np.eye(3), "p": np.zeros(3)}])
+    assert [g["kind"] for g in out] == ["side_pinch", "side_pinch"]
+    for g in out:
+        R = np.asarray(g["R"])
+        assert abs(R[2, 2]) < 1e-9 and abs(abs(R[2, 1]) - 1.0) < 1e-9      # in horizontally, closing vertically
+    assert np.allclose(np.asarray(out[0]["R"])[:, 2], -np.asarray(out[1]["R"])[:, 2])   # either way
+    upright = {"kind": "top_pinch", "R": np.array([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]), "p": np.zeros(3)}
+    assert side_variants([upright]) == []
