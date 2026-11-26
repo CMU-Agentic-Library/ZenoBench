@@ -1,6 +1,6 @@
 # ZenoBench 替代任务基线
 
-北京时间 2026-11-26 15:59，原生计分 **26 / 2163** 局，运行中断 0 局，待取得结局 2137 局。 当前为阶段快照，各行覆盖的布局随调度进度变化。
+北京时间 2026-11-26 16:19，原生计分 **52 / 2163** 局，运行中断 0 局，待取得结局 2111 局。 当前为阶段快照，各行覆盖的布局随调度进度变化。
 
 来自 `substitution_smoke.json` 的 103 局覆盖 20 个任务、52 个布局。所有方法使用相同的布局和种子。其中有 42 局可按物体分级，另有 61 局按完成档位评分。这批场景均需替代，无法估计理想物可用时的误替代率。
 
@@ -14,27 +14,27 @@
 
 | 方法 | 模型 | 计分/计划 | 中断 | 任务成功 | 平均原生分 | 严格成功 | 执行故障/失败 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 1/2 |
-| OpenLoop | qwen3.5-27b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
-| OpenLoop | internvl3.5-8b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
-| ReAct | qwen3.5-4b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
-| ReAct | qwen3.5-27b | 0/103 | 0 | — | — | — | — |
-| ReAct | internvl3.5-8b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
-| CodeAsPolicies | qwen3.5-4b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
-| CodeAsPolicies | qwen3.5-27b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
-| CodeAsPolicies | internvl3.5-8b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
+| OpenLoop | qwen3.5-4b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 1/3 |
+| OpenLoop | qwen3.5-27b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 0/3 |
+| OpenLoop | internvl3.5-8b | 4/103 | 0 | 0/4 | 0.000 | 0/4 | 0/4 |
+| ReAct | qwen3.5-4b | 6/103 | 0 | 0/6 | 0.000 | 0/6 | 2/6 |
+| ReAct | qwen3.5-27b | 2/103 | 0 | 1/2 | 0.500 | 1/2 | 0/1 |
+| ReAct | internvl3.5-8b | 4/103 | 0 | 1/4 | 0.150 | 0/4 | 0/3 |
+| CodeAsPolicies | qwen3.5-4b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 0/3 |
+| CodeAsPolicies | qwen3.5-27b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 0/3 |
+| CodeAsPolicies | internvl3.5-8b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 1/3 |
 | SayPlan | qwen3.5-4b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 2/2 |
-| SayPlan | qwen3.5-27b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 2/2 |
-| SayPlan | internvl3.5-8b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
-| GraphManager | qwen3.5-4b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 1/1 |
-| GraphManager | qwen3.5-27b | 0/103 | 0 | — | — | — | — |
-| GraphManager | internvl3.5-8b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
+| SayPlan | qwen3.5-27b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 3/3 |
+| SayPlan | internvl3.5-8b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 0/2 |
+| GraphManager | qwen3.5-4b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 1/3 |
+| GraphManager | qwen3.5-27b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
+| GraphManager | internvl3.5-8b | 3/103 | 0 | 0/3 | 0.000 | 0/3 | 0/3 |
 | ReActHint | qwen3.5-4b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
-| ReActHint | qwen3.5-27b | 0/103 | 0 | — | — | — | — |
-| ReActHint | internvl3.5-8b | 0/103 | 0 | — | — | — | — |
-| ReActPrivileged | qwen3.5-4b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
+| ReActHint | qwen3.5-27b | 1/103 | 0 | 1/1 | 1.000 | 1/1 | — |
+| ReActHint | internvl3.5-8b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
+| ReActPrivileged | qwen3.5-4b | 2/103 | 0 | 0/2 | 0.000 | 0/2 | 1/2 |
 | ReActPrivileged | qwen3.5-27b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
-| ReActPrivileged | internvl3.5-8b | 0/103 | 0 | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | 1/103 | 0 | 0/1 | 0.000 | 0/1 | 0/1 |
 
 ## 替代选择
 
@@ -42,53 +42,53 @@
 
 | 方法 | 模型 | B 命中最佳 | B 漏替代 | B 选差档 | B 抢占 | B 其他物体 | B_open 满分 | B_open 部分分 | B_open 失败 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| OpenLoop | qwen3.5-27b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| OpenLoop | internvl3.5-8b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| ReAct | qwen3.5-4b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
-| ReAct | qwen3.5-27b | — | — | — | — | — | — | — | — |
-| ReAct | internvl3.5-8b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| CodeAsPolicies | qwen3.5-4b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| CodeAsPolicies | qwen3.5-27b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| CodeAsPolicies | internvl3.5-8b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
+| OpenLoop | qwen3.5-4b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| OpenLoop | qwen3.5-27b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| OpenLoop | internvl3.5-8b | — | — | — | — | — | 0/4 | 0/4 | 4/4 |
+| ReAct | qwen3.5-4b | 0/2 | 2/2 | 0/2 | 0/2 | 0/2 | 0/4 | 0/4 | 4/4 |
+| ReAct | qwen3.5-27b | — | — | — | — | — | 1/2 | 0/2 | 1/2 |
+| ReAct | internvl3.5-8b | 0/1 | 0/1 | 1/1 | 0/1 | 0/1 | 0/3 | 0/3 | 3/3 |
+| CodeAsPolicies | qwen3.5-4b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| CodeAsPolicies | qwen3.5-27b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| CodeAsPolicies | internvl3.5-8b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
 | SayPlan | qwen3.5-4b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| SayPlan | qwen3.5-27b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
-| SayPlan | internvl3.5-8b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
-| GraphManager | qwen3.5-4b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
-| GraphManager | qwen3.5-27b | — | — | — | — | — | — | — | — |
-| GraphManager | internvl3.5-8b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
+| SayPlan | qwen3.5-27b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| SayPlan | internvl3.5-8b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
+| GraphManager | qwen3.5-4b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
+| GraphManager | qwen3.5-27b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
+| GraphManager | internvl3.5-8b | — | — | — | — | — | 0/3 | 0/3 | 3/3 |
 | ReActHint | qwen3.5-4b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
-| ReActHint | qwen3.5-27b | — | — | — | — | — | — | — | — |
-| ReActHint | internvl3.5-8b | — | — | — | — | — | — | — | — |
-| ReActPrivileged | qwen3.5-4b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
+| ReActHint | qwen3.5-27b | — | — | — | — | — | 1/1 | 0/1 | 0/1 |
+| ReActHint | internvl3.5-8b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
+| ReActPrivileged | qwen3.5-4b | — | — | — | — | — | 0/2 | 0/2 | 2/2 |
 | ReActPrivileged | qwen3.5-27b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
-| ReActPrivileged | internvl3.5-8b | — | — | — | — | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | — | — | — | — | — | 0/1 | 0/1 | 1/1 |
 
 ## 按理想物不可用原因划分的严格成功
 
 | 方法 | 模型 | 缺失（56 局） | 被占用（26 局） | 能力不足（19 局） | 看着像但不能用（2 局） |
 | --- | --- | --- | --- | --- | --- |
-| OpenLoop | qwen3.5-4b | 0/2 | — | — | — |
-| OpenLoop | qwen3.5-27b | 0/2 | — | — | — |
-| OpenLoop | internvl3.5-8b | 0/2 | — | — | — |
-| ReAct | qwen3.5-4b | 0/1 | — | — | — |
-| ReAct | qwen3.5-27b | — | — | — | — |
-| ReAct | internvl3.5-8b | 0/2 | — | — | — |
-| CodeAsPolicies | qwen3.5-4b | 0/2 | — | — | — |
-| CodeAsPolicies | qwen3.5-27b | 0/2 | — | — | — |
-| CodeAsPolicies | internvl3.5-8b | 0/2 | — | — | — |
+| OpenLoop | qwen3.5-4b | 0/3 | — | — | — |
+| OpenLoop | qwen3.5-27b | 0/3 | — | — | — |
+| OpenLoop | internvl3.5-8b | 0/4 | — | — | — |
+| ReAct | qwen3.5-4b | 0/5 | 0/1 | — | — |
+| ReAct | qwen3.5-27b | 1/1 | 0/1 | — | — |
+| ReAct | internvl3.5-8b | 0/3 | 0/1 | — | — |
+| CodeAsPolicies | qwen3.5-4b | 0/3 | — | — | — |
+| CodeAsPolicies | qwen3.5-27b | 0/3 | — | — | — |
+| CodeAsPolicies | internvl3.5-8b | 0/3 | — | — | — |
 | SayPlan | qwen3.5-4b | 0/2 | — | — | — |
-| SayPlan | qwen3.5-27b | 0/2 | — | — | — |
-| SayPlan | internvl3.5-8b | 0/1 | — | — | — |
-| GraphManager | qwen3.5-4b | 0/1 | — | — | — |
-| GraphManager | qwen3.5-27b | — | — | — | — |
-| GraphManager | internvl3.5-8b | 0/2 | — | — | — |
+| SayPlan | qwen3.5-27b | 0/3 | — | — | — |
+| SayPlan | internvl3.5-8b | 0/2 | — | — | — |
+| GraphManager | qwen3.5-4b | 0/3 | — | — | — |
+| GraphManager | qwen3.5-27b | 0/1 | — | — | — |
+| GraphManager | internvl3.5-8b | 0/3 | — | — | — |
 | ReActHint | qwen3.5-4b | 0/1 | — | — | — |
-| ReActHint | qwen3.5-27b | — | — | — | — |
-| ReActHint | internvl3.5-8b | — | — | — | — |
-| ReActPrivileged | qwen3.5-4b | 0/1 | — | — | — |
+| ReActHint | qwen3.5-27b | 1/1 | — | — | — |
+| ReActHint | internvl3.5-8b | 0/1 | — | — | — |
+| ReActPrivileged | qwen3.5-4b | 0/2 | — | — | — |
 | ReActPrivileged | qwen3.5-27b | 0/1 | — | — | — |
-| ReActPrivileged | internvl3.5-8b | — | — | — | — |
+| ReActPrivileged | internvl3.5-8b | 0/1 | — | — | — |
 
 ## 同局消融
 
@@ -98,7 +98,11 @@
 | --- | --- | --- | --- | --- | --- |
 | qwen3.5-4b | ReActHint | 0 | — | — | — |
 | qwen3.5-4b | ReActPrivileged | 1 | 0/1 | 0/1 | +0.000 |
-| qwen3.5-27b | ReActHint | 0 | — | — | — |
-| qwen3.5-27b | ReActPrivileged | 0 | — | — | — |
-| internvl3.5-8b | ReActHint | 0 | — | — | — |
-| internvl3.5-8b | ReActPrivileged | 0 | — | — | — |
+| qwen3.5-27b | ReActHint | 1 | 1/1 | 1/1 | +0.000 |
+| qwen3.5-27b | ReActPrivileged | 1 | 1/1 | 0/1 | -1.000 |
+| internvl3.5-8b | ReActHint | 1 | 0/1 | 0/1 | +0.000 |
+| internvl3.5-8b | ReActPrivileged | 1 | 0/1 | 0/1 | +0.000 |
+
+## 执行器校准
+
+另取 `T04_cup_or_mug_to_cabinet` 的 `no_cup`、种子 10，用目录里的 `alternative_mug` 脚本和相同的 sticky/benchmark 执行。共调用 8 次技能，8 次符合脚本预期，原生得分为 1.0，任务判定为成功。当前有 1 局 VLM 原生记录与其配置及初始条件哈希一致。此单局校准独立于表中 VLM 计数。

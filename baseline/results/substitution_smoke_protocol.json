@@ -95,5 +95,38 @@
     },
     "queue_scope": "One pending startup per environment service, schedule time before the request is outside the native task clock.",
     "extra_services_separate_start_queues_from": "2026-11-26T07:57:51.893900+00:00"
+  },
+  "physical_reference": {
+    "task_id": "T04_cup_or_mug_to_cabinet",
+    "variant": "no_cup",
+    "seed": 10,
+    "route": "alternative_mug",
+    "route_sha1": "51ecceef3576",
+    "profile": "sticky/benchmark",
+    "config_hash": "9ebff1ae006f",
+    "episode_hash": "5eeee944ac34",
+    "task_success": true,
+    "score": {
+      "tier": "best",
+      "level": "ideal",
+      "score": 1.0,
+      "D": 1,
+      "branch": 0,
+      "branch_atoms": [
+        [
+          "on",
+          "mug",
+          "kitchen_cabinet_6/top"
+        ],
+        [
+          "upright",
+          "mug"
+        ]
+      ]
+    },
+    "calls": 8,
+    "expected_outcomes_met": 8,
+    "native_result": "calibration/scripted/T04_cup_or_mug_to_cabinet/s10_no_cup_alternative_mug@sticky_benchmark/result.json",
+    "result_sha256": "b4842c39becfb30892360dffada2fe1f9dbe0ec1ea9359ec347b0e820c0e14bd"
   }
 }

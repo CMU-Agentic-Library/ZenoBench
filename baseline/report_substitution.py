@@ -145,6 +145,19 @@ def render(manifest, rows, batch):
                            ratio([indexed[method][k] for k in common], "strict"),
                            f"{mean(differences):+.3f}" if common else "—"])
     lines += table(["模型", "与 ReAct 配对的方法", "同局数", "ReAct 严格成功", "消融严格成功", "平均原生分差"], paired)
+    ref = manifest.get("physical_reference")
+    if ref:
+        peers = [r for r in rows if r["status"] == "scored" and (r["task"], r["layout"], r["seed"], r["profile"]) ==
+                 (ref["task_id"], ref["variant"], ref["seed"], ref["profile"])]
+        if any((r["config_hash"], r["episode_hash"]) != (ref["config_hash"], ref["episode_hash"]) for r in peers):
+            raise ValueError("scripted reference and planner have different initial conditions")
+        lines += ["## 执行器校准", "",
+                  f"另取 `{ref['task_id']}` 的 `{ref['variant']}`、种子 {ref['seed']}，用目录里的 "
+                  f"`{ref['route']}` 脚本和相同的 {ref['profile']} 执行。"
+                  f"共调用 {ref['calls']} 次技能，{ref['expected_outcomes_met']} 次符合脚本预期，"
+                  f"原生得分为 {ref['score']['score']:.1f}，任务判定为{'成功' if ref['task_success'] else '失败'}。"
+                  f"当前有 {len(peers)} 局 VLM 原生记录与其配置及初始条件哈希一致。"
+                  "此单局校准独立于表中 VLM 计数。", ""]
     return "\n".join(lines)
 
 
