@@ -50,6 +50,12 @@
 | T04 `two_guests__glass_in_cabinet` s12 | #3 `pick(cup_counter_b)`（岛台，离北沿 8 cm） | `pick_arrive: no collision-free path to the pose (TRAJOPT_FAIL)` | `two_guests__mug` 你三次全量都过；轨迹优化偶发失败，没换站位。 |
 | T07 `vessel_decides_appliance__in_ceramic_bowl` s11（路线改好后重跑） | #8 `close(kitchen_microwave)` | `press kitchen_microwave/door_button: no base pose reaches the button (… built 12, no_path 11)` | 碗放进微波炉后，按门按钮的 12 个站位里 11 个开不过去；机器人在 [4.827, 1.894, -165°]。 |
 | T07 `vessel_decides_appliance__in_glass_box` s15（路线改好后重跑） | #9 `place(glass_food_container, kitchen_microwave/inside_floor)` | `no spot of 1 on kitchen_microwave/inside_floor reachable (21 goals; out_of_reach 21 …)` | 捏边平拿的玻璃饭盒放进微波炉腔体，21 个目标全部 out_of_reach。 |
+| **T01 往餐桌放平装书（捏边平放到桌沿），25 次过 15 次** | `place(paperback_book, dining_table_2/top 或 dining_table_1/top)` | `place_reach: the arm stopped 0.096–0.200 m short`（拿着的书撞桌沿 `held:paperback_book–dining_table_2`）；`tuck: … left_gripper_right_finger_link 3–6 mm`；`no spot … reachable (carry tilt held: TRAJOPT_FAIL)` | 失败的种子：seats_b s13、reader_seat__mug_2_flat s15、no_room_fallback__seats_b_flat s17、which_table__near_a_flat s19、near_b_flat s17、far_b s18、which_book__bedroom s12、which_book__living s13。左右手失败率一样（左 6/16、右 3/8）。放置点离桌沿 3.5 cm（让书伸出桌边）时，伸手阶段书刮桌沿、抽手时手指贴书。 |
+| T08 `which_surface__dining` s12 | #7 `wipe(dining_table_2/top, kitchen_sponge)` | `INTERNAL_ERROR: KeyError: 'touch dining_table_2: neither an object, an articulated part, a button nor static furniture'` | 擦餐桌直接报错：9g 以后 wipe 走 touch，touch 不认 `dining_table_2`（擦岛台能过）。 |
+| T13 `finish_the_table__adult_seat` s12、T14 `homework_stays` s11 | `pick(mug)`（`bookcase_2/top`）/ `pick(desk_mug)` | `pick_reach: the arm stopped 0.461 / 0.510 m short` | 右手爪张开时碰 `bookcase_2` 背后的墙 wall_273；左臂伸手时碰墙 wall_768。bench 已让能站的边离墙 ≥0.5 m（dc76c1c6），手臂扫墙本身仍是技能侧。 |
+| 判成没拿着（又 4 次） | T25 `cup_elsewhere__only_mugs` s11、`cups_for_two__none_two_inside` s13（放电视柜）；T01 `which_table__far_b_flat` s13；T12 `duck_in_study__alt_dining_table_2` s11 | `holding(hand=any, …) is false (slip 0.002–0.026 m, fingers [0.0, 0.0])` | 同上面 holding 那一行。 |
+| 冰箱里放下后收臂（又 3 次） | T27 `two_leftovers__soup_on_stove` s11、`which_is_leftover` s12、`fruit_stays_out` s11 | `tuck: … finger 2–5 mm` / `no collision-free IK at the set-down pose` | 同 T10 冰箱那一行。 |
+| 其他（各一次） | T30 `how_many__three_bowls` s13 放岛台后收臂 1 mm；T09 `pot_in_use__in_use` s11 放锅后收臂 1 mm；T14 `within_kids_reach__set_on_large_shelf_5` s11 放第二层差 0.133 m；T15 `no_lid` s11 推盘子找不到站位；T18 `door_stuck` s11 拿碗无抓取；T23 `by_kind__bin_full` s11 勺子放岛台；T03 `no_bin_substitute__basket` s12 去擀面杖无全身路径；T07 `microwave_broken` s12 燕麦放微波炉够不着；T08 `far_sponge_spare_only` s17 wipe 差 6 mm；T09 `pot_in_dining_room__spare_pot` s12 拿备用锅无抓取；T15 `lid_in_use` s11 推盘子差 9 mm；T17 `hide_lid_in_use` s12 盘子当锅盖 | | |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -71,4 +77,7 @@
 - T14 `within_kids_reach__set_on_large_shelf_4`：书架中段放第二层时拿着的书撞书架 → 放置点挪到离东头 20 cm（同 large_shelf_5 能过的位置），s13 重跑成功。
 - T30 `bowl_put_away__bowl_inside`：碗在 4 号柜里面（上方有柜顶板，捏碗沿进不去，违反 11-19 的限制）→ 照 11-21 `mug_inside` 的先例放到 4 号柜顶。
 - T30 `bowl_inside` 改到柜顶后 s12 重跑成功。
+- 开局离墙：能满足的房间里 0.85 m（0.66 m 时 T06 s17、T01 s16 第一次收臂还是碰墙，e5f1abcd）。
+- 能站的边离墙 ≥0.5 m（dc76c1c6）：`bookcase_2` 侧边靠墙那段不再算，种子把东西摆到能从正面够到的地方。
+- T07 微波炉路线开完门先开到岛台再看（1a821a32）。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
