@@ -45,6 +45,7 @@
 | T07 `vessel_decides_appliance__in_ceramic_bowl` s11 | #2 `look(kitchen_island/top)` | `face kitchen_island/top: the goal pose collides in the arrival posture (left_arm_link_3 in World/mesh 17 mm)` | 开微波炉后在 [4.457, 1.691, 75°] 原地转身看岛台，转到的朝向左臂碰墙体；look 没换个位置再转。 |
 | T09 `pot_in_dining_room__pot_away` s11 | #12 `sweep([cherry_tomato_1, cherry_tomato_2], 0.12)` | `tuck: its path collides now at 121/200: world left_gripper_left_finger_link 0 mm; … TRAJOPT_FAIL` | 扫完后收臂中途擦到东西，重建也失败。 |
 | T15 `lid_elsewhere__dining` s11（同 T09 `x6_gd_tomato_elsewhere__on_plate` s11） | #8 `cover(handled_cooking_pot, pot_lid)` | `place_arrive: no collision-free IK at the set-down pose (out of reach)`（anchor off 1.13 m） | 去灶台前停车点 [8.41, 1.175] 的路上，head_link / right_arm_link_5 撞上 `WindowFactory_3015`（窗户），底座停在 [9.51, 1.41]。**这扇窗户的碰撞体在场景里，但不在 annotation.json 的 obstacles 里**（grep 0 次），底座规划看不到它。两个 episode 都是这样。 |
+| T19 `m_can_in_dining_room` s11 | #8 `navigate(wide_storage_bin)`（拿着罐子） | `carry_in: the arm stopped 0.814 m short` | 停在 `bookcase_2` 东侧 [1.846, -0.429, 180°]，右侧 0.43 m 是墙。和 T19 `juice_full`（[2.259, -0.428] tuck 差 0.333 m）、T26 熊（bench 已绕开）是同一处：**靠墙站时 tuck / carry_in 的手臂扫动撞墙，扫动没做碰撞检查**。这只收纳箱（BEDROOM_BIN）被 T19、T03 很多设计共用、多数能过，bench 没挪它。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
