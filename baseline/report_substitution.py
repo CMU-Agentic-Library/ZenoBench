@@ -26,6 +26,10 @@ def collect(root, batch):
     digest = hashlib.sha256(batch.read_bytes()).hexdigest()
     if digest != manifest["batch_sha256"]:
         raise ValueError("batch differs from the run manifest")
+    if "catalog_sha256" in manifest:
+        catalog_digest = hashlib.sha256((V6 / "tasks.json").read_bytes()).hexdigest()
+        if catalog_digest != manifest["catalog_sha256"]:
+            raise ValueError("task catalog differs from the one used by the simulator")
     jobs = episodes(batch)
     tasks = catalog()
     layouts, initial, exp_ids = {}, {}, set()
