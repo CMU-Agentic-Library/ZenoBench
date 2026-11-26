@@ -9,7 +9,7 @@ from unittest.mock import patch
 import pytest
 
 from baseline import run_http
-from baseline.comparison import MAIN, MODELS, episodes, graph_library, representatives, result_is_current, result_path, run_graph
+from baseline.comparison import MAIN, METHODS, MODELS, V6, episodes, graph_library, representatives, result_is_current, result_path, run_graph
 from baseline.graph_profile import isolated_workspace
 from baseline.harness_usage import recorded_usage
 from baseline.launch_comparison import claim_episode, pending
@@ -57,6 +57,27 @@ def test_resume_interrupted_ablation_keeps_the_original_rows(tmp_path):
     directory.mkdir(parents=True)
     (directory / "result.json").write_text("{}")
     assert next(pending(tmp_path, 1, [model], [method])) == jobs[1]
+
+
+def test_named_batch_pairs_every_seed_across_methods(tmp_path):
+    batch = V6 / "batches/substitution_smoke.json"
+    declared = json.loads(batch.read_text())
+    fields = ("task", "variant", "seed")
+    assert [tuple(j[k] for k in fields) for j in episodes(batch)] == [
+        tuple(j[k] for k in fields) for j in declared]
+    matrix = list(pending(tmp_path, batch=batch))
+    assert len(matrix) == len({directory for *_, directory in matrix}) == len(declared) * len(MODELS) * len(METHODS)
+    for model in MODELS:
+        for method in METHODS:
+            shards = [(index, total) for m, p, index, total, _ in matrix if (m, p) == (model, method)]
+            assert shards == [(i, len(declared)) for i in range(len(declared))]
+    invalid = tmp_path / "invalid.json"
+    invalid.write_text(json.dumps([declared[0], declared[0]]))
+    with pytest.raises(ValueError, match="duplicate"):
+        episodes(invalid)
+    invalid.write_text(json.dumps([{**declared[0], "seed": -1234}]))
+    with pytest.raises(ValueError, match="outside"):
+        episodes(invalid)
 
 
 def test_reference_table_matches_native_layout_and_distinguishes_missing_from_zero(tmp_path):

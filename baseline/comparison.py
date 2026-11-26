@@ -3,6 +3,7 @@
 import argparse
 from collections import defaultdict
 from itertools import zip_longest
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -36,7 +37,7 @@ def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def episodes():
+def episodes(batch=None):
     catalog = {t["task_id"]: t for t in read_json(V6 / "tasks.json")["tasks"]}
     groups = defaultdict(list)
     seen = set()
@@ -56,7 +57,17 @@ def episodes():
     # Interleave conditions, then designs within each seed, so the first pass covers the task set.
     for rows in groups.values():
         rows.sort(key=lambda j: (j["seed"], j["design"], j["task"]))
-    return [job for row in zip_longest(*(groups[c] for c in CATEGORIES)) for job in row if job]
+    jobs = [job for row in zip_longest(*(groups[c] for c in CATEGORIES)) for job in row if job]
+    if batch is None:
+        return jobs
+    by_key = {(j["task"], j["variant"], j["seed"]): j for j in jobs}
+    keys = [(row["task"], row["variant"], row["seed"]) for row in read_json(batch)]
+    if not keys or len(keys) != len(set(keys)):
+        raise ValueError(f"empty or duplicate episode list in {batch}")
+    unknown = set(keys) - by_key.keys()
+    if unknown:
+        raise ValueError(f"episodes outside the v6 catalog in {batch}: {sorted(unknown)}")
+    return [by_key[key] for key in keys]
 
 
 def representatives(jobs):
@@ -155,6 +166,7 @@ def main():
     ap.add_argument("--native-dir", type=Path, required=True, help="env_service --log-dir")
     ap.add_argument("--sim-version", default="5.1.0.0", help="Isaac Sim wheel version of this output root")
     ap.add_argument("--graph-bin", default="graph-manager-run")
+    ap.add_argument("--batch", type=Path, help="evaluate every listed v6 episode, including for ablations")
     ap.add_argument("--shards", default=1, type=int)
     ap.add_argument("--shard", default=0, type=int, help="zero-based disjoint episode shard")
     args = ap.parse_args()
@@ -174,13 +186,15 @@ def main():
               "revision": MODELS[args.model][1], "method": args.method, "profile": METHODS[args.method][1],
               "max_calls": 60, "temperature": 0, "max_tokens": 4096, "qwen_thinking": False,
               "isaacsim": args.sim_version}
+    if args.batch is not None:
+        config["batch_sha256"] = hashlib.sha256(args.batch.read_bytes()).hexdigest()
     meta = settings / "protocol.json"
     if meta.exists() and read_json(meta) != config:
         raise ValueError(f"changed protocol in {settings}; start a new output root")
     write_report(meta, config)
     menu = default_menu()
-    jobs = episodes()
-    if args.method in ABLATIONS:
+    jobs = episodes(args.batch)
+    if args.batch is None and args.method in ABLATIONS:
         jobs = representatives(jobs)
     jobs = jobs[args.shard::args.shards]
     library, patch = settings / "library", settings / "local-model.patch.yml"

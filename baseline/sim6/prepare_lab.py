@@ -1,4 +1,4 @@
-"""Prepare a separate, rigid-body Isaac Lab 2.3.2 checkout for Isaac Sim 6.0.0.1.
+"""Prepare a separate, rigid-body Isaac Lab 2.3.2 checkout for Isaac Sim 6.
 
 Run this in the Sim 6 Python environment. Source is the unpacked 2.3.2 wheel's
 isaaclab directory (apps/ and source/). Put OUTPUT/source/isaaclab on PYTHONPATH.
@@ -13,12 +13,12 @@ import shutil
 import tomllib
 
 
-def adapt(path, text, urdf):
+def adapt(path, text, urdf, app_version="6.0.0"):
     if path.suffix == ".kit":
         if path.name == "isaaclab.python.headless.rendering.kit":
             text = text.replace('"omni.kit.viewport.rtx" = {}',
                                 '"omni.kit.viewport.rtx" = {}\n"omni.kit.hydra_texture" = {}')
-        return text.replace('app.version = "5.1.0"', 'app.version = "6.0.0"').replace(
+        return text.replace('app.version = "5.1.0"', f'app.version = "{app_version}"').replace(
             '"isaacsim.asset.importer.urdf" = {version = "2.4.31", exact = true}',
             f'"isaacsim.asset.importer.urdf" = {{version = "{urdf}", exact = true}}')
     text = text.replace("import omni.physics.tensors.impl.api as physx", "import omni.physics.tensors.api as physx")
@@ -65,8 +65,8 @@ def main():
     if lab_version != "2.3.2":
         raise ValueError(f"expected Isaac Lab 2.3.2, got {lab_version}")
     version = md.version("isaacsim")
-    if version != "6.0.0.1":
-        raise ValueError(f"expected Isaac Sim 6.0.0.1, got {version}")
+    if version not in {"6.0.0.1", "6.2.0.0"}:
+        raise ValueError(f"unsupported Isaac Sim wheel for this overlay: {version}")
     sim = Path(md.distribution("isaacsim").locate_file("isaacsim"))
     ext = sim / "exts/isaacsim.asset.importer.urdf/config/extension.toml"
     urdf = tomllib.loads(ext.read_text())["package"]["version"]
@@ -77,7 +77,7 @@ def main():
     changes = {}
     for path in [*output.glob("apps/**/*.kit"), *output.glob("source/**/*.py")]:
         original = path.read_text()
-        updated = adapt(path, original, urdf)
+        updated = adapt(path, original, urdf, ".".join(version.split(".")[:3]))
         if updated != original:
             path.write_text(updated)
             changes[str(path.relative_to(output))] = hashlib.sha256(updated.encode()).hexdigest()

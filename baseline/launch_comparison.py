@@ -13,9 +13,9 @@ from threading import Event, Lock
 from baseline.comparison import ABLATIONS, METHODS, MODELS, episodes, representatives, result_is_current, result_path
 
 
-def pending(out, first_row=0, models=MODELS, methods=METHODS, first_layout_per_task=False):
-    jobs = episodes()
-    subset = representatives(jobs)
+def pending(out, first_row=0, models=MODELS, methods=METHODS, first_layout_per_task=False, batch=None):
+    jobs = episodes(batch)
+    subset = representatives(jobs) if batch is None else jobs
     first = {}
     if first_layout_per_task:
         for job in jobs:
@@ -58,12 +58,13 @@ def main():
     ap.add_argument("--vlm-ports", nargs=3, type=int, default=(8101, 8102, 8103),
                     help="Qwen 4B, Qwen 27B, InternVL 8B")
     ap.add_argument("--graph-bin", default="graph-manager-run")
+    ap.add_argument("--batch", type=Path, help="dispatch every listed v6 episode for each method and model")
     ap.add_argument("--first-row", type=int, default=0,
                     help="start at this zero-based index when earlier rows are dispatched separately")
     ap.add_argument("--first-layout-per-task", action="store_true",
                     help="run only the first declared episode of each task, retaining its full-batch shard index")
     args = ap.parse_args()
-    if not 0 <= args.first_row < len(episodes()):
+    if not 0 <= args.first_row < len(episodes(args.batch)):
         ap.error("--first-row must be a valid main-batch index")
     slots = []
     for spec in args.servers:
@@ -76,7 +77,7 @@ def main():
     logs = args.dispatch_dir.resolve() if args.dispatch_dir else root / "dispatch"
     logs.mkdir(parents=True, exist_ok=True)
     out = root / "planner"
-    jobs = pending(out, args.first_row, args.model or MODELS, args.method or METHODS, args.first_layout_per_task)
+    jobs = pending(out, args.first_row, args.model or MODELS, args.method or METHODS, args.first_layout_per_task, args.batch)
     # A stopped dispatcher drains active episodes. A restart scans receipts again.
     stop = Event()
     for sig in (signal.SIGTERM, signal.SIGINT):
@@ -88,7 +89,7 @@ def main():
         with (logs / f"slot-{slot}.log").open("a", buffering=1) as log:
             while not stop.is_set():
                 with lock:
-                    job = next((j for j in jobs if j[:2] not in interrupted), None)
+                    job = next((j for j in jobs if args.batch is not None or j[:2] not in interrupted), None)
                 if job is None:
                     return
                 model, method, index, total, directory = job
@@ -97,6 +98,8 @@ def main():
                        "--native-dir", str(root / "native"), "--sim-version", args.sim_version,
                        "--vlm-url", f"http://127.0.0.1:{endpoints[model]}/v1",
                        "--server", f"http://127.0.0.1:{port}", "--graph-bin", args.graph_bin]
+                if args.batch is not None:
+                    cmd.extend(["--batch", str(args.batch.resolve())])
                 with claim_episode(directory, model, method) as claim:
                     if claim is None:
                         continue
@@ -106,7 +109,7 @@ def main():
                                         pass_fds=(claim.fileno(),)).returncode
                 print(f"EXIT {rc} {model} {method} [{index}/{total}]", file=log)
                 if rc:
-                    # Preserve the first infrastructure failure and continue unrelated cells.
+                    # An explicit batch attempts every row once and preserves failed receipts.
                     with lock:
                         interrupted.add((model, method))
                     print(f"{model} {method} interrupted; see {log.name}", flush=True)
