@@ -125,3 +125,16 @@ def test_a_handover_offers_the_taking_hand_side_grasps_of_a_lying_loads_top_pinc
     assert np.allclose(np.asarray(out[0]["R"])[:, 2], -np.asarray(out[1]["R"])[:, 2])   # either way
     upright = {"kind": "top_pinch", "R": np.array([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]), "p": np.zeros(3)}
     assert side_variants([upright]) == []
+
+
+def test_a_square_place_turns_the_object_onto_an_axis_from_its_yaw_in_the_hand():
+    # HAND_PLAN 9f: the squaring turn is in place's goal set, measured from the hold at the place (not before the pick)
+    import math
+    from zeno_skills.skill_jobs.place import square_yaws
+    for yaw in (0.0, 30.0, -44.0, 135.0, 181.0):
+        a = math.radians(yaw) / 2
+        turns = square_yaws((math.cos(a), 0.0, 0.0, math.sin(a)))
+        for k in turns:
+            after = (yaw + k) % 90.0
+            assert min(after, 90.0 - after) < 1e-6, (yaw, k)
+        assert len(set(round((yaw + k) % 360.0, 3) for k in turns)) == 4          # the four axes
