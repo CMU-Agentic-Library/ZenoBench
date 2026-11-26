@@ -44,6 +44,19 @@ FLOOR_Z_M = 0.15
 DESIGN_NEAR_M = 0.15     # an object this close to a design object is the other side of its relation
 EVENT_NEAR_M = 0.3       # objects this close to where an event puts something stay (the event is about them)
 TRIES = 40
+# 11-25 (user: seeds of one design must not look alike) -- objects on the floor move too, within their room
+FLOOR_SHIFT_M = 0.6      # a floor cluster moves at most this far on each axis
+FLOOR_OBST_CLEAR_M = 0.05   # ...keeping this from furniture, walls and other things on the floor
+FLOOR_RIDER_Z_M = 0.6    # a loose object (no support) below this over a floor object goes with it (in it / on it)
+DOOR_CLEAR_M = 0.9       # ...and this from every hinge (fridge, cabinet doors swing there)
+FLOOR_STAND_M = (0.45, 0.8)  # a free base cell this far from its centre (the base can stand by it to pick it up)
+FLOOR_HINT_CLEAR_M = 0.7   # ...and this from every place the oracle route sets something down (its base stands there)
+OBSTACLE_TOP_M = 0.5     # furniture whose bottom is above this (wall cabinets) does not block the floor
+SEED0, SEED1 = 10, 20    # the evaluation seeds compared for likeness
+OBJ_ALIKE_M = 0.10       # two seeds look alike: no object moved more than this...
+START_ALIKE_M = 1.0      # ...and the starts this close...
+YAW_ALIKE_DEG = 60.0     # ...facing about the same way
+REDRAWS = 30
 REACH_DEPTH_M = 0.20     # a cluster on a top lies within this of an edge the base can stand at (its far side)...
 REACH_NEAR_M = 0.08      # ...or its near side this close to that edge (a big thing set at the edge)
 REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
@@ -548,6 +561,13 @@ def layout_spec(task, vid, registry, control=None):
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)
     fixed |= relation_anchors(v.get("goal") or task.get("goal") or {}, steps)
+    # 11-25: loose objects on the floor (and what is in / on them) move within their room
+    ground = sorted(n for n, m in placed.items() if n in boxes and n not in under and m.get("support") not in sups
+                    and (m.get("z") or 0.0) < FLOOR_Z_M and n not in relation_anchors(v.get("goal") or task.get("goal")
+                                                                                       or {}, steps))
+    riders = {n for n, m in placed.items() if n in boxes and n not in ground and n not in under
+              and m.get("support") not in sups and (m.get("z") or 0.0) < FLOOR_RIDER_Z_M
+              and any(_overlap(boxes[n], boxes[g]) for g in ground)}
     movable = {}
     for n, m in placed.items():
         sup = m.get("support")
@@ -598,6 +618,30 @@ def layout_spec(task, vid, registry, control=None):
                 sk = sorted(set(g) & searched)
                 clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng,
                                  **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
+    floor_groups = [[g] for g in ground]
+    merged = True
+    while merged:
+        merged = False
+        for i in range(len(floor_groups)):
+            for j in range(i + 1, len(floor_groups)):
+                if any(_overlap(boxes[a], boxes[b], CLUSTER_GAP_M) for a in floor_groups[i] for b in floor_groups[j]):
+                    floor_groups[i] += floor_groups.pop(j)
+                    merged = True
+                    break
+            if merged:
+                break
+    for g in floor_groups:
+        g = sorted(g + [r for r in riders if any(_overlap(boxes[r], boxes[x]) for x in g)])
+        B = _union([boxes[n] for n in g])
+        room = room_of(base, ((B[0] + B[2]) / 2, (B[1] + B[3]) / 2))
+        if room:
+            pk = sorted(set(g) & picked)
+            sk = sorted(set(g) & searched)
+            hints = sorted({tuple(st["args"]["hint_xy"]) for st in steps if st["args"].get("hint_xy")})
+            clusters.append({"names": g, "support": "floor", "room": room, "box": [round(x, 4) for x in B],
+                             **({"hints": [list(h) for h in hints]} if hints else {}),
+                             "dx": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M], "dy": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M],
+                             **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
     # what stands on those supports and does not move: base-scene objects, other task objects, reserved places
     in_cluster = {n for c in clusters for n in c["names"]}
     static = {}
@@ -694,6 +738,78 @@ def _floor_boxes(cfg):
     return out
 
 
+@lru_cache(maxsize=None)
+def _floor_static(base):
+    """Furniture and walls on the floor (not the wall cabinets), and the door hinges."""
+    obst = tuple(tuple(o["aabb"][:2] + o["aabb"][3:5]) for o in _ann(base)["obstacles"]
+                 if o["aabb"][2] < OBSTACLE_TOP_M)
+    hinges = tuple(tuple(a["pivot"][:2]) for a in _ann(base).get("articulated") or [] if a.get("pivot"))
+    return obst, hinges
+
+
+def _floor_named(cfg):
+    """(name, box) of everything on the floor: base-scene objects and the task's own."""
+    base = cfg["base"]
+    sups = _sups(base)
+    add = cfg.get("add") or {}
+    out = []
+    for o in _ann(base)["objects"]:
+        if o["name"] not in cfg["remove"] and o["name"] not in (cfg.get("move") or {}) and o["aabb"][2] < FLOOR_Z_M:
+            out.append((o["name"], o["aabb"][:2] + o["aabb"][3:5]))
+    for where in (cfg.get("move") or {}, add):
+        for n, m in where.items():
+            sp = sups.get(m.get("support"))
+            z = sp["z"] if sp else m.get("z")
+            if m.get("xy") and n not in cfg["remove"] and (z is None or z < FLOOR_Z_M):
+                out.append((n, _box(_asset_of(base, n, add), m)))
+    return out
+
+
+def _box_dist(b, p):
+    return math.hypot(max(b[0] - p[0], 0.0, p[0] - b[2]), max(b[1] - p[1], 0.0, p[1] - b[3]))
+
+
+def _draw_floor(cfg, c, spec, current, i, rng):
+    """A floor cluster's shift: inside its room, clear of furniture, walls, door swings and the other things on the
+    floor, with a free base cell beside what the route picks (or beside the cluster)."""
+    base = cfg["base"]
+    add = cfg.get("add") or {}
+    obst, hinges = _floor_static(base)
+    others = [b for n, b in _floor_named(cfg) if n not in c["names"]] + \
+        [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == "floor"]
+    cells = _cells().get(base, {}).get(c["room"], [])
+    pose = lambda n: cfg["move"].get(n) or add.get(n) or {}  # noqa: E731
+    every = [_box(_asset_of(base, n, add), pose(n)) for n in c["names"] if pose(n).get("xy")] or [c["box"]]
+    stand = [_box(_asset_of(base, n, add), pose(n)) for n in c.get("pick") or [] if pose(n).get("xy")] or \
+        [_union(every)]
+
+    def fits(tx, ty):
+        sh = lambda r: [r[0] + tx, r[1] + ty, r[2] + tx, r[3] + ty]  # noqa: E731
+        bs = [sh(m) for m in every]
+        for b in bs:
+            if any(room_of(base, (x, y)) != c["room"] for x in (b[0], b[2]) for y in (b[1], b[3])):
+                return False
+            if any(_overlap(b, list(o), FLOOR_OBST_CLEAR_M) for o in obst) or \
+                    any(_overlap(b, o, FLOOR_OBST_CLEAR_M) for o in others) or \
+                    any(_box_dist(b, h) < DOOR_CLEAR_M for h in hinges):
+                return False
+        U = _union(bs)
+        if any(_box_dist(U, h) < min(FLOOR_HINT_CLEAR_M, _box_dist(_union(every), h)) for h in c.get("hints") or []):
+            return False
+        for m in stand:
+            m = sh(m)
+            cx, cy = (m[0] + m[2]) / 2, (m[1] + m[3]) / 2
+            if not any(FLOOR_STAND_M[0] <= math.hypot(x - cx, y - cy) <= FLOOR_STAND_M[1] and _box_dist(U, (x, y)) > 0.3
+                       for x, y in cells):
+                return False
+        return True
+    for _ in range(TRIES * 2):
+        tx, ty = _grid(rng, c["dx"]), _grid(rng, c["dy"])
+        if fits(tx, ty):
+            return tx, ty
+    return 0.0, 0.0
+
+
 def apply_layout(cfg, spec, rng):
     """Draw the seed's layout into ``cfg`` (``move`` / ``add`` poses and ``start``); records ``layout_applied``."""
     base = cfg["base"]
@@ -709,6 +825,16 @@ def apply_layout(cfg, spec, rng):
     picked_at = {}                                     # support -> boxes of picked things already drawn
     for i in order:
         c = spec["clusters"][i]
+        if c["support"] == "floor":
+            dx, dy = _draw_floor(cfg, c, spec, current, i, rng)
+            current[i] = [c["box"][0] + dx, c["box"][1] + dy, c["box"][2] + dx, c["box"][3] + dy]
+            for n in c["names"]:
+                where = cfg["move"] if n in cfg["move"] else cfg["add"]
+                m = dict(where[n])
+                m["xy"] = [round(m["xy"][0] + dx, 4), round(m["xy"][1] + dy, 4)]
+                where[n] = m
+            applied["+".join(c["names"])] = [round(dx, 2), round(dy, 2)]
+            continue
         others = list(spec["static"].get(c["support"], [])) + \
             [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == c["support"]]
         dx = dy = 0.0
@@ -800,6 +926,66 @@ def apply_layout(cfg, spec, rng):
         applied["start"] = [x, y, yaw]
         break
     cfg["layout_applied"] = applied
+
+
+def signature(cfg):
+    """What a seed's layout looks like: the poses the layout sets and the start."""
+    P = {}
+    for where in (cfg.get("move") or {}, cfg.get("add") or {}):
+        for n, m in where.items():
+            if isinstance(m, dict) and m.get("xy"):
+                P[n] = (float(m["xy"][0]), float(m["xy"][1]))
+    s = cfg.get("start") or [0.0, 0.0, 0.0]
+    if isinstance(s, dict):
+        xy = s.get("xy") or [0.0, 0.0]
+        s = [xy[0], xy[1], s.get("yaw_deg", 0.0)]
+    return P, (float(s[0]), float(s[1]), float(s[2]) if len(s) > 2 else 0.0)
+
+
+def alike(a, b):
+    """Two seeds look alike: nothing moved more than OBJ_ALIKE_M and the starts are close and face the same way."""
+    (Pa, sa), (Pb, sb) = a, b
+    d = max((math.dist(Pa[n], Pb[n]) for n in set(Pa) & set(Pb)), default=0.0)
+    dyaw = abs((sa[2] - sb[2] + 180) % 360 - 180)
+    return d < OBJ_ALIKE_M and math.dist(sa[:2], sb[:2]) < START_ALIKE_M and dyaw < YAW_ALIKE_DEG
+
+
+_DRAWN = {}
+
+
+def draw_distinct(cfg, spec, task_id, variant, seed):
+    """apply_layout with the seed's own draw unless it looks like an earlier evaluation seed of the same design
+    (SEED0..seed-1); then redraws (salted) until it does not, or the least alike of REDRAWS."""
+    import copy
+    import random
+    key0 = json.dumps([task_id, variant, cfg, spec], sort_keys=True, default=str)
+    prev = [_drawn(key0, cfg, spec, task_id, variant, s) for s in range(SEED0, min(seed, SEED1))] \
+        if SEED0 <= seed < SEED1 else []
+    best = None
+    for k in range(REDRAWS + 1):
+        c = copy.deepcopy(cfg)
+        salt = f"{task_id}:{variant}:{seed}:layout" + (f":{k}" if k else "")
+        apply_layout(c, spec, random.Random(salt))
+        n = sum(alike(signature(c), p) for p in prev)
+        if best is None or n < best[0]:
+            best = (n, k, c)
+        if n == 0:
+            break
+    n, k, c = best
+    if k:
+        c["layout_applied"]["redraw"] = k
+    cfg.clear()
+    cfg.update(c)
+
+
+def _drawn(key0, cfg, spec, task_id, variant, seed):
+    import copy
+    k = (key0, seed)
+    if k not in _DRAWN:
+        c = copy.deepcopy(cfg)
+        draw_distinct(c, spec, task_id, variant, seed)
+        _DRAWN[k] = signature(c)
+    return _DRAWN[k]
 
 
 def main():

@@ -1,0 +1,2214 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "overhang_ready",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_a",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_b",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_c",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_a_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_b_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_seats__seats_c_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__near_a",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__near_b",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__far_a",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__far_b",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__near_a_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__near_b_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__far_a_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_table__far_b_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__seats_b",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__seats_c",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__full_a",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__seats_b_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__seats_c_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_room_fallback__full_a_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_1",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_2",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_3",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_1_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_2_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "reader_seat__mug_3_flat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_book__living",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "which_book__bedroom",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "clear",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "crowded_use_another__tight_tv",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "crowded_use_another__tight_dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "crowded_use_another__loose",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "third_toy_elsewhere__duck",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "third_toy_elsewhere__toy_block",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid__counter",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid__study",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid__near_full",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid__both_full",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid_duck__counter",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "tower_for_kid_duck__study",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__in_4",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__in_6",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_toy_block",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "block_put_away__gone_duck",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "large_only",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "small_bin_or_bedroom_bin__wide_in_bedroom",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "small_bin_or_bedroom_bin__basket_in_bedroom",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "which_bin_by_contents__toys_near",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "which_bin_by_contents__kitchen_bin_full",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__basket",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "no_bin_substitute__tray",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_free",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_tray",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_basket",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "utensils_apart__bin_full_fruit",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "cup_available",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_mug_away",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_mug_away__alt_dining_table_2",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_kid",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "clear_the_drinks_spot__spot_dishes",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "clear_the_drinks_spot__spot_kid_toys",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__glass_in_cabinet",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__mug",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "two_guests__kid_cup",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "x6_gd_cup_in_cabinets__cup_in_4",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "x6_gd_cup_in_cabinets__plastic_only",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen_pencil_away",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "e1_pencil_asked",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen_pencil_in_use",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "check_desk_first__pen_on_desk",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "check_desk_first__pencil_on_desk",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "check_desk_first__pen_in_use",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "homework_ready__single",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "homework_ready__several",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "homework_ready__notebook_in_use",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "errand_combined__pen_bedroom",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "errand_combined__pen_in_use",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "free",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_row__cab_free",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_row__cab_short",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_spot_or_tv__front_taken",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_spot_or_tv__front_free",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_spot_or_tv__front_taken_tv_full",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_spot_or_tv__front_free_block_away",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "seen_from_bed__boxes_middle",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "seen_from_bed__bookcase_full",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_works",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_broken",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "broken_oatmeal_away",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_holds_pot",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "broken_oatmeal_away__alt_dining_table_2",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "vessel_decides_appliance__in_ceramic_bowl",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "vessel_decides_appliance__in_glass_box",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "vessel_decides_appliance__in_pot",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "vessel_decides_appliance__in_steel_box",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "vessel_decides_appliance__in_foil_tray",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "two_portions__dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "two_portions__counter",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "sponge_on_island",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "far_sponge_tv",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "far_sponge_foam_cube",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "far_sponge_spare_only",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "wipe_and_sort__blocks",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "wipe_and_sort__duck",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "return_sponge_home__dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "return_sponge_home__study",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "return_sponge_home__far_dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "which_surface__island",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "which_surface__dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_off",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_on_spoon_away",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_use__in_use",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_use__free",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "tomato_in_fridge__in_fridge",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "tomato_in_fridge__big_tomato",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "x6_gd_tomato_elsewhere__dining",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "x6_gd_tomato_elsewhere__on_plate",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_missing",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_dining_room__pot_away",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "pot_in_dining_room__spare_pot",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "can_on_island",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "can_in_dining_room",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "can_in_dining_room__alt_tv_stand_2",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "keep_kids_can__kid_desk",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "keep_kids_can__kid_island",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "trash_moved__dining",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "trash_moved__trash_full",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "after_dinner_clear__rubbish_leftovers",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "after_dinner_clear__leftovers_mug",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "after_dinner_clear__rubbish_mug",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "guests_coming__can_mug_block",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "guests_coming__can_block",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "guests_coming__can_mug",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "x6_gd_can_put_away__in_cabinet",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "x6_gd_can_put_away__fridge_drink",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "fruits_on_table",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_missing",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_gone_bowl_there",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "leave_one_for_kid__apple_orange",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "leave_one_for_kid__orange_banana",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "leave_one_for_kid__all_three",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "fruit_plate_for_guests__tray_in_study",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "fruit_plate_for_guests__tray_in_use",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "toys_out",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "duck_in_study",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "duck_in_study__alt_dining_table_2",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__side_left_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__side_right_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__apart_full_on_tv",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__apart_empty_on_desk",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__half_bin_and_tray",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "bins_capacity__half_bin_and_tray_duck_dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "castle_stays__tall_two_loose",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "castle_stays__short_one_loose",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "castle_stays__tall_none_loose",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "dishes_on_tv_stand",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "copy_the_setting__bowl_cup",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "copy_the_setting__plate_bowl_mug_left",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "copy_the_setting__no_cup",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "finish_the_table__adult_seat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "finish_the_table__kid_seat",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "finish_the_table__adult_and_kid",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_by_pot",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_elsewhere__dining",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_elsewhere__covering_bowl",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "no_lid",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "variant": "lid_in_use",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_on_counter",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_cabinet__in_cabinet",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_cabinet__box_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "no_box",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "variant": "box_in_use",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "lid_off",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "h_task_lid_elsewhere",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_both__tv_stand",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_both__two_pots",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_lid_in_use",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_somewhere__pot_ready",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "hide_somewhere__lid_away",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowls_in_cabinet",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowls_apart",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__glass_box",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "one_bowl__mug",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__tomatoes",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "bowl_in_use__oatmeal",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "variant": "door_stuck",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "bin_on_bookcase",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "lookalike_bin",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "m_can_in_dining_room",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "lookalike_bin__alt_tv_stand_2",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "can_in_use",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "x6_gd_can_put_away__in_4",
+  "clusters": 0,
+  "objects_move": false,
+  "alike_pairs": []
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "x6_gd_can_put_away__juice_full",
+  "clusters": 0,
+  "objects_move": false,
+  "alike_pairs": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "bottle_on_cabinet",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "m_bottle_on_tv_stand",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "bottle_in_use",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "x6_gd_bottle_put_away__on_tv_stand",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "x6_gd_bottle_put_away__in_bedroom",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "e1_book_ready",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "within_kids_reach__set_on_large_shelf_4",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "within_kids_reach__set_on_large_shelf_5",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "homework_stays",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "whose_book__blue_book",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "whose_book__paperback",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "whose_book__both",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "next_in_series__on_bookcase",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "next_in_series__on_other_bookcase",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "next_in_series__on_tall_shelf",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "tissue_on_tv_stand",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "which_table__east",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "which_table__west",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "no_tissue",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "the_kids_side__kid_north",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "variant": "the_kids_side__kid_south",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "juice_on_table",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "by_kind",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "eat_now__desk_free",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "eat_now__desk_corner",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "basket_missing",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "not_shopping",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "two_spots",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__orange_in_it",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "variant": "tray_elsewhere__books_on_it",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "spoon_on_floor",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "by_kind__toy_box",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "by_kind__bin_full",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "belongs_on_floor__no_toy_box",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "belongs_on_floor__bin_full",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "dropped_out_of_view__counter_full",
+  "clusters": 1,
+  "objects_move": false,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "dropped_out_of_view__no_room_for_bowl",
+  "clusters": 1,
+  "objects_move": false,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "only_this_room__cabinet_room",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "only_this_room__cabinet_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "dropped_in_two_rooms__shelf_room",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "variant": "dropped_in_two_rooms__shelf_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "apple_on_table",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "no_apples_for_him__apple_free",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "no_apples_for_him__apple_in_use",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "dinner_soon__apple",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "dinner_soon__banana",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "fruit_out_of_view__apple_in_basket",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "fruit_out_of_view__basket_empty",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "where_is_he__study",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "where_is_he__bedroom",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "two_kids__apple_banana",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "two_kids__apple_snacks",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "variant": "two_kids__desk3_covered",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "drink_on_island",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cup_elsewhere__counter_cup",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cup_elsewhere__only_mugs",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cup_elsewhere__blocks_in_cup",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cold_one__cold_juice",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cold_one__cold_soda",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "drink_in_fridge__juice",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "drink_in_fridge__soda_only",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__one_there",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__none_one_inside",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__none_two_inside",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "cups_for_two__two_there",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "two_guests__two_cups",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "two_guests__one_cup",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "variant": "little_guest",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "car_in_living_room",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "whose__shelf_room",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "whose__shelf_full",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "scattered__basket",
+  "clusters": 5,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "scattered__no_basket",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "where_in_room__basket",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "where_in_room__waste_bin",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "bear_to_bed__top_free",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "bear_to_bed__top_covered",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "two_bedrooms__room_east",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "variant": "two_bedrooms__room_south",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "rice_on_table",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "which_is_leftover",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "two_leftovers__soup_at_seat",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "two_leftovers__soup_on_table",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "two_leftovers__soup_on_stove",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "still_eating",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "fridge_out_of_view__fridge_free",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "fridge_out_of_view__fridge_crowded",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "variant": "fruit_stays_out",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "cup_on_counter",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "which_bed__east",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "which_bed__south",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "where_his_cup_is__on_counter",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "where_his_cup_is__in_cabinet",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "where_his_cup_is__no_kid_cup",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "cup_out_of_view__cup_found",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "cup_out_of_view__side_covered",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "already_there__his_cup",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "variant": "already_there__wrong_cup",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "car_on_table",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "belongs_on_table",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "belongs_on_table__no_toy_box",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "homework_on_table__desk_free",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "homework_on_table__desk_covered",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "several__toy_box",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "several__bin_full",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "nothing_to_clear",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "which_table__east",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "variant": "which_table__west",
+  "clusters": 3,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_on_cabinet",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "how_many__three_bowls",
+  "clusters": 4,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "how_many__two_bowls",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowls_in_cabinet__two_inside",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowls_in_cabinet__one_inside",
+  "clusters": 2,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "clean_one",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_put_away__bowl_inside",
+  "clusters": 0,
+  "objects_move": false,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_put_away__mug_inside",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "no_bowl",
+  "clusters": 1,
+  "objects_move": true,
+  "alike_pairs": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_not_plate",
+  "clusters": 0,
+  "objects_move": false,
+  "alike_pairs": []
+ }
+]
