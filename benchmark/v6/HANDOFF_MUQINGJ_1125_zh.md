@@ -16,7 +16,7 @@
 |---|---|---|---|
 | T07 `two_portions__dining` s11 | #5 `place(soup_pot, kitchen_stove/top)` | `place_arrive: no collision-free IK at the set-down pose (out of reach)` | 站位选在了灶台远的一侧，没换另一边再试。 |
 | T08 `wipe_and_sort__duck` s12 | #15 `wipe(kitchen_island/top, kitchen_sponge)` | `wipe_stroke: the arm stopped 0.007 m short of where it was sent` | 前 15 步都成功，只差 7 mm 就判失败，擦拭的到位容差太紧。合进你 11-25 晚的 wipe 改动（76bde0b2 等）后重跑，还是差 6 mm。 |
-| T10 `after_dinner_clear__leftovers_mug` s14 | #16 `place(leftovers, breakfast_fridge/inside_shelf)` | `tuck: its path collides now at 1/243: world left_gripper_right_finger_link 6 mm ... INVALID_START_STATE_WORLD_COLLISION` | 在冰箱里放下后，收臂起点手指已经和冰箱碰上 6 mm，退出失败。 |
+| T10 `after_dinner_clear__leftovers_mug` s14 | #16 `place(leftovers, breakfast_fridge/inside_shelf)` | `tuck: its path collides now at 1/243: world left_gripper_right_finger_link 6 mm ... INVALID_START_STATE_WORLD_COLLISION` | 在冰箱里放下后，收臂起点手指已经和冰箱碰上 6 mm，退出失败。T27 `fruit_stays_out` s11 放剩饭进冰箱一样（2 mm，TRAJOPT_FAIL）。 |
 | T22 `tray_elsewhere__books_on_it` s11 | #7 `place(bought_juice, breakfast_fridge/inside_shelf)` | `place_arrive: no collision-free IK at the set-down pose (its solution collides: part:breakfast_fridge head_link 83 mm, torso_link 39 mm)` | 同一个放的点在别的 T22 设计里（nominal、by_kind、two_spots…）都成功；这次站位离冰箱太近，头撞门框。站位应该退后或者换角度再试。 |
 | T23 `by_kind__toy_box` s12 | #7 `place(dropped_spoon, kitchen_island/top)` | `place_arrive: no collision-free straight (no IK along it)` | 勺子放岛台在其他 T23 设计成功很多次；`by_kind__bin_full` 你的三次全量里也是一过两败。直线下放没有 IK 时没换站位。 |
 | T09 `x6_gd_tomato_elsewhere__on_plate` s11 | #26 `pick(pot_lid)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 前 25 步都成功。去锅盖的停车点 [8.415, 1.135] 的路径绕岛台东侧贴墙走，右臂在行驶姿态下撞墙和窗（wall_609/610、WindowFactory_3015），手臂被撞偏（q_err 2.84），底座停在 [9.50, 1.28]，离停车点 1.1 m，navigate 却算到达，接着 pick 就够不着。同样尾段的 `__dining` 三次全量都过。 |
@@ -49,6 +49,7 @@
 | T02 `tower_for_kid__counter` s12 | #11 `stack(wooden_block_b, wooden_block_a)` | `tuck: the arm is not where the segment starts; … TRAJOPT_FAIL` | 叠完积木收臂时手臂不在段起点，重建失败。 |
 | T04 `two_guests__glass_in_cabinet` s12 | #3 `pick(cup_counter_b)`（岛台，离北沿 8 cm） | `pick_arrive: no collision-free path to the pose (TRAJOPT_FAIL)` | `two_guests__mug` 你三次全量都过；轨迹优化偶发失败，没换站位。 |
 | T07 `vessel_decides_appliance__in_ceramic_bowl` s11（路线改好后重跑） | #8 `close(kitchen_microwave)` | `press kitchen_microwave/door_button: no base pose reaches the button (… built 12, no_path 11)` | 碗放进微波炉后，按门按钮的 12 个站位里 11 个开不过去；机器人在 [4.827, 1.894, -165°]。 |
+| T07 `vessel_decides_appliance__in_glass_box` s15（路线改好后重跑） | #9 `place(glass_food_container, kitchen_microwave/inside_floor)` | `no spot of 1 on kitchen_microwave/inside_floor reachable (21 goals; out_of_reach 21 …)` | 捏边平拿的玻璃饭盒放进微波炉腔体，21 个目标全部 out_of_reach。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
