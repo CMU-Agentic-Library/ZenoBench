@@ -245,6 +245,11 @@ def mark_two_sided(checker, cols, env_idx=0):
 BODY_ENV = 1
 BODY_COLUMN = "body:column"
 BODY_CHASSIS = "body:chassis"
+# The other hand, when it holds a load and stands still while this arm moves (motion.Motion._query: other_hand_off):
+# its spheres are off in this arm's model -- they would meet its own load, an obstacle where it holds it -- so
+# its collision spheres stand in BODY_ENV as boxes instead (one per sphere, 2 r a side), which only this arm, its
+# hand and its load are checked against (body_collision.kept).  Off (enable 0) in every other query.
+OTHER_HAND = "body:other_hand"
 BODY_ARC_STEPS = (0.0, 30.0, 60.0, 90.0)   # deg: the chassis' rounded square as the union of the rectangles
                                            # with a corner on each corner arc at these angles -- boxes, exact
                                            # at any depth (a mesh is only searched near its surface: a point
@@ -285,12 +290,15 @@ def _at(T, ctr):
     return M
 
 
-def body_world(base=(0.0, 0.0, 0.0)):
-    """cuRobo WorldConfig of the base's two layers at ``base`` (boxes: _body_boxes)."""
+def body_world(base=(0.0, 0.0, 0.0), other_hand=()):
+    """cuRobo WorldConfig of the base's two layers at ``base`` (boxes: _body_boxes) -- and ``other_hand``: the sides
+    (m) of the OTHER_HAND boxes, parked out of the way (Motion places and enables them per query)."""
     from curobo.geom.types import Cuboid, WorldConfig
     T = _base_T(base)
     return WorldConfig(cuboid=[Cuboid(name=n, pose=pose7(_at(T, ctr)), dims=[*map(float, dims)])
-                               for n, ctr, dims in _body_boxes()])
+                               for n, ctr, dims in _body_boxes()] +
+                       [Cuboid(name=f"{OTHER_HAND}_{i}", pose=[0.0, 0.0, -10.0, 1.0, 0.0, 0.0, 0.0], dims=[float(d)] * 3)
+                        for i, d in enumerate(other_hand)])
 
 
 def place_body(checker, base):

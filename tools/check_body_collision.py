@@ -47,9 +47,14 @@ def main():
 
     B.install()
     far = WorldConfig(cuboid=[Cuboid(name="far", pose=[50.0, 50.0, -5.0, 1, 0, 0, 0], dims=[0.1, 0.1, 0.1])])
+    slots, sides = M._hand_slots(yaml.safe_load(open(M.ROBOT_CFG))["robot_cfg"]["kinematics"])
+    body = G.body_world(other_hand=sides)
     checker = create_collision_checker(WorldCollisionConfig(
-        TensorDeviceType(), world_model=[far, G.body_world()], checker_type=CollisionCheckerType.MESH,
-        cache={"obb": 8, "mesh": 4}))
+        TensorDeviceType(), world_model=[far, body], checker_type=CollisionCheckerType.MESH,
+        cache={"obb": len(body.cuboid) + 8, "mesh": 4}))
+    oh_idx = torch.tensor([checker.get_obb_idx(f"{G.OTHER_HAND}_{i}", env_idx=G.BODY_ENV) for i in range(len(sides))],
+                          dtype=torch.long, device="cuda")
+    checker._cube_tensor_list[2][G.BODY_ENV, oh_idx] = 0
 
     def base_depth(points, r=0.01):
         """Penetration (> 0) of small spheres at ``points`` into the base environment."""
@@ -78,7 +83,7 @@ def main():
     k["urdf_path"] = str(M.ROOT / k["urdf_path"])
     k["asset_root_path"] = str(M.ROOT / k["asset_root_path"])
     M.add_held_links(k)
-    motion = SimpleNamespace(body_at=(0.0, 0.0, 0.0))
+    motion = SimpleNamespace(body_at=(0.0, 0.0, 0.0), oh_slots=slots)
     t0 = time.time()
     arms = {s: M._Arm(motion, s, cfg, checker) for s in ("right", "left")}
     print(f"arms built in {time.time() - t0:.1f} s")
@@ -147,6 +152,41 @@ def main():
             arm.feasible(Q)
         torch.cuda.synchronize()
         print(f"     {side}: feasible(64) {1000 * (time.time() - t) / 20:.2f} ms")
+    # the other hand as boxes of BODY_ENV (motion.Motion._other_hand_boxes, rule audit 11-25): the left arm's query
+    # with the right hand off in its model (other_hand_off: it holds a load) -- the right hand's spheres stand there
+    from zeno_skills.motion import HAND_LINKS
+    right, left = arms["right"], arms["left"]
+    qr = np.asarray(right.kin.posture, float)
+    right.prepare(right.kin, None, set())
+    names = {v: kk for kk, v in right.kcs[0].link_name_to_idx_map.items()}
+    sidx = right.kcs[0].link_sphere_idx_map.cpu().numpy()
+    S = right.spheres(qr).cpu().numpy()
+    hand = [i for i in range(len(S)) if names.get(int(sidx[i]), "") in {f"right_{l}" for l in HAND_LINKS}]
+    ql = np.r_[qr[:2], np.asarray(left.kin.posture, float)[2:]]
+    left.prepare(left.kin, qr, {f"right_{l}" for l in HAND_LINKS})
+    fake = SimpleNamespace(checker=checker, oh_idx=oh_idx, oh_on=None, oh_q={"left": ql})
+    M.Motion._other_hand_boxes(fake, left)
+    d_on = base_depth(S[hand, :3], r=0.002)
+    M.Motion._other_hand_boxes(fake, None)
+    d_off = base_depth(S[hand, :3], r=0.002)
+    check(len(hand) == len(sides) and bool(np.all(d_on > 0)),
+          f"the right hand's {len(hand)} spheres stand as boxes for the left arm ({int(np.sum(d_on > 0))} inside)")
+    check(bool(np.all(d_off < d_on)) and fake.oh_on is None, "off again: the boxes no longer there")
+    # a left posture with its hand where the right hand is: infeasible with the boxes, free of them without
+    pr, Rr = right.kin.tcp(qr)
+    q_in, ok = left.ik(np.asarray(pr, float), np.asarray(Rr, float), [ql], False)
+    if ok:
+        M.Motion._other_hand_boxes(fake, left)
+        f_on = bool(left.feasible(np.asarray(q_in, float)[None])[0])
+        M.Motion._other_hand_boxes(fake, None)
+        f_off = bool(left.feasible(np.asarray(q_in, float)[None])[0])
+        if f_off:
+            check(not f_on, "a left hand inside the right one: infeasible with the boxes (free without)")
+        else:
+            print("     the left hand inside the right one is infeasible without the boxes too (self collision): "
+                  "reported, not failed")
+    else:
+        print("     no kinematic left IK to the right TCP (reported, not failed)")
     print("FAILED: " + "; ".join(fails) if fails else "ALL OK")
     return 1 if fails else 0
 

@@ -301,6 +301,23 @@ class _Locks:
             self.values[name] = v
 
 
+def _other_hand_idx(kc, side, slots):
+    """The indices, in ``side``'s arm model (kinematics config ``kc``), of the other hand's spheres in the order of
+    ``slots`` [(hand link, j)] (Motion.oh_slots): the j-th sphere of that link of the other arm."""
+    import torch
+    other = "left" if side == "right" else "right"
+    by_idx = {v: k for k, v in kc.link_name_to_idx_map.items()}
+    per = {}
+    for i, li in enumerate(kc.link_sphere_idx_map.cpu().tolist()):
+        per.setdefault(by_idx.get(int(li)), []).append(i)
+    out = []
+    for link, j in slots:
+        mine = per.get(f"{other}_{link}", [])
+        assert j < len(mine), f"{side} arm model: no sphere {j} of {other}_{link}"
+        out.append(mine[j])
+    return torch.tensor(out, dtype=torch.long, device=kc.link_sphere_idx_map.device)
+
+
 class _Arm:
     """MotionGen (world) + IKSolver (no world) for one arm, torso lift and waist."""
 
@@ -360,6 +377,8 @@ class _Arm:
         # the base's terms in every rollout that queries the world, before the CUDA graphs are captured
         body_collision.attach(self.mg.get_all_rollout_instances(), side)
         self.body_mask = body_collision._mask(self.kcs[0], side)
+        slots = getattr(motion, "oh_slots", None)        # (a stand-in motion: tools' checks without a scene)
+        self.other_hand_idx = None if slots is None else _other_hand_idx(self.kcs[0], side, slots)
         self.mg.warmup(enable_graph=True, warmup_js_trajopt=True)
         self.ik_free.solve_single(self._pose(*self.kin.tcp(self.kin.posture)))
         p, R = self.kin.tcp(self.kin.posture)
@@ -581,6 +600,23 @@ class _Arm:
 SIDES_ = ("right", "left")
 
 
+def _hand_slots(kinematics):
+    """[(hand link, j)] the OTHER_HAND boxes stand for -- every collision sphere of the hand links (HAND_LINKS) --
+    and their sides (m): 2 r of the larger of the two hands' j-th sphere of that link (the hands' spheres mirror,
+    within a millimetre).  ``kinematics``: the robot config's (collision_spheres inline or a file)."""
+    import yaml
+    sph = kinematics["collision_spheres"]
+    if isinstance(sph, str):
+        sph = yaml.safe_load(open(ROOT / sph if not Path(sph).is_absolute() else sph))["collision_spheres"]
+    slots, sides = [], []
+    for link in HAND_LINKS:
+        per = [sph.get(f"{s}_{link}", []) for s in SIDES_]
+        for j in range(max(len(x) for x in per)):
+            slots.append((link, j))
+            sides.append(2.0 * max(float(x[j]["radius"]) for x in per if j < len(x)))
+    return slots, sides
+
+
 class Motion:
     @_timed("init_s")
     def __init__(self, stage, ann, robot_cfg=ROBOT_CFG):
@@ -594,11 +630,21 @@ class Motion:
         body_pose = G.usd_body_pose(stage)
         world = G.to_world_config(self.cols, body_pose)
         # the scene in environment 0; the robot's own base in G.BODY_ENV, checked by every rollout through
-        # body_collision's terms (the body's spheres off) -- installed before any solver captures its graphs
+        # body_collision's terms (the body's spheres off) -- installed before any solver captures its graphs.
+        # BODY_ENV also holds the other hand's spheres as boxes (G.OTHER_HAND, _other_hand_boxes)
         body_collision.install()
+        self.oh_slots, oh_sides = _hand_slots(yaml.safe_load(open(robot_cfg))["robot_cfg"]["kinematics"])
+        body = G.body_world(other_hand=oh_sides)
         self.checker = create_collision_checker(WorldCollisionConfig(
-            TensorDeviceType(), world_model=[world, G.body_world()], checker_type=CollisionCheckerType.MESH,
-            cache={"obb": len(world.cuboid) + 16, "mesh": len(world.mesh) + 8}))
+            TensorDeviceType(), world_model=[world, body], checker_type=CollisionCheckerType.MESH,
+            cache={"obb": max(len(world.cuboid), len(body.cuboid)) + 16, "mesh": len(world.mesh) + 8}))
+        import torch
+        self.oh_idx = torch.tensor([self.checker.get_obb_idx(f"{G.OTHER_HAND}_{i}", env_idx=G.BODY_ENV)
+                                    for i in range(len(oh_sides))], dtype=torch.long, device="cuda")
+        self.checker._cube_tensor_list[2][G.BODY_ENV, self.oh_idx] = 0      # off until a query stands them there
+        self.oh_on = None                     # the key (side, chain, locks) the boxes stand for, or None: off
+        self.oh_stack = []                    # what each enclosing _query wants of them (an arm, or None: off)
+        self.oh_q = {}                        # side -> the arm's chain in the State of the query (Motion.query)
         self.body_at = None                   # the base pose the base's environment stands at (place_body)
         self.mesh_idx = {c.name: self.checker.get_mesh_idx(c.name) for c in self.cols.items if c.kind == "mesh"}
         G.mark_two_sided(self.checker, self.cols)
@@ -994,9 +1040,12 @@ class Motion:
             if oh is not None and oh.kind not in ("part", "bimanual") and self.by_owner.get(f"object:{oh.name}"):
                 T_obj = self._tcp_of(other, state) @ np.asarray(oh.T_tcp_obj, float)
                 if not spec.arms_still:
-                    # an obstacle where that hand has it; that hand (holding it, not moving) off in these queries:
-                    # what it touches is its own load, its place in the world the base model's whole-body check
+                    # an obstacle where that hand has it; that hand (holding it, not moving) off in these queries --
+                    # what it touches is its own load -- and its spheres boxes of BODY_ENV, which only this arm,
+                    # its hand and its load are checked against (_other_hand_boxes: this arm against the other
+                    # hand, a handover's taking hand against the giving one's gripper; 11-25 rule audit)
                     self.other_hand_off = {**getattr(self, "other_hand_off", {}), side: True}
+                    self.oh_q[side] = np.asarray(state.q(side), float)
                     frame, _, _ = self._box_of(oh.name)
                     T0 = np.asarray(objects.get(oh.name, G.world_pose(frame, self.body_pose.get)), float)
                     D = T_obj @ np.linalg.inv(T0)
@@ -1284,6 +1333,10 @@ class Motion:
             links |= {f"{other}_{l}" for l in HAND_LINKS}
         arm = self.arms[kin.side]
         arm.prepare(kin, other_q, links, self.live_locks())
+        # the other hand's boxes as this query wants them; an inner query's (the other arm's, a posture's check of
+        # the arm that rides along) put back to this one's when it ends (a stack)
+        self.oh_stack.append(arm if getattr(self, "other_hand_off", {}).get(kin.side) else None)
+        self._other_hand_boxes(self.oh_stack[-1])
         if collision:
             # with a load the hand goes where the load goes, not to touch what is there: a tray it
             # is put into stays an obstacle (T12); nor on the free part of an approach (coll_kw
@@ -1306,6 +1359,30 @@ class Motion:
         finally:
             if collision and targets:
                 self.cull_at = None          # the allowed targets go back on at the next query
+            self.oh_stack.pop()
+            self._other_hand_boxes(self.oh_stack[-1] if self.oh_stack else None)
+
+    def _other_hand_boxes(self, arm):
+        """The other hand's collision spheres as boxes of BODY_ENV for ``arm``'s queries (G.OTHER_HAND): where the
+        arm's model puts them -- the other arm locked where the query has it, the body at the State's (it stands
+        still: motion_state.kept) -- each a box 2 r a side round its centre, on; ``arm`` None: off."""
+        import torch
+        flags = self.checker._cube_tensor_list[2]
+        q = None if arm is None else self.oh_q.get(arm.side)
+        if q is None:
+            if self.oh_on is not None:
+                flags[G.BODY_ENV, self.oh_idx] = 0
+                self.oh_on = None
+            return
+        key = (arm.side, tuple(np.round(q, 6)), tuple(sorted((k, round(float(v), 6)) for k, v in arm.locks.values.items())))
+        if self.oh_on == key:
+            return
+        c = arm.spheres(q)[arm.other_hand_idx, :3]                   # the centres; their radii are off (-1) here
+        inv = torch.zeros((len(c), 8), dtype=c.dtype, device=c.device)
+        inv[:, :3], inv[:, 3] = -c, 1.0                                # axis-aligned: the world in the box's frame
+        self.checker._cube_tensor_list[1][G.BODY_ENV, self.oh_idx] = inv
+        flags[G.BODY_ENV, self.oh_idx] = 1
+        self.oh_on = key
 
     # ------------------------------------------------------------- API (kinematics.ArmKin)
     @_timed("ik_s")
@@ -1601,6 +1678,12 @@ class Motion:
             try:
                 for c in on:
                     self._set_enabled(c, False)
+                # what is left with the scene off: the robot's own base and, in a query that stands it there, the
+                # other hand (BODY_ENV: G.OTHER_HAND) -- an owner of its own, not folded into every scene owner's
+                rest = self._touching(arm, q)
+                if rest:
+                    out["robot:base" + (" / other hand" if self.oh_on is not None else "")] = {
+                        l: round(v, 4) for l, v in sorted(rest.items(), key=lambda t: -t[1])}
                 for owner, cs in owners.items():
                     for c in cs:
                         self._set_enabled(c, True)
