@@ -219,7 +219,8 @@ def test_a_release_opens_where_it_is_and_pulls_out_back_along_the_gripper_axis()
     # LEAVE_MARGIN -- measured, not a finger's length
     plan = plan_release(FakeKin(near_z=0.33), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
     assert isinstance(plan, Plan) and tuple(s.name for s in plan.segments) == RELEASE_STAGES
-    opened, out = plan.segments
+    assert _named(plan, "release_let_go").kind == "anchor"                     # rule 9: an anchor where it lets go
+    opened, _, out = plan.segments
     assert opened.action == ("grip", 0.03, 60, True) and opened.spec.allow.touch == ("cup",)
     assert 0.33 < out.q_end[2] <= 0.33 + 0.004 + 0.011 and out.spec.allow.touch == ("cup",)   # one 4 mm step
     blocked = plan_release(FakeKin(near_z=0.33, reach_z=0.32), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
@@ -239,7 +240,10 @@ def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
     assert np.allclose(press.q_end[:3], [0.5, 0.0, 0.10]) and press.spec.touch == (("table", "held"),)
     assert stroke.kind == "scripted" and np.allclose(stroke.q_end[:3], [0.7, 0.0, 0.10])     # along d, on the surface
     assert plan.info["stroke_m"] == pytest.approx(0.2) and np.allclose(back_.q_end[:3], [0.5, 0.0, 0.10])
-    assert np.allclose(_named(plan, "wipe_leave").q_end[:3], [0.5, 0.0, 0.116])
+    # off the surface as far as contact_extent measures: LEAVE_GAP risen (no world near), then LEAVE_MARGIN
+    assert _named(plan, "wipe_leave").info["touching"] == "off_support"
+    leave = _named(plan, "wipe_leave").q_end
+    assert np.allclose(leave[:2], [0.5, 0.0]) and 0.10 + 0.005 + 0.01 <= leave[2] <= 0.10 + 0.005 + 0.01 + 2 * 0.002 + 1e-9
     assert np.allclose(plan.segments[-1].q_end, q0)                                      # back where it arrived
     assert isinstance(plan_wipe(FakeKin(), _state(q0), wipe), Failure)                    # nothing to wipe with
     # rule 2: a stroke shorter than the job's need fails the build -- at the park and in run's rebuild alike
@@ -325,7 +329,8 @@ def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves(
     plan = plan_flip(FakeKin(), _state(q0, held=Held("book", np.eye(4))), flip, (np.zeros(9),))
     assert isinstance(plan, Plan), plan
     names = [sg.name for sg in plan.segments]
-    assert names[:4] == ["flip_arrive", "flip_arc", "flip_release", "flip_push"] and names[-1] == "flip_settle"
+    assert names[:5] == ["flip_arrive", "flip_arc", "flip_release", "flip_let_go", "flip_push"] and names[-1] == "flip_settle"
+    assert _named(plan, "flip_let_go").kind == "anchor"                        # rule 9: an anchor where it lets go
     assert plan.info["arc_rad"] == pytest.approx(np.radians(80.0))              # short of past: the open hand pushes on
     assert _named(plan, "flip_arc").spec.touch == (("table", "held"),)
     assert _named(plan, "flip_release").action[:2] == ("grip", 0.03)

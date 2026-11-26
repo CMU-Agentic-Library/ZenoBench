@@ -121,7 +121,8 @@ def present_job(rig, args, state, skill=None):
         q_end = legs[-1].q_end if legs else st.q(side)
         at = kin.tcp(np.asarray(q_end, float))[0] - off
         body = {n: float(v) for n, v in zip(kin.names[:2], np.asarray(q_end, float)[:2])}
-        yaw_h, pitch_h = look_angles(rig, at, torso_waist=body)
+        # from the State it builds from (its base, the body the leg leaves), not the rig's -- a build reads the State
+        yaw_h, pitch_h = look_angles(None, at, base_pose=tuple(st.base), torso_waist=body)
         return Plan(tuple(plan.segments) + (head_segment(q_end, yaw_h, pitch_h, PRESENT_HEAD_STEPS, "present_look",
                                                          what=name),))
 
@@ -268,14 +269,16 @@ def upright_job(rig, args, state, skill=None):
 
 
 def release_job(rig, args, state, skill=None):
-    """motion_skills.Job of release (HAND_PLAN 9f): the ``args["hand"]`` hand (default right) lets go of
-    ``args["name"]`` where it is and pulls out a finger's length back along the gripper axis (plan_release:
-    both built before anything moves).  The hand registered empty once it opened.  done(): the hand empty."""
+    """motion_skills.Job of release (HAND_PLAN 9f): the ``args["hand"]`` hand (default: the one holding it) lets go of
+    ``args["name"]`` where it is and pulls out back along the gripper axis as far as contact_extent measures
+    (plan_release: built before anything moves; an anchor where it let go).  The hand registered empty once it
+    opened.  done(): the hand empty."""
     from ..motion_skills import Job
     from ..skill_plans import plan_release as _default
     from ..skills import pick_approach
     plan_release = skill.build if skill is not None else _default
-    name, side = args["name"], args.get("hand", "right")
+    name = args["name"]
+    side = args.get("hand") or rig.hand_of(name) or "right"      # the hand the route names, else the one holding it
     held = rig.held_by(side)
     if held is None or held["name"] != name:
         raise SkillFailure(f"release {name}: not in the {side} hand")

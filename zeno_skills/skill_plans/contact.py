@@ -443,7 +443,7 @@ def plan_wipe(kin, state, wipe, start="wipe_arrive", prior=None, step=0.004):
                      job's: enough for the coverage asked) a Failure -- the search and a rebuild alike (rule 2)
         wipe_return  the task segment back to the strip's start (the second pass)
         wipe_wiped   anchor: the base and the hold after the strokes
-        wipe_leave   the straight back up ``above`` (on_surface: it starts on the surface)
+        wipe_leave   off the surface straight up, as far as contact_extent measures (off_support, as a pick's lift)
         wipe_back    the free leg back to the arm's posture where the wipe arrived (stir_back's rule), tilt held
 
     The reach and the press carry the Aim and WIPE_TOL (Segment.info: primitives.holds checks them again against the
@@ -523,10 +523,14 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=6)
         elif stage == "wipe_leave":
-            p0, R0 = kin.tcp(q)
-            seg = kept or straight(kin, s, spec, np.asarray(p0, float) + above * up, R0, stage, step=step, q_from=q)
-            if not (isinstance(seg, Failure) or kept):
-                seg = _move(seg, steps_per_wp=4, smooth=True)
+            # off the surface as far as the collision model says (rule 4: contact_extent, off_support -- the
+            # sponge risen LEAVE_GAP and clear of the world, then LEAVE_MARGIN), as a pick's lift; until the
+            # rule audit of 11-25 the straight back up ``above``, a length from constants
+            seg = kept or _contact(kin, s, Spec(allow=LEAVE_CONTACT), up, "off_support", stage, 0.002,
+                                   q, steps_per_wp=4, smooth=True)
+            if not isinstance(seg, Failure) and not seg.qs:
+                times[stage] = round(time.time() - t0, 3)
+                continue
         else:                                               # wipe_back: chosen again whenever it is built
             if back is None:
                 return Failure("no posture to go back to (the wipe's arrival not in its plan)", stage,
@@ -560,7 +564,8 @@ def _arc(T0, pivot, axis):
     return tcp
 
 
-FLIP_STAGES = ("flip_arrive", "flip_arc", "flip_release", "flip_push", "flip_leave", "tuck", "flip_settle")
+FLIP_STAGES = ("flip_arrive", "flip_arc", "flip_release", "flip_let_go", "flip_push", "flip_leave", "tuck",
+               "flip_settle")
 FLIP_SETTLE = 150             # physics ticks the turned object settles before it is judged (the old flip's)
 
 
@@ -576,6 +581,7 @@ def plan_flip(kin, state, flip, rest_goals, start="flip_arrive", prior=None, ste
                       "held") -- as far as the arm reaches, up to ``release`` (scripted's reach: measured); short of
                       flip["min_arc"] a Failure, the search and a rebuild alike (rule 2)
         flip_release  the hand opened (the fingers may touch it)
+        flip_let_go   anchor: where the book lies once let go
         flip_push     released short of ``past``: the open hand on along the same arc to ``push_to``, its rotation as
                       at the release, the fingers on the raised edge (none when past)
         flip_leave    out of the contact back along the gripper axis, as far as contact_extent measures
@@ -632,6 +638,10 @@ def _plan_flip(kin, state, flip, rest_goals, start, prior_plan, step):
             if held is not None:
                 s = released(s, side, held.name, held_frame(kin, q, held))
             s = with_width(s, side, float(flip["pre_open"]))
+        elif stage == "flip_let_go":
+            # the book let go where the arc left it (docs 8.2, rule 9: an error comes in at a release): run builds the
+            # push and the exit again from where it lies when they no longer hold
+            seg = anchor(stage, q, s, (obj,), side)
         elif stage == "flip_push":
             if reached is None or reached >= float(flip["past"]):
                 times[stage] = round(time.time() - t0, 3)
