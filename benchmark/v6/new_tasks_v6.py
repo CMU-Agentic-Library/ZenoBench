@@ -237,6 +237,7 @@ def t22():
         [f"large_shelf_{i}/shelf_{k}" for i, n in ((1, 5), (2, 4), (3, 4), (4, 5), (5, 4), (6, 4)) for k in range(n)] + \
         ["large_shelf_6/top"]                                 # where books are kept (every bookcase and shelf)
     BK = ["bookcase_1/top", "bookcase_1/shelf_1"]          # the bookcase in the west dining room
+    KC1 = "kitchen_counter_1/top"                         # the worktop of the small kitchen beside the west dining room
 
     def inside_tray(asset, dx, dy):
         """lying in the serving tray on the west dining table (table top 0.71 m, tray floor 1 cm up)"""
@@ -327,27 +328,31 @@ def t22():
             instruction_zh="我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。"),
         "tray_elsewhere": fam(
             "juice_on_table", ["container_absent", "not_in_view", "destination_full", "dependent_decisions"],
-            "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+            "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
             "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining "
-            "room: with an orange in it, or with four books lying flat over its floor",
+            "room: with an orange in it, or with two used breakfast bowls in it",
             "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies "
             "on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); "
-            "books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+            "dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty "
+            "dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
             {c: dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
                           TRAY: on("serving_tray", T1, -8.40, 7.40), **on_tray},
                      watch=[J, A, TRAY, *on_tray],
                      # 11-25 (gt_check s12): inside, not fully_inside -- an apple stands 2.3 cm over the shallow
                      # serving tray's rim when it is in it (T11's apple in the same tray is "inside")
-                     goal={"all": jgoal + [["inside", A, TRAY], ["not on_floor", TRAY]]
-                           + [["on_any", b, SHELVES] for b in on_tray if b.startswith("tray_book")] + [H]},
+                     # 11-26 (user): the loose goal is the apple in the tray; bowls_in_it is levelled in
+                     # scoring.LAYOUT_TIERS (the bowls cleared to a kitchen worktop first is the best)
+                     goal={"all": jgoal + [["inside", A, TRAY], ["not on_floor", TRAY], H]},
                      route=fridge([J], JY, JX) + [S("search", object=TRAY, region="dining_room_0_0"), look(TRAY)]
-                     + [x for k, b in enumerate(sorted(n for n in on_tray if n.startswith("tray_book")))
-                        for x in (nav(b), pick(b), nav(BK[k // 2]), place(b, BK[k // 2], [-9.59, 6.52 + 0.30 * (k % 2)]))]
+                     + [x for k, b in enumerate(sorted(n for n in on_tray if n.startswith("tray_bowl")))
+                        for x in (nav(b), pick(b), nav(KC1), place(b, KC1, [-2.62, 10.25 + 0.30 * k]))]
                      + into(A, TRAY))
              for c, on_tray in (("orange_in_it", {"tray_orange": inside_tray("orange", -0.12, 0.08)}),
-                                ("books_on_it", {f"tray_book_{k + 1}": inside_tray("book_blue", dx, dy)
-                                                 for k, (dx, dy) in enumerate(((-0.10, -0.075), (0.10, -0.075),
-                                                                               (-0.10, 0.075), (0.10, 0.075)))}))},
+                                # 11-26: four books lying flat over the floor could not be picked (a thickness
+                                # pinch needs a side over the support's edge; in a tray there is none): two dirty
+                                # breakfast bowls instead (rim pinch), the same decision
+                                ("bowls_in_it", {f"tray_bowl_{k + 1}": inside_tray("breakfast_bowl", dx, 0.0)
+                                                 for k, dx in enumerate((-0.10, 0.10))}))},
             instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
             instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
     }

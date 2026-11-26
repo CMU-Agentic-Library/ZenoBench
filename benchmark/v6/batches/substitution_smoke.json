@@ -730,7 +730,7 @@
  },
  {
   "task": "T22_put_away_shopping",
-  "variant": "tray_elsewhere__books_on_it",
+  "variant": "tray_elsewhere__bowls_in_it",
   "seed": 11,
   "v6_variant": "tray_elsewhere",
   "side": "B_open",
@@ -739,7 +739,7 @@
  },
  {
   "task": "T22_put_away_shopping",
-  "variant": "tray_elsewhere__books_on_it",
+  "variant": "tray_elsewhere__bowls_in_it",
   "seed": 13,
   "v6_variant": "tray_elsewhere",
   "side": "B_open",

@@ -105,7 +105,7 @@ IDEAL = {
     ("T22", "eat_now"): {"desk_free": (True, "他书桌上作业旁边"), "desk_corner": (True, "他书桌上作业旁边（只剩一角空着）")},
     ("T22", "not_shopping"): {"not_shopping": (True, "只收买回来的东西")},
     ("T22", "tray_elsewhere"): {"orange_in_it": (False, "果篮（没有，用托盘，托盘里有个橙子）"),
-                                "books_on_it": (False, "果篮（没有，用托盘，托盘上压着书）"),
+                                "bowls_in_it": (False, "果篮（没有，用托盘，托盘里有两只脏碗）"),
                                 "basket_missing": (False, "果篮（没有，用岛台上的托盘）")},
     ("T22", "two_spots"): {"two_spots": (True, "冰的进冰箱，常温的进柜子")},
     ("T23", "belongs_on_floor"): {"no_toy_box": (False, "玩具箱（没有，用托盘）"), "bin_full": (False, "玩具盒（满了，用旁边托盘）")},

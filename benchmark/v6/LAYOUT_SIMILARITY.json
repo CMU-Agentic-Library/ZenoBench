@@ -1590,7 +1590,7 @@
  },
  {
   "task": "T22_put_away_shopping",
-  "variant": "tray_elsewhere__books_on_it",
+  "variant": "tray_elsewhere__bowls_in_it",
   "clusters": 3,
   "objects_move": true,
   "alike_pairs": []

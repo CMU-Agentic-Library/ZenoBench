@@ -439,7 +439,7 @@ SUBSTITUTION_LAYOUTS = {
     "T17": ["hide_lid_in_use"],
     "T18": ["one_bowl__glass_box", "one_bowl__mug", "bowl_in_use__tomatoes", "bowl_in_use__oatmeal"],
     "T21": ["no_tissue"],
-    "T22": ["basket_missing", "tray_elsewhere__orange_in_it", "tray_elsewhere__books_on_it"],
+    "T22": ["basket_missing", "tray_elsewhere__orange_in_it", "tray_elsewhere__bowls_in_it"],
     "T23": ["by_kind__bin_full", "belongs_on_floor__bin_full"],
     "T25": ["cups_for_two__none_one_inside"],
     "T28": ["where_his_cup_is__no_kid_cup"],

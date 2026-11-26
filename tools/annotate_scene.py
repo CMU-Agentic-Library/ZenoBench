@@ -182,6 +182,17 @@ def main():
         obstacles.append({"name": f"wall_{i}", "kind": "wall",
                           "aabb": [min(x1, x2) - 0.02, min(y1, y2) - 0.02, 0.0,
                                    max(x1, x2) + 0.02, max(y1, y2) + 0.02, 2.4]})
+    # 11-26: the wall segments stop at every window, and the window colliders stand up to 0.45 m into the room
+    # (bay windows); the arm and head hit them where the boxes showed nothing (T15, T09, T17).  Each window's
+    # collider box joins the walls, floor to wall height (the wall below the sill is solid)
+    wcache = UsdGeom.BBoxCache(Usd.TimeCode.Default(), ["default", "render", "proxy", "guide"])
+    for prim in stage.Traverse():
+        if "WindowFactory" in prim.GetName() and prim.GetName().endswith("_collision"):
+            r = wcache.ComputeWorldBound(prim).ComputeAlignedRange()
+            if not r.IsEmpty():
+                lo, hi = r.GetMin(), r.GetMax()
+                obstacles.append({"name": prim.GetName().removesuffix("_collision"), "kind": "wall",
+                                  "aabb": [round(lo[0], 3), round(lo[1], 3), 0.0, round(hi[0], 3), round(hi[1], 3), 2.4]})
     repairs = stage.GetPrimAtPath("/World/SupportRepairs")
     keys = ("zeno:support", "zeno:category", "zeno:clearance")
     supports = repair_supports([dict(zip(("lo", "hi"), bounds(p)),

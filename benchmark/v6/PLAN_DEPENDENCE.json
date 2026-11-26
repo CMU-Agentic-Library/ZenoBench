@@ -4380,7 +4380,7 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "tray_elsewhere__books_on_it": "resource_missing",
+    "tray_elsewhere__bowls_in_it": "resource_missing",
     "basket_missing": "resource_missing"
    },
    "other_variants_passing": []
@@ -4388,7 +4388,7 @@
   {
    "task": "T22_put_away_shopping",
    "variant": "tray_elsewhere",
-   "layout": "tray_elsewhere__books_on_it",
+   "layout": "tray_elsewhere__bowls_in_it",
    "steps": 31,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -4413,7 +4413,7 @@
    "control_route": "goal_not_met",
    "other_layouts": {
     "tray_elsewhere__orange_in_it": "resource_missing",
-    "tray_elsewhere__books_on_it": "resource_missing"
+    "tray_elsewhere__bowls_in_it": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -6403,7 +6403,7 @@
    "variant": "tray_elsewhere",
    "candidates": [
     "tray_elsewhere__orange_in_it",
-    "tray_elsewhere__books_on_it",
+    "tray_elsewhere__bowls_in_it",
     "basket_missing",
     "juice_on_table"
    ],
@@ -9626,7 +9626,7 @@
    "variant": "tray_elsewhere",
    "layouts": [
     "tray_elsewhere__orange_in_it",
-    "tray_elsewhere__books_on_it"
+    "tray_elsewhere__bowls_in_it"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
@@ -9651,7 +9651,7 @@
    "task": "T22_put_away_shopping",
    "variant": "tray_elsewhere",
    "layouts": [
-    "tray_elsewhere__books_on_it",
+    "tray_elsewhere__bowls_in_it",
     "basket_missing"
    ],
    "start_room": "living_room_0_0",

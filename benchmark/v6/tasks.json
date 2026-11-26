@@ -90064,7 +90064,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -90079,7 +90079,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]
@@ -163054,7 +163054,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -163069,7 +163069,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]
@@ -167359,15 +167359,15 @@
       "tray_orange"
      ],
      "since": "v6",
-     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
      "v6": {
       "family": "tray_elsewhere",
       "case": "orange_in_it",
-      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
-      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
       "control": "juice_on_table",
       "contrast": null,
-      "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+      "factor": "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
       "derived_from": "bare"
      },
      "move": {},
@@ -167484,7 +167484,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -167499,7 +167499,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]
@@ -167608,7 +167608,7 @@
       "loosened": "11-24"
      }
     },
-    "tray_elsewhere__books_on_it": {
+    "tray_elsewhere__bowls_in_it": {
      "conditions": [
       "container_absent",
       "not_in_view",
@@ -167645,43 +167645,23 @@
        ],
        "yaw_deg": 0.0
       },
-      "tray_book_1": {
-       "asset": "book_blue",
+      "tray_bowl_1": {
+       "asset": "breakfast_bowl",
        "support": null,
        "z": 0.72,
        "xy": [
         -8.5,
-        7.325
+        7.4
        ],
        "yaw_deg": 0.0
       },
-      "tray_book_2": {
-       "asset": "book_blue",
+      "tray_bowl_2": {
+       "asset": "breakfast_bowl",
        "support": null,
        "z": 0.72,
        "xy": [
         -8.3,
-        7.325
-       ],
-       "yaw_deg": 0.0
-      },
-      "tray_book_3": {
-       "asset": "book_blue",
-       "support": null,
-       "z": 0.72,
-       "xy": [
-        -8.5,
-        7.475
-       ],
-       "yaw_deg": 0.0
-      },
-      "tray_book_4": {
-       "asset": "book_blue",
-       "support": null,
-       "z": 0.72,
-       "xy": [
-        -8.3,
-        7.475
+        7.4
        ],
        "yaw_deg": 0.0
       }
@@ -167706,186 +167686,6 @@
        [
         "not on_floor",
         "west_tray"
-       ],
-       [
-        "on_any",
-        "tray_book_1",
-        [
-         "bookcase_1/shelf_0",
-         "bookcase_1/shelf_1",
-         "bookcase_1/top",
-         "bookcase_2/shelf_0",
-         "bookcase_2/shelf_1",
-         "bookcase_2/top",
-         "bookcase_3/shelf_0",
-         "bookcase_3/shelf_1",
-         "bookcase_3/top",
-         "bookcase_4/shelf_0",
-         "bookcase_4/shelf_1",
-         "bookcase_4/top",
-         "large_shelf_1/shelf_0",
-         "large_shelf_1/shelf_1",
-         "large_shelf_1/shelf_2",
-         "large_shelf_1/shelf_3",
-         "large_shelf_1/shelf_4",
-         "large_shelf_2/shelf_0",
-         "large_shelf_2/shelf_1",
-         "large_shelf_2/shelf_2",
-         "large_shelf_2/shelf_3",
-         "large_shelf_3/shelf_0",
-         "large_shelf_3/shelf_1",
-         "large_shelf_3/shelf_2",
-         "large_shelf_3/shelf_3",
-         "large_shelf_4/shelf_0",
-         "large_shelf_4/shelf_1",
-         "large_shelf_4/shelf_2",
-         "large_shelf_4/shelf_3",
-         "large_shelf_4/shelf_4",
-         "large_shelf_5/shelf_0",
-         "large_shelf_5/shelf_1",
-         "large_shelf_5/shelf_2",
-         "large_shelf_5/shelf_3",
-         "large_shelf_6/shelf_0",
-         "large_shelf_6/shelf_1",
-         "large_shelf_6/shelf_2",
-         "large_shelf_6/shelf_3",
-         "large_shelf_6/top"
-        ]
-       ],
-       [
-        "on_any",
-        "tray_book_2",
-        [
-         "bookcase_1/shelf_0",
-         "bookcase_1/shelf_1",
-         "bookcase_1/top",
-         "bookcase_2/shelf_0",
-         "bookcase_2/shelf_1",
-         "bookcase_2/top",
-         "bookcase_3/shelf_0",
-         "bookcase_3/shelf_1",
-         "bookcase_3/top",
-         "bookcase_4/shelf_0",
-         "bookcase_4/shelf_1",
-         "bookcase_4/top",
-         "large_shelf_1/shelf_0",
-         "large_shelf_1/shelf_1",
-         "large_shelf_1/shelf_2",
-         "large_shelf_1/shelf_3",
-         "large_shelf_1/shelf_4",
-         "large_shelf_2/shelf_0",
-         "large_shelf_2/shelf_1",
-         "large_shelf_2/shelf_2",
-         "large_shelf_2/shelf_3",
-         "large_shelf_3/shelf_0",
-         "large_shelf_3/shelf_1",
-         "large_shelf_3/shelf_2",
-         "large_shelf_3/shelf_3",
-         "large_shelf_4/shelf_0",
-         "large_shelf_4/shelf_1",
-         "large_shelf_4/shelf_2",
-         "large_shelf_4/shelf_3",
-         "large_shelf_4/shelf_4",
-         "large_shelf_5/shelf_0",
-         "large_shelf_5/shelf_1",
-         "large_shelf_5/shelf_2",
-         "large_shelf_5/shelf_3",
-         "large_shelf_6/shelf_0",
-         "large_shelf_6/shelf_1",
-         "large_shelf_6/shelf_2",
-         "large_shelf_6/shelf_3",
-         "large_shelf_6/top"
-        ]
-       ],
-       [
-        "on_any",
-        "tray_book_3",
-        [
-         "bookcase_1/shelf_0",
-         "bookcase_1/shelf_1",
-         "bookcase_1/top",
-         "bookcase_2/shelf_0",
-         "bookcase_2/shelf_1",
-         "bookcase_2/top",
-         "bookcase_3/shelf_0",
-         "bookcase_3/shelf_1",
-         "bookcase_3/top",
-         "bookcase_4/shelf_0",
-         "bookcase_4/shelf_1",
-         "bookcase_4/top",
-         "large_shelf_1/shelf_0",
-         "large_shelf_1/shelf_1",
-         "large_shelf_1/shelf_2",
-         "large_shelf_1/shelf_3",
-         "large_shelf_1/shelf_4",
-         "large_shelf_2/shelf_0",
-         "large_shelf_2/shelf_1",
-         "large_shelf_2/shelf_2",
-         "large_shelf_2/shelf_3",
-         "large_shelf_3/shelf_0",
-         "large_shelf_3/shelf_1",
-         "large_shelf_3/shelf_2",
-         "large_shelf_3/shelf_3",
-         "large_shelf_4/shelf_0",
-         "large_shelf_4/shelf_1",
-         "large_shelf_4/shelf_2",
-         "large_shelf_4/shelf_3",
-         "large_shelf_4/shelf_4",
-         "large_shelf_5/shelf_0",
-         "large_shelf_5/shelf_1",
-         "large_shelf_5/shelf_2",
-         "large_shelf_5/shelf_3",
-         "large_shelf_6/shelf_0",
-         "large_shelf_6/shelf_1",
-         "large_shelf_6/shelf_2",
-         "large_shelf_6/shelf_3",
-         "large_shelf_6/top"
-        ]
-       ],
-       [
-        "on_any",
-        "tray_book_4",
-        [
-         "bookcase_1/shelf_0",
-         "bookcase_1/shelf_1",
-         "bookcase_1/top",
-         "bookcase_2/shelf_0",
-         "bookcase_2/shelf_1",
-         "bookcase_2/top",
-         "bookcase_3/shelf_0",
-         "bookcase_3/shelf_1",
-         "bookcase_3/top",
-         "bookcase_4/shelf_0",
-         "bookcase_4/shelf_1",
-         "bookcase_4/top",
-         "large_shelf_1/shelf_0",
-         "large_shelf_1/shelf_1",
-         "large_shelf_1/shelf_2",
-         "large_shelf_1/shelf_3",
-         "large_shelf_1/shelf_4",
-         "large_shelf_2/shelf_0",
-         "large_shelf_2/shelf_1",
-         "large_shelf_2/shelf_2",
-         "large_shelf_2/shelf_3",
-         "large_shelf_3/shelf_0",
-         "large_shelf_3/shelf_1",
-         "large_shelf_3/shelf_2",
-         "large_shelf_3/shelf_3",
-         "large_shelf_4/shelf_0",
-         "large_shelf_4/shelf_1",
-         "large_shelf_4/shelf_2",
-         "large_shelf_4/shelf_3",
-         "large_shelf_4/shelf_4",
-         "large_shelf_5/shelf_0",
-         "large_shelf_5/shelf_1",
-         "large_shelf_5/shelf_2",
-         "large_shelf_5/shelf_3",
-         "large_shelf_6/shelf_0",
-         "large_shelf_6/shelf_1",
-         "large_shelf_6/shelf_2",
-         "large_shelf_6/shelf_3",
-         "large_shelf_6/top"
-        ]
        ]
       ],
       "any": [
@@ -167913,21 +167713,19 @@
       "bought_juice",
       "bought_apple",
       "west_tray",
-      "tray_book_1",
-      "tray_book_2",
-      "tray_book_3",
-      "tray_book_4"
+      "tray_bowl_1",
+      "tray_bowl_2"
      ],
      "since": "v6",
-     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
      "v6": {
       "family": "tray_elsewhere",
-      "case": "books_on_it",
-      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
-      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+      "case": "bowls_in_it",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
       "control": "juice_on_table",
       "contrast": null,
-      "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+      "factor": "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
       "derived_from": "bare"
      },
      "move": {},
@@ -167935,10 +167733,8 @@
       "clusters": [
        {
         "names": [
-         "tray_book_1",
-         "tray_book_2",
-         "tray_book_3",
-         "tray_book_4",
+         "tray_bowl_1",
+         "tray_bowl_2",
          "west_tray"
         ],
         "support": "dining_table_1/top",
@@ -167957,10 +167753,8 @@
          1.26
         ],
         "pick": [
-         "tray_book_1",
-         "tray_book_2",
-         "tray_book_3",
-         "tray_book_4"
+         "tray_bowl_1",
+         "tray_bowl_2"
         ],
         "search": [
          "west_tray"
@@ -168053,7 +167847,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -168068,7 +167862,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]
@@ -168173,7 +167967,7 @@
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "果篮（没有，用托盘，托盘上压着书）",
+      "ideal_zh": "果篮（没有，用托盘，托盘里有两只脏碗）",
       "loosened": "11-24"
      }
     }
@@ -168210,7 +168004,7 @@
     "not_shopping": "v6_not_shopping",
     "two_spots": "v6_two_spots",
     "tray_elsewhere__orange_in_it": "v6_tray_elsewhere__orange_in_it",
-    "tray_elsewhere__books_on_it": "v6_tray_elsewhere__books_on_it"
+    "tray_elsewhere__bowls_in_it": "v6_tray_elsewhere__bowls_in_it"
    },
    "routes": {
     "nominal": {
@@ -169060,7 +168854,7 @@
      "kind": "v6_oracle",
      "variant": "tray_elsewhere__orange_in_it"
     },
-    "v6_tray_elsewhere__books_on_it": {
+    "v6_tray_elsewhere__bowls_in_it": {
      "steps": [
       {
        "skill": "navigate",
@@ -169137,116 +168931,58 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tray_book_1"
+        "destination": "tray_bowl_1"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "tray_book_1"
+        "object": "tray_bowl_1"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_1/top"
+        "destination": "kitchen_counter_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "tray_book_1",
-        "receptacle": "bookcase_1/top",
+        "object": "tray_bowl_1",
+        "receptacle": "kitchen_counter_1/top",
         "hint_xy": [
-         -9.569,
-         6.528
+         -2.8,
+         10.251
         ]
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tray_book_2"
+        "destination": "tray_bowl_2"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "tray_book_2"
+        "object": "tray_bowl_2"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_1/top"
+        "destination": "kitchen_counter_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "tray_book_2",
-        "receptacle": "bookcase_1/top",
+        "object": "tray_bowl_2",
+        "receptacle": "kitchen_counter_1/top",
         "hint_xy": [
-         -9.59,
-         6.819999999999999
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tray_book_3"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "tray_book_3"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_1/shelf_1"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "tray_book_3",
-        "receptacle": "bookcase_1/shelf_1",
-        "hint_xy": [
-         -9.59,
-         6.52
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tray_book_4"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "tray_book_4"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_1/shelf_1"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "tray_book_4",
-        "receptacle": "bookcase_1/shelf_1",
-        "hint_xy": [
-         -9.59,
-         6.819999999999999
+         -2.8,
+         10.551
         ]
        }
       },
@@ -169277,7 +169013,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "tray_elsewhere__books_on_it"
+     "variant": "tray_elsewhere__bowls_in_it"
     }
    },
    "vary": {},
@@ -171171,18 +170907,18 @@
      "control": "juice_on_table",
      "layouts": [
       "tray_elsewhere__orange_in_it",
-      "tray_elsewhere__books_on_it",
+      "tray_elsewhere__bowls_in_it",
       "basket_missing"
      ],
      "factor": "where the stand-in for the basket is and what lies on it (seed: a tray on the island; the tray in the west dining room with an orange, or covered with books)",
      "seeds": {
       "10": "basket_missing",
-      "11": "tray_elsewhere__books_on_it",
+      "11": "tray_elsewhere__bowls_in_it",
       "12": "tray_elsewhere__orange_in_it",
-      "13": "tray_elsewhere__books_on_it",
+      "13": "tray_elsewhere__bowls_in_it",
       "14": "basket_missing",
       "15": "tray_elsewhere__orange_in_it",
-      "16": "tray_elsewhere__books_on_it",
+      "16": "tray_elsewhere__bowls_in_it",
       "17": "tray_elsewhere__orange_in_it",
       "18": "tray_elsewhere__orange_in_it",
       "19": "basket_missing"
@@ -171233,7 +170969,7 @@
             ]
            ]
           },
-          "tray_elsewhere__books_on_it": {
+          "tray_elsewhere__bowls_in_it": {
            "all": [
             [
              "on_any",
@@ -171258,186 +170994,6 @@
             [
              "not on_floor",
              "west_tray"
-            ],
-            [
-             "on_any",
-             "tray_book_1",
-             [
-              "bookcase_1/shelf_0",
-              "bookcase_1/shelf_1",
-              "bookcase_1/top",
-              "bookcase_2/shelf_0",
-              "bookcase_2/shelf_1",
-              "bookcase_2/top",
-              "bookcase_3/shelf_0",
-              "bookcase_3/shelf_1",
-              "bookcase_3/top",
-              "bookcase_4/shelf_0",
-              "bookcase_4/shelf_1",
-              "bookcase_4/top",
-              "large_shelf_1/shelf_0",
-              "large_shelf_1/shelf_1",
-              "large_shelf_1/shelf_2",
-              "large_shelf_1/shelf_3",
-              "large_shelf_1/shelf_4",
-              "large_shelf_2/shelf_0",
-              "large_shelf_2/shelf_1",
-              "large_shelf_2/shelf_2",
-              "large_shelf_2/shelf_3",
-              "large_shelf_3/shelf_0",
-              "large_shelf_3/shelf_1",
-              "large_shelf_3/shelf_2",
-              "large_shelf_3/shelf_3",
-              "large_shelf_4/shelf_0",
-              "large_shelf_4/shelf_1",
-              "large_shelf_4/shelf_2",
-              "large_shelf_4/shelf_3",
-              "large_shelf_4/shelf_4",
-              "large_shelf_5/shelf_0",
-              "large_shelf_5/shelf_1",
-              "large_shelf_5/shelf_2",
-              "large_shelf_5/shelf_3",
-              "large_shelf_6/shelf_0",
-              "large_shelf_6/shelf_1",
-              "large_shelf_6/shelf_2",
-              "large_shelf_6/shelf_3",
-              "large_shelf_6/top"
-             ]
-            ],
-            [
-             "on_any",
-             "tray_book_2",
-             [
-              "bookcase_1/shelf_0",
-              "bookcase_1/shelf_1",
-              "bookcase_1/top",
-              "bookcase_2/shelf_0",
-              "bookcase_2/shelf_1",
-              "bookcase_2/top",
-              "bookcase_3/shelf_0",
-              "bookcase_3/shelf_1",
-              "bookcase_3/top",
-              "bookcase_4/shelf_0",
-              "bookcase_4/shelf_1",
-              "bookcase_4/top",
-              "large_shelf_1/shelf_0",
-              "large_shelf_1/shelf_1",
-              "large_shelf_1/shelf_2",
-              "large_shelf_1/shelf_3",
-              "large_shelf_1/shelf_4",
-              "large_shelf_2/shelf_0",
-              "large_shelf_2/shelf_1",
-              "large_shelf_2/shelf_2",
-              "large_shelf_2/shelf_3",
-              "large_shelf_3/shelf_0",
-              "large_shelf_3/shelf_1",
-              "large_shelf_3/shelf_2",
-              "large_shelf_3/shelf_3",
-              "large_shelf_4/shelf_0",
-              "large_shelf_4/shelf_1",
-              "large_shelf_4/shelf_2",
-              "large_shelf_4/shelf_3",
-              "large_shelf_4/shelf_4",
-              "large_shelf_5/shelf_0",
-              "large_shelf_5/shelf_1",
-              "large_shelf_5/shelf_2",
-              "large_shelf_5/shelf_3",
-              "large_shelf_6/shelf_0",
-              "large_shelf_6/shelf_1",
-              "large_shelf_6/shelf_2",
-              "large_shelf_6/shelf_3",
-              "large_shelf_6/top"
-             ]
-            ],
-            [
-             "on_any",
-             "tray_book_3",
-             [
-              "bookcase_1/shelf_0",
-              "bookcase_1/shelf_1",
-              "bookcase_1/top",
-              "bookcase_2/shelf_0",
-              "bookcase_2/shelf_1",
-              "bookcase_2/top",
-              "bookcase_3/shelf_0",
-              "bookcase_3/shelf_1",
-              "bookcase_3/top",
-              "bookcase_4/shelf_0",
-              "bookcase_4/shelf_1",
-              "bookcase_4/top",
-              "large_shelf_1/shelf_0",
-              "large_shelf_1/shelf_1",
-              "large_shelf_1/shelf_2",
-              "large_shelf_1/shelf_3",
-              "large_shelf_1/shelf_4",
-              "large_shelf_2/shelf_0",
-              "large_shelf_2/shelf_1",
-              "large_shelf_2/shelf_2",
-              "large_shelf_2/shelf_3",
-              "large_shelf_3/shelf_0",
-              "large_shelf_3/shelf_1",
-              "large_shelf_3/shelf_2",
-              "large_shelf_3/shelf_3",
-              "large_shelf_4/shelf_0",
-              "large_shelf_4/shelf_1",
-              "large_shelf_4/shelf_2",
-              "large_shelf_4/shelf_3",
-              "large_shelf_4/shelf_4",
-              "large_shelf_5/shelf_0",
-              "large_shelf_5/shelf_1",
-              "large_shelf_5/shelf_2",
-              "large_shelf_5/shelf_3",
-              "large_shelf_6/shelf_0",
-              "large_shelf_6/shelf_1",
-              "large_shelf_6/shelf_2",
-              "large_shelf_6/shelf_3",
-              "large_shelf_6/top"
-             ]
-            ],
-            [
-             "on_any",
-             "tray_book_4",
-             [
-              "bookcase_1/shelf_0",
-              "bookcase_1/shelf_1",
-              "bookcase_1/top",
-              "bookcase_2/shelf_0",
-              "bookcase_2/shelf_1",
-              "bookcase_2/top",
-              "bookcase_3/shelf_0",
-              "bookcase_3/shelf_1",
-              "bookcase_3/top",
-              "bookcase_4/shelf_0",
-              "bookcase_4/shelf_1",
-              "bookcase_4/top",
-              "large_shelf_1/shelf_0",
-              "large_shelf_1/shelf_1",
-              "large_shelf_1/shelf_2",
-              "large_shelf_1/shelf_3",
-              "large_shelf_1/shelf_4",
-              "large_shelf_2/shelf_0",
-              "large_shelf_2/shelf_1",
-              "large_shelf_2/shelf_2",
-              "large_shelf_2/shelf_3",
-              "large_shelf_3/shelf_0",
-              "large_shelf_3/shelf_1",
-              "large_shelf_3/shelf_2",
-              "large_shelf_3/shelf_3",
-              "large_shelf_4/shelf_0",
-              "large_shelf_4/shelf_1",
-              "large_shelf_4/shelf_2",
-              "large_shelf_4/shelf_3",
-              "large_shelf_4/shelf_4",
-              "large_shelf_5/shelf_0",
-              "large_shelf_5/shelf_1",
-              "large_shelf_5/shelf_2",
-              "large_shelf_5/shelf_3",
-              "large_shelf_6/shelf_0",
-              "large_shelf_6/shelf_1",
-              "large_shelf_6/shelf_2",
-              "large_shelf_6/shelf_3",
-              "large_shelf_6/top"
-             ]
             ],
             [
              "hand_empty",
@@ -171514,7 +171070,7 @@
             ]
            ]
           },
-          "tray_elsewhere__books_on_it": {
+          "tray_elsewhere__bowls_in_it": {
            "all": [
             [
              "on_any",
@@ -171582,12 +171138,12 @@
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
       "D_by_layout": {
        "tray_elsewhere__orange_in_it": 0,
-       "tray_elsewhere__books_on_it": 0,
+       "tray_elsewhere__bowls_in_it": 0,
        "basket_missing": 0
       },
       "top_by_layout": {
        "tray_elsewhere__orange_in_it": "moderate",
-       "tray_elsewhere__books_on_it": "moderate",
+       "tray_elsewhere__bowls_in_it": "moderate",
        "basket_missing": "moderate"
       }
      }
@@ -188057,7 +187613,7 @@
          1,
          4.622,
          3.396,
-         4.96,
+         4.708,
          0.2
         ]
        ],
@@ -188405,7 +187961,7 @@
          1,
          4.622,
          3.396,
-         4.96,
+         4.708,
          0.2
         ]
        ],
@@ -190309,7 +189865,7 @@
          1,
          4.622,
          3.396,
-         4.96,
+         4.708,
          0.2
         ]
        ],
@@ -191561,7 +191117,7 @@
          1,
          4.622,
          3.396,
-         4.96,
+         4.708,
          0.2
         ]
        ],
@@ -213533,7 +213089,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -213548,7 +213104,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]
@@ -213822,7 +213378,7 @@
          -1,
          -8.941,
          7.266,
-         8.853,
+         8.754,
          0.2
         ],
         [
@@ -213837,7 +213393,7 @@
          1,
          -1,
          6.869,
-         -8.941,
+         -8.038,
          -7.888,
          0.2
         ]

@@ -3261,7 +3261,7 @@
  {
   "task": "T22_put_away_shopping",
   "design": "tray_elsewhere",
-  "layout": "tray_elsewhere__books_on_it",
+  "layout": "tray_elsewhere__bowls_in_it",
   "category": "action_task",
   "episodes": 3,
   "substitution_kind": "被占用",

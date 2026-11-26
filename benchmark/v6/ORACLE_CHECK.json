@@ -2896,7 +2896,7 @@
   },
   {
    "task": "T22_put_away_shopping",
-   "layout": "tray_elsewhere__books_on_it",
+   "layout": "tray_elsewhere__bowls_in_it",
    "steps": 31,
    "atoms_checked": 8,
    "atoms_geometric": 1,

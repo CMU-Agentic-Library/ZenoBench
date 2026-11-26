@@ -1706,8 +1706,8 @@
  {
   "task": "T22_put_away_shopping",
   "seed": 13,
-  "variant": "tray_elsewhere__books_on_it",
-  "route": "v6_tray_elsewhere__books_on_it",
+  "variant": "tray_elsewhere__bowls_in_it",
+  "route": "v6_tray_elsewhere__bowls_in_it",
   "planner": "scripted",
   "profile": "sticky/gt",
   "category": "action_task",
@@ -8990,8 +8990,8 @@
  {
   "task": "T22_put_away_shopping",
   "seed": 16,
-  "variant": "tray_elsewhere__books_on_it",
-  "route": "v6_tray_elsewhere__books_on_it",
+  "variant": "tray_elsewhere__bowls_in_it",
+  "route": "v6_tray_elsewhere__bowls_in_it",
   "planner": "scripted",
   "profile": "sticky/gt",
   "category": "action_task",

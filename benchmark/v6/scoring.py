@@ -627,6 +627,16 @@ LAYOUT_TIERS[("T22", "*")] = {
     "eat_now__desk_corner": {"best": {"all": [*_J22, *_C22, *_FREE22, *_STAYS22, *_H15]},
                              "second": {"any": [[*_C22, *_FREE22], [*_FREE22, *_STAYS22]], "all": [*_J22, *_H15]},
                              "worst": {"any": [_DESK22, _AWAY22], "all": [*_J22, *_H15]}, "_ideal": True}}
+# T22 tray_elsewhere__bowls_in_it (11-26, user): the apple in the tray in every level; the dirty bowls cleared to a
+# kitchen worktop first is the best, cleared anywhere else (not the floor) second, left in the tray with the apple worst
+_APPLE22 = [*_J22, *_C22, ["inside", "bought_apple", "west_tray"], ["not on_floor", "west_tray"]]
+_BOWLS22 = ["tray_bowl_1", "tray_bowl_2"]
+_KITCHEN22 = ["kitchen_counter_1/top", "kitchen_counter_2/top", "kitchen_island/top"]
+LAYOUT_TIERS[("T22", "*")]["tray_elsewhere__bowls_in_it"] = {
+    "best": {"all": [*_APPLE22, *[["on_any", b, _KITCHEN22] for b in _BOWLS22], *_H15]},
+    "second": {"all": [*_APPLE22, *[x for b in _BOWLS22 for x in (["not inside", b, "west_tray"],
+                                                                   ["not on_floor", b])], *_H15]},
+    "worst": {"all": [*_APPLE22, *_H15]}, "_ideal": False}
 _T22_WHY = {"best": "the snacks on his desk where they leave his homework as it is (the free corner when the "
                     "homework covers the desk), the juice away, doors closed",
             "second": "a door left open; or his homework pushed aside to make room for the snacks",
