@@ -176,4 +176,49 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 - sticky 的 snap 级瞬移、接住掉落（`sticky.py` 8）——计划里说按 Actuator 的写操作处理，还没做。
 所以 `Rig.move_to` / `joint_path` / `follow_both` 等旧入口、旧的 `planner.find_park`（`tools/build_tasks.py` 和它自己的单测还在用）都还不能删。
 
+**规则审查（11-25）**：第九阶段（033f3791..202bc7a9）按第 1 节和 MOTION_ARCHITECTURE 第 1 节的规则逐条查，查出来的都改了（13ccf93a 起，没推送）：
+
+| 问题 | 规则 | 改成 | 提交 |
+|---|---|---|---|
+| handover 删了 6 cm 间隔，但接的手规划时给的手整只不在查询里（`other_hand_off`） | 5 | 另一只手拿着东西、不动时，它的碰撞球按 State 的位置做成 `BODY_ENV` 里的方块，只有这条手臂、这只手和它手里的东西查（`Motion._other_hand_boxes`） | 没提交（见下"还没解决的"） |
+| wipe / pour / flip 的最短行程、最小倾角 / 转角只在搜索的 build 里查，重做不查 | 2 | 约束进 `plan_wipe(need)` / `plan_pour(min_tilt)` / `plan_flip(min_arc)` 本身；`plan_flip` 补上 `_kept` | 1326fe36 |
+| touch / knock、wave / point、push 两只手都空时 job 直接取右手 | 2（本文件） | 手进目标集合：停车点搜索的技能在 `Problem.goals` 第 4 项；原地的手势按 `free_leg` 的分数把两只手的目标集合排在一起（`_either_hand`）；point 的"在前方"一个判据 | 674f6d86 |
+| 不选停车点的技能，失败出口固定用右手（handover 接不住时左手不张不退） | 3、9 | `clearing` 带手，`run_skill` 用判失败的那只、否则计划自己的那只 | 13ccf93a |
+| 三处 hook 掉了以后在 hook 里张手 | 8.6 | 都传 `open_hand=False`，由失败出口张开；单测守住 | 13ccf93a |
+| wipe 的按压位姿在 job 里按搜索前的握法算死 | 9、第 6 节 | `Aim(held=True)` + `WIPE_TOL`，锚点看得出海绵在手里滑了 | 76bde0b2 |
+| 约 30 个常数留在 `skill_jobs`，6 个和谓词各写一份 | 10、4.5 | 运动层的进 `tolerances.py`，和谓词同义的出处在 `predicates.py`；继承值和目标集合的候选登记在 COLLISION_PLAN 第 8 节 | 8cd39413 |
+| `free_spots` 按 `kitchen_microwave` 改半径（9d 起决定腔体 place 的候选点） | COLLISION_PLAN 原则 5 | 删了，腔体用门后的通用规则 | d99d9072 |
+| 限速、look 转身、两只手都拿着东西开车、目的地物体高度只认右手 | 3.3、3.4、第 6 节决定 3 | 两只手同一套 | 21b61224 |
+| `ZENO_PICK_SIDE` 全局开关；路线的 `hand=` 没接上 | 10、3.2 | pick 合约的 `hands`（any / right / left / both）一路传到 job；诊断用 `run_episode.py --pick-hand`；环境变量删了 | 53ba8626 |
+| 符号规划器不认 `any` / `both`：`skill_library/tests` 从 9a–9c 起 2 个失败（9d 起 3 个），各步只跑了 `tests/` | 第 4 节"单测全过" | 规划器读 any / both；合约的 `invalidates` 不再写死右手 | 53ba8626 |
+| release / flip 松手后没有锚点；wipe 抬起是常数拼的长度；present 的 build 读 rig | 9、4、10 | `release_let_go` / `flip_let_go` 锚点；`contact_extent(off_support)`；按 State | 3c203ed6 |
+| present 的候选是旧代码的 4 个点 | 1（灰色） | `presenting` 谓词的区域里取网格，边界只在谓词里写一处 | 60ad74f3 |
+| push / press 的合爪只给 30 个物理步，手指没合上下一段的复核就判碰（左手推时暴露出来，T27 rice） | 9 | 合一秒，和 pick 的合爪一样 | 1fd497b2 |
+| 9c 要求量的 pick 停车点搜索耗时 | 3.1 | 量了：11-23（只有右手）对 11-25（两只手），同 149 集，总时间 2126 → 2827 s（1.33 倍）、中位 7.1 → 9.2 s（1.30 倍），在 1.5 倍以内 | — |
+| 缺的单测、过时的文档 | 3.6 | `plan_pick(stop=)`、两只手的目标集合、`side_variants`、`square_yaws`、左手搬运段；技能文档补了 press / touch / knock、flip / pour、handover / brace，改了 pick / place / push / posture / CODE_MAP | 0a1c9ff1 等 |
+
+没改的（说明理由）：
+- press（8a）和 open 的 `door_hand`（6b）两只手都空时也是直接取右手——第九阶段之前定的、MOTION_ARCHITECTURE 写明的做法，改了会动 v6 加热、开门的路线，没动；
+- rotate、upright、wave、point、handover、knock 的目标集合候选：任务没有给区域，登记在 COLLISION_PLAN 第 8 节；
+- wipe 的 `Spec.touch` 按整件家具放开（不是只放开那块台面）：手臂其余部分照查，没改；
+- flip 推的那段物体在模型里不动（`pivot` 耦合没加，MOTION_ARCHITECTURE 5.5）；
+- 两手搬（用户 11-25 定跳过）、边走边取放（关着）。
+
+检查（`/data/zenobench/rules_1125`，一次一个仿真、每批 ≤ 30 分钟）：
+- 手进目标集合（674f6d86，v6）：T26 whose__shelf_room、T19 lookalike_bin（touch）、T01 which_table（expose）、T29 homework_on_table 成功；T05 homework_ready 失败——和 v6full_1125 同一个 tick、同一个原因（推的时候停短 6 mm，右手），旧问题；T27 rice 失败——推选了左手，合爪没合上（1fd497b2 修，复查见下）。
+- 去掉微波炉半径特例（d99d9072）：T07 microwave_holds_pot、two_portions__counter 2/2。
+- 手势（674f6d86，v3）：P07 present + brace 成功；P01 wave、point 成功，失败在 crouch（躯干只到 −0.436 m），和 9h、9j 当时一样，旧问题。
+
+**规则审查之后还没解决的（11-25 晚，用户叫停时）**：
+1. **handover 的碰撞修复没提交**：主目录工作区里的 `zeno_skills/motion.py`（`_other_hand_boxes`、`_hand_slots`、`_other_hand_idx`、`contacts_by_owner` 的 robot:base 一项）、`zeno_skills/scene_geometry.py`（`OTHER_HAND`）、`tools/check_body_collision.py`（新增的检查）、`docs/skills/handover_brace.md`。GPU 检查（`tools/check_body_collision.py`）ALL OK：右手 56 个球都以方块出现在左手臂查的 `BODY_ENV` 里，关掉后撤掉；还没在仿真里跑。要跑的：P06（handover）、P07，以及另一只手拿着东西时这只手动的 v6 集（T10 x6_gd_can_put_away__in_cabinet、T17 hide_somewhere__lid_away、T18 one_bowl__mug：左手推门关、右手拿着东西）——`/data/zenobench/rules_1125/batch_finalB1.json`、`batch_finalC.json`。新 session 若开新 worktree，这些改动不在分支上，要先提交或拷过去。MOTION_ARCHITECTURE 4.4（"一只手的手指对另一条手臂（双手交接）查不到"）和第 6 节 9i 表的 handover 一行随它改。
+2. **T27 三集回退**（在 1fd497b2 上，11-23、11-25 都成功）：
+   - two_leftovers：推的停车点搜索把左手放进目标集合（674f6d86）后排序 IK 从 293 个变 638 个，3 次构造（轨迹优化失败，慢）用掉 21.5 s，超过 `BUILD_S` 20 s，没找到停车点；11-25 是 3 次 3.1 s、第 3 个成。按 3.1，搜索时间超过 1.5 倍要先做第 7 节"同一位置的几组目标共用底盘候选"；或者重新考虑推的手怎么排（`Problem.tiers` 按手分层就是"先右后左"，和本文件规则 3 冲突，要用户定）。
+   - fridge_out_of_view：推（右手）成功后 pick 的停车点搜索 2 次构造用掉 28.2 s 超预算、没找到（11-25：2 次 9.5 s 找到，右手）。原因没查。
+   - which_is_leftover：pick 选左手（11-25 也是左手），这次左手放进冰箱层板后收臂起点左手指 5 mm 在世界里（INVALID_START_STATE_WORLD_COLLISION）；和 8cba9d98 之后"T29 另一次左手收臂起点 4 mm"可能同类，没查。
+   - T26 where_in_room__waste_bin 被 30 分钟上限截掉，没跑到。
+   日志在 `/data/zenobench/rules_1125/runs_push`，对照 `/data/zenobench/v6full_1125`。
+3. **最后几批检查没跑**（batch 都在 `/data/zenobench/rules_1125`，`go.sh <worktree> <tasks.json> <batch> <tag>`，带 flock，一次一个仿真）：`batch_finalA`（T08 wipe、T05 present、T19 touch、T02 rotate、T06 square）、`B1`（见 1）、`B2`（T22 by_kind、T11 basket，`pick_hand: left` 强制左手：限速、look、两只手搬运检查）、`C`（v3 P06、P07、P05、P17、P04）、`batch_reset.json`（`tasks_v3_checks.json` 里 P01 的 reset_check 路线：9j 改的 reset 一直没跑到）、杯把手 pick 冒烟（`go_smoke.sh <worktree> cup "pick_cup_handle mug"`）。
+4. **已知的旧问题**（和这次无关，检查里又见到）：P01 crouch 只降到 −0.436 m（左臂收着碰底盘）；T05 homework_ready 推的时候停短 6 mm。
+5. **没改、留给用户定的**：press（8a）、open 的 `door_hand` 两只手都空时直接取右手；rotate / upright / wave / point / handover / knock 的目标候选是继承的点（登记在 COLLISION_PLAN 第 8 节）；wipe 的 `Spec.touch` 按整件家具；flip 推的那段没有 `pivot` 耦合；第 5 节说的 9g 之后的全量没跑。
+
 **要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。已写进交接文档 `docs/archive/handoffs/HANDOFF_2026-11-25_hands_for_bench.md`（含 11-25 pick 合约的 `hands` 和 `--pick-hand`）。
