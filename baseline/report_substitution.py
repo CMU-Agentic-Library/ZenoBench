@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from statistics import mean
 
-from baseline.comparison import METHODS, MODELS, V6, episodes, read_json, result_path
+from baseline.comparison import ABLATIONS, METHODS, MODELS, V6, episodes, read_json, result_path
 from baseline.report import average, count_ratio, episode_key, ratio, read_outcome, table
 from benchmark.v6.substitution_eval import catalog, episode_row
 
@@ -75,6 +75,8 @@ def render(manifest, rows, batch):
     cells = defaultdict(list)
     for row in rows:
         cells[row["method"], row["model"]].append(row)
+    by_key = {cell: {(r["task"], r["layout"], r["seed"]): r for r in attempts if r["status"] == "scored"}
+              for cell, attempts in cells.items()}
     planned = read_json(batch)
     sides = Counter(r["side"] for r in planned)
     reasons = Counter(r["reason"] for r in planned)
@@ -124,6 +126,19 @@ def render(manifest, rows, batch):
         causes.append([method, model, *(ratio([r for r in scored if r["reason"] == reason], "strict")
                                         for reason in reasons)])
     lines += table(["方法", "模型", "计分/计划", "中断", "任务成功", "平均原生分", "严格成功", "执行故障/失败"], overall)
+    main_methods = [method for method in METHODS if method not in ABLATIONS]
+    shared = set.intersection(*(set(by_key[method, model]) for method in main_methods for model in MODELS))
+    if len(shared) < len(planned):
+        lines += ["## 五种主方法的同局比较", "",
+                  f"按任务、布局和种子配对后，全部 15 个组合共同完成了 {len(shared)} 局。"
+                  "下表在这些共同样本上计算严格成功。", ""]
+        shared_rows = []
+        for model in MODELS:
+            counts = []
+            for method in main_methods:
+                counts.append(ratio([by_key[method, model][key] for key in shared], "strict"))
+            shared_rows.append([model, *counts])
+        lines += table(["模型", *main_methods], shared_rows)
     lines += ["## 替代选择", "",
               "可分级的 B 局从成功分支或最后拿起的候选物推断选择，因此可能命中替代物而任务仍失败。"
               "若布局只提供差档替代物，命中最佳与选差档可以重合。"
@@ -136,8 +151,7 @@ def render(manifest, rows, batch):
     lines += ["## 同局消融", "", "每一项只比较 ReAct 与相应消融均有原生判定的同一布局和种子。", ""]
     paired = []
     for model in MODELS:
-        indexed = {method: {(r["task"], r["layout"], r["seed"]): r for r in cells[method, model]
-                            if r["status"] == "scored"} for method in ("ReAct", "ReActHint", "ReActPrivileged")}
+        indexed = {method: by_key[method, model] for method in ("ReAct", "ReActHint", "ReActPrivileged")}
         for method in ("ReActHint", "ReActPrivileged"):
             common = sorted(indexed["ReAct"].keys() & indexed[method].keys())
             differences = [indexed[method][k]["native_score"] - indexed["ReAct"][k]["native_score"] for k in common]
