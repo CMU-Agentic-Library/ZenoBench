@@ -1319,10 +1319,11 @@ class Motion:
         coll_kw = coll_kw or {}
         own = HAND_LINKS if coll_kw.get("hand_touches_part") else FINGER_LINKS if coll_kw.get("ignore_fingers") else ()
         other = "left" if kin.side == "right" else "right"
-        # the other arm is fixed for this query: its fingers (never checked against this arm)
-        # and whatever of it already touches the world (a hand holding a handle) stay out
-        links = {f"{kin.side}_{l}" for l in own} | {f"{other}_{l}" for l in FINGER_LINKS} | \
-            self.other_touching.get(kin.side, set())
+        # the other arm is fixed for this query: whatever of it already touches the world (a hand holding a
+        # handle) stays out.  Its fingers are checked as the rest of it -- it rides the body this arm's
+        # segment may move (s11 T27 11-26: the right tuck carried the left fingers into the open fridge
+        # door; they were always off here, unseen while the left arm folded inside the base column)
+        links = {f"{kin.side}_{l}" for l in own} | self.other_touching.get(kin.side, set())
         if coll_kw.get("held_touches"):
             # Spec.touch (name, "held"): the load in the hand is what touches (a spoon in the pot), its
             # held link off with the fingers in path_free_only's check of the rest of the arm
