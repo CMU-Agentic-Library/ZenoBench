@@ -1042,7 +1042,7 @@ def t26():
             {"shelf_room": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
                                      **room},
                                 watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], *nv_stays, H]},
-                                route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.43])),
+                                route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.50])),
              "shelf_full": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
                                      **basket, **full_b2},
                                 watch=[kb, nv, *full_b2],
@@ -1079,7 +1079,7 @@ def t26():
                             watch=[CAR, kb, BASK],
                             goal={"all": [["inside", CAR, BASK], ["on_any", kb, KIDS_CASE], H]},
                             route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)
-                            + fetch(kb, "bookcase_2/top", [1.12, -0.43])),
+                            + fetch(kb, "bookcase_2/top", [1.12, -0.50])),
              "waste_bin": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36, 90.0),
                                     WB: floor("trash_can", 0.89, -1.93),
                                     "kids_shelf_book": on("book_blue", "bookcase_2/top", 0.90, -0.43)},
@@ -1104,7 +1104,9 @@ def t26():
                                  goal={"all": [["on_any", BEAR, ["mattress_1/top", *B3, *B2]], H]},
                                  route=[look(TV), nav(BEAR), pick(BEAR), nav("bookcase_3/top"),
                                         look("bookcase_3/top"), nav("bookcase_2/top"),
-                                        place(BEAR, "bookcase_2/top", [1.12, -0.43])])},
+                                        # 11-25: 12 cm from the front edge -- at -0.43 (s14) the park took the
+                                        # side by the wall 22 cm behind the case and the free arm hit it
+                                        place(BEAR, "bookcase_2/top", [1.12, -0.50])])},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),
         "two_bedrooms": fam(
