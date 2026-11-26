@@ -2965,9 +2965,11 @@ def T03_more(t):
                        "bedroom_0_1"),
             "tray": ("serving_tray", {"support": "desk_1/top", "xy": [-0.278, -5.994], "yaw_deg": 0.0},
                      "living_room_0_1")}
-    fruit = {"fruit_basket": {"asset": "fruit_basket", "support": "dining_table_2/top", "xy": [3.2, 7.6], "yaw_deg": 0.0},
-             "apple": {"asset": "apple", "support": None, "z": 0.87, "xy": [3.17, 7.58], "yaw_deg": 0.0},
-             "orange": {"asset": "orange", "support": None, "z": 0.87, "xy": [3.24, 7.63], "yaw_deg": 0.0}}
+    # 11-25 (gt_check_1125b s12): at y 7.6 the seed moved the 30 cm tall basket to the table's middle (45 cm from
+    # every edge) and the spoon's drop found no base pose; 3 cm from the north edge that axis stays (layout EDGE_LOCK_M)
+    fruit = {"fruit_basket": {"asset": "fruit_basket", "support": "dining_table_2/top", "xy": [3.2, 7.80], "yaw_deg": 0.0},
+             "apple": {"asset": "apple", "support": None, "z": 0.87, "xy": [3.17, 7.78], "yaw_deg": 0.0},
+             "orange": {"asset": "orange", "support": None, "z": 0.87, "xy": [3.24, 7.83], "yaw_deg": 0.0}}
     small = small_bin_with_blocks("tv_stand_2/top", (7.3, 0.4))
     sub_cases = {}
     for case, (x, pose, region) in subs.items():
