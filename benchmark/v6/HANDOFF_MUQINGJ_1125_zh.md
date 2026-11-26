@@ -21,6 +21,7 @@
 | T23 `by_kind__toy_box` s12 | #7 `place(dropped_spoon, kitchen_island/top)` | `place_arrive: no collision-free straight (no IK along it)` | 勺子放岛台在其他 T23 设计成功很多次；`by_kind__bin_full` 你的三次全量里也是一过两败。直线下放没有 IK 时没换站位。 |
 | T09 `x6_gd_tomato_elsewhere__on_plate` s11 | #26 `pick(pot_lid)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 前 25 步都成功。去锅盖的停车点 [8.415, 1.135] 的路径绕岛台东侧贴墙走，右臂在行驶姿态下撞墙和窗（wall_609/610、WindowFactory_3015），手臂被撞偏（q_err 2.84），底座停在 [9.50, 1.28]，离停车点 1.1 m，navigate 却算到达，接着 pick 就够不着。同样尾段的 `__dining` 三次全量都过。 |
 | T18 `bowl_in_use__tomatoes` s11 | #17 `place(glass_box, dining_table_2/top)` | `place_pull_out: the arm stopped 0.005 m short of where it was sent` | 放下以后抽手差 5 mm 判失败，和 T08 wipe 差 7 mm 是同一类：到位容差太紧。 |
+| T09 `lid_missing` s11 | #16 `cover(handled_cooking_pot, lid_plate)` | `place lid_plate: no free edge spot on rim:handled_cooking_pot` | 盘子当锅盖：11-21 交接第 4 节已记（cover 走捏边放置，在锅沿上找空边），还在。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -28,5 +29,6 @@
 
 - T30 `how_many__three_bowls`：三只碗挨太近，中间那只没有抓取 → 两只放 6 号柜相隔 30 cm，第三只放 4 号柜顶（570f15b5）。
 - T26 `bear_to_bed__top_covered` s14：书柜背后 22 cm 是墙，放的点离墙近，停车选了侧面，空着的右臂一路贴墙，place 差 26 cm → 三条放 `bookcase_2/top` 的路线放的点挪到离前沿 12 cm（9f615579），s14 重跑成功。
-- T03 `utensils_apart__bin_full_fruit` s12：30 cm 高的果篮被种子挪到餐桌中间（离每条边 45 cm），丢勺子找不到站位 → 果篮贴北边放（离边 3 cm，种子不再往里挪）。
+- T03 `utensils_apart__bin_full_fruit` s12：30 cm 高的果篮被种子挪到餐桌中间（离每条边 45 cm），丢勺子找不到站位 → 果篮贴北边放（离边 3 cm，种子不再往里挪，d6365bbd），s12 重跑成功。
+- 种子之间太像（用户 11-25）：地上的东西在房间里挪、太像的种子重抽（f0a5f938，`layout.py` 的 `draw_distinct`）。同一设计的种子没有太像的了；6 个设计的东西在柜子里或角落里，只有开局不同。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
