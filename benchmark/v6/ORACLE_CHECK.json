@@ -1088,7 +1088,7 @@
   {
    "task": "T05_pen_or_pencil_to_desk",
    "layout": "homework_ready__several",
-   "steps": 12,
+   "steps": 14,
    "atoms_checked": 14,
    "atoms_geometric": 0,
    "geometric_atoms": [],

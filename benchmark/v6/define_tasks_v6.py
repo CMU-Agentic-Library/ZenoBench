@@ -918,7 +918,10 @@ def T05(t):
         return {name: {**({"asset": asset} if asset else {}), "support": sup, "xy": [x, y], "yaw_deg": yaw}}
 
     def fetch_to(x, sup, hint, flat=False):
-        grab = [nav(x), S("expose", object=x), look(x), pick(x)] if flat else [nav(x), pick(x)]
+        # 11-25 (gt_check homework_ready__several s11): on the low TV stand the exposed notebook was 48 deg below
+        # the head at 0.8 m (outside the frustum); bent forward the head sees it
+        see = [S("bend"), look(x), S("straighten")] if sup == TV else [look(x)]
+        grab = [nav(x), S("expose", object=x)] + see + [pick(x)] if flat else [nav(x), pick(x)]
         return [S("search", object=x, region=REG[sup])] + grab + [nav(DESK), place(x, DESK, hint)]
     desk_x = [-1.2, -0.9, -0.6, -0.3]
     # 11-17 (user): seeds change the substitute -- "in use": the only pen (or pencil, or notebook) lies on what

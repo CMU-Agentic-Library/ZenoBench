@@ -69629,10 +69629,18 @@
        }
       },
       {
+       "skill": "bend",
+       "args": {}
+      },
+      {
        "skill": "look",
        "args": {
         "target": "notebook_2"
        }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
       },
       {
        "skill": "pick",
