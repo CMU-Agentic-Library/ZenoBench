@@ -1,0 +1,99 @@
+{
+  "prepared_at": "2026-11-26T07:21:13.792481+00:00",
+  "upstream_main": "4457acbf64c9c8cb121b494d1fca32b5fe326053",
+  "runner_commit": "4b797f69676de7ea11297bb8e523ad0a93e073d9",
+  "graph_manager": "26df03650868105864aa167fa1cb8a210e6c688b",
+  "batch": "benchmark/v6/batches/substitution_smoke.json",
+  "batch_sha256": "fbf7405c0e9453742719faa4ea60824b2b3b258a0c949175fe662d386bcc6b6e",
+  "catalog_sha256": "1eb5eeddcc6d1b0e3686881cc2942699cdb0bc043c7d4f79fe5f76781ba23249",
+  "packages": {
+    "isaacsim": "6.2.0.0",
+    "torch": "2.11.0",
+    "warp-lang": "1.17.0",
+    "nvidia-curobo": "0.7.8"
+  },
+  "isaaclab_source": "2.3.2",
+  "overlay_sha256": "e9e5f537ff427da4dcc526428428eaed0f0be3db9371b3283a0ee11119d65d3b",
+  "models": {
+    "qwen3.5-4b": [
+      "Qwen/Qwen3.5-4B",
+      "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a"
+    ],
+    "qwen3.5-27b": [
+      "Qwen/Qwen3.5-27B",
+      "81a287ca484a5e71148f5beb7f367bb5286d70f9"
+    ],
+    "internvl3.5-8b": [
+      "OpenGVLab/InternVL3_5-8B-HF",
+      "741a7d03020411e666c6109218ab71e08151ef86"
+    ]
+  },
+  "methods": {
+    "OpenLoop": [
+      "baseline.open_loop:OpenLoop",
+      "sticky/benchmark"
+    ],
+    "ReAct": [
+      "baseline.react:ReAct",
+      "sticky/benchmark"
+    ],
+    "CodeAsPolicies": [
+      "baseline.code_policy:CodeAsPolicies",
+      "sticky/benchmark"
+    ],
+    "SayPlan": [
+      "baseline.sayplan:SayPlan",
+      "sticky/benchmark"
+    ],
+    "GraphManager": [
+      "GraphManager",
+      "sticky/benchmark"
+    ],
+    "ReActHint": [
+      "baseline.react:ReActHint",
+      "sticky/benchmark"
+    ],
+    "ReActPrivileged": [
+      "baseline.react:ReAct",
+      "sticky/privileged"
+    ]
+  },
+  "gpu": [
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07",
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07",
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07",
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07",
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07",
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07"
+  ],
+  "vlm_server_version": [
+    "0.32.0",
+    "0.32.0",
+    "0.32.0"
+  ],
+  "graph_sdk_version": "0.1.5rc1",
+  "input_audit": {
+    "previous_runner": "7846509008e18acf6a5d84ad33c29c686fb04dcc",
+    "matched_episodes": 103,
+    "changed_physical_hash": 103,
+    "changed_spawn": 103,
+    "changed_public_instruction": 57
+  },
+  "dispatch": {
+    "main_slots": {
+      "gpu0": 5,
+      "gpu1": 5,
+      "gpu2": 5,
+      "gpu3": 1,
+      "gpu4": 3,
+      "gpu5": 3
+    },
+    "first_ReAct_per_task_extra_slots": {
+      "gpu0": 2,
+      "gpu1": 2,
+      "gpu2": 2
+    },
+    "queue_scope": "One pending startup per environment service, schedule time before the request is outside the native task clock.",
+    "extra_services_separate_start_queues_from": "2026-11-26T07:57:51.893900+00:00"
+  }
+}

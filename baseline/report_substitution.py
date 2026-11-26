@@ -48,6 +48,10 @@ def collect(root, batch):
                         raise ValueError(f"duplicate run or mismatched paired scene at {directory}")
                     exp_ids.add(exp)
                     native = read_json(root / "native" / job["task"] / exp / "result.json")
+                    if native["config_hash"] != outcome["config_hash"] or (
+                            "overlay_sha256" in manifest and
+                            native["runtime"].get("lab_compat_sha256") != manifest["overlay_sha256"]):
+                        raise ValueError(f"native scene or simulator overlay mismatch at {directory}")
                     wrapper = read_json(directory / "result.json")
                     stop = wrapper.get("stop_reason")
                     if stop == "planner_done":
@@ -76,24 +80,30 @@ def render(manifest, rows, batch):
     reasons = Counter(r["reason"] for r in planned)
     states = Counter(r["status"] for r in rows)
     stamp = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
+    progress = " 当前为阶段快照，各行覆盖的布局随调度进度变化。" if states["outstanding"] else ""
     pkg = manifest["packages"]
     source = f"运行代码 `{manifest['runner_commit'][:7]}`。"
     if "upstream_main" in manifest:
         source = f"上游 main `{manifest['upstream_main'][:7]}`，Graph Manager `{manifest['graph_manager'][:7]}`，" + source
+    audit = manifest.get("input_audit")
+    if audit:
+        source += (f"与上一轮 `{audit['previous_runner'][:7]}` 的 {audit['matched_episodes']} 个相同任务、布局和种子相比，"
+                   f"{audit['changed_spawn']} 局的机器人起点改变，{audit['changed_public_instruction']} 局的模型可见指令改变。")
     versions = [f"Isaac Sim {pkg['isaacsim']}"]
     if "isaaclab_source" in manifest:
         versions.extend([f"Isaac Lab {manifest['isaaclab_source']}", f"cuRobo {pkg['nvidia-curobo']}"])
     lines = ["# ZenoBench 替代任务基线", "",
              f"北京时间 {stamp}，原生计分 **{states['scored']} / {len(rows)}** 局，"
-             f"运行中断 {states['interrupted']} 局，待取得结局 {states['outstanding']} 局。", "",
+             f"运行中断 {states['interrupted']} 局，待取得结局 {states['outstanding']} 局。{progress}", "",
              f"来自 `{batch.name}` 的 {len(planned)} 局覆盖 {len({r['task'] for r in planned})} 个任务、"
              f"{len({(r['task'], r['variant']) for r in planned})} 个布局。所有方法使用相同的布局和种子。"
              f"其中有 {sides['B']} 局可按物体分级，另有 {sides['B_open']} 局按完成档位评分。"
              "这批场景均需替代，无法估计理想物可用时的误替代率。", "",
-             source + f"使用{'、'.join(versions)}。"
+             source + f"使用 {'、'.join(versions)}。"
              "仓库默认的 Isaac Sim 5.1 与本表使用的仿真版本不同。", "",
-             "每局最多调用 60 次技能。主方法使用 sticky/benchmark，ReActHint 增加替代提示，"
-             "ReActPrivileged 使用 sticky/privileged 提供完整物体位置。所有模型均在本地推理，温度为 0。", "",
+             "每局最多调用 60 次技能。主方法使用 sticky/benchmark，观测含头部 RGB、已知地点和环境给出的可见物体清单。"
+             "ReActHint 增加替代提示，ReActPrivileged 使用 sticky/privileged 额外提供任务物体及位置。"
+             "所有模型均在本地推理，温度为 0。", "",
              "## 方法对比", "",
              "成功以仿真最终判定为准。严格成功还要求达到该布局可用的最佳替代。"
              "执行故障列统计最终失败且至少一次有效技能调用出现执行错误的局，分母为已计分的失败局。"
@@ -116,6 +126,7 @@ def render(manifest, rows, batch):
     lines += table(["方法", "模型", "计分/计划", "中断", "任务成功", "平均原生分", "严格成功", "执行故障/失败"], overall)
     lines += ["## 替代选择", "",
               "可分级的 B 局从成功分支或最后拿起的候选物推断选择，因此可能命中替代物而任务仍失败。"
+              "若布局只提供差档替代物，命中最佳与选差档可以重合。"
               "容器作为目的地时，失败轨迹有时无法识别所选容器。B_open 只按仿真完成档位判定，"
               "失败包含已想到替代方案但执行未完成的情况。每个分母均为该方法在对应侧已计分的局数。", ""]
     lines += table(["方法", "模型", "B 命中最佳", "B 漏替代", "B 选差档", "B 抢占", "B 其他物体",
