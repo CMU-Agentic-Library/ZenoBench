@@ -55,6 +55,8 @@ FLOOR_GAP_M = 0.3       # ...and this from the other things on the floor (11-25 
 FLOOR_CELL_CLEAR_M = 0.35   # the base cell beside it this far from every other thing on the floor
 FLOOR_HINT_CLEAR_M = 0.7   # ...and this from every place the oracle route sets something down (its base stands there)
 OBSTACLE_TOP_M = 0.5     # furniture whose bottom is above this (wall cabinets) does not block the floor
+START_CLEAR_M = 0.6      # a start this far from walls and furniture (11-25: the first tuck failed at 5 starts 0.40-0.51 m
+                         # from a wall, the arm swinging into it); a room with no such cell keeps the old rule
 SEED0, SEED1 = 10, 20    # the evaluation seeds compared for likeness
 OBJ_ALIKE_M = 0.10       # two seeds look alike: no object moved more than this...
 START_ALIKE_M = 1.0      # ...and the starts this close...
@@ -881,6 +883,15 @@ def _draw_floor(cfg, c, spec, current, i, rng):
     return 0.0, 0.0
 
 
+@lru_cache(maxsize=None)
+def _start_cells(base, room):
+    """The room's start cells START_CLEAR_M from walls and furniture, or all of them when none is."""
+    cells = _cells().get(base, {}).get(room, [])
+    obst = _floor_static(base)[0]
+    roomy = [c for c in cells if min((_box_dist(list(o), c) for o in obst), default=9.0) >= START_CLEAR_M]
+    return roomy or cells
+
+
 def apply_layout(cfg, spec, rng):
     """Draw the seed's layout into ``cfg`` (``move`` / ``add`` poses and ``start``); records ``layout_applied``."""
     base = cfg["base"]
@@ -981,7 +992,7 @@ def apply_layout(cfg, spec, rng):
             where[n] = m
         applied["+".join(c["names"])] = [round(dx, 2), round(dy, 2)]
     st = spec["start"]
-    cells = _cells().get(base, {}).get(st["room"] or "", [])
+    cells = _start_cells(base, st["room"] or "")
     floor = _floor_boxes(cfg)
     for _ in range(TRIES * 2 if cells else 0):
         x, y = rng.choice(cells)
