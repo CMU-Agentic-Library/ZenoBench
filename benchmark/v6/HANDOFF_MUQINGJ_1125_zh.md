@@ -60,6 +60,7 @@
 | 窗户碰撞体不在 annotation 里（第 3 次） | T17 `hide_both__two_pots` s12：#7 `uncover(handled_cooking_pot)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 底座 [9.528, 1.397]，右臂 link_3 碰 `WindowFactory_3015` 和 wall_606–609。同上面 T15 / T09 那一行。 |
 | T01 捏边平放（再 1 次） | T01 `reader_seat__mug_1` s16 重跑（开局收臂已过）：#7 `place(paperback_book, dining_table_2/top)` | `tuck: its path collides now at 1/223: left_gripper_right_finger_link 4 mm … INVALID_START_STATE_WORLD_COLLISION` | 同上面 T01 那一行：抽手后手指贴着书。 |
 | 搬运中滑落 | T29 `which_table__west` s11（挪桌后重跑；之前同种子 3 次都过） | `left_carry: toy_west slipped out of the left hand while carrying it`（#6 `explore_room(living_room_0_0)`） | 拿着玩具车去客厅时从左手滑掉。 |
+| 从托盘里拿碗，收进搬运姿态差几毫米 | T22 `tray_elsewhere__bowls_in_it` s11（一只碗，碗离托盘沿 ≥3 cm）；两只碗时 s12 差 13 mm、s11 没有可达抓取 | `carry_in: the arm stopped 0.005 m short of where it was sent`（#12 `pick(tray_bowl_1)`） | 碗抓起来了，往回收时停住；托盘沿高 6.3 cm，怀疑抬升不够、碗擦到托盘沿。bench 已把两只碗减成一只、靠机器人一侧。同一局 s12 拿果汁 `pick_arrive: TRAJOPT_FAIL`（同位置 s11 能拿）。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -86,5 +87,5 @@
 - T07 微波炉路线开完门先开到岛台再看（1a821a32）。
 - **窗户补进 annotation（11-26）**：墙线在 26 扇窗户处都断开，窗户碰撞体往房间里凸 0.1–0.45 m（转角凸窗），规划看不到 → 每扇窗户按墙（0–2.4 m）加进 obstacles，`tools/annotate_scene.py` 以后也会自动加。上面 T15 / T09 / T17 撞 `WindowFactory_3015` 那几行应由此解决，待重跑确认。
 - **kitchen_0_0 进得去了（11-26）**：唯一入口被 `dining_table_1` 卡成 0.44 m，桌子往西挪 0.4 m。
-- **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成两只脏碗，先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
+- **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成一只脏碗（两只太挤，手指插不进），先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。

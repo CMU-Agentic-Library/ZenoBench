@@ -328,12 +328,12 @@ def t22():
             instruction_zh="我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。"),
         "tray_elsewhere": fam(
             "juice_on_table", ["container_absent", "not_in_view", "destination_full", "dependent_decisions"],
-            "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
+            "what lies on the tray (seed: an orange, or a dirty breakfast bowl); seen only on arrival",
             "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining "
-            "room: with an orange in it, or with two used breakfast bowls in it",
+            "room: with an orange in it, or with a used breakfast bowl in it",
             "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies "
             "on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); "
-            "dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty "
+            "a dirty bowl -> the bowl to the kitchen worktop next door first, then the apple (fruit beside dirty "
             "dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
             {c: dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
                           TRAY: on("serving_tray", T1, -8.40, 7.40), **on_tray},
@@ -350,9 +350,10 @@ def t22():
              for c, on_tray in (("orange_in_it", {"tray_orange": inside_tray("orange", -0.12, 0.08)}),
                                 # 11-26: four books lying flat over the floor could not be picked (a thickness
                                 # pinch needs a side over the support's edge; in a tray there is none): two dirty
-                                # breakfast bowls instead (rim pinch), the same decision
-                                ("bowls_in_it", {f"tray_bowl_{k + 1}": inside_tray("breakfast_bowl", dx, 0.0)
-                                                 for k, dx in enumerate((-0.10, 0.10))}))},
+                                # breakfast bowls instead (rim pinch), the same decision.  11-26 GT: two 17.8 cm bowls
+                                # left 2 cm to the tray's rim (no finger slot; s11 no grasp, s12 carry-in short): one
+                                # bowl, on the robot's (east) side of the tray, room round it for the fingers
+                                ("bowls_in_it", {"tray_bowl_1": inside_tray("breakfast_bowl", 0.08, 0.0)}))},
             # 11-26: the juice drawn to the table's south-west corner (s11, (2.83, 5.99)) failed its carry-in twice; the
             # juice and the apple stay where the design puts them (the tray and its contents still move)
             pin=[J, A],

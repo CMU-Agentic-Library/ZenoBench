@@ -167363,15 +167363,15 @@
       "bought_juice",
       "bought_apple"
      ],
-     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with a used breakfast bowl in it",
      "v6": {
       "family": "tray_elsewhere",
       "case": "orange_in_it",
-      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
-      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with a used breakfast bowl in it",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); a dirty bowl -> the bowl to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
       "control": "juice_on_table",
       "contrast": null,
-      "factor": "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
+      "factor": "what lies on the tray (seed: an orange, or a dirty breakfast bowl); seen only on arrival",
       "derived_from": "bare"
      },
      "move": {},
@@ -167574,17 +167574,7 @@
        "support": null,
        "z": 0.72,
        "xy": [
-        -8.5,
-        7.4
-       ],
-       "yaw_deg": 0.0
-      },
-      "tray_bowl_2": {
-       "asset": "breakfast_bowl",
-       "support": null,
-       "z": 0.72,
-       "xy": [
-        -8.3,
+        -8.32,
         7.4
        ],
        "yaw_deg": 0.0
@@ -167637,23 +167627,22 @@
       "bought_juice",
       "bought_apple",
       "west_tray",
-      "tray_bowl_1",
-      "tray_bowl_2"
+      "tray_bowl_1"
      ],
      "since": "v6",
      "pin": [
       "bought_juice",
       "bought_apple"
      ],
-     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with a used breakfast bowl in it",
      "v6": {
       "family": "tray_elsewhere",
       "case": "bowls_in_it",
-      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with two used breakfast bowls in it",
-      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); dirty bowls -> the bowls to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with a used breakfast bowl in it",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); a dirty bowl -> the bowl to the kitchen worktop next door first, then the apple (fruit beside dirty dishes is a level down, scoring.LAYOUT_TIERS); the juice into the fridge",
       "control": "juice_on_table",
       "contrast": null,
-      "factor": "what lies on the tray (seed: an orange, or two dirty breakfast bowls); seen only on arrival",
+      "factor": "what lies on the tray (seed: an orange, or a dirty breakfast bowl); seen only on arrival",
       "derived_from": "bare"
      },
      "move": {},
@@ -167662,7 +167651,6 @@
        {
         "names": [
          "tray_bowl_1",
-         "tray_bowl_2",
          "west_tray"
         ],
         "support": "dining_table_1/top",
@@ -167681,8 +167669,7 @@
          1.26
         ],
         "pick": [
-         "tray_bowl_1",
-         "tray_bowl_2"
+         "tray_bowl_1"
         ],
         "search": [
          "west_tray"
@@ -167815,7 +167802,7 @@
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "果篮（没有，用托盘，托盘里有两只脏碗）",
+      "ideal_zh": "果篮（没有，用托盘，托盘里有只脏碗）",
       "loosened": "11-24"
      }
     }
@@ -168802,35 +168789,6 @@
         "hint_xy": [
          -2.8,
          10.251
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tray_bowl_2"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "tray_bowl_2"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_counter_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "tray_bowl_2",
-        "receptacle": "kitchen_counter_1/top",
-        "hint_xy": [
-         -2.8,
-         10.551
         ]
        }
       },
