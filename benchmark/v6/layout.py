@@ -57,6 +57,8 @@ FLOOR_HINT_CLEAR_M = 0.7   # ...and this from every place the oracle route sets 
 OBSTACLE_TOP_M = 0.5     # furniture whose bottom is above this (wall cabinets) does not block the floor
 START_CLEAR_M = 0.6      # a start this far from walls and furniture (11-25: the first tuck failed at 5 starts 0.40-0.51 m
                          # from a wall, the arm swinging into it); a room with no such cell keeps the old rule
+START_CLEAR_STEPS_M = (0.85, 0.75, START_CLEAR_M)
+START_MIN_CELLS = 20
 SEED0, SEED1 = 10, 20    # the evaluation seeds compared for likeness
 OBJ_ALIKE_M = 0.10       # two seeds look alike: no object moved more than this...
 START_ALIKE_M = 1.0      # ...and the starts this close...
@@ -888,8 +890,14 @@ def _start_cells(base, room):
     """The room's start cells START_CLEAR_M from walls and furniture, or all of them when none is."""
     cells = _cells().get(base, {}).get(room, [])
     obst = _floor_static(base)[0]
-    roomy = [c for c in cells if min((_box_dist(list(o), c) for o in obst), default=9.0) >= START_CLEAR_M]
-    return roomy or cells
+    d = [min((_box_dist(list(o), c) for o in obst), default=9.0) for c in cells]
+    # 11-26: at 0.66 m the first tuck still hit the wall (T06 s17, T01 s16): the clearest band that leaves
+    # START_MIN_CELLS cells (seeds must still differ), 0.85 m in the big rooms
+    for t in START_CLEAR_STEPS_M:
+        roomy = [c for c, x in zip(cells, d) if x >= t]
+        if len(roomy) >= START_MIN_CELLS:
+            return roomy
+    return cells
 
 
 def apply_layout(cfg, spec, rng):
