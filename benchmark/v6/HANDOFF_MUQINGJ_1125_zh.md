@@ -4,7 +4,7 @@
 
 ## 1. 在跑什么
 
-- `--profile sticky/gt --jobs 1`，参考路线（scripted planner），每个 episode 约 8 分钟。
+- `--profile sticky/gt --jobs 1`，参考路线（scripted planner）。11-25 20:08 起不录像，每个 episode 约 4–5 分钟；两个并行在 zihan 机器上会爆显存（24 GB 卡，11-25 T08 OOM）。
 - 批次 1：`benchmark/v6/batches/gt_check_1125.json`，55 个从没在全量里成功过的布局 → `benchmark/runs/gt_check_1125`。
 - 批次 2：`gt_check_1125b.json`，剩下 118 个没成功过的布局 → `benchmark/runs/gt_check_1125b`。
 - 批次 3：`gt_check_all.json`，其余 1194 个 episode，先每个布局第二个种子，再其余种子 → `benchmark/runs/gt_check_all`。
@@ -20,9 +20,10 @@
 | T22 `tray_elsewhere__books_on_it` s11 | #7 `place(bought_juice, breakfast_fridge/inside_shelf)` | `place_arrive: no collision-free IK at the set-down pose (its solution collides: part:breakfast_fridge head_link 83 mm, torso_link 39 mm)` | 同一个放的点在别的 T22 设计里（nominal、by_kind、two_spots…）都成功；这次站位离冰箱太近，头撞门框。站位应该退后或者换角度再试。 |
 | T23 `by_kind__toy_box` s12 | #7 `place(dropped_spoon, kitchen_island/top)` | `place_arrive: no collision-free straight (no IK along it)` | 勺子放岛台在其他 T23 设计成功很多次；`by_kind__bin_full` 你的三次全量里也是一过两败。直线下放没有 IK 时没换站位。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
+| T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
 ## 3. 已经在 bench 侧改掉的
 
 - T30 `how_many__three_bowls`：三只碗挨太近，中间那只没有抓取 → 两只放 6 号柜相隔 30 cm，第三只放 4 号柜顶（570f15b5）。
-- T26 `bear_to_bed__top_covered` s14：书柜背后 22 cm 是墙，放的点离墙近，停车选了侧面，空着的右臂一路贴墙，place 差 26 cm → 三条放 `bookcase_2/top` 的路线放的点挪到离前沿 12 cm（9f615579）。
-- T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5）。
+- T26 `bear_to_bed__top_covered` s14：书柜背后 22 cm 是墙，放的点离墙近，停车选了侧面，空着的右臂一路贴墙，place 差 26 cm → 三条放 `bookcase_2/top` 的路线放的点挪到离前沿 12 cm（9f615579），s14 重跑成功。
+- T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
