@@ -39,13 +39,15 @@
 | T07 `vessel_decides_appliance__in_pot` s16（开局改好后重跑）、T10 `after_dinner_clear__rubbish_mug` s11（第三次跑） | #7 `place(soup_pot, kitchen_stove/top)` / #15 `drop(takeout_tray, kitchen_trash)` | `PRECONDITION_FAILED: holding(hand=any, object=…) is false (slip 0.009 m / 0.004 m, fingers [0.0, 0.0])` | sticky 焊着、滑动很小，但 holding 看手指读数判成没拿着；同 11-21 交接第 4 节的铅笔。holding 检查在 sticky 时应信焊接。 |
 | T27 `two_leftovers__soup_on_table` s16（开局改好后重跑） | #9 `pick(leftover_soup)` | `tuck: the arm stopped 0.008 m short` | 左手拿着剩饭（9c 以后两只手都用），右手拿汤后收臂，左手爪碰餐桌（physx：left_gripper_link–dining_table_2，leg tuck / drive_base）。另一只手拿着东西时的收臂没避开桌子。 |
 | T23 `dropped_out_of_view__no_room_for_bowl` s13 | #7 `place(dropped_bowl, kitchen_island/top)` | `place_reach: no collision-free path to the pose (carry: tilts 0.37 rad, 0.30 allowed)`（14 次构建） | 端碗伸到岛台放置点（离南沿 16 cm）时倾斜超限。 |
-| T29 `homework_on_table__desk_covered` s12 | #3 `pick(hw_notebook)`（推到桌边） | `slide_push: the arm stopped 0.006 m short` | 差 6 mm 判失败，和 T08 wipe 7 mm、T18 抽手 5 mm 同类：到位容差太紧。 |
+| T29 `homework_on_table__desk_covered` s12 | #3 `pick(hw_notebook)`（推到桌边） | `slide_push: the arm stopped 0.006 m short`（T27 `fridge_out_of_view__fridge_free` s11 推剩饭也一样，差 7 mm） | 差 6 mm 判失败，和 T08 wipe 7 mm、T18 抽手 5 mm 同类：到位容差太紧。 |
 | T29 `several__bin_full` s13 | #5 `navigate(toy_bin)`（拿着东西） | `no base path to any of 37 stand-off poses (even the column's inscribed circle cannot get there)` | 机器人在 [7.17, 4.07, 24°]，37 个站位 reachable 0；前一步导航成功开到这里，像是开进了出不来的角落（拿着东西时占地更大）。 |
 | T10 `trash_moved__trash_full` s13 | #7 `explore_room(living_room_0_0)`（拿着罐子） | `explore living_room_0_0: coverage 0.24` | explore_result 只有 1 个视角（home_0，原地），其余视点都没去；机器人在 [10.11, 1.09, 124°]（东边靠墙）。`trash_moved__dining` 你三次全量过两次。 |
 | T07 `vessel_decides_appliance__in_ceramic_bowl` s11 | #2 `look(kitchen_island/top)` | `face kitchen_island/top: the goal pose collides in the arrival posture (left_arm_link_3 in World/mesh 17 mm)` | 开微波炉后在 [4.457, 1.691, 75°] 原地转身看岛台，转到的朝向左臂碰墙体；look 没换个位置再转。 |
 | T09 `pot_in_dining_room__pot_away` s11 | #12 `sweep([cherry_tomato_1, cherry_tomato_2], 0.12)` | `tuck: its path collides now at 121/200: world left_gripper_left_finger_link 0 mm; … TRAJOPT_FAIL` | 扫完后收臂中途擦到东西，重建也失败。 |
 | T15 `lid_elsewhere__dining` s11（同 T09 `x6_gd_tomato_elsewhere__on_plate` s11） | #8 `cover(handled_cooking_pot, pot_lid)` | `place_arrive: no collision-free IK at the set-down pose (out of reach)`（anchor off 1.13 m） | 去灶台前停车点 [8.41, 1.175] 的路上，head_link / right_arm_link_5 撞上 `WindowFactory_3015`（窗户），底座停在 [9.51, 1.41]。**这扇窗户的碰撞体在场景里，但不在 annotation.json 的 obstacles 里**（grep 0 次），底座规划看不到它。两个 episode 都是这样。 |
 | T19 `m_can_in_dining_room` s11 | #8 `navigate(wide_storage_bin)`（拿着罐子） | `carry_in: the arm stopped 0.814 m short` | 停在 `bookcase_2` 东侧 [1.846, -0.429, 180°]，右侧 0.43 m 是墙。和 T19 `juice_full`（[2.259, -0.428] tuck 差 0.333 m）、T26 熊（bench 已绕开）是同一处：**靠墙站时 tuck / carry_in 的手臂扫动撞墙，扫动没做碰撞检查**。这只收纳箱（BEDROOM_BIN）被 T19、T03 很多设计共用、多数能过，bench 没挪它。 |
+| T02 `tower_for_kid__counter` s12 | #11 `stack(wooden_block_b, wooden_block_a)` | `tuck: the arm is not where the segment starts; … TRAJOPT_FAIL` | 叠完积木收臂时手臂不在段起点，重建失败。 |
+| T04 `two_guests__glass_in_cabinet` s12 | #3 `pick(cup_counter_b)`（岛台，离北沿 8 cm） | `pick_arrive: no collision-free path to the pose (TRAJOPT_FAIL)` | `two_guests__mug` 你三次全量都过；轨迹优化偶发失败，没换站位。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -65,4 +67,5 @@
 - 开局第一次收臂失败（T25、T27、T14、T07、T10，开局都离墙 0.40–0.51 m）→ 生成器的开局离墙和家具至少 0.6 m（3160 个开局全部满足）。这几行留在第 2 节备查：收臂时手臂扫到墙本身仍是技能侧的事。
 - T26 `whose`：图画书横放时宽 14 cm，朝外伸出最多 5.495 cm < 捏边要的 5.5 cm，没有可推的边 → 和 `scattered` 一样转 90° 长边朝外。
 - T14 `within_kids_reach__set_on_large_shelf_4`：书架中段放第二层时拿着的书撞书架 → 放置点挪到离东头 20 cm（同 large_shelf_5 能过的位置），s13 重跑成功。
+- T30 `bowl_put_away__bowl_inside`：碗在 4 号柜里面（上方有柜顶板，捏碗沿进不去，违反 11-19 的限制）→ 照 11-21 `mug_inside` 的先例放到 4 号柜顶。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。

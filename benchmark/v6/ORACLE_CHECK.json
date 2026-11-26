@@ -3801,7 +3801,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowl_put_away__bowl_inside",
-   "steps": 12,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],

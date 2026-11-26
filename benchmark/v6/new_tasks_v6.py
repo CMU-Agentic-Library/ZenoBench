@@ -1526,9 +1526,12 @@ def t30():
             "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
             "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
             "look in the cabinet, take a bowl -- or the mug, which holds soup, not the plate -- close the door",
-            {"bowl_inside": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
+            # 11-25 (gt_check s12: no reachable grasp of the bowl inside, the cabinet's top a board 30 cm over it --
+            # rim-pinched things never go under a board, muqingj 11-19): on cabinet 4's top as mug_inside (11-21)
+            {"bowl_inside": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/top", 1.40, 0.42)},
                                  goal={"all": [bowls(B1), ["is_closed", C4], H]},
-                                 route=explore(C4) + from_closed(B1, C4) + [nav(ISL), place(B1, ISL, [8.05, 1.75])]),
+                                 route=[nav(f"{C4}/top"), look(f"{C4}/top"), nav(B1), pick(B1),
+                                        nav(ISL), place(B1, ISL, [8.05, 1.75])]),
              # 11-21 (user): the mug and the plate on cabinet 4's top -- the mug inside was never picked
              "mug_inside": dict(add={**SOUP, "stored_mug": on("breakfast_mug", f"{C4}/top", 1.55, 0.46),
                                      "stored_plate": on("breakfast_plate", f"{C4}/top", 1.22, 0.44)},

@@ -2186,8 +2186,8 @@
  {
   "task": "T30_bowls_for_soup",
   "variant": "bowl_put_away__bowl_inside",
-  "clusters": 0,
-  "objects_move": false,
+  "clusters": 1,
+  "objects_move": true,
   "alike_pairs": []
  },
  {
