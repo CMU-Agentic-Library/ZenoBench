@@ -55,6 +55,7 @@
 | T13 `finish_the_table__adult_seat` s12、T14 `homework_stays` s11 | `pick(mug)`（`bookcase_2/top`）/ `pick(desk_mug)` | `pick_reach: the arm stopped 0.461 / 0.510 m short` | 右手爪张开时碰 `bookcase_2` 背后的墙 wall_273；左臂伸手时碰墙 wall_768。bench 已让能站的边离墙 ≥0.5 m（dc76c1c6），手臂扫墙本身仍是技能侧。 |
 | 判成没拿着（又 4 次） | T25 `cup_elsewhere__only_mugs` s11、`cups_for_two__none_two_inside` s13（放电视柜）；T01 `which_table__far_b_flat` s13；T12 `duck_in_study__alt_dining_table_2` s11 | `holding(hand=any, …) is false (slip 0.002–0.026 m, fingers [0.0, 0.0])` | 同上面 holding 那一行。 |
 | 冰箱里放下后收臂（又 3 次） | T27 `two_leftovers__soup_on_stove` s11、`which_is_leftover` s12、`fruit_stays_out` s11 | `tuck: … finger 2–5 mm` / `no collision-free IK at the set-down pose` | 同 T10 冰箱那一行。 |
+| 冰箱里放（挤） | T27 `fridge_out_of_view__fridge_crowded` s12：#8 `place(leftover_rice, breakfast_fridge/inside_shelf)` | `place_clear: finger into leftover_rice 15 mm` / `no spot … reachable`（TRAJOPT） | 手进挤满的冰箱层后退不出来。bench 试过换放置点，没用，已撤回。同 T10 冰箱那一行。 |
 | 其他（各一次） | T30 `how_many__three_bowls` s13 放岛台后收臂 1 mm；T09 `pot_in_use__in_use` s11 放锅后收臂 1 mm；T14 `within_kids_reach__set_on_large_shelf_5` s11 放第二层差 0.133 m；T15 `no_lid` s11 推盘子找不到站位；T18 `door_stuck` s11 拿碗无抓取；T23 `by_kind__bin_full` s11 勺子放岛台；T03 `no_bin_substitute__basket` s12 去擀面杖无全身路径；T07 `microwave_broken` s12 燕麦放微波炉够不着；T08 `far_sponge_spare_only` s17 wipe 差 6 mm；T09 `pot_in_dining_room__spare_pot` s12 拿备用锅无抓取；T15 `lid_in_use` s11 推盘子差 9 mm；T17 `hide_lid_in_use` s12 盘子当锅盖 | | |
 | **`bookcase_2` 东侧靠墙站位（第 5 次）** | T13 `finish_the_table__adult_seat` s12 重跑：#11 `pick(mug)` | `pick_reach: the arm stopped 0.249 m short` | 机器人在 [1.674, -0.356, -165°]，北边的墙只有 0.36 m。bench 的生成器已经只把东西放到能从正面（南侧）够到的地方（dc76c1c6），但 navigate 从东边过来时还是挑东侧最近的站位。`bookcase_2/top` 被 15 个任务用到，bench 没法都挪走。**建议：navigate / 各技能的停车点也排除离墙 < 0.5 m 的站位**（和 bench 的 `WALL_STAND_M` 一样），T26、T19 ×3、T13 ×2 都是这一处。11-26 又一例（不是书柜）：T23 `belongs_on_floor__no_toy_box` s11 拿着积木 `explore_room(living_room_0_0)` 的观察点选在 [6.908, 4.072]，离带窗的墙（y≈3.86）0.2 m，接着 `navigate(tv_stand_2/top)` 的 `carry_in: the arm stopped 0.443 m short`。explore 的观察点同样要离墙。 |
 | 窗户碰撞体不在 annotation 里（第 3 次） | T17 `hide_both__two_pots` s12：#7 `uncover(handled_cooking_pot)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 底座 [9.528, 1.397]，右臂 link_3 碰 `WindowFactory_3015` 和 wall_606–609。同上面 T15 / T09 那一行。 |
@@ -76,6 +77,8 @@
 - T23 地上的东西互相至少隔 0.3 m（bd8c2302），`belongs_on_floor__bin_full` s12 重跑成功。
 - T22 `tray_elsewhere`：苹果放进浅托盘顶部高出托盘边 2.3 cm，`fully_inside` 判不过 → 改为 `inside`（同 T11 的苹果进托盘）。
 - 生成器：路线要往里放东西的容器也必须够得着；能站人的边必须开得过去（`drive_cells.json`），T22 托盘不再被抽到餐桌西沿（2cf8f967）。
+- T28 `cup_out_of_view__side_covered`：杯子放 `desk_1/top` 的放置点改到桌子南边 [-0.35, -6.20]（北边离墙 0.2 m 已不能站；原点被生成器挪到桌东头，s11 三次够不着）。重跑 best。
+- holding 判定：手指读 0 时容许滑移从 2 cm 放到 3 cm（T28 塑料杯 23 mm，仍在手里）。
 - T28 `which_bed__south`：杯子放 `cell_shelf_2` 的放置点从书架北端挪到中段（离西墙的角远一点）。
 - T05 `homework_ready__several`：本子在矮电视柜上，expose 后机器人 0.8 m 处看它在视野下方 48°，look 失败 → 电视柜上的扁平物品 look 前后加 bend / straighten。
 - 开局第一次收臂失败（T25、T27、T14、T07、T10，开局都离墙 0.40–0.51 m）→ 生成器的开局离墙和家具至少 0.6 m（3160 个开局全部满足）。这几行留在第 2 节备查：收臂时手臂扫到墙本身仍是技能侧的事。

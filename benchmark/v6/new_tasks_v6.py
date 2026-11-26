@@ -1328,7 +1328,10 @@ def t28():
                                   goal={"all": at_side(KC, LOWER) + [H]},
                                   route=[look(COUNTER), nav(T2), look(T2), nav(KC),
                                          pick(KC), nav(side), look(side), nav("desk_1/top"),
-                                         place(KC, "desk_1/top", [-0.35, -5.95])])}),
+                                         # 11-26: by the south edge -- the north side is no stand pose any more (0.2
+                                         # m to the wall, layout.WALL_STAND_M) and the generator had moved the old
+                                         # spot (-0.35, -5.95) to the desk's east end, which GT s11 never reached (x3)
+                                         place(KC, "desk_1/top", [-0.35, -6.20])])}),
         "already_there": fam(
             "cup_on_counter", ["goal_already_met", "referent_clue"],
             "what cup stands by his bed (seed: his plastic cup; or a china cup, his still on the counter)",
