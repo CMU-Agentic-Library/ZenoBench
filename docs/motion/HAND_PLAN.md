@@ -176,4 +176,4 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 - sticky 的 snap 级瞬移、接住掉落（`sticky.py` 8）——计划里说按 Actuator 的写操作处理，还没做。
 所以 `Rig.move_to` / `joint_path` / `follow_both` 等旧入口、旧的 `planner.find_park`（`tools/build_tasks.py` 和它自己的单测还在用）都还不能删。
 
-**要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。
+**要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。已写进交接文档 `docs/archive/handoffs/HANDOFF_2026-11-25_hands_for_bench.md`（含 11-25 pick 合约的 `hands` 和 `--pick-hand`）。

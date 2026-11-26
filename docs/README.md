@@ -51,7 +51,7 @@
 | [POLICY_VERIFICATION.md](archive/POLICY_VERIFICATION.md) | 2026-10-01/02 policy 物理验证记录 |
 | [KNOWN_LIMITATIONS.md](archive/KNOWN_LIMITATIONS.md) | 验证第 30 轮的已知限制 |
 | [PHYSICS_AUDIT.md](archive/PHYSICS_AUDIT.md) | 2026-10 物理与资产审计 |
-| [handoffs/](archive/handoffs/) | 会话交接：10-24 support 碰撞板、10-29 六条失败路线、10-30 http planner 失败、11-14 carry tilt held |
+| [handoffs/](archive/handoffs/) | 会话交接：10-24 support 碰撞板、10-29 六条失败路线、10-30 http planner 失败、11-14 carry tilt held、11-25 两只手（给 bench 作者） |
 | [benchmark_v1/](archive/benchmark_v1/) | benchmark v1 的图（`make_figs.py` 生成） |
 
 ## benchmark 的文档（在 benchmark/ 下）
