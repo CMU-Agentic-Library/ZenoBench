@@ -34,6 +34,8 @@
 | T19 `x6_gd_can_put_away__juice_full` s11 | #17 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.333 m short`（27 tick 内，无 physx 接触） | 停车点算到 [1.684, -0.435, 195°]，但 drop 第一段 tuck 在导航停下的位置 [2.259, -0.428, 180°]（右侧 0.43 m 是墙）就没收回来，底座还没开往停车点。`__in_4` 你三次全量过两次。 |
 | T03 `no_bin_substitute__tray` s11 | #15 `place(breakfast_spoon, serving_tray)` | `place breakfast_spoon: no free spot in serving_tray` | 前一步擀面杖（22 cm）放进 42×36 cm 托盘时落在正中、斜 45°，占满了托盘，勺子没处放。放进开口容器时应靠一边、顺容器长边放（place 没有朝向参数，托盘随种子移动，bench 给不了跟着托盘走的放置点）。 |
 | T07 `vessel_decides_appliance__in_pot` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.499 m short` | 开局第一次收臂，同 T25 / T27 / T14。 |
+| T12 `bins_capacity__half_bin_and_tray` s17 | #9 `place(toy_car, toy_tray)` | `no spot of 4 on in:toy_tray reachable`（60 次构建：`its solution collides: object:toy_tray right_gripper_link 47 mm`） | 托盘 27×20 cm、边高 5.5 cm，在 `bookcase_2/top` 上；车往里放时手爪下到托盘边以下撞边。容器内放置的落点/手爪朝向没避开容器壁。 |
+| T13 `finish_the_table__kid_seat` s11 | #11 `place(kid_cup, dining_table_2/top)` | `place_reach: no collision-free path to the pose (carry tilt held: TRAJOPT_FAIL (no feasible seed))` | 端杯子保持水平的约束下轨迹优化没有可行种子（只构建了 2 次）；放置点在餐桌西沿 11 cm。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
