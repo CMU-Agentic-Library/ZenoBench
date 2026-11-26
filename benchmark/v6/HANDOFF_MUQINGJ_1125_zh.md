@@ -27,6 +27,8 @@
 | T19 `lookalike_bin` s11 | #5 `pick(soda_can)` | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 你的三次全量 s10 都过。这次罐子在餐桌西沿（离边 4 cm），选了左手捏顶，轨迹优化失败；没换手/换站位再试。 |
 | T14 `next_in_series__on_other_bookcase` s13 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.025 m short` | 开局第一次收臂，同 T25 / T27。 |
 | T22 `eat_now__desk_corner` s11 | #5 `pick(bought_juice)` | `carry_in: the arm stopped 0.048 m short` | 果汁在餐桌西沿（离边 7 cm），底座在西南 [2.49, 5.85, 15°]；抓起后收到搬运姿势时 right_arm_link_7 撞桌沿（physx 接触 dining_table_2，leg carry_in）。carry_in 这段没避开桌子。 |
+| T07 `microwave_broken` s11 | #14 `heat(oatmeal, kitchen_stove)`（微波炉那步按设计失败后改用灶台） | `press_reach: the arm stopped 0.540 m short` | 按灶台开关（停车 [8.452, 1.087, 60°]，按钮 [8.77, 1.455]）时右手一路刮东墙 wall_607（physx 接触 10 次，leg press_reach），press 的路径没避开墙。 |
+| T09 `tomato_in_fridge__big_tomato` s11 | #11 `pick(big_tomato)`（冰箱里） | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 冰箱内取物；`tomato_in_fridge__in_fridge` 你三次全量过两次。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
