@@ -5,8 +5,8 @@
 不是先试推、推不了再握，也不是先试右手、不行再换左手。
 
 入口：`skills.close_articulated` → `motion_skills.run_skill(SKILLS["close"])` → `skill_jobs/door.py` 的 `close_job`
-+ `skill_plans/door.py` 的 `plan_push`（推）/ `plan_door`（握把手，`s1` = 关着的值）。微波炉、没有把手的部件还走旧的
-`skills._move_with_retry`（`../motion/MOTION_ARCHITECTURE.md` 9.3 第 8 步）。设计见 `../motion/MOTION_ARCHITECTURE.md` 第 6 节关门。
++ `skill_plans/door.py` 的 `plan_push`（推）/ `plan_door`（握把手，`s1` = 关着的值）。微波炉按门键关（8b）；没有把手的部件
+关不了（旧的 `skills._move_with_retry` 9j 删了）。设计见 `../motion/MOTION_ARCHITECTURE.md` 第 6 节关门。
 
 已经关着（铰链差 `RIDE_DONE_REV` 0.02 rad、抽屉差 `RIDE_DONE_PRIS` 6 mm 以内）就什么都不做。
 

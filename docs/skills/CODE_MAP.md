@@ -100,11 +100,11 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 | 行（90a2a31） | 块 | 主要函数 |
 |---|---|---|
-| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
-| 498–796 | 开关门（铰链 / 抽屉）| `open_articulated`、`close_articulated`（转到 `run_skill`；微波炉——close 还有没把手的部件——转 `_move_with_retry`）、`_move_articulated`、`_ride`、`_ride_check`（只剩微波炉用） |
+| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
+| 498–796 | 开关门（铰链 / 抽屉）| `open_articulated`、`close_articulated`（转到 `run_skill`；微波炉按门键：`press_button(door=...)`，8b）。`_move_with_retry`、`_move_articulated`、`_ride`、`_ride_check` 9j（11-25）删了 |
 | 797–910 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_half_along`、`_edge_coord` |
 | 911–1110 | pick | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`_grasp_approach` / `pick_approach`、`_pinch_candidates`、`_pads_clear_of`、`contact_obstacles`、`edge_held`（`push` 11-12 删了：`skill_jobs/slide.py` 的 `push_object`） |
-| 1111–1296 | 微波炉腔体放取 | `insert_microwave_cavity`、`release_…`、`withdraw_…`、`place_microwave` |
+| — | 微波炉腔体放取 | 9d（11-25）删了：放入走 place（`plan_place(cavity=...)`），取出走 pick |
 | 1297–1762 | place | `place`（分派：托盘 / 台面转 `_set_down` → `run_skill`，job 在 `skill_jobs/place.py`；托盘以外的容器转 `drop_into`）、`park_over`、`free_spots`、`place_on`、`place_flat`（183 行）|
 | 1763–1992 | 微波炉按钮和电动门 | `approach_microwave_button`、`press_…`、`open_microwave_door`、`_set_microwave_hinge` |
 
@@ -195,14 +195,14 @@ skill_jobs/pick.py  pick_job
      hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后实测 TCP 对指令 TCP 的到位检查（被挡 → 失败出口竖直离开）；
             pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
   done：_pick_judged（拿住了没有）
-  （微波炉腔体里取物不走这条：合约路由到 PickFromCavity，policy_048，旧实现）
+  （微波炉腔体里取物也走这条，9d：合约的 inside_cabinet_or_fridge 路径；PickFromCavity，policy_048，退役）
 ```
 
 ### place（`skills.place`，台面 / 浅容器 / 深容器 / 层板）
 
 ```
 place
-  "in:" 非托盘容器 → drop_into；微波炉 → place_microwave（柜门后层板、冰箱层板走下面的 _set_down）
+  "in:" 非托盘容器 → drop_into；微波炉腔体、柜门后层板、冰箱层板都走下面的 _set_down（腔体：plan_place(cavity=...)，9d）
   edge 持法（书） → place_flat（旧的写死路径，见第 5 节）
   其他（台面 / 托盘底板） → _set_down → run_skill(SKILLS["place"])
 skill_jobs/place.py  place_job
@@ -293,13 +293,12 @@ skill_jobs/navigate.py  navigate_job（不选停车点）
 
 `_goto_park(rig, park)` 就是"不在停车点就 `navigate(park[:3])`"，还给没迁移的技能用；pick / place / open / close / push 由 `run_skill` 自己开过去。
 
-### 微波炉的门（旧路径：`open_articulated` / `close_articulated` 遇到微波炉；close 还有没把手的部件）
+### 微波炉的门（8b 起按门键，9j 删了旧路径）
 
 ```
-_move_with_retry → _move_with_retry_impl → _move_articulated（没把手的部件在开头就 SkillFailure）
-  find_park(_handle_targets, 随门转动)  →  _goto_park
-  move_to 握把手（默认 FREE）→ grip → _ride（底盘跟着门走的闭环）
-  move_to(LEAVE_CONTACT) → move_to(FREE_ELSE_STRAIGHT)
+open_articulated / close_articulated 遇到微波炉 → press_button(door=...) → run_skill(SKILLS["press"])
+  plan_press：按门键 → 收臂 → press_door（电机把门开到位，机器人整段在门扫过的范围外才做）
+（旧的 _move_with_retry → _move_articulated → _ride 握把手骑门的路径 9j 删了）
 ```
 
 ---
