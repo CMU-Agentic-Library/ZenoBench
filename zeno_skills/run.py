@@ -248,7 +248,13 @@ def _run(act, plan, rebuild, hooks):
                 if isinstance(new, Failure) and new.segment != nxt:    # the one next: made now, or the skill fails
                     new = _late_tuck(act, new, segs[i + 1:], seg.name) or new
                 if isinstance(new, Failure):
-                    act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, seconds=round(time.time() - t0, 3))
+                    # which stage the rest failed at, and why each motion of the old rest was not kept (s11 11-26:
+                    # four such failures in the full run that 12 reruns never repeated, the stage unknown)
+                    old = {sg.name: sg for sg in segs[i + 1:] if sg.kind in KEPT_KINDS}
+                    act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, failed=new.segment,
+                            why_not_kept={n: w for n, w in _why_rebuilt(act, state, old).items()
+                                          if w != "its start moved"},
+                            seconds=round(time.time() - t0, 3))
                     raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
                 old = {sg.name: sg for sg in segs[i + 1:]}
                 kept = [sg.name for sg in new.segments if sg.kind in KEPT_KINDS and old.get(sg.name) is sg]
