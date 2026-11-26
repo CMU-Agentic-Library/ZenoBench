@@ -56,7 +56,7 @@ class AnthropicClient:
         import anthropic
         self.client, self.model, self.max_tokens = anthropic.Anthropic(), model, max_tokens
 
-    def chat(self, system, user_text, image_paths=()):
+    def chat(self, system, user_text, image_paths=(), tools=None):   # tools: vLLM only (native_tools)
         content = [{"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": _png_b64(p)}}
                    for p in image_paths]
         content.append({"type": "text", "text": user_text})
@@ -79,12 +79,16 @@ class AnthropicClient:
 
 
 class OpenAICompatClient:
+    native_tools = False     # True for the local vLLM server: chat() sends the menu as tools (baseline/tools.py)
+
     def __init__(self, model, base_url=None, api_key=None, extra_body=None):
         import openai
         self.client = openai.OpenAI(base_url=base_url, api_key=api_key)
         self.model, self.extra_body = model, extra_body
 
-    def chat(self, system, user_text, image_paths=()):
+    def chat(self, system, user_text, image_paths=(), tools=None):
+        """``tools`` (native_tools only): OpenAI tool definitions; a tool call comes back as the same JSON
+        answer text the parser reads (after the model's own text, its thought)."""
         content = [{"type": "image_url", "image_url": {"url": f"data:image/png;base64,{_png_b64(p)}"}}
                    for p in image_paths]
         content.append({"type": "text", "text": user_text})
@@ -92,12 +96,24 @@ class OpenAICompatClient:
         resp = _retry(lambda: self.client.chat.completions.create(
             model=self.model, messages=[{"role": "system", "content": system},
                                         {"role": "user", "content": content}],
+            **({"tools": tools, "tool_choice": "auto"} if tools and self.native_tools else {}),
             **({"extra_body": self.extra_body} if self.extra_body else {})))
         u = resp.usage
         details = getattr(u, "prompt_tokens_details", None)
         cached = (getattr(details, "cached_tokens", 0) or 0) if details else 0
         choice = resp.choices[0]
-        return choice.message.content or "", {
+        text = choice.message.content or ""
+        calls = getattr(choice.message, "tool_calls", None) or []
+        if calls:
+            import json
+            from baseline.tools import call_text
+            fn = calls[0].function
+            try:
+                args = json.loads(fn.arguments or "{}")
+            except json.JSONDecodeError:
+                args = fn.arguments                 # left for the parser to refuse
+            text = (text + "\n" if text else "") + call_text(fn.name, args)
+        return text, {
             "input_tokens": u.prompt_tokens if u else 0, "output_tokens": u.completion_tokens if u else 0,
             "cached_input_tokens": cached, "latency_s": round(time.time() - t0, 2),
             "stop_reason": choice.finish_reason}
@@ -135,6 +151,10 @@ def make_client(model: str):
         options["temperature"] = float(os.environ["SHIFT_VLLM_TEMPERATURE"])
     if os.environ.get("SHIFT_VLLM_MAX_TOKENS"):
         options["max_tokens"] = int(os.environ["SHIFT_VLLM_MAX_TOKENS"])
-    return OpenAICompatClient(model, base_url=os.environ.get("SHIFT_VLLM_URL", VLLM_URL),
-                              api_key=os.environ.get("SHIFT_VLLM_KEY", "EMPTY"),
-                              extra_body=options or None)
+    client = OpenAICompatClient(model, base_url=os.environ.get("SHIFT_VLLM_URL", VLLM_URL),
+                                api_key=os.environ.get("SHIFT_VLLM_KEY", "EMPTY"),
+                                extra_body=options or None)
+    # the menu as tools with pinned name slots, decoded under --tool-strict-level=parameter
+    # (baseline/serve_qwen.sh); SHIFT_NATIVE_TOOLS=0: the text answer only, as the API backends
+    client.native_tools = os.environ.get("SHIFT_NATIVE_TOOLS", "1") not in ("0", "false", "off")
+    return client

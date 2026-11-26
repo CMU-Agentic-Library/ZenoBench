@@ -373,7 +373,12 @@ class Episode:
             out = error_result(call, "BAD_CALL", 'expected {"contract": "<verb>", "args": {...}}')
         else:
             out = None
-            if self.names is not None and not internal:
+            if not internal:
+                call = self._loose_args(call)
+            absent = call.pop("_absent", None)
+            if absent is not None:
+                res, out = self._search_absent(call, absent)
+            elif self.names is not None and not internal:
                 try:
                     call = dict(call, args=self.names.private(call.get("args", {})))
                 except KeyError:
@@ -389,6 +394,8 @@ class Episode:
                 except Exception as exc:
                     traceback.print_exc()
                     out = error_result(call, "INTERNAL_ERROR", f"{type(exc).__name__}: {exc}")
+        if not internal and out.get("error_code") in self.NAME_ERRORS:
+            out = dict(out, error=f"{out.get('error') or ''} {self._choices(call, planner_args)}".strip())
         action = res.action if res is not None else f"{out['contract']}({json.dumps(out['args'], default=str)})"
         record = dict(out, action=action, path=res.selected_path if res is not None else None,
                       checks=[{"atom": a["atom"], "holds": bool(a["holds"])}
@@ -397,8 +404,8 @@ class Episode:
                       eval=call_eval(res.asdict() if hasattr(res, "asdict") else vars(res)) if res is not None else
                       {"failed_substep": [action], "leaf_code": out["error_code"], "leaf_error": out["error"],
                        "failed_checks": []})
-        if self.names is not None and not internal:
-            record["planner_args"] = planner_args             # the aliases as sent; ``args``: as executed
+        if not internal and (self.names is not None or (isinstance(call, dict) and call.get("args") != planner_args)):
+            record["planner_args"] = planner_args             # as sent; ``args``: as executed
         public = out
         if self.profile["execution"]["mask_feedback"] and self.observer is not None:
             allow = set()
@@ -408,6 +415,134 @@ class Episode:
         public = self.public(public)
         self.last_result = public
         return public, record
+
+    # a search for a kind ("rolling_pin", "spoon", "bin") finds one of that kind; a support or container
+    # slot given a piece of furniture ("kitchen_island") means its top (11-26: the baseline runs refused
+    # these as INPUT_UNKNOWN / NOUN_INVALID, 352 and dozens of calls)
+    KIND_SLOTS = {("search", "object")}
+    SURFACE_TYPES = ("receptacle_ref", "support_ref")
+
+    def _loose_args(self, call):
+        """A planner's call with a kind word in a search resolved to one instance of that kind (as the
+        planner would name it) and a bare furniture name in a surface slot resolved to the furniture's
+        top (or its only surface).  Anything else is passed as given."""
+        try:
+            inputs = self.runner.contract(call["contract"])["inputs"]
+        except KeyError:
+            return call
+        args, changed = dict(call.get("args") or {}), False
+        for slot, v in args.items():
+            if not isinstance(v, str):
+                continue
+            t = inputs.get(slot, {}).get("type")
+            if (call["contract"], slot) in self.KIND_SLOTS:
+                r = self._kind_instance(v, args.get("region"))
+                if r == self.ABSENT:
+                    return dict(call, _absent=v)
+            elif t in self.SURFACE_TYPES:
+                r = self._furniture_surface(v)
+            else:
+                continue
+            if r != v:
+                args[slot], changed = r, True
+        return dict(call, args=args) if changed else call
+
+    def _kind_instance(self, word, room=None):
+        """An instance of the kind ``word`` names, as the planner knows it (its alias with anonymous names),
+        through the benchmark-wide vocabulary (benchmark/vocab.py: "rolling pin", "spoons", "bin").  One in the
+        room searched (``room``, else the robot's: search's own default) first, then in alias order, which
+        says nothing (the aliases are numbered in a hashed order).  ``ABSENT`` when the word is a kind of the
+        vocabulary but the scene has none (the search then looks and finds nothing); the word itself when it
+        names no kind."""
+        from benchmark.vocab import kinds_for
+        known = self.names.real if self.names is not None else self.rig.ann.objects
+        if word in known:
+            return word
+        objs = self.rig.ann.objects
+        hit = kinds_for(word, {o["asset"] for o in objs.values()})
+        if not hit:
+            return self.ABSENT if kinds_for(word) else word
+        if room is None:
+            from zeno_skills.evaluator import room_of
+            room = room_of(self.rig.ann.rooms, self.rig.base_pose()[:2])
+        pub = (lambda n: self.names.alias[n]) if self.names is not None else (lambda n: n)  # noqa: E731
+        names = [n for n, o in objs.items() if o["asset"] in hit]
+        return pub(min(names, key=lambda n: (objs[n].get("room") != room, pub(n))))
+
+    ABSENT = "\x00absent"
+
+    def _search_absent(self, call, word):
+        """A search for a kind the scene does not have: the room is covered as a search would, and nothing
+        is found (same failure as search's own)."""
+        from zeno_skills.evaluator import room_of
+        args = call.get("args") or {}
+        room = args.get("region") or room_of(self.rig.ann.rooms, self.rig.base_pose()[:2])
+        from zeno_skills.skill_runtime import ContractError
+        try:
+            res = self.runner.run("explore_room", {"room": room})
+        except ContractError as exc:
+            return None, error_result(call, exc.code, str(exc).split(": ", 1)[-1])
+        return res, error_result(dict(call, args={**args, "object": word}), "POLICY_FAILED",
+                                 f"search {word}: not seen in {room}")
+
+    def _furniture_surface(self, name):
+        """``name``/top for a bare piece of furniture (else its only surface); other names as given."""
+        if "/" in name or name in self.rig.ann.objects or (self.names is not None and name in self.names.real):
+            return name
+        surfaces = [s["name"] for s in self.rig.ann.supports if s["name"].split("/", 1)[0] == name]
+        if f"{name}/top" in surfaces:
+            return f"{name}/top"
+        return surfaces[0] if len(surfaces) == 1 else name
+
+    # a name the call could not resolve: the error lists the spellings that would work (11-26), only from what
+    # the planner already knows (skills, static places, observed objects), so nothing new is revealed
+    NAME_ERRORS = {"INPUT_UNKNOWN", "NOUN_INVALID", "UNKNOWN_CONTRACT"}
+    OBJECT_TYPES = {"object_ref", "container_ref", "lid_ref", "tool_ref"}
+
+    def _known_objects(self):
+        obs = self.observer
+        return sorted(self.rig.ann.objects if obs is None else (set(obs.cache) | set(obs.held())))
+
+    def _slot_choices(self, t, enum=None):
+        ann = self.rig.ann
+        surfaces = [s["name"] for s in ann.supports]
+        from benchmark.observation import static_places
+        places = sorted(self.observer.places if self.observer is not None else static_places(ann))
+        objs = self._known_objects()
+        if enum:
+            return list(enum)
+        return {"receptacle_ref": surfaces + objs, "support_ref": surfaces, "room_ref": sorted(ann.rooms),
+                "place_ref": places + objs, "entity_ref": places + objs}.get(t, objs if t in self.OBJECT_TYPES else [])
+
+    def _choices(self, call, planner_args):
+        """' Valid ...: a, b, c.' for the skill name or each argument that is not a valid name of its slot."""
+        import difflib
+        verb = call.get("contract") if isinstance(call, dict) else None
+        try:
+            inputs = self.runner.contract(verb)["inputs"]
+        except (KeyError, TypeError):
+            names = sorted(self.runner.by_verb)
+            close = difflib.get_close_matches(str(verb), names, n=6, cutoff=0.5)
+            near = f"closest: {', '.join(close)}; " if close else ""
+            return f"Valid skill names ({near}all): {', '.join(names)}."
+        real = (lambda v: self.names.real.get(v, v)) if self.names is not None else (lambda v: v)  # noqa: E731
+        bits = []
+        for slot, v in (planner_args or {}).items():
+            spec = inputs.get(slot)
+            if spec is None:
+                bits.append(f"Valid arguments of {verb}: {', '.join(inputs)}.")
+                continue
+            if not isinstance(v, str):
+                continue
+            cands = self._slot_choices(spec.get("type"), spec.get("enum"))
+            if not cands or real(v) in cands:
+                continue
+            head = [c for c in cands if c.split("/", 1)[0] == v]          # a piece of furniture: its surfaces
+            close = difflib.get_close_matches(real(v).lower(), cands, n=8, cutoff=0.4)
+            pick = list(dict.fromkeys(head + close)) or cands[:15]
+            more = "" if len(pick) >= len(cands) else f" (and {len(cands) - len(pick)} more)"
+            bits.append(f"Valid {slot} values include: {', '.join(pick)}{more}.")
+        return " ".join(bits)
 
     def _validate(self, call):
         verb = call["contract"]

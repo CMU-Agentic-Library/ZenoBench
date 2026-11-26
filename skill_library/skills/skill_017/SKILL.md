@@ -1,13 +1,13 @@
 ---
 name: pick-object
-description: "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked."
+description: "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked. Navigate to the object itself first (navigate(destination=<the object>)): the base must be within 1.3 m of the object (base_near), and a stand-off beside the furniture it is on can be farther than that from it on a long table or counter."
 ---
 
 # Pick an object (`skill_017`)
 
 `pick(object: object_ref, hands: hand?, grasp: tag?, pass_by: pose2d?)`
 
-Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.
+Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked. Navigate to the object itself first (navigate(destination=<the object>)): the base must be within 1.3 m of the object (base_near), and a stand-off beside the furniture it is on can be farther than that from it on a long table or counter.
 
 ## When to use
 

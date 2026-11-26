@@ -13,8 +13,9 @@ Classes:
 * ReAct with ``--profile sticky/privileged`` - upper bound: the same planner also sees every task
   object with its position (GT), no goal status.
 
-All models get the same text and the same JSON answer format (no native tool calling), so the
-backends differ only in the model.
+All models get the same text and the same JSON answer format, so the backends differ only in the model.
+A local vLLM model also gets the menu as tools whose name slots are pinned (baseline/tools.py, decoded
+under --tool-strict-level=parameter); its tool call is read as the same JSON answer.
 """
 
 from __future__ import annotations
@@ -43,7 +44,7 @@ class ReAct(BaselinePlanner):
         note = ""
         for _ in range(PARSE_RETRIES + 1):
             user = user_prompt(self.instruction, observation, self.history, len(self.history), self.max_calls, note)
-            text, usage = self.ask(self.system, user, image_paths(observation))
+            text, usage = self.ask(self.system, user, image_paths(observation), self.tools_for(observation))
             try:
                 call = parse_call(text)
             except ParseError as exc:

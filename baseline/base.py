@@ -55,9 +55,11 @@ class BaselinePlanner(Planner):
         if self.history and "result" not in self.history[-1]:
             self.history[-1]["result"] = obs.get("last_result")
 
-    def ask(self, system, user, images=()):
-        text, u = self.client.chat(system, user, images)
+    def ask(self, system, user, images=(), tools=None):
+        text, u = self.client.chat(system, user, images, **({"tools": tools} if tools else {}))
         q = {"user": user, "images": [str(i) for i in images], "answer": text, "usage": u}
+        if tools:
+            q["tools"] = [t["function"]["name"] for t in tools]
         if system != self.system_logged:  # the system prompt is logged once, and again whenever it changes
             q["system"], self.system_logged = system, system
         self.trace.append(q)
@@ -71,6 +73,13 @@ class BaselinePlanner(Planner):
         self.history.append({"skill": call["skill"], "args": call.get("args", {})})
         trace, self.trace = self.trace, []
         return {"skill": call["skill"], "args": call.get("args", {}), "note": note, "usage": usage, "trace": trace}
+
+    def tools_for(self, observation):
+        """The menu as constrained tools when the backend decodes them (local vLLM), else None."""
+        if not getattr(self.client, "native_tools", False):
+            return None
+        from baseline.tools import tool_schemas
+        return tool_schemas(self.skills, observation)
 
     def summary(self) -> dict:
         """Written to result.json["planner"] by run_episode (totals include the finishing query)."""

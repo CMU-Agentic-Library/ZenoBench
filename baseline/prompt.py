@@ -18,9 +18,11 @@ see now, the objects it has seen before and where, the static places it knows, i
 the calls made so far with their results.
 
 Rules:
-- Objects you have observed are named <category>_<k> (for example mug_1). Use only names that \
+- Objects you have observed are named <kind>_<k> (for example breakfast_mug_1). Use only names that \
 appear in the observation or the known places; an object the robot has not observed yet cannot be \
 used until it is found (move to or look at places to find things).
+- A surface argument (place's receptacle, wipe's surface, ...) is a surface name from the known places \
+(kitchen_island/top), not the furniture's name.
 - A skill call can fail, and that is normal. Read its error code and what was false, then try \
 another way before you give up: for example another grasp, another position for the robot, or \
 looking or searching again for what you need.
@@ -29,6 +31,10 @@ looking or searching again for what you need.
 done. Finishing ends the episode, and the result is judged at that moment.
 {extra}
 {answer}
+
+Object kinds (the same list in every household, whatever this one holds): an observed object is named \
+<kind>_<k>; search takes a kind word ("rolling_pin", "rolling pin", "spoon", "bin").
+{vocabulary}
 
 Skills (name(parameters) - description; pre: preconditions; eff: effects; "?" marks an optional \
 parameter):
@@ -73,8 +79,9 @@ def render_menu(skills) -> str:
 
 
 def system_prompt(skills, max_calls, substitution_hint=False, answer=REACT_ANSWER) -> str:
+    from benchmark.vocab import vocabulary_text
     return SYSTEM_TEMPLATE.format(max_calls=max_calls, menu=render_menu(skills), answer=answer,
-                                  extra=SUBSTITUTION_HINT if substitution_hint else "")
+                                  extra=SUBSTITUTION_HINT if substitution_hint else "", vocabulary=vocabulary_text())
 
 
 def _j(v) -> str:
@@ -93,18 +100,31 @@ def _obj(o) -> str:
 
 
 def render_places(places) -> str:
+    """Known places by room; each piece of furniture with the exact names of the surfaces things go on
+    (``kitchen_island/top``): a support or receptacle argument takes one of those, not the furniture's name."""
+    places = places or {}
+    surfaces: dict[str, list[str]] = {}
+    for name, rec in sorted(places.items()):
+        if rec.get("kind") == "support" and rec.get("furniture") in places:
+            z = f" (z={rec['z']:.2f})" if "z" in rec else ""
+            surfaces.setdefault(rec["furniture"], []).append(name + z)
     rooms: dict[str, list[str]] = {}
-    for name, rec in sorted((places or {}).items()):
+    for name, rec in sorted(places.items()):
         kind = rec.get("kind", "")
         if kind == "room":
             rooms.setdefault(name, [])
             continue
+        if kind == "support" and rec.get("furniture") in places:
+            continue                                   # listed under its furniture
         extra = [kind, rec.get("category") or ""]
         if "z" in rec:
             extra.append(f"z={rec['z']:.2f}")
         if rec.get("articulated"):
             extra.append(f"opens ({rec.get('joint')})")
-        rooms.setdefault(rec.get("room") or "?", []).append(f"{name} [{', '.join(e for e in extra if e)}]")
+        line = f"{name} [{', '.join(e for e in extra if e)}]"
+        if surfaces.get(name):
+            line += " surfaces: " + ", ".join(surfaces[name])
+        rooms.setdefault(rec.get("room") or "?", []).append(line)
     return "\n".join(f"- {r}: " + "; ".join(v) for r, v in rooms.items())
 
 
