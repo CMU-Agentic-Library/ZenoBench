@@ -1808,7 +1808,9 @@ def T10(t):
                     S("close", articulated=FRIDGE)],
              # 11-21 (muqingj v6full_1116-1119: a mug set on counter_2 found no reachable spot 3 of 4): the island,
              # a kitchen worktop the goal takes as well
-             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top")]}
+             # 11-25 (gt_check_1125b rubbish_mug s11): without a hint the mug went 7 cm from the north edge and fell
+             # over; a spot 19 cm in from the south edge, clear of the rolling pin and the island's things
+             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top", [7.05, 1.70])]}
     dinner_cases = {}
     for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
                      ("rubbish_mug", (CAN, TRAY, MUG))):
