@@ -178,6 +178,28 @@ def test_an_edge_place_moves_its_open_pads_clear_of_the_load_only_as_far_as_need
     assert pull.spec.touch == () and not pull.spec.allow.touch               # a touch drags the book out
 
 
+
+def test_an_edge_places_pads_clear_by_each_finger_as_it_stands():
+    # after the release the fingers part ways (0.040 / 0.034 m, opened to 0.037: T27 rice s11): the load (half
+    # 2.5 cm along Y_link) 8 mm towards the right finger (-Y).  Read as the wider finger both pads clear it; as
+    # they stand the right pad is 1 mm off it -- the TCP moves 4 mm along -Y, and that move may start touching it
+    from zeno_skills.skill_plans.place import _pads_clear
+    from zeno_skills.tolerances import EDGE_PAD_CLEAR
+    q = _q(0.5, 0.0, 0.10)
+    T = np.eye(4)
+    T[:3, 3] = [0.5, -0.008, 0.10]
+    box = (np.array([-0.1, -0.025, -0.02]), np.array([0.1, 0.025, 0.02]))
+
+    def state(fingers):
+        return State(base=(0.0, 0.0, 0.0), **chains(np.asarray(q, float), np.zeros(7)),
+                     hands={"right": Hand(width=0.04, fingers=fingers)}, objects={"rice": T})
+    assert _pads_clear(_place_kin(), state(None), q, "rice", box, "place_clear") is None
+    seg = _pads_clear(_place_kin(), state((0.040, 0.034)), q, "rice", box, "place_clear")
+    assert isinstance(seg, Segment), seg
+    # least = half + EDGE_PAD_CLEAR - 0.034 = -4 mm: the load's centre from -8 to -4 mm off the TCP
+    assert np.allclose(seg.q_end[:3] - q[:3], [0.0, -(0.008 - (0.034 - 0.025 - EDGE_PAD_CLEAR)), 0.0], atol=1e-3)
+    assert seg.spec.allow.touch == ("rice",)
+
 # ------------------------------------------------------------------- drop (docs/skills/drop_hover.md)
 def test_a_drop_reaches_over_the_opening_lets_go_waits_and_tucks():
     q_p = _q(0.5, 0.0, 0.30)

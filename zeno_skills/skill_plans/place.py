@@ -107,9 +107,13 @@ def _pads_clear(kin, state, q, obj, box, name):
     """The straight that gives an edge hold's open pads EDGE_PAD_CLEAR from ``obj`` on both sides along
     their closing axis (Y_link, kinematics.gripper_rot), the load as the State has it (it fell the gap,
     the hand stayed): the least move that does -- none when they clear it already -- or the load centred
-    between them when the opening leaves less.  ``box`` (lo, hi): its box in its box frame; the pads
-    stand the hand's width (per finger) off the TCP.  Checked, the load an obstacle (FREE_HAND).  None:
-    nothing to move (or the load not in the State)."""
+    between them when the opening leaves less.  ``box`` (lo, hi): its box in its box frame; each pad
+    stands its finger's opening off the TCP, the left finger along +Y_link, the right along -Y_link (the
+    URDF's finger axes, both hands) -- each finger as it stands (Hand.fingers: after the release they part
+    ways, one pushed 3-9 mm off the other, T27 rice / T14 book left, s11 11-26), else both at the hand's
+    width (planned).  Checked, the load an obstacle for all but the fingers: they may touch what they let
+    go where the move starts (release_spec: the move takes a pad off it).  None: nothing to move (or the
+    load not in the State)."""
     T, hand = state.objects.get(obj), state.hands.get(kin.side)
     if T is None or hand is None:
         return None
@@ -120,12 +124,14 @@ def _pads_clear(kin, state, q, obj, box, name):
     c = (T @ np.r_[0.5 * (lo + hi), 1.0])[:3]
     half = float(np.abs(T[:3, :3].T @ y) @ (0.5 * (hi - lo)))      # the load's half extent along y
     w, m = float(hand.width), EDGE_PAD_CLEAR
+    fl, fr = (w, w) if hand.fingers is None else (float(hand.fingers[0]), float(hand.fingers[1]))
     d = float((c - p) @ y)                                          # its centre off the TCP along y
-    least, most = half + m - w, w - half - m                        # where d leaves both pads m clear
-    s = d - (0.0 if least > most else min(max(d, least), most))     # the TCP's move along y
+    least, most = half + m - fr, fl - half - m                      # where d leaves both pads m clear
+    mid = 0.5 * (fl - fr)                                           # the load centred between the pads
+    s = d - (mid if least > most else min(max(d, least), most))     # the TCP's move along y
     if abs(s) < NUMERIC_M:
         return None
-    seg = straight(kin, state, FREE_HAND, p + s * y, R, name, step=0.002, q_from=q)
+    seg = straight(kin, state, release_spec(kin.side, obj), p + s * y, R, name, step=0.002, q_from=q)
     return seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
 
 
