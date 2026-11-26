@@ -2241,7 +2241,10 @@ def T14(t):
         reach_cases[c] = dict(
             add={f"set_book_{i + 1}": book("book_red", high, x, y) for i, x in enumerate(xs)},
             watch=[B, "set_book_1", "set_book_2"],
-            route=[look(DESK), S("explore_room", room="bedroom_0_1")] + shelve(B, lower, [xs[0] + 0.5, y]))
+            # 11-25 (gt_check set_on_large_shelf_4 s13): mid-shelf (3.70) the held book hit large_shelf_4 reaching
+            # into the 33 cm level; 20 cm from its east end, as large_shelf_5's spot (12 cm from its end) that works
+            route=[look(DESK), S("explore_room", room="bedroom_0_1")]
+            + shelve(B, lower, [4.10 if "_4" in high else xs[0] + 0.5, y]))
     # stack_them_stably: removed 11-20 (user)
     # homework_stays: tidy the desk; the finished book to the bookcase, the used mug to the kitchen, the homework
     # (an open notebook and a pencil) stays for tomorrow
