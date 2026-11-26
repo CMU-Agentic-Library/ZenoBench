@@ -1,6 +1,8 @@
 # push（把桌上的东西推一段，2026-11-12 起走运动分层）
 
-把放在支撑面上的东西沿水平方向推一段：从后面用合拢的指尖推（push），或者按在顶面上拖（drag）。**每段一次停车点搜索**，目标集合 = 方向 × 做法 × 合拢手指的 4 个朝向；手推到手臂够不着为止，没推够就换停车点接着推。只用右手，右手必须空着。
+把放在支撑面上的东西沿水平方向推一段：从后面用合拢的指尖推（push），或者按在顶面上拖（drag）。**每段一次停车点搜索**，目标集合 = 方向 × 做法 × 合拢手指的 4 个朝向；手推到手臂够不着为止，没推够就换停车点接着推。**用空着的手**：两只都空时两只都在目标集合里（每个目标带手，右手只靠 `VARIANT_COST` 排前，HAND_PLAN 3.1，11-25 规则审查；之前是 job 直接取右手，9h 之前右手拿着东西就拒绝）。合爪是在空中合一秒（等手指真合上；11-25 之前 30 个物理步，手指还张着约 2 cm）。
+
+做法有三种：推（push，从后面用合拢的指尖）、拖（drag，按在顶面上往回带）、戳（poke，9h：tip 用，合拢的指尖朝推的方向，在物体高度的 `TIP_HEIGHT` 80% 处推一条腿，推倒为止，不走多腿循环）。roll 是拖（`modes=("drag",)`，两个方向都是目标，往机器人外侧的排前）。
 
 入口：策略调 `skill_jobs/slide.py` 的 `push_object`（任务层，一段一段推）→ 每段 `motion_skills.run_skill(SKILLS["push"])` → `slide_job` + `skill_plans/contact.py` 的 `plan_slide`。调它的策略：推到桌边（policy_045 `SlideToEdgePolicy`，v6 里只有它用到），以及 `PushPolicy`、`PushFromBehindPolicy`、`TopDragPolicy`、`PullTowardBasePolicy`（先拖后推）、`SeparateFromNeighbourPolicy`、`CenterOnSupportPolicy`、`SweepTogetherPolicy`。设计见 `../motion/MOTION_ARCHITECTURE.md` 第 6 节"推桌上的物体"。
 

@@ -18,22 +18,22 @@
 10. **[push](push.md)**：把桌上的东西推一段，推到桌边好捏边（2026-11-12 起走运动分层：方向 × {推，拖} × 手指朝向一次停车点搜索，推到够不着再换停车点）。
 11. **[stir](stir.md)**：拿勺子在锅里搅（2026-11-15 起走运动分层：勺尖是标注 `tool_frame`，画圈是锅坐标系里的任务段，整圈要么全过要么失败；自由段不保持倾角）。
 12. **[mark_spots](mark_spots.md)**：拿着东西时开到能看全一张桌面的位置，在头部图上给几个空位编号，VLM 选号后用 `place(hint_xy=...)` 放（2026-11-15，visual prompting）。
-13. **[姿态](posture.md)**：下蹲、站起、弯腰、直腰、收臂（2026-11-16 起走运动分层：原地一段关节运动，只动身体的段两条手臂都查；"降到最低"这类不给具体值的按碰撞模型量能走多远）。
+13. **[姿态](posture.md)**：下蹲、站起、弯腰、直腰、收臂，以及拿着东西的抬放、展示、转、扶正、松手和手势（2026-11-16 起走运动分层：原地一段关节运动，只动身体的段两条手臂都查；"降到最低"这类不给具体值的按碰撞模型量能走多远）。
+14. **[press、touch、knock](press.md)**：合拢的指尖压进按键 / 物体顶面 / 门板一点，再按测量退出（8a、9g）。
+15. **[flip 和 pour](flip_pour.md)**：拿着的东西绕一条轴转的任务段，转多远由手臂量（9h）。
+16. **[handover 和 brace](handover_brace.md)**：pick 抓住就停：左手扶住、右手交左手（9i）。
 
-## 现在走运动分层的（2026-11-14）
+## 现在走运动分层的（2026-11-25）
 
-走 `motion_skills.run_skill`（停车点搜索做出整份计划，执行照着走、在锚点复核，做不出来就失败）：
+走 `motion_skills.run_skill`（停车点搜索或原地做出整份计划，执行照着走、在锚点复核，做不出来就失败）：
 
-- navigate，包括拿着东西开车（[导航与收臂](navigate.md)、[搬运姿态](carry.md)）；
-- pick（[pick](pick.md)）；
-- place 到支撑面和托盘上（[place](place.md)），包括捏边放下的书（11-14）；放进微波炉除外；
-- drop：扔进容器，包括 `place(name, "in:<容器>")`（托盘除外）（[drop 和 hover](drop_hover.md)，11-14）；
-- open、close 门和抽屉（[open](open.md)、[close](close.md)）；微波炉除外；
-- push：推到桌边和另外 7 个调 `push_object` 的策略（[push](push.md)）；
-- stir 和 dip：拿勺子搅、勺尖伸进去再出来（[stir](stir.md)，11-15）；
-- 姿态：crouch、stand、bend、straighten、tuck（[姿态](posture.md)，11-16）。
+- navigate、pick、place（含微波炉腔体，9d）、drop、hover、open、close（含微波炉的门键，8b）、push（含 tip、roll）、stir、wipe、press、touch、knock；
+- 姿态和拿着东西的原地动作：crouch、stand、bend、straighten、tuck、lift / lower、present、rotate、upright、release、wave、point、shake；
+- flip、pour、brace、handover（两手）；感知类 look、inspect（search / explore 是它上面的任务层）。
 
-还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类（look、inspect 是技能，search / explore 是它上面的任务层）和姿态类（[姿态](posture.md)）11-16 迁了（`../motion/MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）；手势（wave、point_at、present）还走旧入口。
+用哪只手：拿着东西的技能用拿着它的那只；用空手的技能每只空着的手都是目标集合的一维（HAND_PLAN 3.1）。
+
+还走旧入口的（HAND_PLAN 第 7 节）：两手一起搬（`bimanual.py`，用户 11-25 定跳过）、边走边取放（`mobile.py`，策略本来就关着）、旧调用方里 `check_held` 掉落时张手、sticky 的 snap 级瞬移。
 
 ## 11-04（3b 第 2 项）改了什么
 
