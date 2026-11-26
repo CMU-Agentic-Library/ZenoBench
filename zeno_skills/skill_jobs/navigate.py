@@ -6,7 +6,7 @@ from dataclasses import replace
 
 from ..motion_state import Failure
 from ..rig import SkillFailure
-from ..skills import (check_held, check_left_held)
+from ..skills import check_held
 from .base import RigBase
 from .carry import _carry
 
@@ -18,14 +18,15 @@ def navigate_job(rig, args, state, skill=None):
     from ..skill_plans import plan_navigate as _default
     plan_navigate = skill.build if skill is not None else _default
     pose, label, mbz, arrive = args["pose"], args.get("label", "navigate"), args.get("min_bottom_z"), args.get("arrive")
-    # the load's carry posture: the right hand's, else the left's (HAND_PLAN 9c)
-    loaded = "right" if rig.held is not None else "left" if rig.left_held is not None else None
-    carry = _carry(rig, rig.held_by(loaded)["name"], mbz, loaded) if loaded is not None else None
-    if carry is not None and not args.get("raise_load", True):
+    # the carry posture of every hand that holds a load (HAND_PLAN 9c; both when both do: each takes its own side
+    # of plan_navigate's arm stages -- until the rule audit of 11-25 only the right's, the left's load unchecked)
+    loaded = tuple(sd for sd in ("right", "left") if rig.held_by(sd) is not None)
+    carry = tuple(_carry(rig, rig.held_by(sd)["name"], mbz, sd) for sd in loaded)
+    if not args.get("raise_load", True):
         # the caller's carry_posture made the higher-ride decision for this min_bottom_z (kept or
         # raised): one decision, one place (rule 2) -- a second try could land, by the planner's
         # chance, on a posture the caller's park search never assumed
-        carry = replace(carry, want=None, raise_goals=None)
+        carry = tuple(replace(c, want=None, raise_goals=None) for c in carry)
     base = RigBase(rig)
     stage_of = {"tuck": "arm", "carry_in": "arm", "left_fold": "left_fold", "left_carry_in": "left_fold", label: "drive",
                 "arrive": "arrive"}
@@ -40,21 +41,24 @@ def navigate_job(rig, args, state, skill=None):
             raise SkillFailure(plan.why if plan.segment == label else f"{label}: {plan.segment}: {plan.why}")
         for what, why in plan.info.get("skipped", {}).items():
             rig.log(f"{what}_blocked", reason=str(why)[:200])
-        if "carry" in plan.info:
-            rig.log("carry_posture", how=plan.info["carry"], moved=any(sg.name == "carry_in" for sg in plan.segments))
+        for sd, how in plan.info.get("carry_by_side", {}).items():
+            leg = "carry_in" if sd == "right" else "left_carry_in"
+            rig.log("carry_posture", side=sd, how=how, moved=any(sg.name == leg for sg in plan.segments))
 
         def before_drive(r):
-            if loaded is not None and r.held_by(loaded) is not None:
+            for sd in loaded:
+                if r.held_by(sd) is None:
+                    continue
                 if mbz is not None:
-                    bottom_z = float(r.geo.bottom(r.held_by(loaded)["name"], r.state())[2])
-                    r.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(mbz), 3))
-                check_held(r, "carry_up", open_hand=False, side=loaded)
+                    bottom_z = float(r.geo.bottom(r.held_by(sd)["name"], r.state())[2])
+                    r.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(mbz), 3), hand=sd)
+                check_held(r, "carry_up", open_hand=False, side=sd)
 
         def after_drive(r):
             if r.held is not None:
                 check_held(r, "carry", open_hand=False)
             if r.left_held is not None:
-                check_left_held(r, "left_carry")
+                check_held(r, "left_carry", open_hand=False, side="left")
         hooks = {"carry_in": {"after": lambda r: check_held(r, "carry_in", open_hand=False)},
                  "left_carry_in": {"after": lambda r: check_held(r, "left_carry_in", open_hand=False, side="left")},
                  label: {"before": before_drive, "after": after_drive}}

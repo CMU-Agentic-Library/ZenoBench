@@ -100,7 +100,7 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9g | 接触类：wipe、touch、knock | wipe (11)、touch (2) 所在的集 | `WIPE_PRESS`、`TOUCH_DEPTH` 登记；`tooluse.WipeSurfacePolicy`、`extra.TouchObjectPolicy`、`KnockPanelPolicy` 只调 `run_skill` |
 | 9h | v6 没用到的接触 / 手势：roll、tip（`_contact_sweep`）、flip、pour、wave、point、shake | 每个技能一个最小场景（`tools/run_skills.py`），各自 ≤ 5 分钟 | 这些文件的 `old_entry` 归零 |
 | 9i | 双臂：handover、brace、双手搬（第 9 步原文：两手一起搬的物体进碰撞模型，闭链约束另议） | v6 的双手搬集（如有）+ handover 最小场景 | `bimanual.py` 的 `old_entry` 归零 |
-| 9j 收尾 | 做了一部分：旧入口 52 -> 21，LEGACY 0（剩下的见下） | 本次提交；`/data/zenobench/hand9j_1125` |
+| 9j 收尾 | 剩下的旧入口：reset、point 的原语、`_move_articulated`、`_swing_arm`、sticky 的 snap / place；文档 | 本次涉及的集 | `old_entry` = 0、`LEGACY` = 0（做到一部分，见第 7 节） |
 | — | 全量（v6 种子 10，151 集）作为新基线 | — | 和 v6full_1123（136/151）对比，掉的逐集归类 |
 
 9a–9d 是让微波炉取放能做的最短路径；9e–9g 是 v6 用到的旧技能（约 50 次调用）；9h–9j 是 v6 没用到、但目录里有的。9h、9i 每个技能的设计在动手前写进 MOTION_ARCHITECTURE 第 6 节，和之前关门的做法一样。
@@ -124,15 +124,16 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 | 9b 契约和评分（`any` / `both`） | 做完，检查 4/4（评分 best 1.0，`hand_empty(both)` 都成立） | a2288b35 |
 | 9c pick 选手 | 做完；强制左手 3/3 整集成功（T11、T04、T22，含冰箱层板） | fe321f67 |
 | 左手放下的收臂起点碰撞（9c 的后续） | 做完：规划器按两根手指各自的实测值（`Hand.fingers`），不再都取较宽的那根；定向 5/5 | 8cba9d98 |
-| 9d 微波炉腔体取放 | 部分做完（用户 11-25：先提交，进 9e）：放入走 place，检查 2/4；microwave_works、broken_oatmeal_away 仍建不出（见下）；取出走 pick 只有单测（v6 种子 10 的路线没有从腔体取出） | 本次提交；`/data/zenobench/hand9d2_1125` |
-| 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp 还在用，随 9f 删 | 本次提交；`/data/zenobench/hand9e_1125` |
-| 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 本次提交；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
-| 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 本次提交；`/data/zenobench/hand9g_1125` |
-| 9h v6 没用到的接触 / 手势 | 迁完（每个都走 `run_skill`、按手），但 roll、flip、pour 的检查仍失败（见下）；wave、point、shake、tip 成功 | bef85df6、94b60272、本次提交；`/data/zenobench/hand9h_1125` |
-| 9i 双臂 | brace、handover 做完（P07、P06 成功）；两手搬没做 | b9a267f4、本次提交；`/data/zenobench/hand9i_1125` |
-| 9j | 没开始 | — |
+| 9d 微波炉腔体取放 | 部分做完（用户 11-25：先提交，进 9e）：放入走 place，检查 2/4；microwave_works、broken_oatmeal_away 仍建不出（见下）；取出走 pick 没在仿真里跑过，也没有单测走到腔体里的 pick（v6 种子 10 的路线没有从腔体取出） | d5a360ba；`/data/zenobench/hand9d2_1125` |
+| 9e 取放家族的旧技能：lift / lower、hover、present | 做完，检查 5/6（唯一失败 after_dinner 在 pick takeout_tray，1125 也败在这里）；`held_vertical_move` 还没删：upright、regrasp、pour 还在用（9h 删） | 9b4f1353；`/data/zenobench/hand9e_1125` |
+| 9f 转向和摆正：rotate、square、upright、regrasp、release | 做完，检查 T02 rotate 2/2（一集左手）、T06 display_row square 1/1（三块都摆正，这次都是右手；强制左手见下）；upright、regrasp、release 在 v6 没用到，只有单测；`held_vertical_move` 还剩 pour 在用（9h） | 794771bd；`/data/zenobench/hand9f_1125`、`hand9f3_1125` |
+| 9g 接触类：wipe、touch、knock | 做完，检查 6/6（T08 wipe ×5、T19 touch）+ 强制左手 T08 wipe 成功；knock 在 v6 没用到，只有单测 | 2a4e45f4；`/data/zenobench/hand9g_1125` |
+| 9h v6 没用到的接触 / 手势 | 迁完（每个都走 `run_skill`、按手），但 roll、flip、pour 的检查仍失败（见下）；wave、point、shake、tip 成功 | bef85df6、94b60272、10dc6efc；`/data/zenobench/hand9h_1125` |
+| 9i 双臂 | brace、handover 做完（P07、P06 成功）；两手搬没做（用户 11-25 定跳过） | b9a267f4、6ab73c05；`/data/zenobench/hand9i_1125` |
+| 9j 收尾 | 做了一部分：旧入口 52 -> 21，LEGACY 0（剩下的见下） | 202bc7a9；`/data/zenobench/hand9j_1125` |
+| 规则审查的修改（11-25） | 第九阶段对照第 1 节和 MOTION_ARCHITECTURE 第 1 节的规则逐条查出来的问题，都改了（见下"规则审查"） | 13ccf93a 起；`/data/zenobench/rules_1125` |
 
-都没推送（rhm 比 origin 多 8a 起的提交）。
+9a–9j 已推送（origin 到 202bc7a9，11-25）；规则审查的修改没推送。
 
 **左手放下的收臂起点碰撞**（v6full_1125 的 4 集由成功变失败：T01 seats_c、T14 e1_book_ready、T14 blue_book、T18 bowl_in_use__oatmeal）：State 每只手只记较宽那根手指的宽度，规划器两指都放在那里；左手 edge place 松手后两指实测 0.036 / 0.029 m（命令 0.032），模型里加宽的右指压进刚放下的书 4–5 mm，收臂起点被 cuRobo 拒绝。8cba9d98：`Rig.snapshot` 记两指各自的值（`Hand.fingers`），`with_width`（计划的张开）清掉它，`Motion.query` / `live_locks` 两个指轴各设各的。检查 `/data/zenobench/fingers_1125` 5/5（加 T29 toy_box）。T29 里还有一次左手收臂起点 4 mm 碰撞，两指读数几乎相同，是另一个原因，没查（整集恢复成功）。
 
@@ -175,4 +176,4 @@ v6 用到的旧技能一共约 60 次调用（lift 13、hover 11、wipe 11、腔
 - sticky 的 snap 级瞬移、接住掉落（`sticky.py` 8）——计划里说按 Actuator 的写操作处理，还没做。
 所以 `Rig.move_to` / `joint_path` / `follow_both` 等旧入口、旧的 `planner.find_park`（`tools/build_tasks.py` 和它自己的单测还在用）都还不能删。
 
-**要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。
+**要告诉 bench 作者的**：评分的 `["hand_empty", "right"]` 改成了 `"both"`（9b：`benchmark/v6/define_tasks_v6.py` 的 `both_hands_empty` 和几个生成器文件里的字面量，`tasks.json` / `STATIC.json` 重新生成）。已写进交接文档 `docs/archive/handoffs/HANDOFF_2026-11-25_hands_for_bench.md`（含 11-25 pick 合约的 `hands` 和 `--pick-hand`）。

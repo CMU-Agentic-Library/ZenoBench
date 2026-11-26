@@ -1,6 +1,6 @@
 # contract_068 — Wave the hand
 
-Raise the empty right hand at head height and swing it (greeting / attention gesture).
+Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best.
 
 Paired SkillNode: `skill_060` (`wave-hand`).
 

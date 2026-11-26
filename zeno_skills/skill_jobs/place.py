@@ -36,6 +36,16 @@ EDGE_FINGER_CLEAR = 0.02  # m: the lower fingertip at least this far past the an
 #                           11-15).  With the TCP 2.5 cm in, the 6.5 cm of place_flat's EDGE_PLACE_OVERHANG
 
 
+def square_yaws(q_obj):
+    """The wrist turns (deg about the vertical) of a place that squares the object to the support's axes (square,
+    HAND_PLAN 9f): from its yaw as the hand holds it now (quaternion w, x, y, z) -- a turn measured before the pick
+    drifted with the carry (T06) -- the turns that leave its yaw on an axis, 0 / +-90 / 180 from the nearest."""
+    w, x_, y_, z_ = q_obj
+    yaw = math.degrees(math.atan2(2 * (w * z_ + x_ * y_), 1 - 2 * (y_ * y_ + z_ * z_)))
+    err = (yaw + 45.0) % 90.0 - 45.0
+    return tuple(round(k - err, 2) for k in (0.0, 90.0, -90.0, 180.0))
+
+
 def place_job(rig, args, state, skill=None):
     """motion_skills.Job of the set-down: the carry posture settled for the support's rim first
     (carry_posture), every spot x hold x wrist turn one goal of the park search (the whole place
@@ -106,12 +116,7 @@ def place_job(rig, args, state, skill=None):
     edges = None                            # an edge hold: per goal, (the edge's outward normal, the overhang)
     yaws = PLACE_YAWS
     if args.get("square"):
-        # squared to the support's axes (square, HAND_PLAN 9f): the wrist turns that leave its yaw on an axis,
-        # from its yaw as the hand holds it now (a turn measured before the pick drifted with the carry, T06)
-        w, x_, y_, z_ = q_obj
-        yaw = math.degrees(math.atan2(2 * (w * z_ + x_ * y_), 1 - 2 * (y_ * y_ + z_ * z_)))
-        err = (yaw + 45.0) % 90.0 - 45.0
-        yaws = tuple(round(k - err, 2) for k in (0.0, 90.0, -90.0, 180.0))
+        yaws = square_yaws(q_obj)
     if edge:
         goals, leg_sets, cost, edges = _edge_goals(rig, name, s, relations, args.get("hint"), st, held_d)
         if not goals:

@@ -41,3 +41,18 @@ def test_an_old_skill_refuses_a_load_in_the_left_hand_and_says_so():
         skills.right_hand_only(rig, "cup", "hover")
     rig.held, rig.left_held = {"name": "cup"}, None
     skills.right_hand_only(rig, "cup", "hover")                    # the right hand's: fine
+
+
+def test_the_drive_cap_is_the_same_for_either_hand():
+    # the user's 11-24 decision (HAND_PLAN 6.3): the left's limits mirror the right's -- a load in either hand drives
+    # at DRIVE_LOADED, a container in a one-hand rim pinch in either hand at DRIVE_SWINGING
+    from types import SimpleNamespace
+    from zeno_skills.rig import DRIVE_EMPTY, DRIVE_LOADED, DRIVE_SWINGING, Rig
+
+    def rig(right=None, left=None, containers=()):
+        return SimpleNamespace(held=right, left_held=left, _held_container=lambda side="right": side in containers)
+    assert Rig._drive_cap(rig()) == DRIVE_EMPTY
+    assert Rig._drive_cap(rig(right={"name": "cup"})) == DRIVE_LOADED
+    assert Rig._drive_cap(rig(left={"name": "cup"})) == DRIVE_LOADED
+    assert Rig._drive_cap(rig(left={"name": "pot"}, containers=("left",))) == DRIVE_SWINGING
+    assert Rig._drive_cap(rig(right={"name": "pen"}, left={"name": "pot"}, containers=("left",))) == DRIVE_SWINGING

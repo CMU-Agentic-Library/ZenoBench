@@ -38,8 +38,8 @@ BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targe
 # drive_base takes the cap of the load, a caller may only ask for slower.  Inherited (the navigate
 # speeds from 32a2d66c, the one-hand cap from d705872b), never measured: docs/motion/COLLISION_PLAN.md §2.
 DRIVE_EMPTY = (0.35, 0.8, 0.0)
-DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in the right hand
-DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch, or a load in the left hand alone: it pivots
+DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in a hand
+DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch (either hand): it pivots
 HELD_CHECK_EVERY = PHYSICS_HZ // 2      # ticks between check_held calls along a drive (inherited, unmeasured)
 DRIVE_RAMP = 0.8                     # s: acceleration ramp of a drive that asks for none
 RIDE_TICKS = 6000                    # physics ticks a ride (Rig.ride) runs at most (skills._ride's)
@@ -486,12 +486,16 @@ class Rig:
         return bool(self.ann.asset_of(self.ann.objects[h["name"]]).get("container"))
 
     def _drive_cap(self):
-        """drive_base's speed cap for what the hands hold: a container hanging off a thin wall in a
-        one-hand rim pinch pivots under base accelerations, and so does a load in the left hand
-        alone (after a handover: a full-speed drive shook a rolling pin out)."""
-        if self._held_container() or (getattr(self, "left_held", None) is not None and self.held is None):
+        """drive_base's speed cap for what the hands hold, the same for either hand (HAND_PLAN 3.4, the user's
+        11-24 decision: the left's limits mirror the right's): a container hanging off a thin wall in a one-hand
+        rim pinch pivots under base accelerations (DRIVE_SWINGING); any other load DRIVE_LOADED.  (Until the rule
+        audit of 11-25 a load in the left hand alone always drove at DRIVE_SWINGING -- a rolling pin a full-speed
+        drive shook out after a handover, 11-04, when the left's load set no cap at all -- and a container in the
+        left beside a load in the right at DRIVE_LOADED.)"""
+        sides = ("right", "left")
+        if any(self._held_container(sd) for sd in sides):
             return DRIVE_SWINGING
-        return DRIVE_LOADED if self.held is not None else DRIVE_EMPTY
+        return DRIVE_LOADED if any(_held_of(self, sd) is not None for sd in sides) else DRIVE_EMPTY
 
     def _vmax(self, side="right"):
         """Joint speeds ``side``'s paths are executed at: 60% of the URDF limits (torso lift is 0.117 m/s;

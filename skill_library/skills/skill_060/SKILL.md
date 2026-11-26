@@ -1,13 +1,13 @@
 ---
 name: wave-hand
-description: "Raise the empty right hand at head height and swing it (greeting / attention gesture)."
+description: "Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best."
 ---
 
 # Wave the hand (`skill_060`)
 
 `wave()`
 
-Raise the empty right hand at head height and swing it (greeting / attention gesture).
+Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best.
 
 ## When to use
 

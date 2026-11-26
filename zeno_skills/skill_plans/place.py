@@ -354,13 +354,14 @@ def _plan_drop(kin, state, goal, pre_open, rest_goals, into, fall, start, prior_
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)
 
 
-RELEASE_STAGES = ("release_open", "release_pull_out")
+RELEASE_STAGES = ("release_open", "release_let_go", "release_pull_out")
 RELEASE_TICKS = 60      # physics ticks the hand opens in, gradually (inherited: the old ReleaseInPlacePolicy's)
 
 
 def plan_release(kin, state, pre_open, out_len, start="release_open", prior=None, obj=None, step=0.004):
     """release (HAND_PLAN 9f): let go of what ``kin``'s hand holds where it is -- the hand opened to
-    ``pre_open`` (the fingers may touch what they let go: release_spec) -- and the pull-out back along the gripper axis
+    ``pre_open`` (the fingers may touch what they let go: release_spec), the anchor where it let go -- and the pull-out
+    back along the gripper axis
     as far as contact_extent measures (the fingers still allowed on it; ``out_len`` unused, kept for the callers).  Both built before
     anything moves: a pull-out that cannot be made fails the release with the hand still closed (the old
     ReleaseInPlacePolicy opened first and logged a short back-off).  ``obj``: what it lets go (default what the
@@ -380,6 +381,10 @@ def plan_release(kin, state, pre_open, out_len, start="release_open", prior=None
                 if held is not None:
                     s = released(s, kin.side, held.name, held_frame(kin, q, held))
                 s = with_width(s, kin.side, pre_open)
+            elif stage == "release_let_go":
+                # where an error comes in (docs 8.2, rule 9: arrival, grasp, release): what it let go stands where it
+                # does; run builds the pull-out again from the State there when it no longer holds
+                seg = anchor(stage, q, s, (obj,) if obj else (), kin.side)
             else:
                 # back along the gripper axis as far as contact_extent measures (LEAVE_GAP clear of what it let go and
                 # everything else, then LEAVE_MARGIN; rule 4) -- a finger's length had no IK where a handover's giving

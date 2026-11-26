@@ -13,7 +13,7 @@ from ..rig import SkillFailure
 from ..run import observe
 from ..skill_plans import DROP_RELAY, T_of
 from ..skills import PLACE_SPOT_COST, PLACE_YAW_COST, PLACE_YAWS, _lowest_z, check_held
-from ..tolerances import LEAVE_GAP, LEAVE_MARGIN
+from ..tolerances import HOVER_CLEAR, LEAVE_GAP, LEAVE_MARGIN
 from .carry import _carry_bottom_z, carry_posture
 
 OVER_OPENING = 0.6      # of the opening's radius: a load centred this close over it...
@@ -137,8 +137,6 @@ def _plan_drop():
     return plan_drop
 
 
-HOVER_CLEAR = 0.06      # m: a hover holds the load's lowest point this far above the target's top (the old
-#                         HoverOverPolicy's clearance_m; hovering_over asks 0.03-0.15 m, centred within 4 cm)
 
 
 def hover_job(rig, args, state, skill=None):

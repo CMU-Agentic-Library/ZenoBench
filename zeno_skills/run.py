@@ -87,7 +87,7 @@ def execute(act, seg):
             if not out.get("done"):
                 exc = SkillFailure(f"{seg.name}: {out.get('why', 'the ride stopped')}")
                 if seg.info.get("clear"):           # the exit the segment asks for (a handle let go, docs 8.6)
-                    clearing(exc, **seg.info["clear"])
+                    clearing(exc, **{"side": seg.info.get("side"), **seg.info["clear"]})
                 raise exc
             return
         raise ValueError(f"unknown executor {seg.info['executor']}")
@@ -274,7 +274,7 @@ def _run(act, plan, rebuild, hooks):
             # held book 25 cm off its pose through the drive and the place)
             exc = SkillFailure(f"{seg.name}: the arm stopped {off:.3f} m short of where it was sent")
             if seg.info.get("clear"):
-                clearing(exc, **seg.info["clear"])
+                clearing(exc, **{"side": seg.info.get("side"), **seg.info["clear"]})
             raise exc
         done.append(seg)
         i += 1

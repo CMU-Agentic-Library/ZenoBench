@@ -111,6 +111,15 @@ def _posture_now(rig):
     return Posture(rig.q_cmd[:2].copy(), arms)
 
 
+def _plan_side(plan):
+    """The hand an in-place plan (no park search) works with: its first segment that names one (skill_plans
+    sided), else the right."""
+    for sg in getattr(plan, "segments", ()):
+        if sg.info.get("side"):
+            return sg.info["side"]
+    return "right"
+
+
 def _same_pose(a, b):
     return math.hypot(a[0] - b[0], a[1] - b[1]) < SAME_PARK[0] and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < SAME_PARK[1]
 
@@ -175,10 +184,14 @@ def run_skill(rig, skill, args):
                 found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan)
     from .run import run_clear
     from .skill_plans import plan_clear
-    # the failure exit (docs 8.6), of the hand the plan works with
-    side = "right" if found is None else problem.side(found.k)
-    clear = lambda st, what: plan_clear(rig.kin if side == "right" else rig.left_kin, st, **what)
     plan, build, hooks = job.ready(found)
+    # the failure exit (docs 8.6): of the hand that failed (the clearing names it), else of the hand the plan
+    # works with -- the goal's after a park search, else the plan's own (an in-place skill of either hand)
+    side = problem.side(found.k) if found is not None else _plan_side(plan)
+
+    def clear(st, what):
+        what = dict(what)
+        return plan_clear(rig.arm_kin(what.pop("side", None) or side), st, **what)
     try:
         run(rig, plan, build, hooks, clear=clear)
     except Exception as exc:

@@ -174,7 +174,7 @@
  },
  "invalidates": [
   "uncovered($container)",
-  "holding(right,$lid)"
+  "holding(*,$lid)"
  ],
  "policy_paths": [
   {

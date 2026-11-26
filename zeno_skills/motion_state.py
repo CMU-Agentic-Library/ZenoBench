@@ -36,11 +36,13 @@ class Dropped(SkillFailure):
     """The held object left the hand while carrying it (worth a re-pick)."""
 
 
-def clearing(exc, open_width=None, leave=True, ticks=60):
+def clearing(exc, open_width=None, leave=True, ticks=60, side=None):
     """``exc`` asking for the skill's failure exit before it is raised (run.run_clear, docs 8.6):
     open the empty hand to ``open_width`` (None: as it is) over ``ticks``, then (``leave``) back out
-    of any contact straight up.  A hook judges and marks; the exit is a plan run.run makes."""
-    exc.clear = {"open_width": open_width, "leave": leave, "ticks": ticks}
+    of any contact straight up.  ``side``: the hand the exit is for (the one that failed -- a hook knows
+    it; None: the hand the plan works with, motion_skills.run_skill).  A hook judges and marks; the exit
+    is a plan run.run makes."""
+    exc.clear = {"open_width": open_width, "leave": leave, "ticks": ticks, "side": side}
     return exc
 
 

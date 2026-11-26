@@ -4,6 +4,8 @@
 
 **中继位姿只有一个：抓取位姿。** 抓取之后的下一个中继位姿是[搬运姿态](carry.md)，pick 最后会一直走到那里；停车点搜索做的就是到搬运姿态为止的整份计划，执行照着走。
 
+**哪只手**（HAND_PLAN 9c，11-25）：每个抓取候选和每只空着的手配成一个目标，在同一次停车点搜索里比，右手的目标每个只多 `VARIANT_COST`（弱偏好：排序的分数决定，不是先右后左）。路线可以用合约的 `hands` 限定（`right` / `left`：只用那只手，任务要另一只手留着干别的；`any` 或不写：两只都行；`both`：两手抬宽物体）。诊断时强制某只手用 `benchmark/run_episode.py --pick-hand left`，写进路线的 `hands`（11-25 之前是环境变量 `ZENO_PICK_SIDE`，全局开关，删了）。抓住就停的 pick（`plan_pick(stop="pick_held")`）见[交接和扶住](handover_brace.md)。
+
 ## 步骤
 
 **选抓法**
@@ -43,7 +45,7 @@
 **拿起**
 
 12. **抬起段**（`pick_lift`）：执行前按实测持法重量；和计划差超过 `EXTENT_TOL`（5 mm）就从这里重做（抬起段 + 搬运段）。不再缩短、不再跳过：量不出来（6 cm 内一直碰，或 IK 走不到）就失败。
-13. **微波炉腔体里取物不走这一套**：合约把它路由到 `PickFromCavity`（policy_048，`policies/embedded.py`，旧实现，还有 LEGACY / `FREE_ELSE_STRAIGHT` 段，计划 6.4）。`pick_job` 里门后的分支（`_behind_door`）给的是柜子 / 冰箱 `inside_` 支撑面上的取物（policy_061 → `skills.pick`），腔体里的只在有人直接调 `skills.pick` 时才走到。
+13. **微波炉腔体里取物也走这一套**（9d，11-25）：合约把它路由到 `inside_cabinet_or_fridge` 路径（policy_061 → `skills.pick`），`pick_job` 里门后的分支（`_behind_door`）对腔体和柜子 / 冰箱的 `inside_` 支撑面一样：最靠开口的抓法和门的自由边前面的停车点先试。旧的 `PickFromCavity`（policy_048）退役了。腔体里的取出还没在仿真里跑过（v6 种子 10 的路线没有从腔体取出）。
 14. **去搬运姿态**（`carry_in`）：照计划走（执行时复核用实测持法、不放大）；不成立就按实测持法重做，做不出来 pick 失败——不再有"不查碰撞的直线"和"留在原处"（`carry_pose_kept`）。走完检查物体还在手里（`check_held`）。
 15. **判断拿住了没有。**
     - 手指没合到底（每根 > 3 mm），这一条总要满足，sticky 焊住也不例外：焊点会带着从两指间滑出的物体走。

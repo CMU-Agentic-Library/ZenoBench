@@ -56,6 +56,16 @@ def test_a_pick_is_planned_in_order_and_holds_the_load_after_closing():
     assert seen and seen[0].held("right").name == "cup"            # the carry is planned with the load held
 
 
+def test_a_hold_only_pick_stops_at_the_grasp_anchor():
+    # HAND_PLAN 9i (brace, a handover's taking hand): plan_pick(stop="pick_held") -- the same pick up to the close and
+    # its anchor, no lift, no carry
+    kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
+    plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP,
+                     _carry([]), stop="pick_held")
+    names = tuple(s.name for s in plan.segments)
+    assert names == PICK_STAGES[:PICK_STAGES.index("pick_held") + 1] and plan.segments[-1].kind == "anchor"
+
+
 def test_a_pick_from_a_later_stage_starts_there():
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     held = Held("cup", np.eye(4))
@@ -219,7 +229,8 @@ def test_a_release_opens_where_it_is_and_pulls_out_back_along_the_gripper_axis()
     # LEAVE_MARGIN -- measured, not a finger's length
     plan = plan_release(FakeKin(near_z=0.33), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
     assert isinstance(plan, Plan) and tuple(s.name for s in plan.segments) == RELEASE_STAGES
-    opened, out = plan.segments
+    assert _named(plan, "release_let_go").kind == "anchor"                     # rule 9: an anchor where it lets go
+    opened, _, out = plan.segments
     assert opened.action == ("grip", 0.03, 60, True) and opened.spec.allow.touch == ("cup",)
     assert 0.33 < out.q_end[2] <= 0.33 + 0.004 + 0.011 and out.spec.allow.touch == ("cup",)   # one 4 mm step
     blocked = plan_release(FakeKin(near_z=0.33, reach_z=0.32), _state(q, held=Held("cup", np.eye(4))), 0.03, 0.07)
@@ -239,9 +250,44 @@ def test_a_wipe_presses_strokes_there_and_back_and_lifts_off():
     assert np.allclose(press.q_end[:3], [0.5, 0.0, 0.10]) and press.spec.touch == (("table", "held"),)
     assert stroke.kind == "scripted" and np.allclose(stroke.q_end[:3], [0.7, 0.0, 0.10])     # along d, on the surface
     assert plan.info["stroke_m"] == pytest.approx(0.2) and np.allclose(back_.q_end[:3], [0.5, 0.0, 0.10])
-    assert np.allclose(_named(plan, "wipe_leave").q_end[:3], [0.5, 0.0, 0.116])
+    # off the surface as far as contact_extent measures: LEAVE_GAP risen (no world near), then LEAVE_MARGIN
+    assert _named(plan, "wipe_leave").info["touching"] == "off_support"
+    leave = _named(plan, "wipe_leave").q_end
+    assert np.allclose(leave[:2], [0.5, 0.0]) and 0.10 + 0.005 + 0.01 <= leave[2] <= 0.10 + 0.005 + 0.01 + 2 * 0.002 + 1e-9
     assert np.allclose(plan.segments[-1].q_end, q0)                                      # back where it arrived
     assert isinstance(plan_wipe(FakeKin(), _state(q0), wipe), Failure)                    # nothing to wipe with
+    # rule 2: a stroke shorter than the job's need fails the build -- at the park and in run's rebuild alike
+    st = _state(q0, held=Held("sponge", np.eye(4)))
+    short = plan_wipe(FakeKin(), st, {**wipe, "need": 0.25})
+    assert isinstance(short, Failure) and short.segment == "wipe_stroke" and "0.250 m needed" in short.why
+    again = plan_wipe(FakeKin(), _state(press.q_end, held=Held("sponge", np.eye(4))), {**wipe, "need": 0.25},
+                      start="wipe_stroke", prior=plan)
+    assert isinstance(again, Failure) and again.segment == "wipe_stroke"
+
+
+def test_a_wipe_aims_its_press_through_the_hold_the_state_has():
+    # docs 6 / rule 9: the press pose is the sponge's, the TCP derived from the hold in the State -- a sponge that slid
+    # in the hand on the way makes the press no longer hold (WIPE_TOL), and a rebuild aims through the new hold
+    from zeno_skills.motion_state import Aim
+    from zeno_skills.primitives import holds
+    from zeno_skills.skill_plans import plan_wipe
+    q0 = _q(0.4, 0.0, 0.40)
+    T_sponge = np.eye(4)
+    T_sponge[:3, 3] = [0.5, 0.0, 0.05]                                  # the sponge's box frame where it presses
+    hold = np.eye(4)
+    hold[:3, 3] = [0.0, 0.0, -0.05]                                     # held 5 cm below the TCP
+    wipe = {"support": "table", "aim": Aim("sponge", T_sponge, held=True), "d": np.array([0.2, 0.0, 0.0]),
+            "above": 0.016}
+    plan = plan_wipe(FakeKin(), _state(q0, held=Held("sponge", hold)), wipe)
+    assert isinstance(plan, Plan), plan
+    press = _named(plan, "wipe_press")
+    assert np.allclose(press.q_end[:3], [0.5, 0.0, 0.10]) and press.info["aim"] is wipe["aim"]
+    slid = hold.copy()
+    slid[2, 3] = -0.047                                                  # 3 mm up in the pinch
+    assert holds(FakeKin(), _state(press.q_from, held=Held("sponge", hold)), press) is None
+    assert holds(FakeKin(), _state(press.q_from, held=Held("sponge", slid)), press) is not None
+    again = plan_wipe(FakeKin(), _state(q0, held=Held("sponge", slid)), wipe)
+    assert np.allclose(_named(again, "wipe_press").q_end[:3], [0.5, 0.0, 0.097])
 
 
 def test_a_gesture_reaches_its_goal_set_swings_about_where_it_got_and_folds():
@@ -277,6 +323,12 @@ def test_a_pour_tilts_about_its_pivot_as_far_as_the_arm_goes_and_back():
     assert np.allclose(tilt.q_end[:3], [0.55, -0.05, 0.40], atol=1e-6)                 # turned about the pivot
     assert np.allclose(untilt.q_end[:3], [0.5, 0.0, 0.40], atol=1e-6)                   # back where it started
     assert np.allclose(plan.segments[-1].q_end, q0)
+    # rule 2: short of the least tilt the build fails, the first and a rebuild from the tilt alike
+    st = _state(q0, held=Held("cup", np.eye(4)))
+    assert isinstance(plan_pour(FakeKin(), st, {**pour, "min_tilt": np.radians(100.0)}), Failure)
+    again = plan_pour(FakeKin(), _state(_named(plan, "pour_reach").q_end, held=Held("cup", np.eye(4))),
+                      {**pour, "min_tilt": np.radians(100.0)}, start="pour_tilt", prior=plan)
+    assert isinstance(again, Failure) and again.segment == "pour_tilt"
 
 
 def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves():
@@ -287,10 +339,18 @@ def test_a_flip_turns_the_held_edge_over_the_pivot_lets_go_pushes_on_and_leaves(
     plan = plan_flip(FakeKin(), _state(q0, held=Held("book", np.eye(4))), flip, (np.zeros(9),))
     assert isinstance(plan, Plan), plan
     names = [sg.name for sg in plan.segments]
-    assert names[:4] == ["flip_arrive", "flip_arc", "flip_release", "flip_push"] and names[-1] == "flip_settle"
+    assert names[:5] == ["flip_arrive", "flip_arc", "flip_release", "flip_let_go", "flip_push"] and names[-1] == "flip_settle"
+    assert _named(plan, "flip_let_go").kind == "anchor"                        # rule 9: an anchor where it lets go
     assert plan.info["arc_rad"] == pytest.approx(np.radians(80.0))              # short of past: the open hand pushes on
     assert _named(plan, "flip_arc").spec.touch == (("table", "held"),)
     assert _named(plan, "flip_release").action[:2] == ("grip", 0.03)
+    # docs 8.3: run's rebuild at the arrival keeps the arc that still holds; rule 2: short of the least arc the
+    # build fails there as at the park
+    st = _state(q0, held=Held("book", np.eye(4)))
+    again = plan_flip(FakeKin(), st, flip, (np.zeros(9),), start="flip_arc", prior=plan)
+    assert isinstance(again, Plan) and _named(again, "flip_arc") is _named(plan, "flip_arc")
+    short = plan_flip(FakeKin(), st, {**flip, "min_arc": np.radians(85.0)}, (np.zeros(9),), start="flip_arc", prior=plan)
+    assert isinstance(short, Failure) and short.segment == "flip_arc"
 
 
 def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
@@ -820,7 +880,7 @@ def test_a_hook_failure_that_asks_for_the_exit_has_it_run_before_it_is_raised(mo
     with pytest.raises(SkillFailure, match="not pinched"):
         RUN.run(rig, Plan((_seg("a", np.zeros(9), np.full(9, 0.1)),)), None, {"a": {"after": hook}},
                 clear=lambda st, what: asked.append(what) or exit_plan)
-    assert asked == [{"open_width": 0.04, "leave": True, "ticks": 60}] and np.allclose(rig.q_cmd, 0.3)
+    assert asked == [{"open_width": 0.04, "leave": True, "ticks": 60, "side": None}] and np.allclose(rig.q_cmd, 0.3)
     with pytest.raises(SkillFailure):                                # not asked: no exit
         RUN.run(rig, Plan((_seg("b", rig.q_cmd, np.full(9, 0.4)),)), None,
                 {"b": {"after": lambda a: (_ for _ in ()).throw(SkillFailure("plain"))}},
@@ -846,6 +906,22 @@ def test_the_skill_jobs_hooks_do_not_move_the_robot():
                  and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
                  and n.func.value.id in ("rig", "r") and n.func.attr in moves]
         assert not calls, (f.name, [(c.lineno, c.func.attr) for c in calls])
+
+
+def test_the_skill_jobs_held_checks_ask_for_the_exit_rather_than_open_the_hand():
+    # docs 8.6: a drop found by a job's check (a hook, or before its plan) is a clearing that run's failure exit
+    # opens the hand for -- check_held's own grip (open_hand=True) is the old entries' (HAND_PLAN 7)
+    import ast
+    from pathlib import Path
+    for f in (Path(__file__).resolve().parents[1] / "zeno_skills" / "skill_jobs").glob("*.py"):
+        for n in ast.walk(ast.parse(f.read_text())):
+            if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Name)):
+                continue
+            assert n.func.id != "check_left_held", (f.name, n.lineno)
+            if n.func.id in ("check_held", "check_both_held"):
+                kw = {k.arg: k.value for k in n.keywords}
+                assert isinstance(kw.get("open_hand"), ast.Constant) and kw["open_hand"].value is False, \
+                    (f.name, n.lineno)
 
 
 def test_a_rest_failing_only_at_the_tuck_runs_and_makes_the_tuck_when_the_arm_gets_there(monkeypatch):

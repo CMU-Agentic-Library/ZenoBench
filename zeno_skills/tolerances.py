@@ -21,6 +21,7 @@ look's plan takes them as aims, there is no Segment.info to hold them yet; visua
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 
@@ -134,6 +135,9 @@ PRESS_DEPTH = _t("PRESS_DEPTH", 0.003, "m", "chosen: a press's fingertips go thi
 WIPE_PRESS = _t("WIPE_PRESS", 0.001, "m", "inherited: a wipe presses the sponge's bottom this far into the support (the "
                 "old WipeSurfacePolicy's light press: a 3 mm press dragged the sponge out of the pinch) -- a force's "
                 "geometric stand-in (COLLISION_PLAN.md section 8), HAND_PLAN 9g")
+WIPE_TOL = _t("WIPE_TOL", (0.002, TARGET_TURN), "m, rad", "chosen (rule audit 11-25): a wipe's press pose (the "
+               "sponge's, through the hold the State has) further off than built by more is rebuilt -- 2 mm on the "
+               "WIPE_PRESS of 1 mm presses 3 mm, where the old 3 mm press dragged the sponge out of the pinch; unmeasured")
 TOUCH_DEPTH = _t("TOUCH_DEPTH", 0.002, "m", "chosen: a touch's / knock's closed fingertips go this far into the touched "
                  "face (an object's top, a door's panel) -- a force's geometric stand-in (COLLISION_PLAN.md section 8), "
                  "as PRESS_DEPTH: the arm stops where the tips meet it.  The old touch aimed the TCP 1.6 cm over the "
@@ -253,6 +257,54 @@ TORSO_AT = _t("TORSO_AT", 0.02, "m", "inherited (policies/posture.py SetTorsoHei
                "this close to where a posture sent it got there (skill_jobs.posture body_job)")
 WAIST_AT = _t("WAIST_AT", 0.035, "rad", "inherited (policies/posture.py SetWaistPitchPolicy), unmeasured: a waist "
                "pitch this close to where a posture sent it got there (skill_jobs.posture body_job)")
+
+# --------------------------------------------------------------- the held, gesture and contact skills (HAND_PLAN 9e-9i)
+# Moved here from skill_jobs with the rule audit of 11-25, values unchanged.  The task's own thresholds these skills'
+# results share (lift's 2 cm, point's 8 deg, flip's z dot, wipe's coverage, knock's and touch's "did not move") are
+# the predicates' (predicates.py); the goal sets the jobs sample (where a hand presents, rotates, waves, knocks ...)
+# stay with the jobs (docs 2.3: the job's part is the goal sampling), registered in COLLISION_PLAN section 8.
+HOVER_CLEAR = _t("HOVER_CLEAR", 0.06, "m", "inherited (the old HoverOverPolicy's clearance_m), unmeasured: a hover "
+                 "holds the load's lowest point this far above the target's top -- inside the hovering_over "
+                 "predicate's 0.03-0.15 m")
+ROTATE_NEAR_BASE = _t("ROTATE_NEAR_BASE", 0.35, "m", "inherited (the old RotateHeldPolicy's), unmeasured: no staging "
+                      "pose of a rotate is pulled closer to the base than this")
+ROTATE_TOL_DEG = _t("ROTATE_TOL_DEG", 10.0, "deg", "inherited (the old RotateHeldPolicy's), unmeasured: the load's "
+                    "yaw changed this close to the angle asked has turned (rotate's result)")
+UPRIGHT_RAISE = _t("UPRIGHT_RAISE", 0.12, "m", "inherited (the old UprightObjectPolicy's raise), unmeasured: an upright "
+                   "where the hand stands raises the TCP at least this (or half the load's longest side)")
+WAVE_AMP = _t("WAVE_AMP", 0.10, "m", "inherited (the old WaveHandPolicy's), unmeasured: the raised hand swings this "
+              "far to each side")
+SHAKE_SLIP = _t("SHAKE_SLIP", 0.008, "m", "chosen, unmeasured (HAND_PLAN 9h): a pinch that closed more than this "
+                "while shaking let the load turn in it (shake's result)")
+FLIP_RELEASE = _t("FLIP_RELEASE", math.radians(105.0), "rad", "inherited (the old FlipFlatPolicy's release_deg), "
+                  "unmeasured: a flip's arc goes this far at most")
+FLIP_PAST = _t("FLIP_PAST", math.radians(95.0), "rad", "inherited (the old FlipFlatPolicy's PAST_VERTICAL_DEG), "
+               "unmeasured: an arc this far is past vertical -- released short of it, the open hand pushes on")
+FLIP_PUSH_TO = _t("FLIP_PUSH_TO", math.radians(120.0), "rad", "inherited (the old release + 15 deg), unmeasured: "
+                  "the open hand's push along the arc ends here")
+FLIP_MIN = _t("FLIP_MIN", math.radians(60.0), "rad", "inherited (the old FlipFlatPolicy's check), unmeasured: an arc "
+              "shorter than this cannot turn it -- plan_flip's min_arc, at a park and in a rebuild")
+POUR_TILT = _t("POUR_TILT", math.radians(110.0), "rad", "inherited (the old PourIntoPolicy's largest commanded tilt), "
+               "unmeasured: a pour tilts this far at most")
+POUR_MIN_TILT = _t("POUR_MIN_TILT", math.radians(60.0), "rad", "inherited (the old PourIntoPolicy's rocking "
+                   "threshold: below it nothing poured), unmeasured: plan_pour's min_tilt, at a park and in a rebuild")
+POUR_ABOVE = _t("POUR_ABOVE", 0.05, "m", "inherited (the old PourIntoPolicy's), unmeasured: the cup's bottom this "
+                "far over the target's rim where the tilt starts")
+WIPE_LENGTH = _t("WIPE_LENGTH", 0.30, "m", "inherited (the old WipeSurfacePolicy's): the strip wiped when the task "
+                 "names no length")
+WIPE_INSETS = _t("WIPE_INSETS", (0.08, 0.045), "m", "inherited (the old WipeSurfacePolicy's sampling): a strip runs "
+                 "this far in from a support edge (the second where objects line the first)")
+WIPE_ON = _t("WIPE_ON", 0.008, "m", "inherited (the old WipeSurfacePolicy's), unmeasured: the sponge's lowest point "
+             "this close to the surface counts as pressed (the coverage samples)")
+WIPE_CELL = _t("WIPE_CELL", 0.02, "m", "inherited (the old WipeSurfacePolicy's): a coverage cell of the strip")
+HANDOVER_LONG = _t("HANDOVER_LONG", 0.15, "m", "inherited (the old HandoverRightToLeftPolicy's), unmeasured: a load "
+                   "whose longest side is over this is handed over turned across the body (skill_jobs.pick "
+                   "HANDOVER_AXIS)")
+POINT_FRONT = _t("POINT_FRONT", 0.2, "1", "chosen (HAND_PLAN 9h): a point's ray from the hand's shoulder to "
+                  "the target runs at least this forward (its unit vector's forward part): in front -- the one test "
+                  "the point skill refuses by and the task layer turns the robot by (skill_jobs.held.point_in_front)")
+TIP_PAST = _t("TIP_PAST", 0.03, "m", "chosen, unmeasured (HAND_PLAN 9h): a tip's poke runs this far past the length "
+              "the object lies down over (twice its half-size along the push)")
 
 # --------------------------------------------------------------- the execution's arrived / stalled (rig)
 SETTLE_TCP = _t("SETTLE_TCP", 0.001, "m", "measured: a follow has arrived with the TCP this close to where q_cmd "

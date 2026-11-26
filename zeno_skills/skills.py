@@ -48,7 +48,6 @@ PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search c
 # m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
 # vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
 PAD_FLOOR_GAP = 0.022 - PAD_TIP
-PLACE_APPROACH = 0.05         # m: wipe's press straight (tooluse); place measures its set-down (skill_plans.set_down_length)
 
 
 # ---------------------------------------------------------------- navigation
@@ -167,7 +166,7 @@ def check_held(rig, label, open_hand=True, side="right"):
         setattr(rig, "held" if side == "right" else "left_held", None)
         exc = Dropped(f"{label}: {h['name']} slipped out of the {'' if side == 'right' else 'left '}hand while carrying it")
         if not open_hand:
-            raise clearing(exc, 0.04, leave=False, ticks=20)
+            raise clearing(exc, 0.04, leave=False, ticks=20, side=side)
         rig.grip(0.04, 20, side=side)
         raise exc
 
@@ -682,7 +681,7 @@ def _watching(rig, name):
     return clear.watch(name) if clear is not None and hasattr(clear, "watch") else nullcontext()
 
 
-def pick(rig, name, max_candidates=12, grasp=None):
+def pick(rig, name, max_candidates=12, grasp=None, hand=None):
     """Pinch grasp from the asset's annotation, one flow for every kind (top, side, rim, thickness):
     a flat object wider than the gripper is pinched across its thickness at a side that overhangs
     its support -- sliding it there is expose's job, not pick's.  (The edge pinch's own flow, the
@@ -690,7 +689,8 @@ def pick(rig, name, max_candidates=12, grasp=None):
 
     ``grasp`` "top" / "side" (GRASP_REQUEST) keeps only that pinch kind -- the caller knows where the
     object goes next: a top pinch leaves the palm above the object, too high for a low shelf
-    (docs/skills/place.md).  An object without one fails; it never falls back to another kind."""
+    (docs/skills/place.md).  An object without one fails; it never falls back to another kind.  ``hand``
+    "right" / "left": only that hand (the route's task constraint, HAND_PLAN 3.2); else either."""
     obj = rig.ann.objects[name]
     grasps = rig.ann.asset_of(obj)["grasps"]
     if not grasps:
@@ -699,20 +699,20 @@ def pick(rig, name, max_candidates=12, grasp=None):
     if not any(g["type"] in kinds for g in grasps):
         raise SkillFailure(f"pick {name}: no {grasp + ' ' if grasp else ''}pinch annotated "
                            f"(has {sorted({g['type'] for g in grasps})})")
-    return _pick_pinch(rig, name, max_candidates, kinds)
+    return _pick_pinch(rig, name, max_candidates, kinds, hand=hand)
 
 
 PINCH_KINDS = ("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect", "thickness_pinch")
 GRASP_REQUEST = {"top": ("top_pinch",), "side": ("side_pinch",)}   # pick(grasp=...): the kinds it keeps
 
 
-def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS):
+def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS, hand=None):
     """Pinch pick over the whole waist range, the neighbours in the collision model as they are.
     (The waist used to be capped at 0.2 rad above table height -- a 40-degree bow at a counter
     drove the forearm into an object the arm model then lacked -- and the cap lifted, then the
     neighbour boxes dropped, when no grasp was reachable: 7 and 2 times in the 11-04 full run.
     The arm, its fingers and every object are in the planner's world now.)"""
-    return _pick_pinch_core(rig, name, max_candidates, kinds)
+    return _pick_pinch_core(rig, name, max_candidates, kinds, hand=hand)
 
 
 class ContactUnreachable(SkillFailure):
@@ -760,10 +760,11 @@ def contact_obstacles(rig, name, label):
         yield boxes
 
 
-def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
-    """The pinch pick of ``name`` (motion_skills.run_skill of pick_job)."""
+def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS, hand=None):
+    """The pinch pick of ``name`` (motion_skills.run_skill of pick_job); ``hand``: only that one (pick_hands)."""
     from .motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds})
+    return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds,
+                                           "hand": hand})
 
 
 def _pick_judged(rig, name, g, tcp0, pos, side="right"):
@@ -785,7 +786,7 @@ def _pick_judged(rig, name, g, tcp0, pos, side="right"):
     if not held:
         setattr(rig, "held" if side == "right" else "left_held", None)   # opened by the failure exit (clearing)
         raise clearing(SkillFailure(f"pick {name}: not held (lift {lift:.3f} m, hand {rise:.3f} m)"), 0.04,
-                       leave=False)
+                       leave=False, side=side)
     return True
 
 
@@ -960,11 +961,9 @@ def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     if door is not None:
         # The cavity is narrow. The carried container is held upright, so its
         # actual lateral half-width is more useful than its diagonal radius.
+        # (No microwave's own radius any more: its -4 mm moved the bowl off the old insertion's low right wall --
+        # a scene's special case; the place's plan checks the walls itself.  Rule audit 11-25.)
         r = 0.5 * max(size[0], size[1]) + 0.008
-        if s.get("furniture") == "kitchen_microwave":
-            # The round bowl can safely overhang the flat floor by a few mm.
-            # This shifts it left of the low right wall during insertion.
-            r = 0.5 * max(size[0], size[1]) - 0.004
     tray = s.get("category") == "tray"
     if tray:
         # a tray holds loads side by side: the load's own half-size and a 1 cm gap (with the any-yaw

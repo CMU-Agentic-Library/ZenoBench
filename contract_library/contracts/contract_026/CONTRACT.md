@@ -1,6 +1,6 @@
 # contract_026 — Place a held object
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
+Put the held object (either hand) down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
 
 Paired SkillNode: `skill_018` (`place-object`).
 

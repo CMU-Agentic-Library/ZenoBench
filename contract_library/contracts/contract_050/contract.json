@@ -45,7 +45,7 @@
   }
  ],
  "invalidates": [
-  "arm_stowed(right)",
+  "arm_stowed(*)",
   "reachable(*)"
  ],
  "precheck": [

@@ -14,14 +14,13 @@ from ..rig import SkillFailure
 from ..run import observe
 from ..sticky import note_grasp
 from ..skill_plans import FREE_HAND, PICK_RELAY
-from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, SHUT, TARGET_TOL
+from ..predicates import TOUCHED_STILL
+from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, HANDOVER_LONG, SHUT, TARGET_TOL
 from .door_access import door_ahead, front_of, outward
 from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
-HOLD_STILL = 0.015             # m a pick that holds it where it stands (brace, handover) may move it (the touched
-#                                predicate's 1.5 cm)
 
 
 def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, relay_free=None, sides=("right",),
@@ -95,7 +94,8 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
             rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
             rig.focus_z = None
             # out of the contact straight up: the failure exit run makes (skill_plans.plan_clear)
-            raise clearing(SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose"))
+            raise clearing(SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose"),
+                           side=side)
 
     def before_close(rig):
         rig.caption = f"PICK {name}: close gripper"
@@ -112,7 +112,7 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
             rig.focus_z = None
             # the hand opened and out of the contact: the failure exit run makes (plan_clear)
             raise clearing(SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
-                                        f"opened to {g['pre_open']:.3f})"), 0.04)
+                                        f"opened to {g['pre_open']:.3f})"), 0.04, side=side)
         # held from here (and welded, under sticky hands): the hand's pose as it stands
         tcp0, R = kin.tcp(_chain_q(rig, side))
         held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
@@ -144,13 +144,15 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None, sid
 
 
 def pick_hands(rig, name, hand=None):
-    """The hands a pick of ``name`` may use (HAND_PLAN 9c): the empty ones, the right first; ``hand`` (the
-    route's: a task that keeps the other hand for something else) only that one; ZENO_PICK_SIDE a diagnostic
-    switch (as ZENO_OPEN_SIDE), not for the baseline.  SkillFailure when none is free."""
-    import os
-    want = hand or os.environ.get("ZENO_PICK_SIDE") or None
+    """The hands a pick of ``name`` may use (HAND_PLAN 9c): the empty ones, the right first (each a dimension of the
+    goal set: _pick_problem); ``hand`` "right" / "left" (the route's -- the pick contract's ``hands``: a task that
+    keeps the other hand for something else, HAND_PLAN 3.2; a diagnostic run forces it there too,
+    benchmark/run_episode.py --pick-hand) only that one -- "any", "both" or None: either.  "Which hand" is never a
+    process-wide switch (HAND_PLAN rule 10: the ZENO_PICK_SIDE environment variable until 11-25).  SkillFailure when
+    none is free."""
+    want = hand if hand in ("right", "left") else None
     empty = [sd for sd in ("right", "left") if (rig.held if sd == "right" else getattr(rig, "left_held", None)) is None]
-    sides = [sd for sd in empty if want in (None, "any", sd)]
+    sides = [sd for sd in empty if want in (None, sd)]
     if not sides:
         raise SkillFailure(f"pick {name}: no empty hand" + (f" ({want} asked)" if want else ""))
     return tuple(sides)
@@ -249,7 +251,7 @@ def pick_job(rig, args, state, skill=None):
                     held=held is not None and held["name"] == name)
             if held is None or held["name"] != name:
                 raise SkillFailure(f"pick {name}: not in the {side} hand after the close")
-            if moved > HOLD_STILL:
+            if moved > TOUCHED_STILL:
                 raise SkillFailure(f"pick {name}: the hold moved it {moved:.3f} m")
             return ctx["g"]["kind"]
         return _pick_judged(rig, name, ctx["g"], ctx["out"]["tcp0"], ctx["pos"], ctx["side"])
@@ -263,7 +265,6 @@ HANDOVER_AXIS = (60.0, 50.0, 70.0)
 # deg, base frame: a long load (longest side over HANDOVER_LONG) is turned about the vertical so its long axis lies
 # this far round from forward toward the taking hand -- across the body, its far end toward the taking hand (the old
 # across-the-body turn); any other load keeps the hand as it is or turned a quarter
-HANDOVER_LONG = 0.15
 HANDOVER_TURNS = (0.0, 90.0, -90.0, 180.0)
 
 

@@ -43,7 +43,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## May invalidate
 
-`arm_stowed(right)`, `reachable(*)`
+`arm_stowed(*)`, `reachable(*)`
 
 ## Policy paths (first match on the bound nouns)
 

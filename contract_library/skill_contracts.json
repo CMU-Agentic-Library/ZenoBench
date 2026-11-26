@@ -661,7 +661,7 @@
    "verb": "stand",
    "noun": "torso",
    "name": "Stand up to full height",
-   "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)",
+   "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when both hands are empty.)",
    "group": "base_and_body",
    "inputs": {},
    "outputs": {},
@@ -936,7 +936,7 @@
    "verb": "straighten",
    "noun": "waist",
    "name": "Straighten the waist",
-   "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)",
+   "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when both hands are empty.)",
    "group": "base_and_body",
    "inputs": {},
    "outputs": {},
@@ -2050,7 +2050,7 @@
     }
    ],
    "invalidates": [
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "reachable(*)"
    ],
    "precheck": [
@@ -2385,7 +2385,7 @@
    "verb": "pick",
    "noun": "object",
    "name": "Pick an object",
-   "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
+   "description": "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -2396,9 +2396,11 @@
     "hands": {
      "type": "hand",
      "required": false,
-     "description": "\"both\" requests a two-handed lift for wide items.",
+     "description": "One hand by default: either, the park search's choice (\"any\"); \"right\" / \"left\" only that hand -- a task that keeps the other one for something else; \"both\" requests a two-handed lift for wide items.",
      "enum": [
+      "any",
       "right",
+      "left",
       "both"
      ]
     },
@@ -2456,11 +2458,10 @@
     "inside($object,*)",
     "on_top_of($object,*)",
     "on_floor($object)",
-    "hand_empty(right)",
     "grasp_clearance($object)",
     "edge_overhang($object)",
     "at_initial_place($object)",
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "in_appliance($object,*)",
     "on_burner($object,*)",
     "covered(*,$object)"
@@ -2742,7 +2743,8 @@
          "$object"
         ],
         "kwargs": {
-         "grasp": "$grasp"
+         "grasp": "$grasp",
+         "hand": "$hands"
         }
        }
       ],
@@ -2785,7 +2787,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [],
@@ -2812,7 +2816,8 @@
          "$object"
         ],
         "kwargs": {
-         "grasp": "$grasp"
+         "grasp": "$grasp",
+         "hand": "$hands"
         }
        }
       ],
@@ -2981,7 +2986,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [
@@ -3017,7 +3024,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [
@@ -3054,7 +3063,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [],
@@ -3077,7 +3088,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [],
@@ -3100,7 +3113,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [
@@ -3136,7 +3151,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [],
@@ -3159,7 +3176,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [
@@ -3189,7 +3208,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hand": "$hands"
+        }
        }
       ],
       "requires": [],
@@ -3339,7 +3360,7 @@
    "verb": "place",
    "noun": "object",
    "name": "Place a held object",
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
+   "description": "Put the held object (either hand) down on a support surface or into an open container and release it. The path follows the receptacle and grasp: a shelf or floor behind a door (cabinet, fridge, the microwave's cavity), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -3400,7 +3421,7 @@
     }
    ],
    "invalidates": [
-    "holding(right,$object)",
+    "holding(*,$object)",
     "presenting($object)",
     "base_clear_of(*)"
    ],
@@ -4180,7 +4201,7 @@
     }
    ],
    "invalidates": [
-    "holding(right,$object)"
+    "holding(*,$object)"
    ],
    "precheck": [
     {
@@ -4409,7 +4430,7 @@
     }
    ],
    "invalidates": [
-    "holding(right,$object)",
+    "holding(*,$object)",
     "top_clear($base)"
    ],
    "precheck": [
@@ -4790,7 +4811,7 @@
     }
    ],
    "invalidates": [
-    "holding(right,$object)"
+    "holding(*,$object)"
    ],
    "precheck": [
     {
@@ -9188,7 +9209,7 @@
     }
    ],
    "invalidates": [
-    "arm_stowed(right)",
+    "arm_stowed(*)",
     "reachable(*)"
    ],
    "precheck": [
@@ -10067,7 +10088,7 @@
    ],
    "invalidates": [
     "uncovered($container)",
-    "holding(right,$lid)"
+    "holding(*,$lid)"
    ],
    "precheck": [
     {
@@ -12690,7 +12711,7 @@
    "verb": "wave",
    "noun": "hand",
    "name": "Wave the hand",
-   "description": "Raise the empty right hand at head height and swing it (greeting / attention gesture).",
+   "description": "Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best.",
    "group": "perception_and_gesture",
    "inputs": {},
    "outputs": {},
@@ -12924,7 +12945,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object."
+     "description": "The held object (either hand)."
     }
    },
    "outputs": {},
@@ -14912,7 +14933,7 @@
     "object": {
      "type": "object_ref",
      "required": true,
-     "description": "The right-held object the spots are for (its footprint)."
+     "description": "The held object (either hand) the spots are for (its footprint)."
     },
     "support": {
      "type": "support_ref",

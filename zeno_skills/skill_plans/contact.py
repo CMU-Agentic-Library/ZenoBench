@@ -14,7 +14,7 @@ import numpy as np
 from ..clearance import LEAVE_CONTACT, Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, with_arm, with_part, with_width
 from ..primitives import JointSet, Script, free_at, free_leg, pushed, query, scripted, sided, still, straight
-from ..tolerances import SLIDE_TOL, STIR_TOL
+from ..tolerances import SLIDE_TOL, STIR_TOL, WIPE_TOL
 from ._common import FREE_HAND, built_so_far, _aimed, _contact, _kept, _move, _reach, anchor, may_touch
 
 SLIDE_STAGES = ("slide_arrive", "slide_close_hand", "slide_reach", "slide_down", "slide_in", "slide_push",
@@ -98,7 +98,9 @@ def _plan_slide(kin, state, push, rest_goals, start, prior_plan, step):
         if stage in SLIDE_ANCHORS:
             seg = anchor(stage, q, s, (obj,), side)
         elif stage == "slide_close_hand":
-            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
+            # a second, as pick's close (run: PHYSICS_HZ ticks): 30 ticks left the fingers ~2 cm open each, and the
+            # next segment, built with them closed, was checked with them open (T27 rice, the left hand, 11-25)
+            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, None, False))
             s = with_width(s, side, 0.0)
         elif stage == "slide_reach":
             seg = kept or _reach(kin, s, FREE_HAND, land, R, -up, above, q, prior.get(stage, prior.get(SLIDE_RELAY)),
@@ -355,7 +357,7 @@ def _plan_press(kin, state, press, rest_goals, start, prior_plan, step, base):
         if stage in PRESS_ANCHORS and stage != "press_door_moved":
             seg = anchor(stage, q, s, (), side)
         elif stage == "press_close_hand":
-            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, 30, False))
+            seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", 0.0, None, False))   # closed: as slide's
             s = with_width(s, side, 0.0)
         elif stage == "press_reach":
             seg = kept or _reach(kin, s, FREE_HAND, p, R, u, float(press["approach"]), q,
@@ -427,24 +429,28 @@ def on_surface(side, support):
 
 def plan_wipe(kin, state, wipe, start="wipe_arrive", prior=None, step=0.004):
     """The sponge in ``kin``'s hand wiped along a strip of the support wipe["support"] from ``state``: wipe =
-    {support, p, R (the TCP where the sponge is pressed WIPE_PRESS into the surface at the strip's start), d (the
-    stroke: the horizontal world vector from the strip's start to its end), above (m the press comes straight down
-    from: the sponge LEAVE_GAP + LEAVE_MARGIN clear of the surface there)}:
+    {support, aim (motion_state.Aim, held: the sponge's box frame where it is pressed WIPE_PRESS into the surface at
+    the strip's start -- the TCP derived from the hold the State has, as a place's set-down; or p, R: that TCP given),
+    d (the stroke: the horizontal world vector from the strip's start to its end), above (m the press comes straight
+    down from: the sponge LEAVE_GAP + LEAVE_MARGIN clear of the surface there), need (m the stroke must run)}:
 
         wipe_arrive  anchor: the base and the hold as they are
         wipe_reach   the free leg to ``above`` over the press (decide_ik: _reach), the sponge's tilt held
         wipe_press   the straight down: the sponge onto the surface, WIPE_PRESS into it (on_surface)
         wipe_stroke  the task segment (Script, primitives.Still in the world's frame: nothing moves; carry "arm"):
                      the TCP along d, the arm's IK continued, checked whole -- as far as the arm reaches
-                     (scripted's reach: the stroke's length measured, not set; the job judges whether enough)
+                     (scripted's reach: the stroke's length measured, not set); shorter than wipe["need"] (m, the
+                     job's: enough for the coverage asked) a Failure -- the search and a rebuild alike (rule 2)
         wipe_return  the task segment back to the strip's start (the second pass)
         wipe_wiped   anchor: the base and the hold after the strokes
-        wipe_leave   the straight back up ``above`` (on_surface: it starts on the surface)
+        wipe_leave   off the surface straight up, as far as contact_extent measures (off_support, as a pick's lift)
         wipe_back    the free leg back to the arm's posture where the wipe arrived (stir_back's rule), tilt held
 
-    The old WipeSurfacePolicy held the arm still and translated the base along the strip, the press a move_to with
-    an approach and a hand-written 8 cm lift: one task segment on the arm instead (HAND_PLAN 9g).  From ``start``
-    on; ``prior`` as plan_stir's.  Plan or Failure; info["stroke_m"] the stroke the plan makes."""
+    The reach and the press carry the Aim and WIPE_TOL (Segment.info: primitives.holds checks them again against the
+    State, so a sponge that slid in the hand on the way rebuilds the press from the arrival on, rule 9).  The old
+    WipeSurfacePolicy held the arm still and translated the base along the strip, the press a move_to with an
+    approach and a hand-written 8 cm lift: one task segment on the arm instead (HAND_PLAN 9g).  From ``start`` on;
+    ``prior`` as plan_stir's.  Plan or Failure; info["stroke_m"] the stroke the plan makes."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
         return _plan_wipe(kin, state, wipe, start, prior, step)
 
@@ -458,7 +464,11 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
     above = float(wipe["above"])
     if state.held(side) is None:
         return Failure("nothing in the hand to wipe with", start)
-    p, R = np.asarray(wipe["p"], float), np.asarray(wipe["R"], float)
+    aim = wipe.get("aim")
+    aimed = aim_pose(state, aim) if aim is not None else (np.asarray(wipe["p"], float), np.asarray(wipe["R"], float))
+    if aimed is None:
+        return Failure(f"{aim.obj} is not in the {side} hand", start)
+    p, R = np.asarray(aimed[0], float), np.asarray(aimed[1], float)
     d = np.asarray(wipe["d"], float)
     length = float(np.linalg.norm(d))
     u = d / length
@@ -483,12 +493,16 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
             seg = anchor(stage, q, s, (), side)
         elif stage == "wipe_reach":
             seg = kept or _reach(kin, s, FREE_LOAD, p, R, -up, above, q, prior.get(stage), stage, step)
+            if not (isinstance(seg, Failure) or kept) and aim is not None:
+                seg = _aimed(kin, seg, aim, (p, R), WIPE_TOL)
             if not isinstance(seg, Failure) and seg.qs:
                 decided[stage] = seg.q_end
         elif stage == "wipe_press":
             seg = kept or straight(kin, s, spec, p, R, stage, step=0.002, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=5)
+                if aim is not None:
+                    seg = _aimed(kin, seg, aim, (p, R), WIPE_TOL)
         elif stage == "wipe_stroke":
             script = Script(still(None), 0.0, length, step=WIPE_STEP, tcp=tcp, carry="arm")
             seg = kept or scripted(kin, with_arm(s, q, side), spec, script, stage, arm_step=step, reach=True)
@@ -497,6 +511,9 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
             if not isinstance(seg, Failure):
                 reached = float(seg.info["script"].s1)
                 decided["wipe_stroke_m"] = reached
+                if reached < float(wipe.get("need", 0.0)):
+                    seg = Failure(f"the arm strokes {reached:.3f} m of the strip, {float(wipe['need']):.3f} m needed",
+                                  stage)
         elif stage == "wipe_return":
             if not reached:
                 times[stage] = round(time.time() - t0, 3)
@@ -506,10 +523,14 @@ def _plan_wipe(kin, state, wipe, start, prior_plan, step):
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=6)
         elif stage == "wipe_leave":
-            p0, R0 = kin.tcp(q)
-            seg = kept or straight(kin, s, spec, np.asarray(p0, float) + above * up, R0, stage, step=step, q_from=q)
-            if not (isinstance(seg, Failure) or kept):
-                seg = _move(seg, steps_per_wp=4, smooth=True)
+            # off the surface as far as the collision model says (rule 4: contact_extent, off_support -- the
+            # sponge risen LEAVE_GAP and clear of the world, then LEAVE_MARGIN), as a pick's lift; until the
+            # rule audit of 11-25 the straight back up ``above``, a length from constants
+            seg = kept or _contact(kin, s, Spec(allow=LEAVE_CONTACT), up, "off_support", stage, 0.002,
+                                   q, steps_per_wp=4, smooth=True)
+            if not isinstance(seg, Failure) and not seg.qs:
+                times[stage] = round(time.time() - t0, 3)
+                continue
         else:                                               # wipe_back: chosen again whenever it is built
             if back is None:
                 return Failure("no posture to go back to (the wipe's arrival not in its plan)", stage,
@@ -543,7 +564,8 @@ def _arc(T0, pivot, axis):
     return tcp
 
 
-FLIP_STAGES = ("flip_arrive", "flip_arc", "flip_release", "flip_push", "flip_leave", "tuck", "flip_settle")
+FLIP_STAGES = ("flip_arrive", "flip_arc", "flip_release", "flip_let_go", "flip_push", "flip_leave", "tuck",
+               "flip_settle")
 FLIP_SETTLE = 150             # physics ticks the turned object settles before it is judged (the old flip's)
 
 
@@ -556,8 +578,10 @@ def plan_flip(kin, state, flip, rest_goals, start="flip_arrive", prior=None, ste
         flip_arrive   anchor: the base and the hold as they are
         flip_arc      task segment: the gripped near edge up and over on the arc about the pivot, the hand turning with
                       it, the load's tilt not held (it is the motion) and its far edge on the support (Spec.touch,
-                      "held") -- as far as the arm reaches, up to ``release`` (scripted's reach: measured)
+                      "held") -- as far as the arm reaches, up to ``release`` (scripted's reach: measured); short of
+                      flip["min_arc"] a Failure, the search and a rebuild alike (rule 2)
         flip_release  the hand opened (the fingers may touch it)
+        flip_let_go   anchor: where the book lies once let go
         flip_push     released short of ``past``: the open hand on along the same arc to ``push_to``, its rotation as
                       at the release, the fingers on the raised edge (none when past)
         flip_leave    out of the contact back along the gripper axis, as far as contact_extent measures
@@ -590,6 +614,8 @@ def _plan_flip(kin, state, flip, rest_goals, start, prior_plan, step):
     decided = {}
     for stage in FLIP_STAGES[i0:]:
         t0 = time.time()
+        # a motion of the prior that still holds from here is kept as it is (docs 8.3), the tuck chosen again
+        kept = _kept(kin, s, q, prior_plan, stage) if stage in ("flip_arc", "flip_push", "flip_leave") else None
         if stage == "flip_arrive":
             seg = anchor(stage, q, s, (obj,), side)
         elif stage == "flip_arc":
@@ -598,16 +624,24 @@ def _plan_flip(kin, state, flip, rest_goals, start, prior_plan, step):
             T0[:3, :3], T0[:3, 3] = R0, p0
             script = Script(still(None), 0.0, float(flip["release"]), step=ARC_STEP,
                             tcp=_arc(T0, flip["pivot"], flip["axis"]), carry="arm")
-            seg = scripted(kin, with_arm(s, q, side), on, script, stage, arm_step=step, reach=True)
-            if not isinstance(seg, Failure):
+            seg = kept or scripted(kin, with_arm(s, q, side), on, script, stage, arm_step=step, reach=True)
+            if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=4, smooth=True)
+            if not isinstance(seg, Failure):
                 reached = float(seg.info["script"].s1)
                 decided["flip_arc_rad"] = reached
+                if reached < float(flip.get("min_arc", 0.0)):
+                    seg = Failure(f"the arm turns it only {np.degrees(reached):.0f} deg "
+                                  f"({np.degrees(float(flip['min_arc'])):.0f} needed)", stage)
         elif stage == "flip_release":
             seg = Segment(stage, open_on, q, kind="action", action=("grip", float(flip["pre_open"]), 50, False))
             if held is not None:
                 s = released(s, side, held.name, held_frame(kin, q, held))
             s = with_width(s, side, float(flip["pre_open"]))
+        elif stage == "flip_let_go":
+            # the book let go where the arc left it (docs 8.2, rule 9: an error comes in at a release): run builds the
+            # push and the exit again from where it lies when they no longer hold
+            seg = anchor(stage, q, s, (obj,), side)
         elif stage == "flip_push":
             if reached is None or reached >= float(flip["past"]):
                 times[stage] = round(time.time() - t0, 3)
@@ -621,13 +655,13 @@ def _plan_flip(kin, state, flip, rest_goals, start, prior_plan, step):
                 T[:3, :3] = R0
                 return T
             script = Script(still(None), float(reached), float(flip["push_to"]), step=ARC_STEP, tcp=tcp, carry="arm")
-            seg = scripted(kin, with_arm(s, q, side), open_on, script, stage, arm_step=step)
-            if not isinstance(seg, Failure):
+            seg = kept or scripted(kin, with_arm(s, q, side), open_on, script, stage, arm_step=step)
+            if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=4, smooth=True)
         elif stage == "flip_leave":
             _, R0 = kin.tcp(q)
-            seg = _contact(kin, s, Spec(allow=LEAVE_CONTACT), np.asarray(R0, float)[:, 2], "near_world", stage, step,
-                           q, steps_per_wp=3, smooth=True)
+            seg = kept or _contact(kin, s, Spec(allow=LEAVE_CONTACT), np.asarray(R0, float)[:, 2], "near_world", stage,
+                                   step, q, steps_per_wp=3, smooth=True)
             if not isinstance(seg, Failure) and not seg.qs:
                 times[stage] = round(time.time() - t0, 3)
                 continue
@@ -656,7 +690,8 @@ def plan_pour(kin, state, pour, start="pour_arrive", prior=None, step=0.004):
         pour_arrive  anchor: the base and the hold as they are
         pour_reach   the free leg to (p, R), the cup's tilt held (decide_ik: _reach, no straight)
         pour_tilt    task segment: the cup turned about the pivot, the hand with it, the load's tilt not held (it is the
-                     motion) -- as far as the arm reaches, up to ``tilt`` (scripted's reach: measured)
+                     motion) -- as far as the arm reaches, up to ``tilt`` (scripted's reach: measured); short of
+                     pour["min_tilt"] a Failure, the search and a rebuild alike (rule 2)
         pour_hold    the contents fall out
         pour_untilt  task segment: back the same arc to upright
         pour_back    the free leg back to the arm's posture where the pour arrived (stir_back's rule), tilt held
@@ -706,6 +741,9 @@ def _plan_pour(kin, state, pour, start, prior_plan, step):
             if not isinstance(seg, Failure):
                 reached = float(seg.info["script"].s1)
                 decided["pour_tilt_rad"] = reached
+                if reached < float(pour.get("min_tilt", 0.0)):
+                    seg = Failure(f"the arm tilts it only {np.degrees(reached):.0f} deg "
+                                  f"({np.degrees(float(pour['min_tilt'])):.0f} needed)", stage)
         elif stage == "pour_hold":
             seg = Segment(stage, Spec(), q, kind="action", action=("wait", POUR_HOLD))
         elif stage == "pour_untilt":

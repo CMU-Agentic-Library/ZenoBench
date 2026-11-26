@@ -1,13 +1,13 @@
 ---
 name: pick-object
-description: "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked."
+description: "Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked."
 ---
 
 # Pick an object (`skill_017`)
 
 `pick(object: object_ref, hands: hand?, grasp: tag?, pass_by: pose2d?)`
 
-Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.
+Grasp one object with either gripper (the park search's choice; ``hands`` may name one) and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.
 
 ## When to use
 
@@ -22,7 +22,7 @@ The robot must hold an object for any later hand action.
 ## Inputs
 
 - `object` (`object_ref`): The object to grasp.
-- `hands` (`hand`, optional): "both" requests a two-handed lift for wide items.
+- `hands` (`hand`, optional): One hand by default: either, the park search's choice ("any"); "right" / "left" only that hand -- a task that keeps the other one for something else; "both" requests a two-handed lift for wide items.
 - `grasp` (`tag`, optional): Optional: "handle" grasps by the handle when the object has an annotated one; "top" / "side" pinch only from above / from the side (fails when the object has no such pinch) -- a block going onto a low shelf behind a door needs "side": a top pinch holds the palm above it; otherwise the grasp follows the annotation (rim before handle before top).
 - `pass_by` (`pose2d`, optional): Optional base waypoint: grasp while driving past.
 
@@ -54,24 +54,24 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## May invalidate
 
-`on($object,*)`, `inside($object,*)`, `on_top_of($object,*)`, `on_floor($object)`, `hand_empty(right)`, `grasp_clearance($object)`, `edge_overhang($object)`, `at_initial_place($object)`, `arm_stowed(right)`, `in_appliance($object,*)`, `on_burner($object,*)`, `covered(*,$object)`
+`on($object,*)`, `inside($object,*)`, `on_top_of($object,*)`, `on_floor($object)`, `grasp_clearance($object)`, `edge_overhang($object)`, `at_initial_place($object)`, `arm_stowed(*)`, `in_appliance($object,*)`, `on_burner($object,*)`, `covered(*,$object)`
 
 ## Policy paths (first match on the bound nouns)
 
 ### `inside_cabinet_or_fridge` — when object.location in ['refrigerator', 'cabinet', 'microwave_cavity']
 
-1. `policy_061($object, grasp=$grasp)`
+1. `policy_061($object, grasp=$grasp, hand=$hands)`
 - extra precondition `is_open(articulated=@object.appliance)`
 - Annotation-selected grasp through the opened door.
 
 ### `handle_requested` — when args.grasp == 'handle' and 'handle_pinch' in object.grasp_types and object.handle_collider
 
-1. `policy_055($object)`
+1. `policy_055($object, hand=$hands)`
 - Handle pinch on request; a container held by its handle can swing, so carry it gently.
 
 ### `pinch_requested` — when args.grasp in ['top', 'side']
 
-1. `policy_061($object, grasp=$grasp)`
+1. `policy_061($object, grasp=$grasp, hand=$hands)`
 - extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 - Only the requested pinch kind (top / side); no other kind when it has none.
 
@@ -95,44 +95,44 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `floor_top` — when object.on_floor and 'top_pinch' in object.grasp_types
 
-1. `policy_010($object)`
+1. `policy_010($object, hand=$hands)`
 - extra precondition `on_floor(object=$object)`
 - Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them.
 
 ### `flat_overhang_ready` — when object.flat and object.edge_ready
 
-1. `policy_013($object)`
+1. `policy_013($object, hand=$hands)`
 - extra precondition `edge_overhang(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 - The overhang already exists (e.g. after expose): pinch it directly.
 
 ### `flat_edge` — when object.flat
 
 1. `policy_045($object)`
-2. `policy_013($object)`
+2. `policy_013($object, hand=$hands)`
 - Slide the flat item until it overhangs a free edge, then pinch the overhang. After expose the overhang exists already and pick takes flat_overhang_ready.
 
 ### `rect_rim` — when 'rim_pinch_rect' in object.grasp_types
 
-1. `policy_012($object)`
+1. `policy_012($object, hand=$hands)`
 
 ### `round_rim` — when 'rim_pinch' in object.grasp_types
 
-1. `policy_011($object)`
+1. `policy_011($object, hand=$hands)`
 - extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 - Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing.
 
 ### `handle` — when 'handle_pinch' in object.grasp_types and object.handle_collider
 
-1. `policy_055($object)`
+1. `policy_055($object, hand=$hands)`
 
 ### `top_pinch` — when 'top_pinch' in object.grasp_types
 
-1. `policy_010($object)`
+1. `policy_010($object, hand=$hands)`
 - extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 
 ### `annotation_dispatch` — when object.grasp_types
 
-1. `policy_061($object)`
+1. `policy_061($object, hand=$hands)`
 - Any other annotated pinch: the general dispatcher selects it.
 
 ## Relations

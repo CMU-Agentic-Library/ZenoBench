@@ -63,7 +63,8 @@ def test_relations_have_previous_next_and_fallback_or_alternative():
 def test_pick_has_noun_selected_paths_and_expose_repairs_it():
     pick = next(s for s in load_skills().values() if s["verb"] == "pick")
     paths = [p["path_id"] for p in pick["policy_paths"]]
-    assert {"top_pinch", "round_rim", "handle", "flat_edge", "floor_top", "microwave_cavity"} <= set(paths)
+    # (HAND_PLAN 9d: a microwave cavity's object is picked by the inside path, the motion layers' pick -- no own path)
+    assert {"top_pinch", "round_rim", "handle", "flat_edge", "floor_top", "inside_cabinet_or_fridge"} <= set(paths)
     fb = {r["verb"]: r for r in pick["relations"]["fallback"]}
     assert fb["expose"]["type"] == "repair" and fb["expose"]["repairs"] == "edge_overhang"
 

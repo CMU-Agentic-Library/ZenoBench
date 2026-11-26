@@ -6,32 +6,28 @@
         --plan "open kitchen_cabinet_6" \
                "close kitchen_cabinet_6"
 
+Retired policies (skill_library/check.py RETIRED_POLICIES: the Right* primitives, the handle grasp / release steps,
+the microwave's staged press and cavity policies, prepare_floor_reach, pick_from_cavity, reach_while_moving ...) are
+no plan steps here: their policies raise, naming what replaced them.
+
 Plan steps:  open <art> | close <art> | pick <obj>
              | pick_top/pick_round_rim/pick_rect_rim/pick_edge <obj>
              | place <obj> in:<container>          drop into a container
              | place <obj> <support> [<x> <y>]      free spot on a support (near x, y)
              | place_surface/place_edge <obj> <support> | place_container <obj> <container>
-             | place_microwave <obj> [support]
              | push <obj> <dx> <dy>                 slide along its support (world m)
              | goto/carry_to/empty_goto <x> <y> <yaw_deg>
              | pick_and_carry <obj> <x> <y> <yaw_deg>  sequential composite
              | tuck_arm | lower_torso [height_m] | raise_torso [height_m]
              | lean_forward [pitch_rad] | straighten_waist | click <art> <door|start>
-             | right_gripper_open [width_per_finger_m] | right_gripper_close [width_per_finger_m]
              | carry_height_adjust [min_bottom_z_m] | back_off_with_load [distance_m]
              | push_from_behind/top_drag <obj> <dx> <dy>  displacement vector in world frame
              | base_rotate_in_place <delta_yaw_deg> | base_translate_local <forward_m> [left_m]
-             | microwave_button_approach/press/retract <art> <door|start>
              | microwave_door_clear <art> | microwave_hinge_drive <art> <open|close>
-             | microwave_cavity_insert <obj> [support] | microwave_cavity_release/withdraw <obj>
-             | prepare_floor_reach <obj> | slide_to_edge <obj> | pick_from_cavity <obj> [appliance]
-             | grasp_articulated_handle/release_articulated_handle <art>
+             | slide_to_edge <obj>
              | open_revolute_door/open_prismatic_drawer <art>
              | open_handle/close_handle/open_powered/close_powered <art>
              | microwave_start <art>
-             | right_tcp_move <dx> <dy> <dz>       local smoke: world-frame TCP displacement
-             | right_joint_move <joint_name> <delta>  local smoke: one joint delta
-             | reach_while_moving <x> <y> <z> <base_x> <base_y> <base_yaw_deg>
              | bimanual_flat_pick/bimanual_box_lift <obj>
              | bimanual_carry <obj> <x> <y> <yaw> | handover_right_to_left <obj>
              | open_door_while_left_holds <obj> <door> | upright_object <held_obj>
@@ -118,21 +114,10 @@ def main():
                 policies.pick.execute(tok[1])
             elif tok[0] in ("pick_top", "pick_round_rim", "pick_rect_rim", "pick_edge"):
                 getattr(policies, tok[0]).execute(tok[1])
-            elif tok[0] == "prepare_floor_reach":
-                row["tcp_error_m"] = policies.prepare_floor_reach.execute(tok[1])
             elif tok[0] == "slide_to_edge":
                 row["edge"] = policies.slide_to_edge.execute(tok[1])
-            elif tok[0] == "pick_from_cavity":
-                policies.pick_from_cavity.execute(tok[1], tok[2] if len(tok) > 2 else "kitchen_microwave")
-            elif tok[0] in ("grasp_articulated_handle", "release_articulated_handle"):
-                row["finger_positions_m"] = getattr(policies, tok[0]).execute(tok[1]).tolist()
             elif tok[0] in ("open_revolute_door", "open_prismatic_drawer"):
                 row["result_q"] = getattr(policies, tok[0]).execute(tok[1])
-            elif tok[0] == "reach_while_moving":
-                _, R = rig.kin.tcp(rig.q())
-                row["tcp_error_m"] = policies.reach_while_moving.execute(
-                    np.array([float(v) for v in tok[1:4]]), R,
-                    tuple(float(v) for v in tok[4:7]))
             elif tok[0] == "pick_cup_handle":
                 row["lift_m"] = policies.pick_cup_handle.execute(tok[1])
             elif tok[0] == "pick_while_moving":
@@ -173,8 +158,6 @@ def main():
                 getattr(policies, tok[0]).execute(tok[1], resolve_place(tok[2], places))
             elif tok[0] == "place_container":
                 policies.place_container.execute(tok[1], tok[2])
-            elif tok[0] == "place_microwave":
-                policies.place_surface.execute(tok[1], tok[2] if len(tok) > 2 else "kitchen_microwave/inside_floor")
             elif tok[0] == "place" and tok[2].startswith("in:"):
                 policies.place.execute(tok[1], tok[2])
             elif tok[0] == "place":
@@ -194,18 +177,6 @@ def main():
             elif tok[0] in ("carry_to", "empty_goto"):
                 getattr(policies, "carry_navigate" if tok[0] == "carry_to" else "empty_navigate").execute(
                     (float(tok[1]), float(tok[2]), float(tok[3])))
-            elif tok[0] == "right_tcp_move":
-                p, R = rig.kin.tcp(rig.q())
-                row["tcp_error"] = policies.right_tcp_move.execute(p + np.array([float(v) for v in tok[1:4]]), R)
-            elif tok[0] == "right_joint_move":
-                if tok[1] not in rig.kin.names:
-                    raise ValueError(f"unknown right-arm joint: {tok[1]}")
-                q = rig.q_cmd.copy()
-                q[rig.kin.names.index(tok[1])] += float(tok[2])
-                row["actual_q"] = policies.right_joint_move.execute(q).tolist()
-            elif tok[0] in ("right_gripper_open", "right_gripper_close"):
-                width = float(tok[1]) if len(tok) > 1 else (0.04 if tok[0].endswith("open") else 0.0)
-                row["finger_positions_m"] = getattr(policies, tok[0]).execute(width).tolist()
             elif tok[0] == "carry_height_adjust":
                 row["object_bottom_z_m"] = policies.carry_height_adjust.execute(
                     float(tok[1]) if len(tok) > 1 else 0.55)
@@ -227,16 +198,6 @@ def main():
                 row["waist_pitch_rad"] = policies.straighten_waist.execute()
             elif tok[0] == "click":
                 policies.click.execute(tok[1], button=tok[2])
-            elif tok[0] in ("microwave_button_approach", "microwave_button_press",
-                            "microwave_button_retract"):
-                row["tcp_error_m"] = getattr(policies, tok[0]).execute(tok[1], button=tok[2])
-            elif tok[0] == "microwave_cavity_insert":
-                policies.microwave_cavity_insert.execute(
-                    tok[1], tok[2] if len(tok) > 2 else "kitchen_microwave/inside_floor")
-            elif tok[0] == "microwave_cavity_release":
-                row["finger_positions_m"] = policies.microwave_cavity_release.execute(tok[1]).tolist()
-            elif tok[0] == "microwave_cavity_withdraw":
-                policies.microwave_cavity_withdraw.execute(tok[1])
             elif tok[0] == "microwave_door_clear":
                 row["base_pose"] = policies.microwave_door_clear.execute(tok[1])
             elif tok[0] == "microwave_hinge_drive":

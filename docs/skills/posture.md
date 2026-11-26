@@ -31,7 +31,7 @@ HAND_PLAN 9e（11-25）：`CarryHeightAdjustPolicy` / `SetHeldHeightPolicy` → 
 
 HAND_PLAN 9e：`PresentHeldPolicy` → `run_skill(SKILLS["present"])`，job 是 `skill_jobs/held.py` 的 `present_job`，计划是 `plan_posture` 加一个转头段。
 
-1. 物体中心在身前的 4 个位置（`PRESENT_AT`，左手的横向镜像）组成**一个目标集合**，手的朝向不变；自由段到第一个能到的（旧代码是 4 个依次 `move_to` 重试）。
+1. 物体中心在 `presenting` 谓词规定的区域里（底盘前方 0.35–0.85 m、高 0.9–1.4 m，`predicates.PRESENT_FWD` / `PRESENT_Z`）：区域里往内缩 10 cm 取 3 × 3 的网格，横向 0 和往拿着的那只手那边 10 cm，共 18 个位置组成**一个目标集合**（`present_at()`，左手横向镜像），手的朝向不变；自由段到最便宜的那个（11-25 之前是旧代码依次试的 4 个点，数字是自己的，不是从任务区域来的）。
 2. 头转向自由段终点处的物体（`present_look`），再记录视野（`record_view`）。
 
 ## rotate / upright（手里的东西原地转向）
@@ -43,7 +43,7 @@ HAND_PLAN 9f（11-25）：`RotateHeldPolicy` / `UprightObjectPolicy` → `run_sk
 
 ## release（原地松手）
 
-HAND_PLAN 9f：`ReleaseInPlacePolicy` → `run_skill(SKILLS["release"])`，计划 `plan_release`：张开到抓取时的宽度（手指可以碰它放开的东西），再沿夹爪轴退一个手指长度。两段都在动之前建好：退不出来就失败，手还没张开（旧代码先张开、退不出来只记一笔）。
+HAND_PLAN 9f：`ReleaseInPlacePolicy` → `run_skill(SKILLS["release"])`，计划 `plan_release`：张开到抓取时的宽度（手指可以碰它放开的东西）→ 锚点（`release_let_go`：松开的东西停在哪，11-25 加）→ 沿夹爪轴退出，长度由 `contact_extent` 量（离开 `LEAVE_GAP` 再走 `LEAVE_MARGIN`；9i 之前是一个手指长，handover 时右手退不出来）。整份在动之前建好：退不出来就失败，手还没张开（旧代码先张开、退不出来只记一笔）。手默认是拿着它的那只（11-25 之前默认右手）。
 
 regrasp（`RegraspPolicy`）现在是 place（支撑面上离底盘最近、往里 12 cm 的点）加 pick，都走运动分层；旧的"已经在空地上方就直接竖直放下"分支删了。
 
@@ -51,8 +51,8 @@ regrasp（`RegraspPolicy`）现在是 place（支撑面上离底盘最近、往�
 
 HAND_PLAN 9h（11-25）：`WaveHandPolicy` / `PointAtPolicy` / `ShakeHeldPolicy` → `run_skill(SKILLS["wave" / "point" / "shake"])`，job 在 `skill_jobs/held.py`，计划是 `plan_gesture`：[张手] → [自由段到一个目标集合] → [摆动任务段：TCP 沿水平方向 `amp · sin(s)`，世界坐标系 `Still`，`carry="arm"`] → [收回]。
 
-- **wave**：空着的手（右手优先）张开，举到身前、手那一侧 0.35 / 0.25 m、三个高度之一（一个目标集合，旧代码依次试），横向 ±10 cm 摆 `swings` 次，收臂。
-- **point**：从手那一侧的"肩"（身前 0.09、侧 0.18、高 1.05 m）到目标的射线上，离肩 0.30–0.52 m 四个位置组成一个目标集合，合拢的手指沿射线；结果：手指轴离目标 8° 以内。目标不在前方时 `PointAtPolicy` 先转身（任务层）。技能的两条路径都调它；旧的原语串（policy_041 → 101 → 038）退役。
+- **wave**：空着的手张开，举到身前、手那一侧 0.35 / 0.25 m、三个高度之一（一个目标集合，旧代码依次试），横向 ±10 cm 摆 `swings` 次，收臂。两只手都空时两只手的目标集合按 `free_leg` 自己的分数排在一起（`primitives.pose_set_scores`，右手只多 `VARIANT_COST`），按顺序建，第一份建得出来的就是计划（`skill_jobs.held._either_hand`；11-25 之前是 job 直接取右手）；执行中重做沿用计划定下的手。
+- **point**：从手那一侧的"肩"（身前 0.09、侧 0.18、高 1.05 m）到目标的射线上，离肩 0.30–0.52 m 四个位置组成一个目标集合，合拢的手指沿射线；手和 wave 一样按 `_either_hand` 选（两只都拿着东西时拿着东西的手照样能指）；结果：手指轴离目标 `POINTING_DEG`（8°，`pointing_at` 谓词同一个值）以内。目标在不在前方只有一个判据（`point_in_front`：某只能指的手的肩到目标的射线朝前至少 `POINT_FRONT`），技能按它拒绝、`PointAtPolicy` 按它先转身（11-25 之前任务层按底盘中心的水平方向判，两处可能不一致）。技能的两条路径都调它；旧的原语串（policy_041 → 101 → 038）退役。
 - **shake**：拿着东西的手沿合爪轴的水平方向摆 `cycles` 次、幅度 `amplitude`，保持倾角，回到起点；结果：合爪宽度收窄不超过 8 mm（物体没在手里转）。
 
 ## 谁在用

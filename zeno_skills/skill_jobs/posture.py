@@ -10,7 +10,7 @@ import numpy as np
 from ..motion_state import ARM, Failure
 from ..primitives import Joint, JointSet
 from ..rig import SkillFailure
-from ..skills import check_both_held, check_held
+from ..skills import check_both_held
 from ..tolerances import STOWED_TOL, TORSO_AT, WAIST_AT
 
 AT = {"torso_lift_joint": TORSO_AT, "waist_pitch_joint": WAIST_AT}   # a body joint this close to its target got there
@@ -25,7 +25,7 @@ def _job(rig, state, build, label, done):
         plan = build(state, None)
         if isinstance(plan, Failure):
             raise SkillFailure(f"{label}: {plan.why}")
-        hooks = {sg.name: {"after": lambda r, n=sg.name: check_both_held(r, n)}
+        hooks = {sg.name: {"after": lambda r, n=sg.name: check_both_held(r, n, open_hand=False)}
                  for sg in plan.segments if sg.kind == "move"}
         return plan, (lambda st, frm, prior=None: build(st, frm)), hooks
     return Job(ready=ready, done=done)

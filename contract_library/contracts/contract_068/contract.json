@@ -6,7 +6,7 @@
  "verb": "wave",
  "noun": "hand",
  "name": "Wave the hand",
- "description": "Raise the empty right hand at head height and swing it (greeting / attention gesture).",
+ "description": "Raise an empty hand at head height and swing it (greeting / attention gesture); either hand, the one that reaches the wave best.",
  "group": "perception_and_gesture",
  "inputs": {},
  "outputs": {},

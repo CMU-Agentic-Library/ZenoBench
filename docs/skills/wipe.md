@@ -10,11 +10,11 @@ HAND_PLAN 9g（11-25）起走运动分层：`WipeSurfacePolicy` → `run_skill(S
 
 1. **选擦拭带**（`_strips`，沿用旧的取样）：沿支撑面四条边各取一排候选带：离边 8 cm（这一排被物体占了就用 4.5 cm），沿边每隔 10 cm 一条，每条 30 cm 长、和海绵一样宽，和其他物体重叠的去掉；按离机器人的距离排序，取最近的 8 条。
 2. **摆好搬运姿态**（`carry_posture`，见[搬运姿态](carry.md)）。
-3. **目标集合**：8 条带 × 手绕竖直轴转 4 个角度（`WIPE_YAWS`）。按压位姿按 State 里的握法算：海绵原点在带子起点上方、底面压进台面 1 mm。每组在停车点上建整份计划：
-   1. `wipe_arrive`：锚点。
+3. **目标集合**：8 条带 × 手绕竖直轴转 4 个角度（`WIPE_YAWS`）。按压位姿写成海绵在世界里的位姿（`Aim(held=True)`，和 place 的放下目标同一种）：海绵原点在带子起点上方、底面压进台面 1 mm；TCP 由计划从 State 里的握法推出。每组在停车点上建整份计划：
+   1. `wipe_arrive`：锚点。按实测握法复核按压位姿：开车路上海绵在手里滑了、按压位姿比构造时多偏 `WIPE_TOL`（2 mm / 0.01 rad）以上，就从这里重做（11-25 规则审查前，按压位姿是 job 用搜索前的握法算死的 TCP，锚点看不出滑动）。
    2. `wipe_reach`：自由段到按压位姿正上方 `WIPE_PRESS + LEAVE_GAP + LEAVE_MARGIN`（海绵离台面 1.5 cm），保持海绵倾角。
    3. `wipe_press`：竖直向下直线压上去。海绵和捏着它的手指可以碰这件家具（`on_surface`：`Spec.touch` 按家具名放开，`Motion._touch_key`），手臂其余部分照查。
-   4. `wipe_stroke`：任务段，TCP 沿带子走，**能走多远走多远**（`scripted` 的 `reach`，长度是量出来的）；走的长度不够覆盖一半的带子（`WIPE_COVER`：走的长度 + 半个海绵 ≥ 一半）的停车点在构造里就被拒掉。
+   4. `wipe_stroke`：任务段，TCP 沿带子走，**能走多远走多远**（`scripted` 的 `reach`，长度是量出来的）；走的长度不够覆盖一半的带子（`WIPED_COVER`，`wiped` 谓词的 50%：走的长度 + 半个海绵 ≥ 一半）的计划在构造里就被拒掉（`plan_wipe` 的 `need`：停车点搜索和执行中的重做同一条约束）。
    5. `wipe_return`：任务段，擦回起点。
    6. `wipe_wiped`：锚点。
    7. `wipe_leave`：竖直抬起同样的高度（`on_surface`）。

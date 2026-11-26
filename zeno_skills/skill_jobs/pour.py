@@ -14,13 +14,10 @@ from ..predicates import objects_inside
 from ..rig import SkillFailure
 from ..skill_plans import POUR_RELAY
 from ..skills import check_held
+from ..tolerances import POUR_ABOVE, POUR_MIN_TILT, POUR_TILT
 from .carry import carry_posture
 
-POUR_TILT = math.radians(110.0)      # rad: the tilt goes this far at most (the old largest commanded tilt)
-POUR_MIN_TILT = math.radians(60.0)   # rad: a park whose arm tilts it less is rejected in the build (the old rocking
-#                                      threshold: below it nothing poured)
 POUR_YAWS = (0.0, 45.0, -45.0, 90.0, -90.0, 180.0)   # deg the hand (and the pour) turns about the vertical
-POUR_ABOVE = 0.05                    # m: the cup's bottom this far over the target's rim at the start (old value)
 
 
 def pour_job(rig, args, state, skill=None):
@@ -32,7 +29,6 @@ def pour_job(rig, args, state, skill=None):
     (plan_pour), a park whose arm tilts it less than POUR_MIN_TILT rejected.  done(): at least half the items inside
     the target (SkillFailure otherwise), those returned."""
     from ..motion_skills import Job
-    from ..run import observe
     source, target = args["source"], args["target"]
     side = rig.hand_of(source)
     if side is None:
@@ -86,19 +82,14 @@ def pour_job(rig, args, state, skill=None):
                 axis = np.cross([0.0, 0.0, 1.0], np.r_[u, 0.0])
                 axis /= np.linalg.norm(axis)
                 pours.append({"source": source, "target": target, "p": p, "R": Rg, "pivot": pivot, "axis": axis,
-                              "tilt": POUR_TILT, "yaw": psi, "lip_off": lip_off})
+                              "tilt": POUR_TILT, "min_tilt": POUR_MIN_TILT, "yaw": psi, "lip_off": lip_off})
                 goals.append(((p,), (p, Rg), VARIANT_COST * j + (0.5 * VARIANT_COST if lip_off else 0.0)))
     build_with = skill.build if skill is not None else None
     if build_with is None:
         from ..skill_plans import plan_pour as build_with
 
     def build(s, k, prior):
-        plan = build_with(kin, s, pours[k], prior=prior)
-        tilt = getattr(plan, "info", {}).get("tilt_rad") if not hasattr(plan, "why") else None
-        if tilt is not None and tilt < POUR_MIN_TILT:
-            from ..motion_state import Failure
-            return Failure(f"the arm tilts it only {math.degrees(tilt):.0f} deg", "pour_tilt")
-        return plan
+        return build_with(kin, s, pours[k], prior=prior)
     problem = Problem(tuple(goals), build, POUR_RELAY, near=rig.base_pose(), label=f"pour {source}", hand=side)
     ctx = {}
 

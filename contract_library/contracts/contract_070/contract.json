@@ -12,7 +12,7 @@
   "object": {
    "type": "object_ref",
    "required": true,
-   "description": "The right-held object."
+   "description": "The held object (either hand)."
   }
  },
  "outputs": {},
