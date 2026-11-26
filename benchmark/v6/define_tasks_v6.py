@@ -2149,7 +2149,9 @@ def T13(t):
     examples = {**set_place("e_north", "adult"), **set_place("e_mid", "kid"), **set_place("w_north", "adult")}
     stock = {"bowl_2": {"asset": "breakfast_bowl", **P("tv_stand_2/top", 7.70, 0.34)},
              "mug_2": {"asset": "breakfast_mug", **P("kitchen_counter_2/top", -0.30, 7.70)},
-             "kid_cup": {"asset": "plastic_cup", **P("kitchen_counter_2/top", -0.30, 7.95)}}
+             # 11-25 (gt_check_1125b adult_and_kid s14): on counter_2, under its wall cabinets, every grasp of the
+             # kid's cup failed its trajectory (8 of 8); it waits with the bowls on the TV stand, 17 cm from bowl_2
+             "kid_cup": {"asset": "plastic_cup", **P("tv_stand_2/top", 7.40, 0.34)}}
     finish_cases = {}
     for c, empty in (("adult_seat", {"w_mid": "adult"}), ("kid_seat", {"w_mid": "kid"}),
                      ("adult_and_kid", {"w_mid": "adult", "w_south": "kid"})):

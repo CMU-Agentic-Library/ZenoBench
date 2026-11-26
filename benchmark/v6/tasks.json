@@ -130560,10 +130560,10 @@
       },
       "kid_cup": {
        "asset": "plastic_cup",
-       "support": "kitchen_counter_2/top",
+       "support": "tv_stand_2/top",
        "xy": [
-        -0.3,
-        7.95
+        7.4,
+        0.34
        ],
        "yaw_deg": 0.0
       },
@@ -132616,10 +132616,10 @@
       },
       "kid_cup": {
        "asset": "plastic_cup",
-       "support": "kitchen_counter_2/top",
+       "support": "tv_stand_2/top",
        "xy": [
-        -0.364,
-        7.949
+        7.404,
+        0.371
        ],
        "yaw_deg": 0.0
       },
@@ -132817,26 +132817,22 @@
        },
        {
         "names": [
-         "kid_cup",
          "mug_2"
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.404,
+         -0.3463,
          7.6367,
          -0.2537,
-         7.989
+         7.7633
         ],
         "dx": [
-         -0.11,
+         -0.16,
          0.49
         ],
         "dy": [
          -0.65,
-         1.43
-        ],
-        "pick": [
-         "kid_cup"
+         1.66
         ]
        }
       ],
@@ -133747,10 +133743,10 @@
       },
       "kid_cup": {
        "asset": "plastic_cup",
-       "support": "kitchen_counter_2/top",
+       "support": "tv_stand_2/top",
        "xy": [
-        -0.364,
-        7.949
+        7.404,
+        0.371
        ],
        "yaw_deg": 0.0
       },
@@ -134494,17 +134490,18 @@
        {
         "names": [
          "bowl",
-         "bowl_2"
+         "bowl_2",
+         "kid_cup"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.6149,
+         7.364,
          0.2631,
          8.113,
          0.4388
         ],
         "dx": [
-         -0.96,
+         -0.7,
          0.25
         ],
         "dy": [
@@ -134513,7 +134510,8 @@
         ],
         "pick": [
          "bowl",
-         "bowl_2"
+         "bowl_2",
+         "kid_cup"
         ]
        }
       ],
@@ -137475,18 +137473,6 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "kid_cup"
        }
       },
@@ -137640,18 +137626,6 @@
          2.89,
          6.04
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_counter_2/top"
        }
       },
       {

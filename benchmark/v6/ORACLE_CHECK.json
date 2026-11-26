@@ -2256,7 +2256,7 @@
   {
    "task": "T13_breakfast_setup",
    "layout": "finish_the_table__kid_seat",
-   "steps": 14,
+   "steps": 12,
    "atoms_checked": 17,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2266,7 +2266,7 @@
   {
    "task": "T13_breakfast_setup",
    "layout": "finish_the_table__adult_and_kid",
-   "steps": 24,
+   "steps": 22,
    "atoms_checked": 73,
    "atoms_geometric": 0,
    "geometric_atoms": [],
