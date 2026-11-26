@@ -353,6 +353,9 @@ def t22():
                                 # breakfast bowls instead (rim pinch), the same decision
                                 ("bowls_in_it", {f"tray_bowl_{k + 1}": inside_tray("breakfast_bowl", dx, 0.0)
                                                  for k, dx in enumerate((-0.10, 0.10))}))},
+            # 11-26: the juice drawn to the table's south-west corner (s11, (2.83, 5.99)) failed its carry-in twice; the
+            # juice and the apple stay where the design puts them (the tray and its contents still move)
+            pin=[J, A],
             instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
             instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
     }

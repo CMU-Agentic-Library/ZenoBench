@@ -86,7 +86,11 @@ ROLL_EDGE_M = 0.06
 # route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
 PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.05),
              # cabinet 4's low top (0.62 m): what was picked there stood at y 0.40-0.46 (8 of 10); not deeper than 0.38
-             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62)}   # y by the box: a cup centred no deeper than 0.38
+             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62),   # y by the box: a cup centred no deeper than 0.38
+             # the west dining table (moved 0.4 m west 11-26): its west side is a 0.93 m strip by the wall; the sponge
+             # drawn to its west edge (T08 far_dining s13, -8.84) was picked from there and the island wipe after it
+             # found no base pose, twice.  What the route picks there stays 0.4 m off the west edge
+             "dining_table_1/top": (-8.55, 6.86, -7.884, 8.862)}
 
 
 # ----------------------------------------------------------------- scene data
@@ -643,7 +647,10 @@ def layout_spec(task, vid, registry, control=None):
         if n in under or n not in boxes:
             continue
         cx, cy = (boxes[n][0] + boxes[n][2]) / 2, (boxes[n][1] + boxes[n][3]) / 2
+        # pin (11-26): objects a variant names stay where it puts them, design objects or not (T22 tray_elsewhere's
+        # juice, the same as its control's, was drawn to a table corner it could not be carried from)
         if sup not in sups or _fixed_support(base, sup) or (n in design and sup in v.get("keep_design", [])) or \
+                n in v.get("pin", []) or \
                 any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)
