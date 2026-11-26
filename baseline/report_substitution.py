@@ -9,7 +9,7 @@ from pathlib import Path
 from statistics import mean
 
 from baseline.comparison import ABLATIONS, METHODS, MODELS, V6, episodes, read_json, result_path
-from baseline.report import average, count_ratio, episode_key, ratio, read_outcome, table
+from baseline.report import average, count_ratio, episode_key, graph_attempt_table, ratio, read_outcome, table
 from benchmark.v6.substitution_eval import catalog, episode_row
 
 
@@ -112,6 +112,7 @@ def render(manifest, rows, batch):
              "所有模型均在本地推理，温度为 0。", "",
              "## 方法对比", "",
              "成功以仿真最终判定为准。严格成功还要求达到该布局可用的最佳替代。"
+             "已返回局数包含计分局和中断局。表中同时给出有原生成功凭据的局数占已返回局数的比例。"
              "执行故障列统计最终失败且至少一次有效技能调用出现执行错误的局，分母为已计分的失败局。"
              "一次失败可能同时涉及规划与执行。", ""]
     overall, detail, causes = [], [], []
@@ -121,15 +122,17 @@ def render(manifest, rows, batch):
         graded = [r for r in scored if r["side"] == "B"]
         tiered = [r for r in scored if r["side"] == "B_open"]
         interrupted = sum(r["status"] == "interrupted" for r in attempts)
+        successes = sum(r["success"] for r in scored)
         overall.append([method, model, f"{len(scored)}/{len(attempts)}", interrupted, ratio(scored, "success"),
-                        average(scored, "native_score", 3), ratio(scored, "strict"),
+                        count_ratio(successes, len(scored) + interrupted), average(scored, "native_score", 3), ratio(scored, "strict"),
                         count_ratio(sum(r["valid_execution_failures"] > 0 for r in fail), len(fail))])
         detail.append([method, model, ratio(graded, "hit"), ratio(graded, "missed_switch"), ratio(graded, "bad"),
                        ratio(graded, "grab"), ratio(graded, "else"), ratio(tiered, "hit"), ratio(tiered, "bad"),
                        ratio(tiered, "missed_switch")])
         causes.append([method, model, *(ratio([r for r in scored if r["reason"] == reason], "strict")
                                         for reason in reasons)])
-    lines += table(["方法", "模型", "计分/计划", "中断", "任务成功", "平均原生分", "严格成功", "执行故障/失败"], overall)
+    lines += table(["方法", "模型", "计分/计划", "中断", "成功/计分", "已证实成功/已返回",
+                    "平均原生分", "严格成功", "执行故障/失败"], overall)
     main_methods = [method for method in METHODS if method not in ABLATIONS]
     shared = set.intersection(*(set(by_key[method, model]) for method in main_methods for model in MODELS))
     if len(shared) < len(planned):
@@ -187,7 +190,16 @@ def main():
     parser.add_argument("--jsonl", type=Path, help="one row for every planned method, model and episode")
     args = parser.parse_args()
     manifest, rows = collect(args.run_dir, args.batch)
-    args.out.write_text(render(manifest, rows, args.batch))
+    report = render(manifest, rows, args.batch)
+    if any(r["method"] == "GraphManager" and r["status"] == "interrupted" for r in rows):
+        graph_scores = {}
+        for model in MODELS:
+            graph_scores["GraphManager", model] = {
+                (r["task"], r["layout"], r["seed"]): r for r in rows
+                if r["method"] == "GraphManager" and r["model"] == model and r["status"] == "scored"}
+        history = graph_attempt_table(args.run_dir / "planner", episodes(args.batch), graph_scores)
+        report += "\n" + "\n".join(history)
+    args.out.write_text(report)
     if args.jsonl:
         args.jsonl.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
 
