@@ -205,6 +205,20 @@ def _drive_cells_build(base):
     return float(lo[0]), float(lo[1]), step, frozenset(seen)
 
 
+WALL_STAND_M = 0.5       # a stand pose this far from every wall (11-26: by bookcase_2's side, 0.43 m from the wall, the
+                         # free arm hit it four times -- T26 bear, T19 drop and carry, T13 mug)
+
+
+@lru_cache(maxsize=None)
+def _walls_xy(base):
+    return tuple(tuple(o["aabb"][:2] + o["aabb"][3:5]) for o in _ann(base)["obstacles"] if o.get("kind") == "wall")
+
+
+def _wall_clear(base, p):
+    return all(math.hypot(max(b[0] - p[0], 0.0, p[0] - b[2]), max(b[1] - p[1], 0.0, p[1] - b[3])) >= WALL_STAND_M
+               for b in _walls_xy(base))
+
+
 def _drivable(base, p):
     x0, y0, step, seen = _drive_cells(base)
     i, j = (p[0] - x0) / step, (p[1] - y0) / step
@@ -235,7 +249,7 @@ def reach_edges(base, sup):
                     p = [0.0, 0.0]
                     p[k], p[j] = E + sgn * off, t
                     yaw = math.atan2(-sgn if k else 0.0, -sgn if not k else 0.0)
-                    if world.footprint_clear(p[0], p[1], yaw) and _drivable(base, p):
+                    if world.footprint_clear(p[0], p[1], yaw) and _drivable(base, p) and _wall_clear(base, p):
                         depth = REACH_DEPTH_M
                         break
                 if run and depth == run[5]:
