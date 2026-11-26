@@ -128,5 +128,15 @@
     "expected_outcomes_met": 8,
     "native_result": "calibration/scripted/T04_cup_or_mug_to_cabinet/s10_no_cup_alternative_mug@sticky_benchmark/result.json",
     "result_sha256": "b4842c39becfb30892360dffada2fe1f9dbe0ec1ea9359ec347b0e820c0e14bd"
+  },
+  "pause": {
+    "stopped_at": "2026-11-26T11:42:29.471099+00:00",
+    "planned": 2163,
+    "started": 358,
+    "scored": 319,
+    "started_without_result": 38,
+    "never_started": 1805,
+    "prior_interruptions": 1,
+    "successful": 11
   }
 }

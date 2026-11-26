@@ -85,8 +85,21 @@ def render(manifest, rows, batch):
     sides = Counter(r["side"] for r in planned)
     reasons = Counter(r["reason"] for r in planned)
     states = Counter(r["status"] for r in rows)
-    stamp = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
-    progress = " 当前为阶段快照，各行覆盖的布局随调度进度变化。" if states["outstanding"] else ""
+    beijing = timezone(timedelta(hours=8))
+    pause = manifest.get("pause")
+    if pause:
+        stamp = datetime.fromisoformat(pause["stopped_at"]).astimezone(beijing).strftime("%Y-%m-%d %H:%M")
+        if pause["started_without_result"] + pause["never_started"] != states["outstanding"]:
+            raise ValueError("pause inventory differs from outstanding episode count")
+        summary = (f"实验已于北京时间 {stamp} 暂停。原生计分 **{states['scored']:,} / {len(rows):,}** 局，"
+                   f"另有 {states['interrupted']} 局已记录运行中断，{pause['started_without_result']} 局已启动但未取得完整结果，"
+                   f"{pause['never_started']:,} 局尚未启动。")
+    else:
+        stamp = datetime.now(beijing).strftime("%Y-%m-%d %H:%M")
+        summary = (f"北京时间 {stamp}，原生计分 **{states['scored']} / {len(rows)}** 局，"
+                   f"运行中断 {states['interrupted']} 局，待取得结局 {states['outstanding']} 局。")
+        if states["outstanding"]:
+            summary += "当前为阶段快照，各行覆盖的布局随调度进度变化。"
     pkg = manifest["packages"]
     source = f"运行代码 `{manifest['runner_commit'][:7]}`。"
     if "upstream_main" in manifest:
@@ -98,9 +111,7 @@ def render(manifest, rows, batch):
     versions = [f"Isaac Sim {pkg['isaacsim']}"]
     if "isaaclab_source" in manifest:
         versions.extend([f"Isaac Lab {manifest['isaaclab_source']}", f"cuRobo {pkg['nvidia-curobo']}"])
-    lines = ["# ZenoBench 替代任务基线", "",
-             f"北京时间 {stamp}，原生计分 **{states['scored']} / {len(rows)}** 局，"
-             f"运行中断 {states['interrupted']} 局，待取得结局 {states['outstanding']} 局。{progress}", "",
+    lines = ["# ZenoBench 替代任务基线", "", summary, "",
              f"来自 `{batch.name}` 的 {len(planned)} 局覆盖 {len({r['task'] for r in planned})} 个任务、"
              f"{len({(r['task'], r['variant']) for r in planned})} 个布局。所有方法使用相同的布局和种子。"
              f"其中有 {sides['B']} 局可按物体分级，另有 {sides['B_open']} 局按完成档位评分。"
