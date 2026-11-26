@@ -29,6 +29,8 @@
 | T22 `eat_now__desk_corner` s11 | #5 `pick(bought_juice)` | `carry_in: the arm stopped 0.048 m short` | 果汁在餐桌西沿（离边 7 cm），底座在西南 [2.49, 5.85, 15°]；抓起后收到搬运姿势时 right_arm_link_7 撞桌沿（physx 接触 dining_table_2，leg carry_in）。carry_in 这段没避开桌子。 |
 | T07 `microwave_broken` s11 | #14 `heat(oatmeal, kitchen_stove)`（微波炉那步按设计失败后改用灶台） | `press_reach: the arm stopped 0.540 m short` | 按灶台开关（停车 [8.452, 1.087, 60°]，按钮 [8.77, 1.455]）时右手一路刮东墙 wall_607（physx 接触 10 次，leg press_reach），press 的路径没避开墙。 |
 | T09 `tomato_in_fridge__big_tomato` s11 | #11 `pick(big_tomato)`（冰箱里） | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 冰箱内取物；`tomato_in_fridge__in_fridge` 你三次全量过两次。 |
+| T12 `bins_capacity__apart_full_on_tv` s11 | #10 `place(toy_car, toy_bin_small_2)` | `tuck: its path collides now at 1/113: world right_gripper_left_finger_link 12 mm ... INVALID_START_STATE_WORLD_COLLISION` | 放进小收纳盒后收臂起点手指已卡进 12 mm；和 T10 冰箱、T18 玻璃盒同类：放下后退出的起点在碰撞里，没有先退出来。 |
+| T10 `after_dinner_clear__rubbish_mug` s11（重跑） | #17 `pick(used_mug)` | `pick used_mug: no reachable grasp from any base pose`（round_rim） | 同一布局（两次 annotation 完全相同）第一次跑这步成功，第二次失败：pick 的结果不稳定。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
