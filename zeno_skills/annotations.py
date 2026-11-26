@@ -206,6 +206,20 @@ class SceneAnnotations:
                     out.append({"kind": "side_pinch", "p": p, "R": side_pinch_rot(d, g["tilt"]),
                                 "pre_open": g["pre_open"], "azimuth": az, "tilt": g["tilt"]})
                 continue
+            elif g["type"] == "handle_pinch":
+                if not kinds:
+                    continue                 # only when asked for (every other caller sees what it saw before 9j)
+                # 11-26 (zihan, bench GT): the handle pick became pick_job with kinds ("handle_pinch",) in HAND_PLAN 9j,
+                # but no candidate was built for that kind ("no pinch grasp annotated" on every handle pick).  The
+                # contact as PickCupHandlePolicy computed it before 9j: the annotated centre / approach / close
+                # direction in the body's frame (its full rotation: a mug may stand tilted)
+                B = _quat_R(body_quat_wxyz) if body_quat_wxyz is not None else rz(yaw)
+                p = np.asarray(body_pos, float) + B @ np.asarray(g["center"], float)
+                appr = B @ np.asarray(g["approach"], float)
+                close = B @ np.asarray(g["close_dir"], float)
+                out.append({"kind": "handle_pinch", "p": p, "R": gripper_rot(appr, close),
+                            "pre_open": g["pre_open"]})
+                continue
             elif g["type"] == "top_pinch":
                 off = rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0]
                 # pads close across close_yaw; the object's long axis is perpendicular to it

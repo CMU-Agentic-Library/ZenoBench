@@ -958,7 +958,13 @@ def t25():
     for _f in fams.values():
         for _c in _f["cases"].values():
             if "mug_shelf" in _json.dumps(_c.get("route", [])):
-                _c["move"] = {**_c.get("move", {}), "mug_shelf": P("cell_shelf_4/top", 4.40, 4.50)}
+                # 11-26: yaw 180 -- the handle (its -Y side at yaw 0) faces north, where the base stands to pick it
+                _c["move"] = {**_c.get("move", {}), "mug_shelf": P("cell_shelf_4/top", 4.40, 4.50, 180.0)}
+                # 11-26 GT (s14 none_one_inside, s11 two_guests__one_cup, + 2 before): picked by the rim, the mug was
+                # judged not held on arrival at the TV stand (fingers closed on the thin wall read 0); by its handle
+                for st in _c["route"]:
+                    if st["skill"] == "pick" and st["args"].get("object") == "mug_shelf":
+                        st["args"]["grasp"] = "handle"
     return t, fams
 
 

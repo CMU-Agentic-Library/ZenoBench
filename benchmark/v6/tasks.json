@@ -187270,7 +187270,7 @@
         4.4,
         4.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 180.0
       }
      },
      "remove": [
@@ -187540,7 +187540,7 @@
         4.4,
         4.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 180.0
       }
      },
      "remove": [
@@ -189513,7 +189513,7 @@
         4.4,
         4.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 180.0
       }
      },
      "remove": [
@@ -190739,7 +190739,7 @@
         4.4,
         4.5
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 180.0
       }
      },
      "remove": [
@@ -191628,7 +191628,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "mug_shelf"
+        "object": "mug_shelf",
+        "grasp": "handle"
        }
       },
       {
@@ -191724,7 +191725,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "mug_shelf"
+        "object": "mug_shelf",
+        "grasp": "handle"
        }
       },
       {
@@ -192436,7 +192438,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "mug_shelf"
+        "object": "mug_shelf",
+        "grasp": "handle"
        }
       },
       {
@@ -192841,7 +192844,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "mug_shelf"
+        "object": "mug_shelf",
+        "grasp": "handle"
        }
       },
       {
