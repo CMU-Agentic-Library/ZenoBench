@@ -336,7 +336,9 @@ def t22():
             {c: dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
                           TRAY: on("serving_tray", T1, -8.00, 7.40), **on_tray},
                      watch=[J, A, TRAY, *on_tray],
-                     goal={"all": jgoal + [["fully_inside", A, TRAY], ["not on_floor", TRAY]]
+                     # 11-25 (gt_check s12): inside, not fully_inside -- an apple stands 2.3 cm over the shallow
+                     # serving tray's rim when it is in it (T11's apple in the same tray is "inside")
+                     goal={"all": jgoal + [["inside", A, TRAY], ["not on_floor", TRAY]]
                            + [["on_any", b, SHELVES] for b in on_tray if b.startswith("tray_book")] + [H]},
                      route=fridge([J], JY, JX) + [S("search", object=TRAY, region="dining_room_0_0"), look(TRAY)]
                      + [x for k, b in enumerate(sorted(n for n in on_tray if n.startswith("tray_book")))

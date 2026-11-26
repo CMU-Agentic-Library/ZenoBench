@@ -61,7 +61,7 @@ ATOM_ALTERNATIVES = {
     ("T11", "fruits_on_table"): [(["inside", "apple", "serving_tray"], [["on_any", "apple", _CABINETS]])],
     ("T11", "basket_missing"): [(["inside", "apple", "serving_tray"], [["on_any", "apple", _CABINETS]])],
     # T22 tray_elsewhere: its basket_missing layout keeps the apple in the fruit tray instead of the west tray
-    ("T22", "tray_elsewhere"): [(["fully_inside", "bought_apple", "west_tray"], [["on_any", "bought_apple", _KITCHEN_STORE]]),
+    ("T22", "tray_elsewhere"): [(["inside", "bought_apple", "west_tray"], [["on_any", "bought_apple", _KITCHEN_STORE]]),
                                 (["inside", "bought_apple", "fruit_tray"], [["on_any", "bought_apple", _KITCHEN_STORE]])],
 }
 

@@ -168038,7 +168038,7 @@
       "any": [
        [
         [
-         "fully_inside",
+         "inside",
          "bought_apple",
          "west_tray"
         ]
@@ -168258,7 +168258,7 @@
          "any": [
           [
            [
-            "fully_inside",
+            "inside",
             "bought_apple",
             "west_tray"
            ]
@@ -168276,9 +168276,9 @@
           ]
          ]
         },
-        "why": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: fully_inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])",
+        "why": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])",
         "raw": "best",
-        "check": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: fully_inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])"
+        "check": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])"
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
@@ -168571,7 +168571,7 @@
       "any": [
        [
         [
-         "fully_inside",
+         "inside",
          "bought_apple",
          "west_tray"
         ]
@@ -168803,7 +168803,7 @@
          "any": [
           [
            [
-            "fully_inside",
+            "inside",
             "bought_apple",
             "west_tray"
            ]
@@ -168821,9 +168821,9 @@
           ]
          ]
         },
-        "why": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: fully_inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])",
+        "why": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])",
         "raw": "best",
-        "check": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: fully_inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])"
+        "check": "not on_floor(west_tray) & on_any(bought_juice, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf|kitchen_counter_1/top|kitchen_counter_2/top]) & upright(bought_juice); one of: inside(bought_apple, west_tray) || on_any(bought_apple, [breakfast_fridge/inside_shelf|kitchen_cabinet_4/inside_shelf|kitchen_cabinet_6/inside_shelf])"
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
@@ -171875,7 +171875,7 @@
              "bought_juice"
             ],
             [
-             "fully_inside",
+             "inside",
              "bought_apple",
              "west_tray"
             ],
@@ -171907,7 +171907,7 @@
              "bought_juice"
             ],
             [
-             "fully_inside",
+             "inside",
              "bought_apple",
              "west_tray"
             ],
@@ -172156,7 +172156,7 @@
              "bought_juice"
             ],
             [
-             "fully_inside",
+             "inside",
              "bought_apple",
              "west_tray"
             ],
@@ -172188,7 +172188,7 @@
              "bought_juice"
             ],
             [
-             "fully_inside",
+             "inside",
              "bought_apple",
              "west_tray"
             ],

@@ -32,6 +32,7 @@
 | T12 `bins_capacity__apart_full_on_tv` s11 | #10 `place(toy_car, toy_bin_small_2)` | `tuck: its path collides now at 1/113: world right_gripper_left_finger_link 12 mm ... INVALID_START_STATE_WORLD_COLLISION` | 放进小收纳盒后收臂起点手指已卡进 12 mm；和 T10 冰箱、T18 玻璃盒同类：放下后退出的起点在碰撞里，没有先退出来。 |
 | T10 `after_dinner_clear__rubbish_mug` s11（重跑） | #17 `pick(used_mug)` | `pick used_mug: no reachable grasp from any base pose`（round_rim） | 同一布局（两次 annotation 完全相同）第一次跑这步成功，第二次失败：pick 的结果不稳定。 |
 | T19 `x6_gd_can_put_away__juice_full` s11 | #17 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.333 m short`（27 tick 内，无 physx 接触） | 停车点算到 [1.684, -0.435, 195°]，但 drop 第一段 tuck 在导航停下的位置 [2.259, -0.428, 180°]（右侧 0.43 m 是墙）就没收回来，底座还没开往停车点。`__in_4` 你三次全量过两次。 |
+| T03 `no_bin_substitute__tray` s11 | #15 `place(breakfast_spoon, serving_tray)` | `place breakfast_spoon: no free spot in serving_tray` | 前一步擀面杖（22 cm）放进 42×36 cm 托盘时落在正中、斜 45°，占满了托盘，勺子没处放。放进开口容器时应靠一边、顺容器长边放（place 没有朝向参数，托盘随种子移动，bench 给不了跟着托盘走的放置点）。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -44,4 +45,7 @@
 - T13 `finish_the_table__adult_and_kid` s14：儿童杯在 `kitchen_counter_2`（吊柜下）8 次抓取轨迹全失败 → 挪到电视柜和碗放一起（3cebde7d），s14 重跑成功。
 - T10 `after_dinner_clear`：杯子放岛台不给放置点时技能放到离北沿 7 cm 倒了 → 路线给放置点 [7.05, 1.70]（208d9ecb）。
 - T23 地上的东西互相至少隔 0.3 m（bd8c2302），`belongs_on_floor__bin_full` s12 重跑成功。
+- T22 `tray_elsewhere`：苹果放进浅托盘顶部高出托盘边 2.3 cm，`fully_inside` 判不过 → 改为 `inside`（同 T11 的苹果进托盘）。
+- 生成器：路线要往里放东西的容器也必须够得着；能站人的边必须开得过去（`drive_cells.json`），T22 托盘不再被抽到餐桌西沿（2cf8f967）。
+- T28 `which_bed__south`：杯子放 `cell_shelf_2` 的放置点从书架北端挪到中段（离西墙的角远一点）。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
