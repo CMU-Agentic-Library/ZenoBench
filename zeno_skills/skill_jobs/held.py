@@ -11,14 +11,26 @@ import numpy as np
 
 from ..motion_state import Failure, Plan
 from ..rig import SkillFailure
-from ..predicates import FLIPPED_DOT, HELD_HEIGHT_TOL, POINTING_DEG
+from ..predicates import FLIPPED_DOT, HELD_HEIGHT_TOL, POINTING_DEG, PRESENT_FWD, PRESENT_Z
 from ..skills import check_held
 from ..tolerances import (FLIP_MIN, FLIP_PAST, FLIP_PUSH_TO, FLIP_RELEASE, POINT_FRONT, ROTATE_NEAR_BASE, ROTATE_TOL_DEG,
                           SHAKE_SLIP, UPRIGHT_RAISE, WAVE_AMP)
 
-# present: the load's centre in front of the base (forward, sideways toward the holding hand's side, height), m.
-# One goal set (any of them presents it), not tried one after another as the old PresentHeldPolicy did
-PRESENT_AT = ((0.55, -0.05, 1.10), (0.50, -0.15, 1.05), (0.60, 0.0, 1.00), (0.45, -0.10, 0.95))
+# present: the load's centre anywhere in the region the presenting predicate defines (predicates.PRESENT_FWD /
+# PRESENT_Z: in front of the base, at eye level) -- a grid PRESENT_INSET inside its bounds, PRESENT_STEPS points
+# along forward and along height, at each of PRESENT_SIDEWAYS (m, negative: toward the holding hand's side; mirrored
+# for the left).  One goal set (free_leg takes the cheapest); until the rule audit of 11-25 the old
+# PresentHeldPolicy's four tries, numbers of their own
+PRESENT_INSET = 0.1
+PRESENT_STEPS = 3
+PRESENT_SIDEWAYS = (0.0, -0.10)
+
+
+def present_at():
+    """(forward, sideways, height) m of present's goal set: the grid of the presenting region (PRESENT_FWD / _Z)."""
+    f = np.linspace(PRESENT_FWD[0] + PRESENT_INSET, PRESENT_FWD[1] - PRESENT_INSET, PRESENT_STEPS)
+    z = np.linspace(PRESENT_Z[0] + PRESENT_INSET, PRESENT_Z[1] - PRESENT_INSET, PRESENT_STEPS)
+    return tuple((float(a), float(lat), float(b)) for a in f for b in z for lat in PRESENT_SIDEWAYS)
 PRESENT_HEAD_STEPS = 60  # ticks the head turns toward the presented load in
 
 
@@ -92,7 +104,8 @@ def _height_job(rig, args, skill, up):
 
 def present_job(rig, args, state, skill=None):
     """motion_skills.Job of present: what a hand holds (``args["name"]``) brought in front of the body where the
-    robot stands -- its centre at any of PRESENT_AT (sideways mirrored for the left hand), the hand's rotation
+    robot stands -- its centre at any of present_at() (the presenting region; sideways mirrored for the left hand), the
+    hand's rotation
     as it is: one goal set, the free leg to its first reachable goal (plan_posture, the load's tilt held) --
     then the head turned to the load where the leg leaves it.  done(): the view recorded (perceive.record_view),
     the load's centre returned."""
@@ -111,7 +124,7 @@ def present_job(rig, args, state, skill=None):
     centre = np.asarray(rig.geo.centre(name, rig.state()), float)
     off = np.asarray(tcp, float) - centre             # TCP minus the load's centre: kept (the hand does not turn)
     goals = PoseSet(tuple((np.array([x + c * f - s * sgn * l, y + s * f + c * sgn * l, z]) + off, np.asarray(R, float))
-                          for f, l, z in PRESENT_AT))
+                          for f, l, z in present_at()))
 
     def build(st, frm=None, prior=None):
         plan = plan_posture(kin, st, goals, name="present")

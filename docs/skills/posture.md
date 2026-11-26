@@ -31,7 +31,7 @@ HAND_PLAN 9e（11-25）：`CarryHeightAdjustPolicy` / `SetHeldHeightPolicy` → 
 
 HAND_PLAN 9e：`PresentHeldPolicy` → `run_skill(SKILLS["present"])`，job 是 `skill_jobs/held.py` 的 `present_job`，计划是 `plan_posture` 加一个转头段。
 
-1. 物体中心在身前的 4 个位置（`PRESENT_AT`，左手的横向镜像）组成**一个目标集合**，手的朝向不变；自由段到第一个能到的（旧代码是 4 个依次 `move_to` 重试）。
+1. 物体中心在 `presenting` 谓词规定的区域里（底盘前方 0.35–0.85 m、高 0.9–1.4 m，`predicates.PRESENT_FWD` / `PRESENT_Z`）：区域里往内缩 10 cm 取 3 × 3 的网格，横向 0 和往拿着的那只手那边 10 cm，共 18 个位置组成**一个目标集合**（`present_at()`，左手横向镜像），手的朝向不变；自由段到最便宜的那个（11-25 之前是旧代码依次试的 4 个点，数字是自己的，不是从任务区域来的）。
 2. 头转向自由段终点处的物体（`present_look`），再记录视野（`record_view`）。
 
 ## rotate / upright（手里的东西原地转向）

@@ -106,6 +106,8 @@ FLIPPED_DOT = -0.7       # flipped: the object's z axis against its start's, at 
 WIPED_COVER = 0.5        # wiped: this much of the strip in contact (wipe's result, and the stroke its build needs)
 KNOCKED_STILL = 0.05     # rad / m: knocked -- the knocked door's joint moved less (knock)
 TOUCHED_STILL = 0.015    # m: touched -- the touched object moved less (touch; brace and handover hold one as still)
+PRESENT_FWD = (0.35, 0.85)  # m: presenting -- the held load's centre this far in front of the base (present's goal set)
+PRESENT_Z = (0.9, 1.4)      # m: ... at this height
 LYING_DEG = 60.0
 REACH_OFFSET = 0.10           # reach test: TCP this far above the target point
 NEAR_M = 1.30                 # base_near: base centre to target footprint
@@ -484,7 +486,7 @@ def _presenting(rig, ctx, object):
     fwd = (c[0] - x) * math.cos(math.radians(yaw)) + (c[1] - y) * math.sin(math.radians(yaw))
     from .perception import project_to_head_camera
     vis, _ = project_to_head_camera(rig, c, exclude=object)
-    ok = 0.35 <= fwd <= 0.85 and 0.9 <= c[2] <= 1.4 and vis
+    ok = PRESENT_FWD[0] <= fwd <= PRESENT_FWD[1] and PRESENT_Z[0] <= c[2] <= PRESENT_Z[1] and vis
     return ok, f"forward {fwd:.2f} m, height {c[2]:.2f} m, visible {vis}"
 
 
