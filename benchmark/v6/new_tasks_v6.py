@@ -1032,6 +1032,9 @@ def t26():
     LT["bear_to_bed__top_covered"] = cost_tiers(
         [([["on_any", BEAR, ["mattress_1/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0", *B2]]], 0),
          ([["inside", BEAR, BASK]], 1)], [(stays(top_books), 1)])
+    # 11-25 (gt_check whose__shelf_full s11): the picture book lies long side out (90 deg) as in scattered -- across,
+    # its 14 cm width leaves 5.495 cm of overhang with the centre of mass on the top, under the 5.5 cm the edge pinch
+    # needs, and no edge to slide it to
     fams = {
         "whose": fam(
             "car_in_living_room", ["referent_clue", "storage_place"],
@@ -1041,11 +1044,11 @@ def t26():
             "bookcase may be full",
             "only the kid's things go: the picture book to his bookcase -- the other one by his bed when it is "
             "full -- the novel stays",
-            {"shelf_room": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
+            {"shelf_room": dict(add={kb: on("book_blue", TV, 7.20, 0.36, 90.0), nv: on("paperback_book", TV, 7.80, 0.36),
                                      **room},
                                 watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], *nv_stays, H]},
                                 route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.50])),
-             "shelf_full": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
+             "shelf_full": dict(add={kb: on("book_blue", TV, 7.20, 0.36, 90.0), nv: on("paperback_book", TV, 7.80, 0.36),
                                      **basket, **full_b2},
                                 watch=[kb, nv, *full_b2],
                                 goal={"all": [["on_any", kb, B3 + ROOM_TOPS], *nv_stays, H]},

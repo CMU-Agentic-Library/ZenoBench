@@ -195838,10 +195838,10 @@
        "asset": "book_blue",
        "support": "tv_stand_2/top",
        "xy": [
-        7.204,
-        0.371
+        7.2,
+        0.36
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "adult_novel": {
        "asset": "paperback_book",
@@ -195939,18 +195939,18 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.104,
-         0.3,
+         7.13,
+         0.26,
          7.89,
-         0.441
+         0.46
         ],
         "dx": [
-         -0.44,
+         -0.47,
          0.47
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.03,
+         0.04
         ],
         "pick": [
          "kid_book"
@@ -196160,10 +196160,10 @@
        "asset": "book_blue",
        "support": "tv_stand_2/top",
        "xy": [
-        7.204,
-        0.371
+        7.2,
+        0.36
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "adult_novel": {
        "asset": "paperback_book",
@@ -196491,18 +196491,18 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.104,
-         0.3,
+         7.13,
+         0.26,
          7.89,
-         0.441
+         0.46
         ],
         "dx": [
-         -0.44,
+         -0.47,
          0.47
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.03,
+         0.04
         ],
         "pick": [
          "kid_book"

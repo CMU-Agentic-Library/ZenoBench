@@ -38,6 +38,7 @@
 | T13 `finish_the_table__kid_seat` s11 | #11 `place(kid_cup, dining_table_2/top)` | `place_reach: no collision-free path to the pose (carry tilt held: TRAJOPT_FAIL (no feasible seed))` | 端杯子保持水平的约束下轨迹优化没有可行种子（只构建了 2 次）；放置点在餐桌西沿 11 cm。 |
 | T07 `vessel_decides_appliance__in_pot` s16（开局改好后重跑）、T10 `after_dinner_clear__rubbish_mug` s11（第三次跑） | #7 `place(soup_pot, kitchen_stove/top)` / #15 `drop(takeout_tray, kitchen_trash)` | `PRECONDITION_FAILED: holding(hand=any, object=…) is false (slip 0.009 m / 0.004 m, fingers [0.0, 0.0])` | sticky 焊着、滑动很小，但 holding 看手指读数判成没拿着；同 11-21 交接第 4 节的铅笔。holding 检查在 sticky 时应信焊接。 |
 | T27 `two_leftovers__soup_on_table` s16（开局改好后重跑） | #9 `pick(leftover_soup)` | `tuck: the arm stopped 0.008 m short` | 左手拿着剩饭（9c 以后两只手都用），右手拿汤后收臂，左手爪碰餐桌（physx：left_gripper_link–dining_table_2，leg tuck / drive_base）。另一只手拿着东西时的收臂没避开桌子。 |
+| T23 `dropped_out_of_view__no_room_for_bowl` s13 | #7 `place(dropped_bowl, kitchen_island/top)` | `place_reach: no collision-free path to the pose (carry: tilts 0.37 rad, 0.30 allowed)`（14 次构建） | 端碗伸到岛台放置点（离南沿 16 cm）时倾斜超限。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
 
@@ -55,4 +56,5 @@
 - T28 `which_bed__south`：杯子放 `cell_shelf_2` 的放置点从书架北端挪到中段（离西墙的角远一点）。
 - T05 `homework_ready__several`：本子在矮电视柜上，expose 后机器人 0.8 m 处看它在视野下方 48°，look 失败 → 电视柜上的扁平物品 look 前后加 bend / straighten。
 - 开局第一次收臂失败（T25、T27、T14、T07、T10，开局都离墙 0.40–0.51 m）→ 生成器的开局离墙和家具至少 0.6 m（3160 个开局全部满足）。这几行留在第 2 节备查：收臂时手臂扫到墙本身仍是技能侧的事。
+- T26 `whose`：图画书横放时宽 14 cm，朝外伸出最多 5.495 cm < 捏边要的 5.5 cm，没有可推的边 → 和 `scattered` 一样转 90° 长边朝外。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
