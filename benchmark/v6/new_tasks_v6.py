@@ -1258,7 +1258,10 @@ def t28():
                                 "bed_bear": on("teddy_bear", "mattress_2/top", 3.90, -9.80)},
                            goal={"all": [["on", KC, "cell_shelf_2/top"], ["upright", KC], H]},
                            route=[nav(KC), pick(KC), look("mattress_1/top"), nav("cell_shelf_2/top"),
-                                  place(KC, "cell_shelf_2/top", [1.30, -11.90])])}),
+                                  # 11-25 (gt_check_1125b s13): at -11.90, 27 cm from its north end, the park
+                                  # took the north-east corner and the arm went into the west wall; mid-shelf
+                                  # the base faces it from the east
+                                  place(KC, "cell_shelf_2/top", [1.30, -12.15])])}),
         "where_his_cup_is": fam(
             "cup_on_counter", ["referent_clue", "item_put_away", "dependent_decisions", "resource_absent"],
             "whether his cup is on the counter among the others or put away in the low cabinet (seed)",

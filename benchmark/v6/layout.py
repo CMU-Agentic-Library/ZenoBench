@@ -147,6 +147,68 @@ def _world(base):
     return WorldModel(SceneAnnotations(ROOT / base / "annotation.json"))
 
 
+DRIVE_NEAR_M = 0.2       # a stand pose counts only this close to a cell the base can drive to (11-25 T22 s12:
+                         # the dining table's west side is clear but no path reaches it)
+
+
+DRIVE = ROOT / "benchmark/v6/drive_cells.json"
+
+
+@lru_cache(maxsize=None)
+def _drive_cells(base):
+    """(x0, y0, step, cells) of the cells the base can drive to; cached in drive_cells.json (rebuilt when missing
+    or for a base not in it: about 14 minutes a base)."""
+    doc = json.loads(DRIVE.read_text()) if DRIVE.exists() else {}
+    if base not in doc:
+        x0, y0, step, seen = _drive_cells_build(base)
+        doc[base] = {"x0": x0, "y0": y0, "step": step, "cells": sorted(list(c) for c in seen)}
+        DRIVE.write_text(json.dumps(doc))
+    d = doc[base]
+    return d["x0"], d["y0"], d["step"], frozenset(tuple(c) for c in d["cells"])
+
+
+def _drive_cells_build(base):
+    """Cells the base can drive to from the base scene's robot start (free at 0 or 90 deg, 8-connected), as
+    start_cells' flood fill without its every-yaw start test."""
+    import numpy as np
+    from zeno_skills.annotations import SceneAnnotations
+    from zeno_skills.evaluator import room_of as _room
+    ann = SceneAnnotations(ROOT / base / "annotation.json")
+    world = _world(base)
+    x0, y0, _ = json.loads((ROOT / base / "task.json").read_text())["robot_start"]
+    pts = np.concatenate([np.asarray(r["triangles"]).reshape(-1, 2) for r in ann.rooms.values()])
+    lo, hi = pts.min(0), pts.max(0)
+    step = CELL_M / 2
+    nx, ny = int((hi[0] - lo[0]) / step) + 1, int((hi[1] - lo[1]) / step) + 1
+    xy = lambda i, j: (float(lo[0] + i * step), float(lo[1] + j * step))  # noqa: E731
+    free = set()
+    for i in range(nx):
+        for j in range(ny):
+            x, y = xy(i, j)
+            if _room(ann.rooms, (x, y)) and (world.footprint_clear(x, y, 0.0, margin=0.03)
+                                            or world.footprint_clear(x, y, math.pi / 2, margin=0.03)):
+                free.add((i, j))
+    s = min(free, key=lambda ij: math.hypot(xy(*ij)[0] - x0, xy(*ij)[1] - y0))
+    seen, todo = {s}, [s]
+    while todo:
+        i, j = todo.pop()
+        for di in (-1, 0, 1):
+            for dj in (-1, 0, 1):
+                n = (i + di, j + dj)
+                if n in free and n not in seen:
+                    seen.add(n)
+                    todo.append(n)
+    return float(lo[0]), float(lo[1]), step, frozenset(seen)
+
+
+def _drivable(base, p):
+    x0, y0, step, seen = _drive_cells(base)
+    i, j = (p[0] - x0) / step, (p[1] - y0) / step
+    r = int(math.ceil(DRIVE_NEAR_M / step))
+    return any((int(round(i)) + di, int(round(j)) + dj) in seen for di in range(-r, r + 1) for dj in range(-r, r + 1)
+               if math.hypot(di, dj) * step <= DRIVE_NEAR_M)
+
+
 @lru_cache(maxsize=None)
 def reach_edges(base, sup):
     """Where the base can stand at a top: [[k, s, E, l0, l1, depth], ...], each a stretch of the edge at
@@ -169,7 +231,7 @@ def reach_edges(base, sup):
                     p = [0.0, 0.0]
                     p[k], p[j] = E + sgn * off, t
                     yaw = math.atan2(-sgn if k else 0.0, -sgn if not k else 0.0)
-                    if world.footprint_clear(p[0], p[1], yaw):
+                    if world.footprint_clear(p[0], p[1], yaw) and _drivable(base, p):
                         depth = REACH_DEPTH_M
                         break
                 if run and depth == run[5]:
@@ -530,6 +592,10 @@ def layout_spec(task, vid, registry, control=None):
     # put the lid 2 cm from a block, the finger room only kept around plain picks
     picked |= {s["args"].get(k) for s in steps if s["skill"] in ("hide", "cover") for k in ("object", "lid")} - {None}
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
+    # 11-25 (T22 tray_elsewhere__orange_in_it s12: the tray drawn 82 cm from the edge the base stands at): what the
+    # route sets things into or onto must be in reach as well, like what it picks
+    targets = {s["args"].get(k) for s in steps if s["skill"] in ("place", "drop", "stack", "hover", "cover", "hide")
+               for k in ("receptacle", "container", "target", "base")} - {None}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
     # stacked objects (no support) go with the object they stand on
@@ -619,8 +685,10 @@ def layout_spec(task, vid, registry, control=None):
             if rng:
                 pk = sorted(set(g) & picked)
                 sk = sorted(set(g) & searched)
+                tk = sorted(set(g) & targets)
                 clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng,
-                                 **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
+                                 **({"pick": pk} if pk else {}), **({"search": sk} if sk else {}),
+                                 **({"place": tk} if tk else {})})
     floor_groups = [[g] for g in ground]
     merged = True
     while merged:
@@ -844,7 +912,8 @@ def apply_layout(cfg, spec, rng):
         edges = (spec.get("reach") or {}).get(c["support"])
 
         members = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
-                   for n in c.get("pick") or c["names"]     # what the route picks must be in reach; the rest comes along
+                   for n in ((c.get("pick") or []) + (c.get("place") or [])) or c["names"]  # what the route picks or
+                   # sets things into must be in reach; the rest comes along
                    if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
 
         every = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
