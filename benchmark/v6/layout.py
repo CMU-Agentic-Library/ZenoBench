@@ -50,6 +50,9 @@ FLOOR_OBST_CLEAR_M = 0.05   # ...keeping this from furniture, walls and other th
 FLOOR_RIDER_Z_M = 0.6    # a loose object (no support) below this over a floor object goes with it (in it / on it)
 DOOR_CLEAR_M = 0.9       # ...and this from every hinge (fridge, cabinet doors swing there)
 FLOOR_STAND_M = (0.45, 0.8)  # a free base cell this far from its centre (the base can stand by it to pick it up)
+FLOOR_GAP_M = 0.3       # ...and this from the other things on the floor (11-25 T23 s12: a block 8 cm from the bin
+                         # it was drawn beside had no grasp)
+FLOOR_CELL_CLEAR_M = 0.35   # the base cell beside it this far from every other thing on the floor
 FLOOR_HINT_CLEAR_M = 0.7   # ...and this from every place the oracle route sets something down (its base stands there)
 OBSTACLE_TOP_M = 0.5     # furniture whose bottom is above this (wall cabinets) does not block the floor
 SEED0, SEED1 = 10, 20    # the evaluation seeds compared for likeness
@@ -790,7 +793,7 @@ def _draw_floor(cfg, c, spec, current, i, rng):
             if any(room_of(base, (x, y)) != c["room"] for x in (b[0], b[2]) for y in (b[1], b[3])):
                 return False
             if any(_overlap(b, list(o), FLOOR_OBST_CLEAR_M) for o in obst) or \
-                    any(_overlap(b, o, FLOOR_OBST_CLEAR_M) for o in others) or \
+                    any(_overlap(b, o, FLOOR_GAP_M) for o in others) or \
                     any(_box_dist(b, h) < DOOR_CLEAR_M for h in hinges):
                 return False
         U = _union(bs)
@@ -800,7 +803,7 @@ def _draw_floor(cfg, c, spec, current, i, rng):
             m = sh(m)
             cx, cy = (m[0] + m[2]) / 2, (m[1] + m[3]) / 2
             if not any(FLOOR_STAND_M[0] <= math.hypot(x - cx, y - cy) <= FLOOR_STAND_M[1] and _box_dist(U, (x, y)) > 0.3
-                       for x, y in cells):
+                       and all(_box_dist(o, (x, y)) > FLOOR_CELL_CLEAR_M for o in others) for x, y in cells):
                 return False
         return True
     for _ in range(TRIES * 2):
