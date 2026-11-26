@@ -2247,7 +2247,9 @@ def T14(t):
                                               place("desk_mug", "kitchen_counter_2/top", [-0.30, 7.60])])
     # whose_book: each book from the desk to the shelf that holds books of its kind: the blue hardcovers stand on
     # the bedroom bookcase, the paperbacks on the living-room shelf
-    KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
+    # 11-25 (GT check, seed 12): into shelf_2 (0.81 m) the arm stopped 14 cm short; shelf_1 (0.46 m) is the height
+    # large_shelf_5/shelf_1 is reached at in within_kids_reach.  The shelved paperbacks move down with it.
+    KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_1"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
     # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
     # 11-22 (v6_sticky_1121, muqingj v6full_1119: "no free edge spot", 2 of 2): the two standing at the top's ends,

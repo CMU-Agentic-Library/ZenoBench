@@ -158093,7 +158093,7 @@
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.6
@@ -158102,7 +158102,7 @@
       },
       "paperback_shelved_2": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.3
@@ -158197,7 +158197,7 @@
          "paperback_shelved_1",
          "paperback_shelved_2"
         ],
-        "support": "large_shelf_2/shelf_2",
+        "support": "large_shelf_2/shelf_1",
         "box": [
          -1.92,
          -1.69,
@@ -158429,7 +158429,7 @@
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.6
@@ -158438,7 +158438,7 @@
       },
       "paperback_shelved_2": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.3
@@ -158534,7 +158534,7 @@
          "paperback_shelved_1",
          "paperback_shelved_2"
         ],
-        "support": "large_shelf_2/shelf_2",
+        "support": "large_shelf_2/shelf_1",
         "box": [
          -1.92,
          -1.69,
@@ -158566,7 +158566,7 @@
          -0.4
         ]
        ],
-       "large_shelf_2/shelf_2": [
+       "large_shelf_2/shelf_1": [
         [
          -1.95,
          -1.01,
@@ -158770,7 +158770,7 @@
       },
       "paperback_shelved_1": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.6
@@ -158779,7 +158779,7 @@
       },
       "paperback_shelved_2": {
        "asset": "paperback_book",
-       "support": "large_shelf_2/shelf_2",
+       "support": "large_shelf_2/shelf_1",
        "xy": [
         -1.86,
         -1.3
@@ -158896,7 +158896,7 @@
          "paperback_shelved_1",
          "paperback_shelved_2"
         ],
-        "support": "large_shelf_2/shelf_2",
+        "support": "large_shelf_2/shelf_1",
         "box": [
          -1.92,
          -1.69,
@@ -158934,7 +158934,7 @@
          -0.43
         ]
        ],
-       "large_shelf_2/shelf_2": [
+       "large_shelf_2/shelf_1": [
         [
          -1.95,
          -1.01,
@@ -160806,14 +160806,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "large_shelf_2/shelf_2"
+        "destination": "large_shelf_2/shelf_1"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback",
-        "receptacle": "large_shelf_2/shelf_2",
+        "receptacle": "large_shelf_2/shelf_1",
         "hint_xy": [
          -1.86,
          -0.95
@@ -160882,14 +160882,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "large_shelf_2/shelf_2"
+        "destination": "large_shelf_2/shelf_1"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback",
-        "receptacle": "large_shelf_2/shelf_2",
+        "receptacle": "large_shelf_2/shelf_1",
         "hint_xy": [
          -1.86,
          -0.95
