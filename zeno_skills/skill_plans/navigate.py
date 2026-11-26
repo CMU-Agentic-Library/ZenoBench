@@ -44,14 +44,16 @@ class Carry:
 
 def travel_chain(kin, left_kin, state, arrive=None):
     """The postures the base drives in from ``state`` [(name, Posture)], whole: the fold (each empty
-    arm folded, an arm with a load as it is; the body the right fold's unless the right hand holds
-    something), hanging at the side where the fold does not fit (empty-handed only: both arms down,
+    arm folded, an arm with a load as it is; the body the right fold's unless a hand holds something --
+    either hand: the body moves the load, docs 4.1; s11 T23 11-26, a left-held spoon's lowered torso
+    raised by the right fold, the place planned for it off by 0.085 rad), hanging at the side where the fold does not fit (empty-handed only: both arms down,
     kin.drive), the arrival (the fold, or ``arrive``: a Posture, right-arm joints, or (right, left)).  The base
     planner passes to the arrival without a swing where it is the fold and hangs only where the
     path needs it."""
     right_held, left_held = state.held("right") is not None, state.held("left") is not None
     rq = np.asarray(state.q("right") if right_held else kin.rest, float)
-    rest = Posture(rq[:2].copy(), {"right": rq[2:].copy(),
+    body = np.asarray(state.body if right_held or left_held else rq[:2], float)
+    rest = Posture(body.copy(), {"right": rq[2:].copy(),
                                    "left": np.asarray(state.arms["left"] if left_held else
                                                       np.asarray(left_kin.rest, float)[2:], float).copy()})
     hang = rest if right_held or left_held else \

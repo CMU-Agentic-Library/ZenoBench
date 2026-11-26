@@ -265,9 +265,12 @@ def posture_sets(rig, postures):
 
 
 def _rest_posture(rig):
-    """(right, left) travel posture: each empty arm folded, an arm with a load as it is."""
-    return (rig.kin.rest.copy() if rig.held is None else rig.q_cmd.copy(),
-            rig.left_kin.rest[2:].copy() if rig.left_held is None else rig.left_q_cmd.copy())
+    """(right, left) travel posture: each empty arm folded, an arm with a load as it is; the body as it
+    is while either hand holds something (skill_plans.travel_chain, docs 4.1)."""
+    right = rig.kin.rest.copy() if rig.held is None else rig.q_cmd.copy()
+    if rig.left_held is not None:
+        right[:2] = rig.q_cmd[:2]
+    return (right, rig.left_kin.rest[2:].copy() if rig.left_held is None else rig.left_q_cmd.copy())
 
 
 def relocate(rig, goal, postures=(), label="relocate", **drive):

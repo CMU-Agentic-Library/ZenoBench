@@ -144,6 +144,17 @@ def test_the_travel_chain_hangs_only_empty_handed_and_keeps_a_load_as_it_is():
     assert all(np.allclose(p.q("right"), q) for _, p in chain)
 
 
+def test_a_load_in_the_left_hand_keeps_the_body_as_it_is_while_the_right_arm_folds():
+    # docs 4.1, either hand alike: the body moves the left load too (s11 T23 11-26)
+    q, ql = _q(0.4, -0.2, 0.9), np.full(7, 0.3)
+    s = _state(q=q, ql=ql)
+    s = State(base=s.base, body=s.body, arms=s.arms,
+              hands={"right": Hand(0.0), "left": Hand(0.0, Held("spoon", np.eye(4)))})
+    chain = travel_chain(Kin(), Kin("left"), s)
+    for _, p in chain:
+        assert np.allclose(p.body, q[:2]) and np.allclose(p.arms["right"], REST[2:]) and np.allclose(p.arms["left"], ql)
+
+
 def test_a_drive_segment_runs_its_drives_and_swings_through_the_actuator(monkeypatch):
     seg = P.drive(Base(), _state(q=_q(0.5, 0.0, 0.5)), (1.0, 2.0, 90.0), travel_chain(Kin(), Kin("left"), _state()),
                   "navigate", speed=0.1)
