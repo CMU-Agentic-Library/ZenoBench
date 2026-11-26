@@ -776,6 +776,9 @@ def t24():
                                    watch=[AP, BA, *HOMEWORK3_SPREAD], goal={"all": [H], "any": each(AP, BA)},
                                    route=fetch(AP, DESK, [-1.10, -5.95]) + [nav(DESK3), look(DESK3)]
                                    + fetch(BA, SHELF4, [7.00, -6.76]))},
+            # 11-26 GT s11 (twice, same 2.5 cm): the apple drawn 12 cm off the table's west edge near its north end
+            # failed its carry-in from the west side; it stays where the design puts it (as T22's juice, carried)
+            pin=[AP],
             instruction="The kids are doing homework and are hungry. Bring them something to eat.",
             instruction_zh="孩子们在写作业，饿了，给他们拿点吃的。"),
     }

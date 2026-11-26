@@ -88,6 +88,10 @@
 - T07 微波炉路线开完门先开到岛台再看（1a821a32）。
 - **窗户补进 annotation（11-26）**：墙线在 26 扇窗户处都断开，窗户碰撞体往房间里凸 0.1–0.45 m（转角凸窗），规划看不到 → 每扇窗户按墙（0–2.4 m）加进 obstacles，`tools/annotate_scene.py` 以后也会自动加。上面 T15 / T09 / T17 撞 `WindowFactory_3015` 那几行应由此解决，待重跑确认。
 - **捏杯柄修好了（11-26，用户让我改的技能代码）**：HAND_PLAN 9j 把杯柄抓改成 `pick_job(kinds=("handle_pinch",))`，但 `zeno_skills/annotations.py` 的 `grasp_poses()` 没有 `handle_pinch` 分支，所有杯柄抓都报 `no pinch grasp annotated`。补了这个分支（按 9j 前 `PickCupHandlePolicy` 的算法：标注的 center / approach / close_dir 用物体完整旋转转到世界系），只在明确要 `handle_pinch` 时才生成，其余调用不变（马克杯默认候选仍 36 个）。T25 拿 `mug_shelf` 改用杯柄抓、杯子转 180°（杯柄朝机器人那侧），绕开捏薄杯壁被判没拿着；`two_guests__one_cup` s11、`only_mugs` s14、`none_one_inside` s14 三个都过、都是最好一档。捏杯沿判没拿着本身（`holding` 的 4 mm 阈值）仍是技能侧问题，模型用默认抓法还会遇到。
+- **两处技能小修（11-26，用户让我直接改并推送）**：
+  - `zeno_skills/motion.py` `_entity()`：Infinigen 家具的碰撞体 prim 用的是工厂名（`TableDiningFactory_…_collision`），annotation 用简称（`annotations/furniture_names.json`），`touch_owner` 找不到 `dining_table_2`，擦餐桌必报 `KeyError`（T08 `which_surface__dining` s12）。现在按同一份映射把工厂名翻成简称（`_furniture_short_names()`）。仿真里 T08 s12 的 wipe 不再报错，但接着 `wipe dining_table_2/top: no base pose reaches any of 8 free strips`（32 goals，built 39 全失败）——和擦岛台那次一样是规划问题，留给你。
+  - `zeno_skills/predicates.py` `holding`：手指读数 ≤ 4 mm（`HELD_SHUT_FINGERS`）时不再直接判没拿着，物体离手的距离变化 ≤ 2 cm（`HELD_SHUT_SLIP`）仍算拿着；> 5 cm（`HELD_SLIP_MAX`）照旧判掉了。捏薄杯沿挤紧后读数 0 的情况（T25 四次）不再误判。回放验证：T25 s11 捏杯沿拿 `mug_shelf` 搬到电视柜，place 前 `holding` 为真，放下成功。抓空的 pick 本身会报失败、不会走到这个判定。
+  - 顺带：`episode/episode.py` 给名字报错附候选写法时在没有 rig 的测试里会抛错（`test_env_service`），已修；562 个测试全过。
 - **kitchen_0_0 进得去了（11-26）**：唯一入口被 `dining_table_1` 卡成 0.44 m，桌子往西挪 0.4 m。
 - **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成一只脏碗（两只太挤，手指插不进），先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。

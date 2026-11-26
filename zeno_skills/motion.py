@@ -235,6 +235,20 @@ def arm_self_collision(k, side):
     return k
 
 
+
+_SHORT_NAMES = None
+
+
+def _furniture_short_names() -> dict:
+    """{Infinigen factory prim name: annotation furniture name} (annotations/furniture_names.json), cached."""
+    global _SHORT_NAMES
+    if _SHORT_NAMES is None:
+        import json as _json
+        from pathlib import Path as _Path
+        f = _Path(__file__).resolve().parents[1] / "annotations" / "furniture_names.json"
+        _SHORT_NAMES = _json.loads(f.read_text()).get("names", {}) if f.exists() else {}
+    return _SHORT_NAMES
+
 class _Locks:
     """In-place rewrite of locked joints' fixed transforms (cuRobo's own
     update_locked_joints re-parses the URDF: seconds per call).  A joint that mimics a locked one
@@ -1899,7 +1913,14 @@ class Motion:
         if c.name not in cache:
             parts = c.name.strip("/").split("/")
             known = {o["name"] for o in self.ann.obstacles}
-            cache[c.name] = next((p for p in reversed(parts) if p in known), "/".join(parts[-2:]))
+            # 11-26 (zihan, bench GT): an Infinigen piece's prims carry its factory name (TableDiningFactory_..._collision),
+            # the annotation its short name (annotations/furniture_names.json) -- touch(dining_table_2) found no static
+            # collider of that name (KeyError in every wipe of the dining table, T08 s12) while the island, built under
+            # its short name, was found
+            short = _furniture_short_names()
+            cache[c.name] = next((p for p in reversed(parts) if p in known), None) or \
+                next((short[q] for q in (p.removesuffix("_collision") for p in reversed(parts))
+                      if q in short and short[q] in known), "/".join(parts[-2:]))
         return cache[c.name]
 
     def entity_of_path(self, path):

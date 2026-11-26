@@ -182682,6 +182682,9 @@
       "snack_banana"
      ],
      "since": "v6",
+     "pin": [
+      "snack_apple"
+     ],
      "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
      "v6": {
       "family": "two_kids",
@@ -182758,32 +182761,17 @@
         "pick": [
          "snack_banana"
         ]
-       },
-       {
-        "names": [
-         "snack_apple"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
          2.9171,
          6.663,
          2.9789,
          6.727
-        ],
-        "dx": [
-         -0.11,
-         0.85
-        ],
-        "dy": [
-         -1.15,
-         1.21
-        ],
-        "pick": [
-         "snack_apple"
         ]
-       }
-      ],
-      "static": {
+       ],
        "desk_1/top": [
         [
          -1.279,
@@ -183280,6 +183268,9 @@
       "snack_box"
      ],
      "since": "v6",
+     "pin": [
+      "snack_apple"
+     ],
      "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
      "v6": {
       "family": "two_kids",
@@ -183356,32 +183347,17 @@
         "pick": [
          "snack_box"
         ]
-       },
-       {
-        "names": [
-         "snack_apple"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
          2.9171,
          6.663,
          2.9789,
          6.727
-        ],
-        "dx": [
-         -0.11,
-         0.85
-        ],
-        "dy": [
-         -1.15,
-         1.21
-        ],
-        "pick": [
-         "snack_apple"
         ]
-       }
-      ],
-      "static": {
+       ],
        "desk_1/top": [
         [
          -1.279,
@@ -184080,6 +184056,9 @@
       "hw3_book_red_21"
      ],
      "since": "v6",
+     "pin": [
+      "snack_apple"
+     ],
      "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
      "v6": {
       "family": "two_kids",
@@ -184136,32 +184115,17 @@
         "pick": [
          "snack_banana"
         ]
-       },
-       {
-        "names": [
-         "snack_apple"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
          2.9171,
          6.663,
          2.9789,
          6.727
-        ],
-        "dx": [
-         -0.11,
-         0.85
-        ],
-        "dy": [
-         -1.15,
-         1.21
-        ],
-        "pick": [
-         "snack_apple"
         ]
-       }
-      ],
-      "static": {
+       ],
        "desk_3/top": [
         [
          5.846,

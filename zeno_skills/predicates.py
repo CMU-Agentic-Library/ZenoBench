@@ -106,6 +106,11 @@ FLIPPED_DOT = -0.7       # flipped: the object's z axis against its start's, at 
 WIPED_COVER = 0.5        # wiped: this much of the strip in contact (wipe's result, and the stroke its build needs)
 KNOCKED_STILL = 0.05     # rad / m: knocked -- the knocked door's joint moved less (knock)
 TOUCHED_STILL = 0.015    # m: touched -- the touched object moved less (touch; brace and handover hold one as still)
+HELD_SLIP_MAX = 0.05     # m: holding -- the TCP-to-body distance changed less since the grasp
+HELD_SHUT_FINGERS = 0.004   # m: holding -- finger gaps summing to no more read as shut...
+HELD_SHUT_SLIP = 0.02    # m: ...and a shut hand still holds what has kept this close (11-26, zihan, bench GT: a mug pinched
+                         # by its thin rim read fingers 0 at the TV stand with 8 / 15 mm of slip, T25 x4 -- it was in
+                         # the hand; a dropped load lies far from the TCP, and a missed grasp never became held)
 PRESENT_FWD = (0.35, 0.85)  # m: presenting -- the held load's centre this far in front of the base (present's goal set)
 PRESENT_Z = (0.9, 1.4)      # m: ... at this height
 LYING_DEG = 60.0
@@ -342,8 +347,8 @@ def _hand_empty(rig, ctx, hand):
 
 
 @predicate("holding", [("hand", "hand"), ("object", "object_ref")], "fluent",
-           "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged "
-           "since the grasp.")
+           "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and "
+           "the fingers not shut unless it has kept within 2 cm (a thin rim pinched).")
 def _holding(rig, ctx, hand, object):
     if hand in ("any", "both"):
         hand = next((sd for sd in ("right", "left") if held_name(rig, sd) == object), "right")
@@ -357,7 +362,7 @@ def _holding(rig, ctx, hand, object):
     body, _ = rig.obj_pose(object)
     slip = abs(float(np.linalg.norm(tcp - body)) - float(np.linalg.norm(h["tcp_minus_body"])))
     fingers = rig.fingers() if hand == "right" else rig.left_fingers()
-    ok = slip <= 0.05 and float(fingers.sum()) > 0.004
+    ok = slip <= HELD_SLIP_MAX and (float(fingers.sum()) > HELD_SHUT_FINGERS or slip <= HELD_SHUT_SLIP)
     return ok, f"slip {slip:.3f} m, fingers {np.round(fingers, 4).tolist()}"
 
 

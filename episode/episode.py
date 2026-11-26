@@ -395,7 +395,11 @@ class Episode:
                     traceback.print_exc()
                     out = error_result(call, "INTERNAL_ERROR", f"{type(exc).__name__}: {exc}")
         if not internal and out.get("error_code") in self.NAME_ERRORS:
-            out = dict(out, error=f"{out.get('error') or ''} {self._choices(call, planner_args)}".strip())
+            try:
+                hint = self._choices(call, planner_args)
+            except Exception:                         # the spellings are a courtesy: never fail a call over them
+                hint = ""
+            out = dict(out, error=f"{out.get('error') or ''} {hint}".strip())
         action = res.action if res is not None else f"{out['contract']}({json.dumps(out['args'], default=str)})"
         record = dict(out, action=action, path=res.selected_path if res is not None else None,
                       checks=[{"atom": a["atom"], "holds": bool(a["holds"])}
@@ -505,13 +509,13 @@ class Episode:
         return sorted(self.rig.ann.objects if obs is None else (set(obs.cache) | set(obs.held())))
 
     def _slot_choices(self, t, enum=None):
+        if enum:
+            return list(enum)
         ann = self.rig.ann
         surfaces = [s["name"] for s in ann.supports]
         from benchmark.observation import static_places
         places = sorted(self.observer.places if self.observer is not None else static_places(ann))
         objs = self._known_objects()
-        if enum:
-            return list(enum)
         return {"receptacle_ref": surfaces + objs, "support_ref": surfaces, "room_ref": sorted(ann.rooms),
                 "place_ref": places + objs, "entity_ref": places + objs}.get(t, objs if t in self.OBJECT_TYPES else [])
 
