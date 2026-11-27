@@ -134,17 +134,47 @@ class Problem:
 
 @dataclass
 class Found:
-    """The park, the goal k, the plan made there (its decisions: the build's prior from then on)."""
+    """The park, the goal k, the plan made there (its decisions: the build's prior from then on); ``pre``:
+    segments run before it (the empty other arm to its hanging posture: build_idle)."""
     x: float
     y: float
     yaw: float
     k: int
     plan: object
     diag: dict = field(default_factory=dict)
+    pre: tuple = ()
 
     @property
     def pose(self):
         return (self.x, self.y, self.yaw)
+
+
+def build_idle(kins, problem, s, k, prior):
+    """problem.build at ``s`` for goal k, the other hand's arm -- empty -- a goal set of two postures: as it
+    stands (its fold, preferred), else hanging at the side (its kin.drive, inside the base column).  It rides
+    the body the working arm's plan moves: a plan that fails on that arm (its why names one of its links: the
+    fold pressed into the counter by a lowered torso, s11 T09 lid / T23 11-26) is built again with it hanging.
+    (plan or the first Failure, the segments that hang it first -- a free_leg of that arm from ``s`` -- or ())."""
+    plan = problem.build(s, k, prior)
+    if not isinstance(plan, Failure):
+        return plan, ()
+    side = problem.side(k)
+    other = "left" if side == "right" else "right"
+    kin = kins.get(other)
+    if kin is None or s.held(other) is not None or f"{other}_" not in str(plan.why):
+        return plan, ()
+    from .motion_state import with_arm
+    from .primitives import Joint, free_leg
+    from .skill_plans._common import FREE_HAND
+    q0 = np.asarray(s.q(other), float)
+    qh = np.r_[q0[:N_BODY], np.asarray(kin.drive, float)[N_BODY:]]
+    if np.max(np.abs(q0 - qh)) < 1e-3:
+        return plan, ()
+    seg = free_leg(kin, s, FREE_HAND, Joint(qh), "idle_hang")
+    if isinstance(seg, Failure):
+        return plan, ()
+    hung = problem.build(with_arm(s, qh, other), k, prior)
+    return (plan, ()) if isinstance(hung, Failure) else (hung, (seg,))
 
 
 def candidates(problem):
@@ -488,7 +518,9 @@ def find_park(kin, world, problem, state, log, base=None):
         (cost, x, y, yaw, k), q_rank, _ = ranked[i]
         diag["built"] += 1
         s = with_posture(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), problem.side(k))
-        plan = problem.build(s, k, {problem.relay: q_rank})
+        plan, pre = build_idle(kins, problem, s, k, {problem.relay: q_rank})
+        if pre:
+            diag["idle_hang"] = diag.get("idle_hang", 0) + 1
         for st_, sec in getattr(plan, "info", {}).get("stage_s", {}).items():     # where the building time goes
             diag["stage_s"][st_] = round(diag["stage_s"].get(st_, 0.0) + sec, 2)
         if dbg is not None:
@@ -504,7 +536,7 @@ def find_park(kin, world, problem, state, log, base=None):
         if not is_here(ranked[i][0]) and base is not None and not base.drivable(travel, (x, y, yaw)):
             diag["no_path"] += 1
             continue
-        found = Found(x, y, yaw, k, plan)
+        found = Found(x, y, yaw, k, plan, pre=pre)
         break
     diag["seconds"] = round(time.time() - t0, 2)
     diag["build_seconds"] = round(time.time() - t_build, 2)

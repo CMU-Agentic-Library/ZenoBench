@@ -224,3 +224,33 @@ def test_the_batched_footprint_keeps_the_one_candidate_at_a_time_result(monkeypa
         runs.append(((found.x, found.y, found.yaw, found.k), {k: diag[k] for k in ("out_of_reach", "footprint", "pool")}))
     assert runs[0] == runs[1]
     assert runs[0][1]["footprint"] > 0
+
+
+def test_the_empty_other_arm_hangs_when_the_plan_fails_on_it(monkeypatch):
+    # the other arm rides the body the working arm's plan moves: a plan failing on its links is built
+    # again with it hanging (its kin.drive), and the hanging is a segment run first (build_idle)
+    from zeno_skills import primitives as P
+    drive = np.r_[0.0, 0.0, np.full(7, 0.25)]
+    kins = {"right": Kin(), "left": SimpleNamespace(drive=drive)}
+    seen = []
+
+    def build(s, k, prior):
+        seen.append(np.asarray(s.q("left"), float).copy())
+        if np.allclose(s.q("left")[2:], drive[2:]):
+            return Plan((), decisions={"ok": 1})
+        return Failure("no collision-free IK (collides: static left_gripper_link 22 mm)", "pick_reach")
+
+    monkeypatch.setattr(P, "free_leg", lambda kin, s, spec, goal, name, **kw: ("leg", np.asarray(goal.q).copy()))
+    problem = _problem(build)
+    plan, pre = PS.build_idle(kins, problem, _state(), 0, None)
+    assert isinstance(plan, Plan) and len(pre) == 1 and np.allclose(pre[0][1][2:], drive[2:])
+    assert len(seen) == 2 and np.allclose(seen[0][2:], 0.0)
+    # a failure that does not name the other arm, or the other hand holding something: as it is
+    other = lambda s, k, prior: Failure("no collision-free IK (collides: static right_gripper_link 5 mm)", "x")
+    plan, pre = PS.build_idle(kins, _problem(other), _state(), 0, None)
+    assert isinstance(plan, Failure) and pre == ()
+    s = _state()
+    s = State(base=s.base, body=s.body, arms=s.arms, hands={"right": Hand(width=0.04),
+                                                            "left": Hand(0.0, SimpleNamespace(name="cup"))})
+    plan, pre = PS.build_idle(kins, problem, s, 0, None)
+    assert isinstance(plan, Failure) and pre == ()

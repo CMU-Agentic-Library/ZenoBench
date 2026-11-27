@@ -34,8 +34,8 @@ from typing import Callable
 
 import numpy as np
 
-from .motion_state import Failure
-from .park_search import find_park
+from .motion_state import Failure, Plan
+from .park_search import build_idle, find_park
 from .run import observe, run
 from .tolerances import HEAD_AT, SAME_PARK
 
@@ -175,13 +175,16 @@ def run_skill(rig, skill, args):
             # the base stands (the joint waypoints of another base put the hand up to ~3 cm off), the
             # found plan's decisions its prior (decide_ik: off its pose here, the first seed of a solve)
             here = tuple(rig.base_pose())
-            plan = problem.build(observe(rig), found.k, found.plan)
+            plan, pre = build_idle(kins, problem, observe(rig), found.k, found.plan)
             rig.log("park_here", target=problem.label, park=[round(v, 3) for v in found.pose],
                     here=[round(v, 3) for v in here], built=not isinstance(plan, Failure))
             if isinstance(plan, Failure):
                 run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
             else:
-                found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan)
+                found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan, pre=pre)
+        if found.pre:
+            # the empty other arm out of the way first, where the plan assumes it (park_search.build_idle)
+            run(rig, Plan(tuple(found.pre)), None, {})
     from .run import run_clear
     from .skill_plans import plan_clear
     plan, build, hooks = job.ready(found)
