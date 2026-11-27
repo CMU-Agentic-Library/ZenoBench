@@ -39,17 +39,26 @@ COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
 # posture for the stretches the tuck does not fit (the dining room, T13/T19/T20 on 2026-11-02),
 # the tuck being the arrival posture it passes to without a swing elsewhere.
 DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
-# left-arm travel posture (the left kin's rest): the upper arm back along the side, the forearm down,
-# the hand at 0.8 m.  Searched on the cuRobo sphere model (11-05) for every left sphere inside the
-# base column (collision.BASE_HALF) with the waist upright and bowed 0.2 rad (8 mm inside), its
-# lowest point 0.17 m above the floor with the torso all the way down, 4 mm clear of the torso, head
-# and the right arm (rest and hanging), the hand off the chest (x <= 0.2 m), then moved off the
-# joint limits it pressed on.  The inherited fold (3ccd5e99: joints 1, 2, 4 = 0.2, 0.35, 2.3) held the
-# hand 17 cm out in front of the column: parks near a counter were refused and a torso lowered to
-# set a load down pressed it onto the table (docs/motion/COLLISION_PLAN.md, left arm fold).
-LEFT_ARM_FOLD = {"left_arm_joint_1": -1.249, "left_arm_joint_2": 0.047, "left_arm_joint_3": -0.035,
-                 "left_arm_joint_4": 2.038, "left_arm_joint_5": 1.52, "left_arm_joint_6": 0.09,
-                 "left_arm_joint_7": -0.312}
+# The relaxed elbow-out posture of the right arm: its IK attractor and its travel fold (ArmKin).
+ARM_POSTURE = [0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0]
+# The arms are mirror images in the base's y: the left arm's joint i at ARM_MIRROR[i] times the right's
+# puts every link at the right's mirrored (exact, limits too: tilt_1126/mirror.py, 11-26).
+ARM_MIRROR = (1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0)
+
+
+def mirrored(q_arm):
+    """The right arm's 7 joints -> the left arm's that mirror them (and back)."""
+    return [s * float(v) for s, v in zip(ARM_MIRROR, q_arm)]
+
+
+# left-arm travel fold and IK attractor: the right's mirrored (the user 11-26: the two hands are the
+# same).  Before, the left arm folded inside the base column (11-05, kept as LEFT_COLUMN_FOLD) and was
+# attracted to (0.2, 0.35, 0, 2.3, 0, 0, 0): with the left a working hand (HAND_PLAN 9c), its tucks
+# failed 33 times to the right's 4 in s11 place searches and its reaches three times as often.
+LEFT_ARM_FOLD = {f"left_arm_joint_{i + 1}": v for i, v in enumerate(mirrored(ARM_POSTURE[2:]))}
+LEFT_COLUMN_FOLD = {"left_arm_joint_1": -1.249, "left_arm_joint_2": 0.047, "left_arm_joint_3": -0.035,
+                    "left_arm_joint_4": 2.038, "left_arm_joint_5": 1.52, "left_arm_joint_6": 0.09,
+                    "left_arm_joint_7": -0.312}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
 TCP_DEPTH = 0.12
@@ -248,16 +257,13 @@ class ArmKin:
         m = np.r_[0.0, 0.0, np.full(len(self.names) - 2, 0.03)]
         self.lo, self.hi = self.lo + m, self.hi - m
         # A relaxed, elbow-out posture used as a null-space attractor.
-        posture = ([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0] if side == "right" else
-                   [0.0, 0.0, 0.2, 0.35, 0.0, 2.3, 0.0, 0.0, 0.0])
+        # (the left arm's: the right's mirrored, ARM_MIRROR)
+        posture = ARM_POSTURE if side == "right" else ARM_POSTURE[:2] + mirrored(ARM_POSTURE[2:])
         self.posture = np.clip(np.array(posture), self.lo, self.hi)
-        # Travel (tucked) posture: the right arm's is the same elbow-out posture (a compact fold
+        # Travel (tucked) posture: the same elbow-out posture, either arm (a compact fold
         # close to the chest was tried: it put every pick on another IK branch and the
-        # fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps it for reference); the
-        # left arm's is LEFT_ARM_FOLD, inside the base column (its posture above stays the
-        # working-pose IK seed).
-        self.rest = self.posture.copy() if side == "right" else np.clip(
-            np.r_[0.0, 0.0, [LEFT_ARM_FOLD[n] for n in self.names[2:]]], self.lo, self.hi)
+        # fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps it for reference)
+        self.rest = self.posture.copy()
         self.drive = np.clip(np.array(DRIVE_Q), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
