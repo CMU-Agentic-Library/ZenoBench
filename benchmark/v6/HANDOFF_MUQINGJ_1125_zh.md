@@ -22,7 +22,7 @@
 | T09 `x6_gd_tomato_elsewhere__on_plate` s11 | #26 `pick(pot_lid)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 前 25 步都成功。去锅盖的停车点 [8.415, 1.135] 的路径绕岛台东侧贴墙走，右臂在行驶姿态下撞墙和窗（wall_609/610、WindowFactory_3015），手臂被撞偏（q_err 2.84），底座停在 [9.50, 1.28]，离停车点 1.1 m，navigate 却算到达，接着 pick 就够不着。同样尾段的 `__dining` 三次全量都过。 |
 | T18 `bowl_in_use__tomatoes` s11 | #17 `place(glass_box, dining_table_2/top)` | `place_pull_out: the arm stopped 0.005 m short of where it was sent` | 放下以后抽手差 5 mm 判失败，和 T08 wipe 差 7 mm 是同一类：到位容差太紧。 |
 | T09 `lid_missing` s11 | #16 `cover(handled_cooking_pot, lid_plate)` | `place lid_plate: no free edge spot on rim:handled_cooking_pot` | 盘子当锅盖：11-21 交接第 4 节已记（cover 走捏边放置，在锅沿上找空边），还在。 |
-| T18 `one_bowl__glass_box` s11 | #17 `place(glass_box, dining_table_2/top)` | `tuck: its path collides now at 1/242: world left_gripper_right_finger_link 5 mm ... INVALID_START_STATE_WORLD_COLLISION` | 玻璃盒走 `edge_held_flat`（捏边平放），松手抽手后左手指还贴着盒子（physx 接触 glass_box），收臂起点就碰撞。上面 T18 `bowl_in_use__tomatoes` 抽手差 5 mm 是同一个放置点、同一类：捏边平放的抽手间隙不够。T14 `next_in_series__on_tall_shelf` s11、`next_in_series__on_other_bookcase` s13（开局改好后重跑）放红书到 `bookcase_2/top`、T26 `whose__shelf_full` s11（书转向后重跑）放到 `bookcase_3/top`、T07 `vessel_decides_appliance__in_steel_box` s14 铁饭盒放灶台（`place_landed: no collision-free straight (… object:steel_lunch_box left_gripper_right_finger_link 1 mm)`）也一样（edge_held_flat，左手指贴着刚放下的 book_red 5 mm）。**这是这次检查里最常见的一类。** |
+| T18 `one_bowl__glass_box` s11 | #17 `place(glass_box, dining_table_2/top)` | `tuck: its path collides now at 1/242: world left_gripper_right_finger_link 5 mm ... INVALID_START_STATE_WORLD_COLLISION` | 玻璃盒走 `edge_held_flat`（捏边平放），松手抽手后左手指还贴着盒子（physx 接触 glass_box），收臂起点就碰撞。上面 T18 `bowl_in_use__tomatoes` 抽手差 5 mm 是同一个放置点、同一类：捏边平放的抽手间隙不够。T14 `next_in_series__on_tall_shelf` s11、`next_in_series__on_other_bookcase` s13（开局改好后重跑）放红书到 `bookcase_2/top`、T26 `whose__shelf_full` s11（书转向后重跑）放到 `bookcase_3/top`、T07 `vessel_decides_appliance__in_steel_box` s14 铁饭盒放灶台（`place_landed: no collision-free straight (… object:steel_lunch_box left_gripper_right_finger_link 1 mm)`）也一样（edge_held_flat，左手指贴着刚放下的 book_red 5 mm）。11-27：T14 `on_tall_shelf` s14 又一次；bench 把那排书和放置点从离前沿 17 cm 挪到 12 cm 后重跑 s14、s13 仍是同一个 5 mm（已撤回），和放的位置无关。**这是这次检查里最常见的一类。** |
 | T17 `hide_lid_in_use` s11 | #4 `hide(wooden_block_b, handled_cooking_pot, lid=cover_plate)` | `cover_container: place cover_plate: no free edge spot on rim:handled_cooking_pot` | 同 T09 `lid_missing`：盘子当锅盖找锅沿空边。 |
 | T19 `lookalike_bin` s11 | #5 `pick(soda_can)` | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 你的三次全量 s10 都过。这次罐子在餐桌西沿（离边 4 cm），选了左手捏顶，轨迹优化失败；没换手/换站位再试。 |
 | T14 `next_in_series__on_other_bookcase` s13 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.025 m short` | 开局第一次收臂，同 T25 / T27。 |
@@ -108,6 +108,7 @@
 - **kitchen_0_0 进得去了（11-26）**：唯一入口被 `dining_table_1` 卡成 0.44 m，桌子往西挪 0.4 m。
 - **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成一只脏碗（两只太挤，手指插不进），先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
+- T23 `dropped_out_of_view__no_room_for_bowl`：碗放岛台的点从 x 7.40 改到 8.06（T30 放碗的位置），原来端碗伸过去倾斜 0.37 rad 超限（2 次），s14 重跑成功。
 
 ## 4. s10 全量：你的 ba9bad00 + main ae0e3289（11-26 晚，zihan 机器）
 

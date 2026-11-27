@@ -582,7 +582,9 @@ def t23():
                                      remove=counter_base + ["handled_cooking_pot", "pot_lid"], watch=[PL, *dishes_b],
                                        goal={"all": [["on_any", PL, OTHER_TOPS], H]},
                                        route=[look(COUNTER), S("search", object=PL, region="dining_room_0_1")]
-                                       + fetch(PL, ISL, [7.40, 1.70]))}),
+                                       # 11-27 (GT check, 2 of 2 at 7.40): reaching there the bowl tilted 0.37 rad
+                                       # (0.30 allowed); 8.06 is where T30's bowls go down (4 of 4)
+                                       + fetch(PL, ISL, [8.06, 1.70]))}),
         "only_this_room": fam(
             "spoon_on_floor", ["referent_clue", "storage_place"],
             "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
