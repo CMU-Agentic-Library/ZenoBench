@@ -51,8 +51,8 @@ class PullTowardBasePolicy(AtomicPolicy):
 
     def execute(self, name, distance_m):
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("pull: the right hand must be empty")
+        if len(skills.loaded_hands(rig)) == 2:                  # push_object pushes with an empty hand, either
+            raise SkillFailure("pull: both hands hold something")
         s = _support(rig, name)
         x, y, _ = rig.base_pose()
         b = rig.geo.bottom(name, rig.state())
@@ -78,8 +78,8 @@ class SeparateFromNeighbourPolicy(AtomicPolicy):
 
     def execute(self, name, *, target_gap=GRASP_GAP_M + 0.01):
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("separate: the right hand must be empty")
+        if len(skills.loaded_hands(rig)) == 2:                  # push_object pushes with an empty hand, either
+            raise SkillFailure("separate: both hands hold something")
         s = _support(rig, name)
         gap0, _ = neighbour_gap(rig, name, rig.state())
         for attempt in range(3):          # a neighbour dragged along by friction: re-measure, push again
@@ -207,8 +207,8 @@ class CenterOnSupportPolicy(AtomicPolicy):
 
     def execute(self, name, margin_m=0.08):
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("center: the right hand must be empty")
+        if len(skills.loaded_hands(rig)) == 2:                  # push_object pushes with an empty hand, either
+            raise SkillFailure("center: both hands hold something")
         s = _support(rig, name)
         st = rig.state()
         fp = rig.geo.footprint(name, st)

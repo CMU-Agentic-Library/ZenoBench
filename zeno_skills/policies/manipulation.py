@@ -150,8 +150,8 @@ class PushPolicy(AtomicPolicy):
     """Push or drag one object along its current annotated support."""
 
     def execute(self, name, support, direction, distance, *, label="PUSH", enough=None):
-        if self.rig.held is not None:
-            raise SkillFailure("push: right hand must be empty")
+        if len(skills.loaded_hands(self.rig)) == 2:            # push_object pushes with an empty hand, either
+            raise SkillFailure("push: both hands hold something")
         surface = self.rig.ann.support(support) if isinstance(support, str) else support
         actual = self.rig.geo.support_under(name, self.rig.state())
         if surface is None or actual is None:
@@ -169,8 +169,8 @@ class PushPolicy(AtomicPolicy):
 
 
 def _contact_direction(rig, name, support, direction, distance):
-    if rig.held is not None:
-        raise SkillFailure("contact motion: release the held object first")
+    if len(skills.loaded_hands(rig)) == 2:                      # push_object pushes with an empty hand, either
+        raise SkillFailure("contact motion: both hands hold something")
     if name not in rig.ann.objects:
         raise SkillFailure(f"contact motion: unknown object {name}")
     surface = rig.ann.support(support) if isinstance(support, str) else support

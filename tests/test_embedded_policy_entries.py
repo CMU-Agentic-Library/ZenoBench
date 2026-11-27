@@ -29,8 +29,9 @@ def test_the_cavity_pick_is_retired_pick_takes_the_microwave_like_a_cabinet():
 
 
 def test_slide_to_edge_requires_free_hand_and_annotated_support():
-    rig=SimpleNamespace(held={"name":"cup"})
-    with pytest.raises(SkillFailure,match="empty"):
+    # push_object pushes with either empty hand: refused only when both hold something
+    rig=SimpleNamespace(held={"name":"cup"},left_held={"name":"mug"})
+    with pytest.raises(SkillFailure,match="both hands"):
         SlideToEdgePolicy(rig).execute("book")
     rig=SimpleNamespace(held=None,ann=SimpleNamespace(objects={"book":{}}),
                         state=lambda:{},geo=SimpleNamespace(support_under=lambda name,st:None))

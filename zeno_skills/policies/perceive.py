@@ -127,10 +127,11 @@ class ExploreRoomPolicy(AtomicPolicy):
                     targets[n] = [(c, n)]
         if not targets:
             raise SkillFailure(f"explore {room}: nothing annotated in the room")
-        if rig.held is not None:
+        if skills.loaded_hands(rig):
             # the viewpoints are checked in the posture the drives carry the load in (as navigate_place does)
             from ..skill_jobs.carry import carry_posture
-            carry_posture(rig, min_bottom_z=None)
+            for side in skills.loaded_hands(rig):
+                carry_posture(rig, min_bottom_z=None, side=side)
         # one goal set: the room's spots and its furniture's stand-offs (1116 T26 two_bedrooms: the base gets
         # into bedroom_0_0 only by its door, 59 of its 1780 free cells, where none of the ring spots lies but
         # furniture stand-offs do)
@@ -176,7 +177,7 @@ class ExploreRoomPolicy(AtomicPolicy):
                 continue
             i = len(visited)
             visited.append(pose)
-            skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
+            skills.navigate(rig, pose, label=f"explore_{room}", raise_load=not skills.loaded_hands(rig))
             aims = [aim_at(k, p) for k, p in pred[pose].items() if k not in seen]
             look(rig, aims + list(SWEEP), label=f"explore_{room}_{i}", on_view=mark)
             x, y, heading = rig.base_pose()
@@ -250,7 +251,7 @@ class ExploreFurniturePolicy(AtomicPolicy):
 
         def sweep(label):
             look_once(label)
-            if len(seen) == len(targets) or rig.held is not None:
+            if len(seen) == len(targets) or skills.loaded_hands(rig):
                 return
             # the crouch: the posture skills (9.3 step 5), the torso as low as it goes -- toward its limit, as far as
             # both arms ride the body free (the left arm's fold meets the chassis first) -- and back to where it
@@ -273,10 +274,11 @@ class ExploreFurniturePolicy(AtomicPolicy):
             sweep(f"explore_{furniture}_here")
             views.append((x, y))
         if len(seen) < len(targets):
-            if rig.held is not None:
+            if skills.loaded_hands(rig):
                 # the stand-offs are checked in the posture the drives carry the load in (as navigate_place)
                 from ..skill_jobs.carry import carry_posture
-                carry_posture(rig, min_bottom_z=None)
+                for side in skills.loaded_hands(rig):
+                    carry_posture(rig, min_bottom_z=None, side=side)
             # the views are one goal set, as navigate_place has it: the stand-offs the base can get to (one
             # base_reachable field) the furniture is in view from (its top or any layer, the head aimed as look
             # aims it: walls and furniture boxes), nearest first
@@ -299,7 +301,7 @@ class ExploreFurniturePolicy(AtomicPolicy):
                 skipped += 1
                 rig.log("explore_skip", furniture=furniture, pose=[round(v, 2) for v in pose], reason="no base path")
                 continue
-            skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=rig.held is None)
+            skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=not skills.loaded_hands(rig))
             views.append(tuple(rig.base_pose()[:2]))
             sweep(f"explore_{furniture}_{len(views)}")
         look(rig, HEAD_HOME, label=f"explore_{furniture}_end")
@@ -332,7 +334,7 @@ class ViewSupportPolicy(AtomicPolicy):
         from ..viewpoints import support_views, travel_tw
         from ..visual_prompt import camera_frame
         s = rig.ann.support(support)
-        min_bottom_z = _carry_bottom_z(rig, support) if rig.held is not None else None
+        min_bottom_z = _carry_bottom_z(rig, support) if skills.loaded_hands(rig) else None
         idx = rig.kin.names.index("torso_lift_joint")
         top = float(rig.kin.hi[idx])
         tw = dict(travel_tw(rig), torso_lift_joint=top)          # where the camera will be: standing
@@ -353,7 +355,7 @@ class ViewSupportPolicy(AtomicPolicy):
             if k > 0 or pose != here:
                 rig.caption = f"VIEW {support}"
                 skills.navigate(rig, pose, label=f"view_{support}", min_bottom_z=min_bottom_z,
-                                raise_load=rig.held is None)
+                                raise_load=not skills.loaded_hands(rig))
             torso(rig, "stand", top, as_far=True)
             look(rig, [aim_at(support, aim)], label=f"view_{support}")
             record_view(rig)
@@ -429,10 +431,11 @@ class SearchObjectPolicy(AtomicPolicy):
             for s in furniture[f]))
         named = {s.get("furniture") for s in rig.ann.supports}
         place = {f: (f if f in named else furniture[f][0]["name"]) for f in order}
-        if rig.held is not None:
+        if skills.loaded_hands(rig):
             # the stand-offs are checked in the posture the drives carry the load in (as navigate_place)
             from ..skill_jobs.carry import carry_posture
-            carry_posture(rig, min_bottom_z=None)
+            for side in skills.loaded_hands(rig):
+                carry_posture(rig, min_bottom_z=None, side=side)
         seen_from = viewpoints.reachable_in_view(rig, {place[f]: standoff_poses(rig, place[f]) for f in order})
         goal, unreachable = {}, []
         for f in order:
@@ -456,7 +459,7 @@ class SearchObjectPolicy(AtomicPolicy):
                 rig.log("search_skip", place=f, reason="no base path to a stand-off that sees it",
                         poses=[[round(v, 2) for v in p] for p in tries])
                 continue
-            skills.navigate(rig, pose, label=f"search_{f}", raise_load=rig.held is None)
+            skills.navigate(rig, pose, label=f"search_{f}", raise_load=not skills.loaded_hands(rig))
             in_view, found = [False], [None]
 
             def check(r, p):

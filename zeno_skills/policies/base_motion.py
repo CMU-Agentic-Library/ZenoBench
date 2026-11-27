@@ -97,14 +97,16 @@ class NavigateToPlacePolicy(AtomicPolicy):
         rig = self.rig
         kind, _ = entity_kind(rig.ann, place)           # KeyError for an unknown noun
         min_bottom_z = None
-        if rig.held is not None:
+        loaded = skills.loaded_hands(rig)
+        if loaded:
             # the load's bottom clear of the destination surface (W: skill_jobs.carry._carry_bottom_z,
             # until the base planner changes the carry height itself, docs/motion/COLLISION_PLAN.md §7)
             from ..skill_jobs.carry import _carry_bottom_z
             min_bottom_z = _carry_bottom_z(rig, place)
             # the carry posture the drive will use, before the stand-offs are checked in it
-            # (navigate re-takes it; a pick that ended short of it changed it there, P15)
-            carry_posture(rig, min_bottom_z=min_bottom_z)
+            # (navigate re-takes it; a pick that ended short of it changed it there, P15) -- either hand's
+            for side in loaded:
+                carry_posture(rig, min_bottom_z=min_bottom_z, side=side)
         poses = standoff_poses(rig, place)
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")
@@ -126,7 +128,7 @@ class NavigateToPlacePolicy(AtomicPolicy):
         pose = (seen or reach)[0]
         rig.caption = f"NAVIGATE to {place}"
         skills.navigate(rig, pose, label=f"navigate_{place}", min_bottom_z=min_bottom_z,
-                        raise_load=rig.held is None)          # carry_posture above settled it
+                        raise_load=not loaded)                # carry_posture above settled it
         rig.log("navigate_place", place=place, pose=[round(v, 3) for v in pose])
         return tuple(rig.base_pose())
 
@@ -176,12 +178,12 @@ class RetreatFromPolicy(AtomicPolicy):
         if need < RETREAT_MIN:
             return 0.0
         end = np.array([x, y]) + away * (need + RETREAT_PAST)
-        if rig.held is not None:
-            skills.check_held(rig, "retreat_start")
-            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")
-            skills.check_held(rig, "retreat_end")
-        else:
-            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")
+        loaded = skills.loaded_hands(rig)
+        for side in loaded:
+            skills.check_held(rig, "retreat_start", side=side)
+        skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")
+        for side in loaded:
+            skills.check_held(rig, "retreat_end", side=side)
         moved = float(np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.array([x, y])))
         rig.log("retreat_result", place=place, moved_m=round(moved, 3))
         return moved

@@ -238,7 +238,7 @@ def test_explore_carrying_takes_the_carry_posture_before_the_viewpoints(monkeypa
     from zeno_skills.skill_jobs import carry
     order, spot = [], (5.0, 1.0, 0.0)
     w = World()
-    monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None: order.append("carry"))
+    monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None, side=None: order.append("carry"))
     _patch(monkeypatch, w, {})
     monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: order.append(place) or ([spot] if place == "room" else []))
     monkeypatch.setattr(VW, "travel_tw", lambda rig: {})
@@ -261,7 +261,7 @@ def _furniture(monkeypatch, w, poses, **kw):
     rig.base_pose = lambda: w.pose
     rig.held = {"name": "x"}                                # no crouch in these tests
     from zeno_skills.skill_jobs import carry
-    monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None: None)
+    monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None, side=None: None)
     return PC.ExploreFurniturePolicy(rig).execute("shelf")
 
 

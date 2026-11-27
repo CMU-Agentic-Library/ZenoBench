@@ -89,6 +89,13 @@ def _hand_of(rig, name):
     return None
 
 
+def loaded_hands(rig):
+    """The hands that hold something, right first (either may: HAND_PLAN 9c) -- what a skill that carries the
+    load along asks, not ``rig.held`` (the right's alone)."""
+    return [side for side, h in (("right", getattr(rig, "held", None)), ("left", getattr(rig, "left_held", None)))
+            if h is not None]
+
+
 def _carry_ref(kin, q):
     """(posture, per-joint weights) the carry goal set's IK solutions are sought near and scored
     from: q with the body upright -- torso up, waist straight (a pick leaves them where it reached

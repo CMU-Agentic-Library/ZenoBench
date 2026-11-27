@@ -25,8 +25,8 @@ class SlideToEdgePolicy(AtomicPolicy):
     def execute(self, name):
         from ..skill_jobs.slide import push_object
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("slide to edge: right hand must be empty")
+        if len(skills.loaded_hands(rig)) == 2:                  # push_object pushes with an empty hand, either
+            raise SkillFailure("slide to edge: both hands hold something")
         obj = rig.ann.objects.get(name)
         if obj is None:
             raise SkillFailure(f"slide to edge: unknown object {name}")

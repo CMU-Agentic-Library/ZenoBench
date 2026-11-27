@@ -120,8 +120,8 @@ class SweepTogetherPolicy(AtomicPolicy):
     def execute(self, names, *, radius_m=0.12, rounds=2):
         from ..skill_jobs.slide import push_object
         rig = self.rig
-        if rig.held is not None:
-            raise SkillFailure("sweep: the right hand holds an object")
+        if len(skills.loaded_hands(rig)) == 2:                  # push_object pushes with an empty hand, either
+            raise SkillFailure("sweep: both hands hold something")
         names = list(names)
         for _ in range(int(rounds)):
             st = rig.state()
@@ -215,12 +215,12 @@ class SidestepPolicy(AtomicPolicy):
         x, y, yaw = rig.base_pose()
         d = float(left_m)
         tx, ty = x - math.sin(math.radians(yaw)) * d, y + math.cos(math.radians(yaw)) * d
-        if rig.held is not None:
-            skills.check_held(rig, "sidestep_start")
-            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
-            skills.check_held(rig, "sidestep_end")
-        else:
-            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
+        loaded = skills.loaded_hands(rig)
+        for side in loaded:
+            skills.check_held(rig, "sidestep_start", side=side)
+        skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
+        for side in loaded:
+            skills.check_held(rig, "sidestep_end", side=side)
         return {"base_pose": list(rig.base_pose())}
 
 
