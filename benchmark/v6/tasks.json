@@ -44861,10 +44861,10 @@
        }
       },
       {
-       "skill": "place",
+       "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
-        "receptacle": "serving_tray"
+        "container": "serving_tray"
        }
       }
      ],
@@ -95154,10 +95154,10 @@
     "x6_gd_tomato_elsewhere__on_plate": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_island/top",
        "xy": [
-        8.715,
-        1.655
+        7.25,
+        1.85
        ],
        "yaw_deg": 0.0
       },
@@ -95317,45 +95317,24 @@
        },
        {
         "names": [
-         "breakfast_spoon"
+         "breakfast_spoon",
+         "cherry_tomato_1",
+         "pot_lid"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.3853,
+         7.125,
          1.5929,
-         7.5347,
-         1.7571
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.06,
-         0.21
-        ],
-        "pick": [
-         "breakfast_spoon"
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
          7.644,
-         1.634
+         1.975
         ],
         "dx": [
-         -1.06,
+         -0.57,
          0.6
         ],
-        "dy": [
-         -0.08,
-         0.34
+        "pick": [
+         "breakfast_spoon",
+         "pot_lid"
         ]
        }
       ],
@@ -132088,21 +132067,21 @@
        ],
        "yaw_deg": 0.0
       },
-      "w_mid_spoon": {
+      "w_south_spoon": {
        "asset": "breakfast_spoon",
        "support": "dining_table_2/top",
        "xy": [
         2.89,
-        6.7
+        5.85
        ],
        "yaw_deg": 0.0
       },
-      "w_mid_toy": {
+      "w_south_toy": {
        "asset": "toy_car",
        "support": "dining_table_2/top",
        "xy": [
         2.89,
-        6.4
+        5.55
        ],
        "yaw_deg": 0.0
       }
@@ -132111,7 +132090,7 @@
       "all": [
        [
         "near_any",
-        "w_mid_spoon",
+        "w_south_spoon",
         [
          "kid_cup"
         ],
@@ -132119,7 +132098,7 @@
        ],
        [
         "not near_any",
-        "w_mid_spoon",
+        "w_south_spoon",
         [
          "mug",
          "mug_2"
@@ -132181,7 +132160,7 @@
        [
         [
          "near_any",
-         "w_mid_spoon",
+         "w_south_spoon",
          [
           "bowl",
           "bowl_2"
@@ -132192,7 +132171,7 @@
        [
         [
          "near_any",
-         "w_mid_spoon",
+         "w_south_spoon",
          [
           "bowl_dining_cabinet",
           "bowl_2"
@@ -132203,7 +132182,7 @@
        [
         [
          "near_any",
-         "w_mid_spoon",
+         "w_south_spoon",
          [
           "bowl_inside_kitchen_cabinet",
           "bowl_2"
@@ -132214,7 +132193,7 @@
        [
         [
          "near_any",
-         "w_mid_spoon",
+         "w_south_spoon",
          [
           "bowl_kitchen_cabinet",
           "bowl_2"
@@ -132225,7 +132204,7 @@
        [
         [
          "near_any",
-         "w_mid_spoon",
+         "w_south_spoon",
          [
           "bowl_side_table",
           "bowl_2"
@@ -132241,7 +132220,7 @@
       "mug",
       "mug_2",
       "kid_cup",
-      "w_mid_spoon"
+      "w_south_spoon"
      ],
      "since": "v6",
      "keep_design": [
@@ -132391,7 +132370,7 @@
          "all": [
           [
            "near_any",
-           "w_mid_spoon",
+           "w_south_spoon",
            [
             "kid_cup"
            ],
@@ -132399,7 +132378,7 @@
           ],
           [
            "not near_any",
-           "w_mid_spoon",
+           "w_south_spoon",
            [
             "mug",
             "mug_2"
@@ -132461,7 +132440,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132472,7 +132451,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132483,7 +132462,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132494,7 +132473,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132505,7 +132484,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -132517,7 +132496,7 @@
         },
         "why": "each empty place set like its kind (adult: bowl and mug; kid: bowl and plastic cup), the set places untouched",
         "raw": "best",
-        "check": "near_any(w_mid_spoon, [kid_cup], 0.12) & not near_any(w_mid_spoon, [mug|mug_2], 0.25); one of: near_any(w_mid_spoon, [bowl|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_dining_cabinet|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_inside_kitchen_cabinet|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_kitchen_cabinet|bowl_2], 0.12) || ... 1 more ways; left in place (10 cm): e_mid_bowl, e_mid_drink, e_mid_spoon, e_mid_toy, e_north_bowl, e_north_drink, e_north_spoon, w_north_bowl ..."
+        "check": "near_any(w_south_spoon, [kid_cup], 0.12) & not near_any(w_south_spoon, [mug|mug_2], 0.25); one of: near_any(w_south_spoon, [bowl|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_dining_cabinet|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_inside_kitchen_cabinet|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_kitchen_cabinet|bowl_2], 0.12) || ... 1 more ways; left in place (10 cm): e_mid_bowl, e_mid_drink, e_mid_spoon, e_mid_toy, e_north_bowl, e_north_drink, e_north_spoon, w_north_bowl ..."
        },
        {
         "name": "second",
@@ -132526,7 +132505,7 @@
          "all": [
           [
            "near_any",
-           "w_mid_spoon",
+           "w_south_spoon",
            [
             "kid_cup"
            ],
@@ -132534,7 +132513,7 @@
           ],
           [
            "not near_any",
-           "w_mid_spoon",
+           "w_south_spoon",
            [
             "mug",
             "mug_2"
@@ -132546,7 +132525,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132557,7 +132536,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132568,7 +132547,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132579,7 +132558,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132590,7 +132569,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -132602,7 +132581,7 @@
         },
         "why": "the empty places set right, but something of the set places moved off its place",
         "raw": "second",
-        "check": "near_any(w_mid_spoon, [kid_cup], 0.12) & not near_any(w_mid_spoon, [mug|mug_2], 0.25); one of: near_any(w_mid_spoon, [bowl|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_dining_cabinet|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_inside_kitchen_cabinet|bowl_2], 0.12) || near_any(w_mid_spoon, [bowl_kitchen_cabinet|bowl_2], 0.12) || ... 1 more ways"
+        "check": "near_any(w_south_spoon, [kid_cup], 0.12) & not near_any(w_south_spoon, [mug|mug_2], 0.25); one of: near_any(w_south_spoon, [bowl|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_dining_cabinet|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_inside_kitchen_cabinet|bowl_2], 0.12) || near_any(w_south_spoon, [bowl_kitchen_cabinet|bowl_2], 0.12) || ... 1 more ways"
        },
        {
         "name": "worst",
@@ -132613,7 +132592,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132622,7 +132601,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug",
              "mug_2",
@@ -132634,7 +132613,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132643,7 +132622,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_counter",
              "mug_2",
@@ -132655,7 +132634,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132664,7 +132643,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_dining_cabinet",
              "mug_2",
@@ -132676,7 +132655,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl",
              "bowl_2"
@@ -132685,7 +132664,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_shelf",
              "mug_2",
@@ -132697,7 +132676,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132706,7 +132685,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug",
              "mug_2",
@@ -132718,7 +132697,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132727,7 +132706,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_counter",
              "mug_2",
@@ -132739,7 +132718,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132748,7 +132727,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_dining_cabinet",
              "mug_2",
@@ -132760,7 +132739,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_dining_cabinet",
              "bowl_2"
@@ -132769,7 +132748,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_shelf",
              "mug_2",
@@ -132781,7 +132760,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132790,7 +132769,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug",
              "mug_2",
@@ -132802,7 +132781,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132811,7 +132790,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_counter",
              "mug_2",
@@ -132823,7 +132802,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132832,7 +132811,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_dining_cabinet",
              "mug_2",
@@ -132844,7 +132823,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_inside_kitchen_cabinet",
              "bowl_2"
@@ -132853,7 +132832,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_shelf",
              "mug_2",
@@ -132865,7 +132844,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132874,7 +132853,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug",
              "mug_2",
@@ -132886,7 +132865,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132895,7 +132874,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_counter",
              "mug_2",
@@ -132907,7 +132886,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132916,7 +132895,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_dining_cabinet",
              "mug_2",
@@ -132928,7 +132907,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_kitchen_cabinet",
              "bowl_2"
@@ -132937,7 +132916,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_shelf",
              "mug_2",
@@ -132949,7 +132928,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -132958,7 +132937,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug",
              "mug_2",
@@ -132970,7 +132949,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -132979,7 +132958,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_counter",
              "mug_2",
@@ -132991,7 +132970,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -133000,7 +132979,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_dining_cabinet",
              "mug_2",
@@ -133012,7 +132991,7 @@
           [
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "bowl_side_table",
              "bowl_2"
@@ -133021,7 +133000,7 @@
            ],
            [
             "near_any",
-            "w_mid_spoon",
+            "w_south_spoon",
             [
              "mug_shelf",
              "mug_2",
@@ -133034,7 +133013,7 @@
         },
         "why": "a bowl and a drink at each empty place, but the wrong drink (a mug at the kid's, the plastic cup at an adult's)",
         "raw": "worst",
-        "check": "one of: near_any(w_mid_spoon, [bowl|bowl_2], 0.12) & near_any(w_mid_spoon, [mug|mug_2|kid_cup], 0.12) || near_any(w_mid_spoon, [bowl|bowl_2], 0.12) & near_any(w_mid_spoon, [mug_counter|mug_2|kid_cup], 0.12) || near_any(w_mid_spoon, [bowl|bowl_2], 0.12) & near_any(w_mid_spoon, [mug_dining_cabinet|mug_2|kid_cup], 0.12) || near_any(w_mid_spoon, [bowl|bowl_2], 0.12) & near_any(w_mid_spoon, [mug_shelf|mug_2|kid_cup], 0.12) || ... 16 more ways"
+        "check": "one of: near_any(w_south_spoon, [bowl|bowl_2], 0.12) & near_any(w_south_spoon, [mug|mug_2|kid_cup], 0.12) || near_any(w_south_spoon, [bowl|bowl_2], 0.12) & near_any(w_south_spoon, [mug_counter|mug_2|kid_cup], 0.12) || near_any(w_south_spoon, [bowl|bowl_2], 0.12) & near_any(w_south_spoon, [mug_dining_cabinet|mug_2|kid_cup], 0.12) || near_any(w_south_spoon, [bowl|bowl_2], 0.12) & near_any(w_south_spoon, [mug_shelf|mug_2|kid_cup], 0.12) || ... 16 more ways"
        }
       ],
       "not_ok": "an empty place left unset or half set; tipped; still held or dropped",
@@ -136907,7 +136886,7 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          2.89,
-         6.89
+         6.04
         ]
        }
       },
@@ -136936,7 +136915,7 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          2.89,
-         6.55
+         5.7
         ]
        }
       }
@@ -137762,7 +137741,7 @@
            "all": [
             [
              "near_any",
-             "w_mid_spoon",
+             "w_south_spoon",
              [
               "bowl",
               "bowl_2"
@@ -137771,7 +137750,7 @@
             ],
             [
              "near_any",
-             "w_mid_spoon",
+             "w_south_spoon",
              [
               "kid_cup"
              ],
@@ -137779,7 +137758,7 @@
             ],
             [
              "not near_any",
-             "w_mid_spoon",
+             "w_south_spoon",
              [
               "mug",
               "mug_2"
@@ -137891,7 +137870,7 @@
            "all": [
             [
              "near_any",
-             "w_mid_spoon",
+             "w_south_spoon",
              [
               "bowl",
               "bowl_2"
@@ -137900,7 +137879,7 @@
             ],
             [
              "near_any",
-             "w_mid_spoon",
+             "w_south_spoon",
              [
               "mug",
               "mug_2",
@@ -138588,9 +138567,14 @@
       "plate_counter_b"
      ],
      "since": "v6",
-     "pin": [
-      "plate_counter_a"
-     ],
+     "pick_zone": {
+      "kitchen_counter_2/top": [
+       -0.6,
+       8.2,
+       -0.36,
+       9.05
+      ]
+     },
      "note": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
      "v6": {
       "family": "lid_elsewhere",
@@ -138621,9 +138605,51 @@
          -0.66,
          1.4
         ]
+       },
+       {
+        "names": [
+         "plate_counter_a"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
+        ],
+        "dy": [
+         -1.31,
+         0.88
+        ],
+        "pick": [
+         "plate_counter_a"
+        ],
+        "search": [
+         "plate_counter_a"
+        ]
        }
       ],
       "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
        "dining_table_2/top": [
         [
          3.0905,
@@ -138673,6 +138699,24 @@
          3.839,
          0.2
         ]
+       ],
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.095,
+         0.2
+        ]
        ]
       },
       "start": {
@@ -138681,6 +138725,14 @@
         "plate_counter_a"
        ],
        "look": []
+      },
+      "zone": {
+       "kitchen_counter_2/top": [
+        -0.6,
+        8.2,
+        -0.36,
+        9.05
+       ]
       }
      },
      "scoring": {
@@ -138848,9 +138900,14 @@
       "plate_counter_b"
      ],
      "since": "v6",
-     "pin": [
-      "plate_counter_a"
-     ],
+     "pick_zone": {
+      "kitchen_counter_2/top": [
+       -0.6,
+       8.2,
+       -0.36,
+       9.05
+      ]
+     },
      "note": "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
      "v6": {
       "family": "no_lid",
@@ -138864,6 +138921,28 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "plate_counter_a"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
+        ],
+        "dy": [
+         -1.31,
+         0.88
+        ],
+        "pick": [
+         "plate_counter_a"
+        ],
+        "search": [
+         "plate_counter_a"
+        ]
+       },
        {
         "names": [
          "cover_book"
@@ -138885,8 +138964,47 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.095,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -138920,6 +139038,14 @@
         "plate_counter_a"
        ],
        "look": []
+      },
+      "zone": {
+       "kitchen_counter_2/top": [
+        -0.6,
+        8.2,
+        -0.36,
+        9.05
+       ]
       }
      },
      "scoring": {
@@ -139093,9 +139219,14 @@
       "plate_counter_b"
      ],
      "since": "v6",
-     "pin": [
-      "plate_counter_a"
-     ],
+     "pick_zone": {
+      "kitchen_counter_2/top": [
+       -0.6,
+       8.2,
+       -0.36,
+       9.05
+      ]
+     },
      "note": "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
      "v6": {
       "family": "lid_in_use",
@@ -139108,15 +139239,86 @@
       "derived_from": "bare"
      },
      "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
+      "clusters": [
+       {
+        "names": [
+         "plate_counter_a"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
+        ],
+        "dy": [
+         -1.31,
+         0.88
+        ],
+        "pick": [
+         "plate_counter_a"
+        ],
+        "search": [
+         "plate_counter_a"
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.095,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [
         "plate_counter_a"
        ],
        "look": []
+      },
+      "zone": {
+       "kitchen_counter_2/top": [
+        -0.6,
+        8.2,
+        -0.36,
+        9.05
+       ]
       }
      },
      "scoring": {
@@ -173936,6 +174138,8 @@
       "counter_bowl_10"
      ],
      "since": "v6",
+     "floor_shift": 3.0,
+     "floor_clear": 0.4,
      "note": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
      "v6": {
       "family": "dropped_out_of_view",
@@ -173969,13 +174173,14 @@
          ]
         ],
         "dx": [
-         -0.6,
-         0.6
+         -3.0,
+         3.0
         ],
         "dy": [
-         -0.6,
-         0.6
+         -3.0,
+         3.0
         ],
+        "clear": 0.4,
         "pick": [
          "dropped_spoon"
         ]
@@ -174500,6 +174705,8 @@
       "counter_bowl_10"
      ],
      "since": "v6",
+     "floor_shift": 3.0,
+     "floor_clear": 0.4,
      "note": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
      "v6": {
       "family": "dropped_out_of_view",
@@ -174533,13 +174740,14 @@
          ]
         ],
         "dx": [
-         -0.6,
-         0.6
+         -3.0,
+         3.0
         ],
         "dy": [
-         -0.6,
-         0.6
+         -3.0,
+         3.0
         ],
+        "clear": 0.4,
         "pick": [
          "dropped_bowl"
         ]
@@ -217645,15 +217853,15 @@
       ]
      },
      "since": "v6",
-     "note": "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
+     "note": "no bowl out by the soup; the low cabinet's top holds the clean bowl, or only a plate and a mug",
      "v6": {
       "family": "bowl_put_away",
       "case": "bowl_inside",
-      "challenge": "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
-      "rationale": "look in the cabinet, take a bowl -- or the mug, which holds soup, not the plate -- close the door",
+      "challenge": "no bowl out by the soup; the low cabinet's top holds the clean bowl, or only a plate and a mug",
+      "rationale": "look at the low cabinet, take a bowl -- or the mug, which holds soup, not the plate -- the cabinet stays closed",
       "control": "bowl_on_cabinet",
       "contrast": null,
-      "factor": "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
+      "factor": "what the low cabinet holds on its top (seed: a bowl; or, no bowl in the house, a plate and a mug)",
       "derived_from": "bare"
      },
      "move": {},
@@ -217940,15 +218148,15 @@
       "stored_plate"
      ],
      "since": "v6",
-     "note": "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
+     "note": "no bowl out by the soup; the low cabinet's top holds the clean bowl, or only a plate and a mug",
      "v6": {
       "family": "bowl_put_away",
       "case": "mug_inside",
-      "challenge": "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
-      "rationale": "look in the cabinet, take a bowl -- or the mug, which holds soup, not the plate -- close the door",
+      "challenge": "no bowl out by the soup; the low cabinet's top holds the clean bowl, or only a plate and a mug",
+      "rationale": "look at the low cabinet, take a bowl -- or the mug, which holds soup, not the plate -- the cabinet stays closed",
       "control": "bowl_on_cabinet",
       "contrast": null,
-      "factor": "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
+      "factor": "what the low cabinet holds on its top (seed: a bowl; or, no bowl in the house, a plate and a mug)",
       "derived_from": "bare"
      },
      "move": {},
@@ -219843,7 +220051,7 @@
       "bowl_put_away__bowl_inside",
       "bowl_put_away__mug_inside"
      ],
-     "factor": "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
+     "factor": "what the low cabinet holds on its top (seed: a bowl; or, no bowl in the house, a plate and a mug)",
      "seeds": {
       "10": "bowl_put_away__mug_inside",
       "11": "bowl_put_away__mug_inside",
