@@ -49,7 +49,7 @@ from . import body_collision
 from . import scene_geometry as G
 from .kinematics import carry_tilt_allowed, holds_level, kept_joints, manipulability, max_tilt, tilts_too_far, tips_over
 from .motion_state import kept, other_side, touch_entries, touches
-from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
+from .tolerances import ACTIVATION, DRIVE_GAP, POS_TOL, ROT_TOL
 
 ROOT = Path(__file__).resolve().parents[1]
 ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
@@ -1824,9 +1824,10 @@ class Motion:
 
     @_timed("base_s")
     def base_depths(self, rig, poses, spheres, chunk=BASE_CHUNK):
-        """(P, N) deepest penetration (m, >= 0) of the robot into the world with its base at each of
-        ``poses`` ((N, 3): x, y, yaw rad) and its body as each of ``spheres`` ((P, S, 4) from
-        body_spheres).  The world: every collider within reach of the poses that neither hand holds,
+        """(P, N) deepest penetration (m, >= 0) of the robot, every sphere grown by DRIVE_GAP, into the
+        world with its base at each of ``poses`` ((N, 3): x, y, yaw rad) and its body as each of
+        ``spheres`` ((P, S, 4) from body_spheres): > 0 where a sphere comes within DRIVE_GAP of the
+        world.  The world: every collider within reach of the poses that neither hand holds,
         objects and parts at their synced poses.  The planner's world (enabled colliders, cull centre)
         is exactly as before when this returns."""
         import torch
@@ -1845,6 +1846,9 @@ class Motion:
         else:
             use = self._region_colliders(lo, hi)
             flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
+        spheres = spheres.copy()
+        live = spheres[..., 3] > 0
+        spheres[..., 3] = np.where(live, spheres[..., 3] + DRIVE_GAP, spheres[..., 3])
         sph = torch.as_tensor(spheres, device="cuda", dtype=torch.float32)          # (P, S, 4)
         try:
             for c in flip:
@@ -1923,13 +1927,15 @@ class Motion:
 
     def base_explain(self, rig, pose, spheres, top=4):
         """What the robot runs into with its base at ``pose`` (x, y, yaw rad) and its body as
-        ``spheres`` ((S, 4), the last body_spheres set): its deepest (part, entity, mm)."""
+        ``spheres`` ((S, 4), the last body_spheres set), each grown by DRIVE_GAP as base_depths has
+        them: its deepest (part, entity, mm)."""
         import torch
         from curobo.geom.sdf.world import CollisionQueryBuffer
         x, y, yaw = pose
         c, s_ = math.cos(yaw), math.sin(yaw)
         w = np.asarray(spheres, float).copy()
         w[:, 0], w[:, 1] = c * spheres[:, 0] - s_ * spheres[:, 1] + x, s_ * spheres[:, 0] + c * spheres[:, 1] + y
+        w[:, 3] = np.where(w[:, 3] > 0, w[:, 3] + DRIVE_GAP, w[:, 3])
         held = set(self.held["right"]) | set(self.held["left"])
         use = {c_.name for c_ in self.cols.items if c_.owner not in held and
                np.hypot(*(self._centre(c_)[:2] - [x, y])) - self._extent[c_.name][1] < 1.5}

@@ -18,6 +18,30 @@ from .primitives import aim_excess, holds, ride_base
 from .tolerances import TARGET_TOL
 
 
+def arrived(act, seg, off):
+    """The one arrival rule after a segment ran: where each arm stopped against where its command puts
+    the TCP (``off``, m: execute's -- one number for the arm a move or follow sent, {side: off} after a
+    drive), judged against TARGET_TOL.  The arm stops where its TCP no longer moves (Rig._settle).
+      a move / follow    sent to a pose: further off, something is in the way -- not a segment that ran
+                         (T05: a carry whose wrist never turned, the held book 25 cm off its pose through
+                         the drive and the place): the skill fails
+      a drive            its travel postures aim at nothing: an arm a contact on the way pushed off is
+                         taken as it stands (Actuator.hold_arm), so the State -- the commanded joints,
+                         docs 8.2 -- has it where it is and what runs next is planned from there (s10 T03
+                         11-26: the right arm pushed 0.59 m off its fold by the wall beside bookcase_2,
+                         found only at the next tuck)"""
+    if seg.kind == "drive":
+        for side, o in (off or {}).items():
+            if o > TARGET_TOL:
+                act.hold_arm(side, seg.name, o)
+        return
+    if off is not None and off > TARGET_TOL:
+        exc = SkillFailure(f"{seg.name}: the arm stopped {off:.3f} m short of where it was sent")
+        if seg.info.get("clear"):
+            clearing(exc, **{"side": seg.info.get("side"), **seg.info["clear"]})
+        raise exc
+
+
 def observe(act):
     """The State now (Actuator.snapshot: the rig syncs the collision model and reads it back)."""
     return act.snapshot()
@@ -31,7 +55,8 @@ def execute(act, seg):
     part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
     touch now), at its speed.  An anchor moves nothing and declares nothing.  Returns, for what the arm
     follows (a move, a "follow" task segment), how far the TCP stopped off where it was sent
-    (Actuator.follow's result; None from an actuator that does not tell), else None."""
+    (Actuator.follow's result; None from an actuator that does not tell); for a drive, {side: how far
+    each arm stopped off its command} (Actuator.arm_off); else None.  ``arrived`` judges it."""
     if seg.kind == "anchor":
         return
     if seg.kind == "action":
@@ -72,7 +97,7 @@ def execute(act, seg):
             else:
                 _, name, posture = st
                 act.swing(posture, f"{seg.name}_{name}")
-        return
+        return {side: act.arm_off(side) for side in ("right", "left")}     # judged by arrived
     if seg.kind == "scripted":
         side = seg.info.get("side", "right")
         act.declare(seg.name, seg.spec.allow, side=side)
@@ -276,14 +301,7 @@ def _run(act, plan, rebuild, hooks):
             off = execute(act, seg)
         if "after" in h:                        # a skill's own judgement first (pick's grasp: its failure exit)
             h["after"](act)
-        if off is not None and off > TARGET_TOL:
-            # it stopped short of where it was sent: something is in the way (the arm stops where the TCP no
-            # longer moves, Rig._settle) -- not a segment that ran (T05: a carry whose wrist never turned, the
-            # held book 25 cm off its pose through the drive and the place)
-            exc = SkillFailure(f"{seg.name}: the arm stopped {off:.3f} m short of where it was sent")
-            if seg.info.get("clear"):
-                clearing(exc, **{"side": seg.info.get("side"), **seg.info["clear"]})
-            raise exc
+        arrived(act, seg, off)
         done.append(seg)
         i += 1
     return done

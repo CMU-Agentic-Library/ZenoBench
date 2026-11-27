@@ -161,9 +161,11 @@ def test_a_drive_segment_runs_its_drives_and_swings_through_the_actuator(monkeyp
     assert seg.kind == "drive" and np.allclose(Posture.from_vec(seg.q_end).q("right"), REST)
     ran = []
     act = SimpleNamespace(log=lambda *a, **k: None, drive_base=lambda path, **kw: ran.append(("drive", path, kw)),
-                          swing=lambda posture, label: ran.append(("swing", label)))
-    RUN.execute(act, seg)
+                          swing=lambda posture, label: ran.append(("swing", label)),
+                          arm_off=lambda side: ran.append(("off", side)) or 0.0)
+    assert RUN.execute(act, seg) == {"right": 0.0, "left": 0.0}
     assert ran[0][0] == "drive" and ran[0][2]["speed"] == 0.1 and ("swing", "navigate_fold") in ran
+    assert ran[-2:] == [("off", "right"), ("off", "left")]          # both arms measured once the last step is done
     assert P.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5)), seg) is None
     assert P.holds(Kin(), _state(q=_q(0.9, 0.0, 0.5)), seg) is not None       # the arm is not where it starts
     assert P.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5), ql=np.full(7, 0.9)), seg) is not None   # nor the left

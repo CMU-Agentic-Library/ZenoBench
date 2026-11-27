@@ -50,6 +50,7 @@ def test_local_base_motion_checks_sweep_and_measured_pose():
                           kin=SimpleNamespace(rest=np.zeros(9), motion=motion), sync_world=lambda: None,
                           world=SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
                           base_pose=lambda: tuple(pose), drive_base=drive, log=lambda *a, **k: None,
+                          arm_off=lambda side: 0.0,
                           # motion_state.Actuator: the straight base move runs as a drive segment (run.execute)
                           snapshot=lambda: State(base=tuple(pose), **chains(np.zeros(9), np.zeros(7))))
     assert BaseRotateInPlacePolicy(rig).execute(15) == 15

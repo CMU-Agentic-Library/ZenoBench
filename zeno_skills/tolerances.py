@@ -174,6 +174,10 @@ ACTIVATION = _t("ACTIVATION", 0.005, "m", "chosen: cuRobo's collision_activation
                 "starts this far out)")
 DEPTH_TOL = _t("DEPTH_TOL", 1e-4, "m", "exact: a penetration this shallow is clear (numerical slack of the sphere "
                "queries, not a margin); every whole-body base check compares against it")
+DRIVE_GAP = _t("DRIVE_GAP", 0.02, "m", "chosen (the user 11-27): the robot's spheres above the base (arms, torso, "
+               "head, loads) keep this from the world wherever the base drives or stands in a travel posture "
+               "(Motion.base_depths); 0 before: arms the zero-margin sphere model called clear grazed walls in "
+               "PhysX (s10 T03 utensils_apart 11-26: the right arm pushed 0.59 m off its fold beside bookcase_2)")
 FOOTPRINT_MARGIN = _t("FOOTPRINT_MARGIN", 0.046, "m", "inherited, unmeasured: the base keeps this from the boxes "
                       "and moving parts in xy, the one margin (1.6 cm inside BASE_HALF plus 3 cm on top, both from "
                       "3ccd5e99, the sum kept: COLLISION_PLAN 2)")

@@ -17,7 +17,7 @@ from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, OBJECT_SLEEP, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
-from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
+from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP, TARGET_TOL
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
@@ -1379,6 +1379,26 @@ class Rig:
             self.step(2)
         self.log("swing", target=label, q_err=round(float(np.max(np.abs(self.q() - self.q_cmd))), 4))
 
+    def arm_off(self, side):
+        """How far (m) ``side``'s TCP stands from where its command puts it once the arm has arrived or
+        stopped (_settle): what run.arrived judges after a segment with no follow of its own (a drive)."""
+        self._arm_off_at = self.tick
+        return self._settle(150, 0.01, side)
+
+    def hold_arm(self, side, label, off):
+        """Command ``side``'s arm where it stands (the body keeps its command): run.arrived's answer to
+        an arm a contact pushed off a travel posture.  Logged ``drive_pushed`` with the arm's (and its
+        load's) contacts since the drive began."""
+        q, cmd = _chain_q(self, side), _chain_cmd(self, side)
+        since = getattr(self, "_drive_from", None)
+        recs = getattr(self.clear, "physx_records", None) or []
+        hits = sorted({f"{r.get('link')} / {r.get('entity')}" for r in recs
+                       if (since is None or r.get("tick", 0) >= since)
+                       and str(r.get("link", "")).startswith((side, "held:"))})
+        self.log("drive_pushed", target=label, side=side, off=round(float(off), 4),
+                 q=np.round(q, 3).tolist(), q_cmd=np.round(cmd, 3).tolist(), contacts=hits[:12])
+        _set_chain_cmd(self, side, np.r_[cmd[:2], q[2:]])
+
     def drive_base(self, path, speed=None, turn=None, ramp=None, on_step=None, allow=BASE_DRIVE):
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
@@ -1389,6 +1409,8 @@ class Rig:
         at least its least one.  ``allow``: BASE_DRIVE (the arms not checked along the path) unless
         the path is a whole-body plan (base_planner)."""
         self.clear.motion("drive_base", allow, side="base", follows=False)
+        if getattr(self, "_drive_from", None) is None or self._drive_from < getattr(self, "_arm_off_at", -1):
+            self._drive_from = self.tick                        # the first drive since the last arrival check
         cap_v, cap_w, least_ramp = self._drive_cap()
         speed = cap_v if speed is None else min(speed, cap_v)
         turn = cap_w if turn is None else min(turn, cap_w)
