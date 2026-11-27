@@ -1376,8 +1376,14 @@ def T07(t):
             + [nav("kitchen_microwave/inside_floor"), place(x, "kitchen_microwave/inside_floor"),
                S("close", articulated=MW)] + ([S("heat", food=x, appliance=MW, temp_c=temp)] if heat else [])
 
+    # 11-26 (gt_check_all vessel in_steel s14, in_foil s13): the burner's centre is out of the bench's reach depth from
+    # both long edges, so hints_in_reach moved it south to (8.40, 1.655); place parked at the stove's south front, came
+    # round its east end along the windows and stopped against them (x2).  Set 7.5 cm north of the centre (on the
+    # burner: 10 + 3 cm), in reach from the north side the robot comes from
+    STOVE_SPOT = [BURNER[0], 1.80]
+
     def to_stove(x, region=None, temp=40, heat=True):
-        return [look(ISL)] + grab(x, region) + [nav("kitchen_stove/top"), place(x, "kitchen_stove/top", BURNER)] \
+        return [look(ISL)] + grab(x, region) + [nav("kitchen_stove/top"), place(x, "kitchen_stove/top", STOVE_SPOT)] \
             + ([S("heat", food=x, appliance=ST, temp_c=temp)] if heat else [])
 
     # vessel_decides_appliance: which container the leftovers are in (seed); the right appliance follows from it

@@ -456,6 +456,12 @@ def hints_in_reach(task):
                 continue
             edges = reach_edges(base, sup)
             others = [b for k, (s_, b) in where.items() if s_ == sup and k != n]
+            # 11-26: a hint on a burner stays (heating needs it there; moved to the stove's south edge, place parked
+            # at its front by the windows, x2); placed from the north side 26 cm in, it passed
+            if any(math.hypot(h[0] - bu["center"][0], h[1] - bu["center"][1]) <= bu["radius"]
+                   for ap in _ann(base).get("appliances", []) for bu in ap.get("burners", [])):
+                where[n] = (sup, _box(asset, {"xy": h}))
+                continue
             if reachable(_box(asset, {"xy": h}), edges):
                 where[n] = (sup, _box(asset, {"xy": h}))
                 continue

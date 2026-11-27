@@ -85610,7 +85610,7 @@
         "receptacle": "kitchen_stove/top",
         "hint_xy": [
          8.41,
-         1.725
+         1.8
         ]
        }
       },
@@ -85676,8 +85676,8 @@
         "object": "steel_lunch_box",
         "receptacle": "kitchen_stove/top",
         "hint_xy": [
-         8.4,
-         1.655
+         8.41,
+         1.8
         ]
        }
       },
@@ -85743,8 +85743,8 @@
         "object": "foil_takeout_tray",
         "receptacle": "kitchen_stove/top",
         "hint_xy": [
-         8.4,
-         1.655
+         8.41,
+         1.8
         ]
        }
       },
@@ -85799,7 +85799,7 @@
         "receptacle": "kitchen_stove/top",
         "hint_xy": [
          8.41,
-         1.725
+         1.8
         ]
        }
       },
@@ -85938,7 +85938,7 @@
         "receptacle": "kitchen_stove/top",
         "hint_xy": [
          8.41,
-         1.725
+         1.8
         ]
        }
       },
