@@ -229,7 +229,7 @@
 | T22 | not_shopping | — | 看着像但不能用 | 只收买回来的东西 | 在 | 1 |
 | T22 | two_spots | — | 去处替换 | 冰的进冰箱，常温的进柜子 | 在 | 1 |
 | T22 | tray_elsewhere | orange_in_it | 缺失 | 果篮（没有，用托盘，托盘里有个橙子） | 不在 | 0 |
-| T22 | tray_elsewhere | books_on_it | 被占用 | 果篮（没有，用托盘，托盘上压着书） | 不在 | 0 |
+| T22 | tray_elsewhere | bowls_in_it | 被占用 | 果篮（没有，用托盘，托盘上压着书） | 不在 | 0 |
 | T22 | tray_elsewhere | — | 缺失 | 果篮（没有，用岛台上的托盘） | 不在 | 0 |
 | T23 | spoon_on_floor | — | 不用替换 | 按指令（the spoon on a kitchen counter or the island） | 在 | 0 |
 | T23 | by_kind | toy_box | 去处替换 | 勺子回厨房、积木进玩具箱 | 在 | 1 |

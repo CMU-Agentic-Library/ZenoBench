@@ -80,8 +80,9 @@ def episode_config(task: dict, seed: int, variant: str | None = None, difficulty
         cfg["failures"] = copy.deepcopy(v["failures"])
     if v.get("layout"):
         # v6: the seed draws the layout (objects rearranged on their supports, the start in the start room)
-        from benchmark.v6.layout import apply_layout
-        apply_layout(cfg, v["layout"], random.Random(f"{task['task_id']}:{variant}:{seed}:layout"))
+        # 11-25: redrawn when it looks like an earlier evaluation seed of the design (layout.draw_distinct)
+        from benchmark.v6.layout import draw_distinct
+        draw_distinct(cfg, v["layout"], task["task_id"], variant, seed)
     else:
         vary = v["vary"] if "vary" in v else scene.get("vary")
         if vary:

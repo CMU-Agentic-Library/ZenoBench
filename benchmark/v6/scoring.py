@@ -627,6 +627,16 @@ LAYOUT_TIERS[("T22", "*")] = {
     "eat_now__desk_corner": {"best": {"all": [*_J22, *_C22, *_FREE22, *_STAYS22, *_H15]},
                              "second": {"any": [[*_C22, *_FREE22], [*_FREE22, *_STAYS22]], "all": [*_J22, *_H15]},
                              "worst": {"any": [_DESK22, _AWAY22], "all": [*_J22, *_H15]}, "_ideal": True}}
+# T22 tray_elsewhere__bowls_in_it (11-26, user): the apple in the tray in every level; the dirty bowl cleared to a
+# kitchen worktop first is the best, cleared anywhere else (not the floor) second, left in the tray with the apple worst
+_APPLE22 = [*_J22, *_C22, ["inside", "bought_apple", "west_tray"], ["not on_floor", "west_tray"]]
+_BOWLS22 = ["tray_bowl_1"]
+_KITCHEN22 = ["kitchen_counter_1/top", "kitchen_counter_2/top", "kitchen_island/top"]
+LAYOUT_TIERS[("T22", "*")]["tray_elsewhere__bowls_in_it"] = {
+    "best": {"all": [*_APPLE22, *[["on_any", b, _KITCHEN22] for b in _BOWLS22], *_H15]},
+    "second": {"all": [*_APPLE22, *[x for b in _BOWLS22 for x in (["not inside", b, "west_tray"],
+                                                                   ["not on_floor", b])], *_H15]},
+    "worst": {"all": [*_APPLE22, *_H15]}, "_ideal": False}
 _T22_WHY = {"best": "the snacks on his desk where they leave his homework as it is (the free corner when the "
                     "homework covers the desk), the juice away, doors closed",
             "second": "a door left open; or his homework pushed aside to make room for the snacks",
@@ -1275,7 +1285,8 @@ def tier_goal(tier: dict, task: dict, layout: str | None):
 
 
 def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict | None:
-    """The first tier whose goal holds (``holds(goal) -> bool``), as {tier, score, D}; None if not reviewed."""
+    """The first tier whose goal holds (``holds(goal) -> bool``), as {tier, score, D}; None if not reviewed.
+    With alternatives (``any``), also the first one that holds: ``branch`` (its index) and ``branch_atoms``."""
     if not scoring:
         return None
     for tier in scoring["tiers"]:
@@ -1283,7 +1294,14 @@ def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict |
         if g == NA:                                   # the level does not exist in this layout
             continue
         if holds(g):
-            return {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+            out = {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+            # 11-25: which alternative of the tier held, so substitution_metrics.py can tell what was used
+            for i, branch in enumerate(g.get("any") or []):
+                if len(g["any"]) > 1 and holds({**g, "any": [branch]}):
+                    out["branch"] = i
+                    out["branch_atoms"] = branch
+                    break
+            return out
     return {"tier": "not_ok", "level": "else", "score": 0.0, "D": scoring["D"]}
 
 

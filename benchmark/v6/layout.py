@@ -44,6 +44,26 @@ FLOOR_Z_M = 0.15
 DESIGN_NEAR_M = 0.15     # an object this close to a design object is the other side of its relation
 EVENT_NEAR_M = 0.3       # objects this close to where an event puts something stay (the event is about them)
 TRIES = 40
+# 11-25 (user: seeds of one design must not look alike) -- objects on the floor move too, within their room
+FLOOR_SHIFT_M = 0.6      # a floor cluster moves at most this far on each axis
+FLOOR_OBST_CLEAR_M = 0.05   # ...keeping this from furniture, walls and other things on the floor
+FLOOR_RIDER_Z_M = 0.6    # a loose object (no support) below this over a floor object goes with it (in it / on it)
+DOOR_CLEAR_M = 0.9       # ...and this from every hinge (fridge, cabinet doors swing there)
+FLOOR_STAND_M = (0.45, 0.8)  # a free base cell this far from its centre (the base can stand by it to pick it up)
+FLOOR_GAP_M = 0.3       # ...and this from the other things on the floor (11-25 T23 s12: a block 8 cm from the bin
+                         # it was drawn beside had no grasp)
+FLOOR_CELL_CLEAR_M = 0.35   # the base cell beside it this far from every other thing on the floor
+FLOOR_HINT_CLEAR_M = 0.7   # ...and this from every place the oracle route sets something down (its base stands there)
+OBSTACLE_TOP_M = 0.5     # furniture whose bottom is above this (wall cabinets) does not block the floor
+START_CLEAR_M = 0.6      # a start this far from walls and furniture (11-25: the first tuck failed at 5 starts 0.40-0.51 m
+                         # from a wall, the arm swinging into it); a room with no such cell keeps the old rule
+START_CLEAR_STEPS_M = (0.85, 0.75, START_CLEAR_M)
+START_MIN_CELLS = 20
+SEED0, SEED1 = 10, 20    # the evaluation seeds compared for likeness
+OBJ_ALIKE_M = 0.10       # two seeds look alike: no object moved more than this...
+START_ALIKE_M = 1.0      # ...and the starts this close...
+YAW_ALIKE_DEG = 60.0     # ...facing about the same way
+REDRAWS = 30
 REACH_DEPTH_M = 0.20     # a cluster on a top lies within this of an edge the base can stand at (its far side)...
 REACH_NEAR_M = 0.08      # ...or its near side this close to that edge (a big thing set at the edge)
 REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
@@ -66,7 +86,11 @@ ROLL_EDGE_M = 0.06
 # route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
 PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.05),
              # cabinet 4's low top (0.62 m): what was picked there stood at y 0.40-0.46 (8 of 10); not deeper than 0.38
-             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62)}   # y by the box: a cup centred no deeper than 0.38
+             "kitchen_cabinet_4/top": (1.0, 0.34, 1.80, 0.62),   # y by the box: a cup centred no deeper than 0.38
+             # the west dining table (moved 0.4 m west 11-26): its west side is a 0.93 m strip by the wall; the sponge
+             # drawn to its west edge (T08 far_dining s13, -8.84) was picked from there and the island wipe after it
+             # found no base pose, twice.  What the route picks there stays 0.4 m off the west edge
+             "dining_table_1/top": (-8.55, 6.86, -7.884, 8.862)}
 
 
 # ----------------------------------------------------------------- scene data
@@ -131,6 +155,82 @@ def _world(base):
     return WorldModel(SceneAnnotations(ROOT / base / "annotation.json"))
 
 
+DRIVE_NEAR_M = 0.2       # a stand pose counts only this close to a cell the base can drive to (11-25 T22 s12:
+                         # the dining table's west side is clear but no path reaches it)
+
+
+DRIVE = ROOT / "benchmark/v6/drive_cells.json"
+
+
+@lru_cache(maxsize=None)
+def _drive_cells(base):
+    """(x0, y0, step, cells) of the cells the base can drive to; cached in drive_cells.json (rebuilt when missing
+    or for a base not in it: about 14 minutes a base)."""
+    doc = json.loads(DRIVE.read_text()) if DRIVE.exists() else {}
+    if base not in doc:
+        x0, y0, step, seen = _drive_cells_build(base)
+        doc[base] = {"x0": x0, "y0": y0, "step": step, "cells": sorted(list(c) for c in seen)}
+        DRIVE.write_text(json.dumps(doc))
+    d = doc[base]
+    return d["x0"], d["y0"], d["step"], frozenset(tuple(c) for c in d["cells"])
+
+
+def _drive_cells_build(base):
+    """Cells the base can drive to from the base scene's robot start (free at 0 or 90 deg, 8-connected), as
+    start_cells' flood fill without its every-yaw start test."""
+    import numpy as np
+    from zeno_skills.annotations import SceneAnnotations
+    from zeno_skills.evaluator import room_of as _room
+    ann = SceneAnnotations(ROOT / base / "annotation.json")
+    world = _world(base)
+    x0, y0, _ = json.loads((ROOT / base / "task.json").read_text())["robot_start"]
+    pts = np.concatenate([np.asarray(r["triangles"]).reshape(-1, 2) for r in ann.rooms.values()])
+    lo, hi = pts.min(0), pts.max(0)
+    step = CELL_M / 2
+    nx, ny = int((hi[0] - lo[0]) / step) + 1, int((hi[1] - lo[1]) / step) + 1
+    xy = lambda i, j: (float(lo[0] + i * step), float(lo[1] + j * step))  # noqa: E731
+    free = set()
+    for i in range(nx):
+        for j in range(ny):
+            x, y = xy(i, j)
+            if _room(ann.rooms, (x, y)) and (world.footprint_clear(x, y, 0.0, margin=0.03)
+                                            or world.footprint_clear(x, y, math.pi / 2, margin=0.03)):
+                free.add((i, j))
+    s = min(free, key=lambda ij: math.hypot(xy(*ij)[0] - x0, xy(*ij)[1] - y0))
+    seen, todo = {s}, [s]
+    while todo:
+        i, j = todo.pop()
+        for di in (-1, 0, 1):
+            for dj in (-1, 0, 1):
+                n = (i + di, j + dj)
+                if n in free and n not in seen:
+                    seen.add(n)
+                    todo.append(n)
+    return float(lo[0]), float(lo[1]), step, frozenset(seen)
+
+
+WALL_STAND_M = 0.5       # a stand pose this far from every wall (11-26: by bookcase_2's side, 0.43 m from the wall, the
+                         # free arm hit it four times -- T26 bear, T19 drop and carry, T13 mug)
+
+
+@lru_cache(maxsize=None)
+def _walls_xy(base):
+    return tuple(tuple(o["aabb"][:2] + o["aabb"][3:5]) for o in _ann(base)["obstacles"] if o.get("kind") == "wall")
+
+
+def _wall_clear(base, p):
+    return all(math.hypot(max(b[0] - p[0], 0.0, p[0] - b[2]), max(b[1] - p[1], 0.0, p[1] - b[3])) >= WALL_STAND_M
+               for b in _walls_xy(base))
+
+
+def _drivable(base, p):
+    x0, y0, step, seen = _drive_cells(base)
+    i, j = (p[0] - x0) / step, (p[1] - y0) / step
+    r = int(math.ceil(DRIVE_NEAR_M / step))
+    return any((int(round(i)) + di, int(round(j)) + dj) in seen for di in range(-r, r + 1) for dj in range(-r, r + 1)
+               if math.hypot(di, dj) * step <= DRIVE_NEAR_M)
+
+
 @lru_cache(maxsize=None)
 def reach_edges(base, sup):
     """Where the base can stand at a top: [[k, s, E, l0, l1, depth], ...], each a stretch of the edge at
@@ -153,7 +253,7 @@ def reach_edges(base, sup):
                     p = [0.0, 0.0]
                     p[k], p[j] = E + sgn * off, t
                     yaw = math.atan2(-sgn if k else 0.0, -sgn if not k else 0.0)
-                    if world.footprint_clear(p[0], p[1], yaw):
+                    if world.footprint_clear(p[0], p[1], yaw) and _drivable(base, p) and _wall_clear(base, p):
                         depth = REACH_DEPTH_M
                         break
                 if run and depth == run[5]:
@@ -356,6 +456,12 @@ def hints_in_reach(task):
                 continue
             edges = reach_edges(base, sup)
             others = [b for k, (s_, b) in where.items() if s_ == sup and k != n]
+            # 11-26: a hint on a burner stays (heating needs it there; moved to the stove's south edge, place parked
+            # at its front by the windows, x2); placed from the north side 26 cm in, it passed
+            if any(math.hypot(h[0] - bu["center"][0], h[1] - bu["center"][1]) <= bu["radius"]
+                   for ap in _ann(base).get("appliances", []) for bu in ap.get("burners", [])):
+                where[n] = (sup, _box(asset, {"xy": h}))
+                continue
             if reachable(_box(asset, {"xy": h}), edges):
                 where[n] = (sup, _box(asset, {"xy": h}))
                 continue
@@ -514,6 +620,10 @@ def layout_spec(task, vid, registry, control=None):
     # put the lid 2 cm from a block, the finger room only kept around plain picks
     picked |= {s["args"].get(k) for s in steps if s["skill"] in ("hide", "cover") for k in ("object", "lid")} - {None}
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
+    # 11-25 (T22 tray_elsewhere__orange_in_it s12: the tray drawn 82 cm from the edge the base stands at): what the
+    # route sets things into or onto must be in reach as well, like what it picks
+    targets = {s["args"].get(k) for s in steps if s["skill"] in ("place", "drop", "stack", "hover", "cover", "hide")
+               for k in ("receptacle", "container", "target", "base")} - {None}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
     # stacked objects (no support) go with the object they stand on
@@ -543,11 +653,21 @@ def layout_spec(task, vid, registry, control=None):
         if n in under or n not in boxes:
             continue
         cx, cy = (boxes[n][0] + boxes[n][2]) / 2, (boxes[n][1] + boxes[n][3]) / 2
+        # pin (11-26): objects a variant names stay where it puts them, design objects or not (T22 tray_elsewhere's
+        # juice, the same as its control's, was drawn to a table corner it could not be carried from)
         if sup not in sups or _fixed_support(base, sup) or (n in design and sup in v.get("keep_design", [])) or \
+                n in v.get("pin", []) or \
                 any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)
     fixed |= relation_anchors(v.get("goal") or task.get("goal") or {}, steps)
+    # 11-25: loose objects on the floor (and what is in / on them) move within their room
+    ground = sorted(n for n, m in placed.items() if n in boxes and n not in under and m.get("support") not in sups
+                    and (m.get("z") or 0.0) < FLOOR_Z_M and n not in relation_anchors(v.get("goal") or task.get("goal")
+                                                                                       or {}, steps))
+    riders = {n for n, m in placed.items() if n in boxes and n not in ground and n not in under
+              and m.get("support") not in sups and (m.get("z") or 0.0) < FLOOR_RIDER_Z_M
+              and any(_overlap(boxes[n], boxes[g]) for g in ground)}
     movable = {}
     for n, m in placed.items():
         sup = m.get("support")
@@ -596,8 +716,34 @@ def layout_spec(task, vid, registry, control=None):
             if rng:
                 pk = sorted(set(g) & picked)
                 sk = sorted(set(g) & searched)
+                tk = sorted(set(g) & targets)
                 clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng,
-                                 **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
+                                 **({"pick": pk} if pk else {}), **({"search": sk} if sk else {}),
+                                 **({"place": tk} if tk else {})})
+    floor_groups = [[g] for g in ground]
+    merged = True
+    while merged:
+        merged = False
+        for i in range(len(floor_groups)):
+            for j in range(i + 1, len(floor_groups)):
+                if any(_overlap(boxes[a], boxes[b], CLUSTER_GAP_M) for a in floor_groups[i] for b in floor_groups[j]):
+                    floor_groups[i] += floor_groups.pop(j)
+                    merged = True
+                    break
+            if merged:
+                break
+    for g in floor_groups:
+        g = sorted(g + [r for r in riders if any(_overlap(boxes[r], boxes[x]) for x in g)])
+        B = _union([boxes[n] for n in g])
+        room = room_of(base, ((B[0] + B[2]) / 2, (B[1] + B[3]) / 2))
+        if room:
+            pk = sorted(set(g) & picked)
+            sk = sorted(set(g) & searched)
+            hints = sorted({tuple(st["args"]["hint_xy"]) for st in steps if st["args"].get("hint_xy")})
+            clusters.append({"names": g, "support": "floor", "room": room, "box": [round(x, 4) for x in B],
+                             **({"hints": [list(h) for h in hints]} if hints else {}),
+                             "dx": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M], "dy": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M],
+                             **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
     # what stands on those supports and does not move: base-scene objects, other task objects, reserved places
     in_cluster = {n for c in clusters for n in c["names"]}
     static = {}
@@ -694,6 +840,93 @@ def _floor_boxes(cfg):
     return out
 
 
+@lru_cache(maxsize=None)
+def _floor_static(base):
+    """Furniture and walls on the floor (not the wall cabinets), and the door hinges."""
+    obst = tuple(tuple(o["aabb"][:2] + o["aabb"][3:5]) for o in _ann(base)["obstacles"]
+                 if o["aabb"][2] < OBSTACLE_TOP_M)
+    hinges = tuple(tuple(a["pivot"][:2]) for a in _ann(base).get("articulated") or [] if a.get("pivot"))
+    return obst, hinges
+
+
+def _floor_named(cfg):
+    """(name, box) of everything on the floor: base-scene objects and the task's own."""
+    base = cfg["base"]
+    sups = _sups(base)
+    add = cfg.get("add") or {}
+    out = []
+    for o in _ann(base)["objects"]:
+        if o["name"] not in cfg["remove"] and o["name"] not in (cfg.get("move") or {}) and o["aabb"][2] < FLOOR_Z_M:
+            out.append((o["name"], o["aabb"][:2] + o["aabb"][3:5]))
+    for where in (cfg.get("move") or {}, add):
+        for n, m in where.items():
+            sp = sups.get(m.get("support"))
+            z = sp["z"] if sp else m.get("z")
+            if m.get("xy") and n not in cfg["remove"] and (z is None or z < FLOOR_Z_M):
+                out.append((n, _box(_asset_of(base, n, add), m)))
+    return out
+
+
+def _box_dist(b, p):
+    return math.hypot(max(b[0] - p[0], 0.0, p[0] - b[2]), max(b[1] - p[1], 0.0, p[1] - b[3]))
+
+
+def _draw_floor(cfg, c, spec, current, i, rng):
+    """A floor cluster's shift: inside its room, clear of furniture, walls, door swings and the other things on the
+    floor, with a free base cell beside what the route picks (or beside the cluster)."""
+    base = cfg["base"]
+    add = cfg.get("add") or {}
+    obst, hinges = _floor_static(base)
+    others = [b for n, b in _floor_named(cfg) if n not in c["names"]] + \
+        [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == "floor"]
+    cells = _cells().get(base, {}).get(c["room"], [])
+    pose = lambda n: cfg["move"].get(n) or add.get(n) or {}  # noqa: E731
+    every = [_box(_asset_of(base, n, add), pose(n)) for n in c["names"] if pose(n).get("xy")] or [c["box"]]
+    stand = [_box(_asset_of(base, n, add), pose(n)) for n in c.get("pick") or [] if pose(n).get("xy")] or \
+        [_union(every)]
+
+    def fits(tx, ty):
+        sh = lambda r: [r[0] + tx, r[1] + ty, r[2] + tx, r[3] + ty]  # noqa: E731
+        bs = [sh(m) for m in every]
+        for b in bs:
+            if any(room_of(base, (x, y)) != c["room"] for x in (b[0], b[2]) for y in (b[1], b[3])):
+                return False
+            if any(_overlap(b, list(o), FLOOR_OBST_CLEAR_M) for o in obst) or \
+                    any(_overlap(b, o, FLOOR_GAP_M) for o in others) or \
+                    any(_box_dist(b, h) < DOOR_CLEAR_M for h in hinges):
+                return False
+        U = _union(bs)
+        if any(_box_dist(U, h) < min(FLOOR_HINT_CLEAR_M, _box_dist(_union(every), h)) for h in c.get("hints") or []):
+            return False
+        for m in stand:
+            m = sh(m)
+            cx, cy = (m[0] + m[2]) / 2, (m[1] + m[3]) / 2
+            if not any(FLOOR_STAND_M[0] <= math.hypot(x - cx, y - cy) <= FLOOR_STAND_M[1] and _box_dist(U, (x, y)) > 0.3
+                       and all(_box_dist(o, (x, y)) > FLOOR_CELL_CLEAR_M for o in others) for x, y in cells):
+                return False
+        return True
+    for _ in range(TRIES * 2):
+        tx, ty = _grid(rng, c["dx"]), _grid(rng, c["dy"])
+        if fits(tx, ty):
+            return tx, ty
+    return 0.0, 0.0
+
+
+@lru_cache(maxsize=None)
+def _start_cells(base, room):
+    """The room's start cells START_CLEAR_M from walls and furniture, or all of them when none is."""
+    cells = _cells().get(base, {}).get(room, [])
+    obst = _floor_static(base)[0]
+    d = [min((_box_dist(list(o), c) for o in obst), default=9.0) for c in cells]
+    # 11-26: at 0.66 m the first tuck still hit the wall (T06 s17, T01 s16): the clearest band that leaves
+    # START_MIN_CELLS cells (seeds must still differ), 0.85 m in the big rooms
+    for t in START_CLEAR_STEPS_M:
+        roomy = [c for c, x in zip(cells, d) if x >= t]
+        if len(roomy) >= START_MIN_CELLS:
+            return roomy
+    return cells
+
+
 def apply_layout(cfg, spec, rng):
     """Draw the seed's layout into ``cfg`` (``move`` / ``add`` poses and ``start``); records ``layout_applied``."""
     base = cfg["base"]
@@ -709,13 +942,24 @@ def apply_layout(cfg, spec, rng):
     picked_at = {}                                     # support -> boxes of picked things already drawn
     for i in order:
         c = spec["clusters"][i]
+        if c["support"] == "floor":
+            dx, dy = _draw_floor(cfg, c, spec, current, i, rng)
+            current[i] = [c["box"][0] + dx, c["box"][1] + dy, c["box"][2] + dx, c["box"][3] + dy]
+            for n in c["names"]:
+                where = cfg["move"] if n in cfg["move"] else cfg["add"]
+                m = dict(where[n])
+                m["xy"] = [round(m["xy"][0] + dx, 4), round(m["xy"][1] + dy, 4)]
+                where[n] = m
+            applied["+".join(c["names"])] = [round(dx, 2), round(dy, 2)]
+            continue
         others = list(spec["static"].get(c["support"], [])) + \
             [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == c["support"]]
         dx = dy = 0.0
         edges = (spec.get("reach") or {}).get(c["support"])
 
         members = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
-                   for n in c.get("pick") or c["names"]     # what the route picks must be in reach; the rest comes along
+                   for n in ((c.get("pick") or []) + (c.get("place") or [])) or c["names"]  # what the route picks or
+                   # sets things into must be in reach; the rest comes along
                    if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
 
         every = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
@@ -783,7 +1027,7 @@ def apply_layout(cfg, spec, rng):
             where[n] = m
         applied["+".join(c["names"])] = [round(dx, 2), round(dy, 2)]
     st = spec["start"]
-    cells = _cells().get(base, {}).get(st["room"] or "", [])
+    cells = _start_cells(base, st["room"] or "")
     floor = _floor_boxes(cfg)
     for _ in range(TRIES * 2 if cells else 0):
         x, y = rng.choice(cells)
@@ -800,6 +1044,66 @@ def apply_layout(cfg, spec, rng):
         applied["start"] = [x, y, yaw]
         break
     cfg["layout_applied"] = applied
+
+
+def signature(cfg):
+    """What a seed's layout looks like: the poses the layout sets and the start."""
+    P = {}
+    for where in (cfg.get("move") or {}, cfg.get("add") or {}):
+        for n, m in where.items():
+            if isinstance(m, dict) and m.get("xy"):
+                P[n] = (float(m["xy"][0]), float(m["xy"][1]))
+    s = cfg.get("start") or [0.0, 0.0, 0.0]
+    if isinstance(s, dict):
+        xy = s.get("xy") or [0.0, 0.0]
+        s = [xy[0], xy[1], s.get("yaw_deg", 0.0)]
+    return P, (float(s[0]), float(s[1]), float(s[2]) if len(s) > 2 else 0.0)
+
+
+def alike(a, b):
+    """Two seeds look alike: nothing moved more than OBJ_ALIKE_M and the starts are close and face the same way."""
+    (Pa, sa), (Pb, sb) = a, b
+    d = max((math.dist(Pa[n], Pb[n]) for n in set(Pa) & set(Pb)), default=0.0)
+    dyaw = abs((sa[2] - sb[2] + 180) % 360 - 180)
+    return d < OBJ_ALIKE_M and math.dist(sa[:2], sb[:2]) < START_ALIKE_M and dyaw < YAW_ALIKE_DEG
+
+
+_DRAWN = {}
+
+
+def draw_distinct(cfg, spec, task_id, variant, seed):
+    """apply_layout with the seed's own draw unless it looks like an earlier evaluation seed of the same design
+    (SEED0..seed-1); then redraws (salted) until it does not, or the least alike of REDRAWS."""
+    import copy
+    import random
+    key0 = json.dumps([task_id, variant, cfg, spec], sort_keys=True, default=str)
+    prev = [_drawn(key0, cfg, spec, task_id, variant, s) for s in range(SEED0, min(seed, SEED1))] \
+        if SEED0 <= seed < SEED1 else []
+    best = None
+    for k in range(REDRAWS + 1):
+        c = copy.deepcopy(cfg)
+        salt = f"{task_id}:{variant}:{seed}:layout" + (f":{k}" if k else "")
+        apply_layout(c, spec, random.Random(salt))
+        n = sum(alike(signature(c), p) for p in prev)
+        if best is None or n < best[0]:
+            best = (n, k, c)
+        if n == 0:
+            break
+    n, k, c = best
+    if k:
+        c["layout_applied"]["redraw"] = k
+    cfg.clear()
+    cfg.update(c)
+
+
+def _drawn(key0, cfg, spec, task_id, variant, seed):
+    import copy
+    k = (key0, seed)
+    if k not in _DRAWN:
+        c = copy.deepcopy(cfg)
+        draw_distinct(c, spec, task_id, variant, seed)
+        _DRAWN[k] = signature(c)
+    return _DRAWN[k]
 
 
 def main():

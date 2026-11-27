@@ -370,8 +370,14 @@ R[("T14", "next_in_series")] = tiers(
 
 # ================================================================================================ T15 cover the pot
 # (11-17: replaces book_face_up)
-R[("T15", "lid_by_pot")] = d0("the pot covered with its lid", "the pot not covered; the lid dropped or still held", dict(
-    sit="锅盖在灶台旁边的岛台上（对照）", good="用锅盖盖好汤锅", no="没盖；锅盖掉了或还拿着"))
+# 11-25 (ZenoBench-Sub A side): the lid is there, so a plate scores as a needless substitution, not a failure
+_PLATES = ("plate_counter_a", "plate_counter_b", "plate_dining_cabinet", "plate_inside_kitchen_cabinet")
+R[("T15", "lid_by_pot")] = tiers(
+    second=lambda g, lid: {"all": [HAND], "any": [[["covered", "handled_cooking_pot", p]] for p in _PLATES]},
+    why=("the pot covered with its lid", "the pot covered with a plate though the lid is by the stove", ""),
+    not_ok="the pot not covered; the lid dropped or still held",
+    zh=dict(sit="锅盖在灶台旁边的岛台上（对照）", good="用锅盖盖好汤锅", second="锅盖就在旁边却用盘子盖（不必要的替代）",
+            no="没盖；锅盖掉了或还拿着"))
 R[("T15", "lid_elsewhere")] = d0("the lid found and the pot covered with it",
                                  "the pot not covered; the lid not found; still held", dict(
     sit="锅盖被放到了餐桌或厨房台面上，看不到，要找", good="找到锅盖盖好", no="没盖；没找到锅盖；还拿着"))
@@ -391,9 +397,15 @@ R[("T15", "lid_in_use")] = tiers(
 
 # ================================================================================================ T16 pack the snack box
 # (11-17: replaces rolling_pin_at_edge)
-R[("T16", "box_on_counter")] = d0("the apple in the snack box on his desk", "the apple not in the box on the desk; "
-                                  "still held or dropped", dict(
-    sit="零食盒在厨房台面，苹果在餐桌（对照）", good="苹果装进零食盒，放到书桌", no="没装好或没放到书桌；还拿着或掉了"))
+# 11-25 (ZenoBench-Sub A side): the box is there, so a bowl scores as a needless substitution
+_BOWLS = ("bowl_dining_cabinet", "bowl_inside_kitchen_cabinet", "bowl_kitchen_cabinet", "bowl_side_table")
+R[("T16", "box_on_counter")] = tiers(
+    second=lambda g, lid: {"all": [HAND], "any": [[["inside", "school_apple", b], ["on", b, "desk_1/top"]]
+                                                  for b in _BOWLS]},
+    why=("the apple in the snack box on his desk", "the apple in a bowl on his desk though the box is there", ""),
+    not_ok="the apple not in the box (or a bowl) on the desk; still held or dropped",
+    zh=dict(sit="零食盒在厨房台面，苹果在餐桌（对照）", good="苹果装进零食盒，放到书桌",
+            second="零食盒在却用碗装（不必要的替代）", no="没装好或没放到书桌；还拿着或掉了"))
 R[("T16", "box_in_cabinet")] = doors_second(
     "the snack box found in the cabinet, the apple in it on his desk, the cabinet closed",
     "the box not found; the apple not in it on the desk; still held or dropped",
@@ -431,11 +443,17 @@ R[("T17", "hide_somewhere")] = d0("hidden out of sight, not in an appliance", "i
 
 # ================================================================================================ T18 set out bowls
 # (11-17: replaces check_cabinet_dishes, which only looked)
-R[("T18", "bowls_in_cabinet")] = doors_second(
-    "two bowls from the low wall cabinet and two spoons on the dining table, the cabinet closed",
-    "fewer than two bowls or spoons on the table; a bowl dropped; still held",
-    dict(sit="靠墙矮柜里有两只干净的碗，厨房台面有两把勺子（对照）", good="两只碗、两把勺子摆到餐桌，柜门关好",
-         second="摆好了但柜门没关", no="碗或勺子不到两个；碗掉了；还拿着"))
+# 11-25 (ZenoBench-Sub A side): both bowls are there, so a plate as the second scores as a needless substitution
+R[("T18", "bowls_in_cabinet")] = tiers(
+    second=lambda g, lid: drop(g, "is_closed"),
+    worst=lambda g, lid: {"all": [HAND], "any": [[["on", b, "dining_table_2/top"],
+                                                  ["on_any", p, ["dining_table_2/top"]]]
+                                                 for b in ("dinner_bowl_1", "dinner_bowl_2") for p in _PLATES]},
+    why=("two bowls from the low wall cabinet and two spoons on the dining table, the cabinet closed",
+         "the task done, but a door left open", "a plate as the second though both bowls are in the cabinet"),
+    not_ok="fewer than two bowls (or a bowl and a plate) on the table; a bowl dropped; still held",
+    zh=dict(sit="靠墙矮柜里有两只干净的碗，厨房台面有两把勺子（对照）", good="两只碗、两把勺子摆到餐桌，柜门关好",
+            second="摆好了但柜门没关", worst="两只碗都在却拿盘子当第二只（不必要的替代）", no="碗或勺子不到两个；碗掉了；还拿着"))
 R[("T18", "bowls_apart")] = doors_second(
     "both bowls found (the second in the other cabinet) and set with the spoons, both doors closed",
     "fewer than two bowls or spoons on the table; a bowl dropped; still held",
@@ -803,8 +821,16 @@ R[("T29", "which_table")] = tiers(
 
 # ================================================================================================ T30 bowls for the soup
 _T30_NO = "fewer bowls than needed on the island; a bowl dropped; still held"
-R[("T30", "bowl_on_cabinet")] = d0("a clean bowl on the island by the stove", _T30_NO, dict(
-    sit="汤在灶上，干净碗在靠墙矮柜（对照）", good="碗拿到岛台", no="岛台上没碗；碗掉了；还拿着"))
+# 11-25 (ZenoBench-Sub A side): the bowl is there, so a mug or cup (second) or a plate (worst) is a needless substitution
+_T30_CUPS = ["mug_counter", "mug_dining_cabinet", "mug_shelf", "cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"]
+R[("T30", "bowl_on_cabinet")] = tiers(
+    second=lambda g, lid: {"all": [["count_on_at_least", _T30_CUPS, "kitchen_island/top", 1], HAND]},
+    worst=lambda g, lid: {"all": [HAND], "any": [[["on", p, "kitchen_island/top"]] for p in _PLATES]},
+    why=("a clean bowl on the island by the stove", "a mug or cup brought though the bowl is there",
+         "a plate brought though the bowl is there"),
+    not_ok="nothing that holds soup on the island; dropped; still held",
+    zh=dict(sit="汤在灶上，干净碗在靠墙矮柜（对照）", good="碗拿到岛台", second="碗在却拿了马克杯或杯子（不必要的替代）",
+            worst="碗在却拿了盘子", no="岛台上没碗；碗掉了；还拿着"))
 R[("T30", "how_many")] = d0("three bowls on the island (three spoons at the table)", _T30_NO, dict(
     sit="餐桌摆了三把勺子，柜上三个干净碗", good="三个碗到岛台", no="不到三个；碗掉了；还拿着"))
 R[("T30", "bowl_put_away")] = doors_second("a bowl from the cabinet on the island, the door closed", _T30_NO, dict(

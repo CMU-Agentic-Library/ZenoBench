@@ -42243,10 +42243,10 @@
    "name": "dining_table_1",
    "kind": "furniture",
    "aabb": [
-    -8.544,
+    -8.944,
     6.86,
     -0.012,
-    -7.484,
+    -7.884,
     8.862,
     0.702
    ]
@@ -52260,6 +52260,318 @@
    ]
   },
   {
+   "name": "WindowFactory_13411_spawn_asset_11",
+   "kind": "wall",
+   "aabb": [
+    7.75,
+    -6.899,
+    0.0,
+    9.026,
+    -6.82,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_12",
+   "kind": "wall",
+   "aabb": [
+    9.643,
+    -6.441,
+    0.0,
+    9.924,
+    -3.719,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_13",
+   "kind": "wall",
+   "aabb": [
+    9.662,
+    -2.4,
+    0.0,
+    9.923,
+    -0.596,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_14",
+   "kind": "wall",
+   "aabb": [
+    1.618,
+    -12.901,
+    0.0,
+    4.002,
+    -12.817,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_15",
+   "kind": "wall",
+   "aabb": [
+    5.017,
+    -12.894,
+    0.0,
+    6.891,
+    -12.824,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_16",
+   "kind": "wall",
+   "aabb": [
+    7.193,
+    -12.348,
+    0.0,
+    7.42,
+    -8.055,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_13411_spawn_asset_17",
+   "kind": "wall",
+   "aabb": [
+    1.094,
+    -12.417,
+    0.0,
+    1.291,
+    -10.921,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_0",
+   "kind": "wall",
+   "aabb": [
+    9.689,
+    2.311,
+    0.0,
+    9.907,
+    3.5,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_10",
+   "kind": "wall",
+   "aabb": [
+    5.22,
+    4.936,
+    0.0,
+    5.408,
+    6.079,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_18",
+   "kind": "wall",
+   "aabb": [
+    -5.03,
+    12.734,
+    0.0,
+    -3.303,
+    12.9,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_19",
+   "kind": "wall",
+   "aabb": [
+    -6.406,
+    12.192,
+    0.0,
+    -6.312,
+    12.886,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_1",
+   "kind": "wall",
+   "aabb": [
+    6.86,
+    3.819,
+    0.0,
+    9.486,
+    3.9,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_20",
+   "kind": "wall",
+   "aabb": [
+    -7.89,
+    -7.362,
+    0.0,
+    -7.676,
+    -6.575,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_21",
+   "kind": "wall",
+   "aabb": [
+    -7.645,
+    -8.308,
+    0.0,
+    -7.279,
+    -7.674,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_22",
+   "kind": "wall",
+   "aabb": [
+    -7.135,
+    -9.211,
+    0.0,
+    -6.479,
+    -8.555,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_23",
+   "kind": "wall",
+   "aabb": [
+    -6.412,
+    -9.64,
+    0.0,
+    -5.686,
+    -9.225,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_24",
+   "kind": "wall",
+   "aabb": [
+    -5.438,
+    -9.897,
+    0.0,
+    -4.519,
+    -9.574,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_25",
+   "kind": "wall",
+   "aabb": [
+    -3.137,
+    -9.912,
+    0.0,
+    0.294,
+    -9.806,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_2",
+   "kind": "wall",
+   "aabb": [
+    3.658,
+    10.583,
+    0.0,
+    3.925,
+    12.369,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_3",
+   "kind": "wall",
+   "aabb": [
+    -0.29,
+    12.805,
+    0.0,
+    0.859,
+    12.914,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_4",
+   "kind": "wall",
+   "aabb": [
+    -9.647,
+    6.112,
+    0.0,
+    -8.383,
+    6.17,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_5",
+   "kind": "wall",
+   "aabb": [
+    -7.938,
+    11.52,
+    0.0,
+    -7.125,
+    11.87,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_6",
+   "kind": "wall",
+   "aabb": [
+    -8.931,
+    11.064,
+    0.0,
+    -8.22,
+    11.57,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_7",
+   "kind": "wall",
+   "aabb": [
+    -9.57,
+    10.222,
+    0.0,
+    -9.098,
+    10.877,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_8",
+   "kind": "wall",
+   "aabb": [
+    -9.875,
+    9.105,
+    0.0,
+    -9.625,
+    9.966,
+    2.4
+   ]
+  },
+  {
+   "name": "WindowFactory_3015_spawn_asset_9",
+   "kind": "wall",
+   "aabb": [
+    -9.908,
+    7.032,
+    0.0,
+    -9.811,
+    8.18,
+    2.4
+   ]
+  },
+  {
    "name": "kitchen_cabinet_4/body/bottom",
    "kind": "articulated_panel",
    "aabb": [
@@ -53783,9 +54095,9 @@
    "category": "TableDining",
    "z": 0.711,
    "aabb_xy": [
-    -8.541,
+    -8.941,
     6.869,
-    -7.488,
+    -7.888,
     8.853
    ],
    "clearance": 1.0
@@ -57520,15 +57832,15 @@
    "body": "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl",
    "asset": "breakfast_bowl",
    "position": [
-    -8.1,
+    -8.5,
     7.45,
     0.7562
    ],
    "aabb": [
-    -8.2047,
+    -8.6047,
     7.3463,
     0.7111,
-    -7.9953,
+    -8.3953,
     7.5539,
     0.8011
    ],
@@ -57583,15 +57895,15 @@
    "body": "/World/TaskAssets/cup_side_table/Asset/breakfast_cup",
    "asset": "breakfast_cup",
    "position": [
-    -7.83,
+    -8.23,
     8.2499,
-    0.7862
+    0.7861
    ],
    "aabb": [
-    -7.8993,
+    -8.2993,
     8.18,
     0.7111,
-    -7.7606,
+    -8.1606,
     8.3198,
     0.8611
    ],
@@ -57709,17 +58021,17 @@
    "body": "/World/TaskAssets/spoon_side_table/Asset/breakfast_spoon",
    "asset": "breakfast_spoon",
    "position": [
-    -8.2513,
-    8.1203,
-    0.7192
+    -8.6512,
+    8.1207,
+    0.7186
    ],
    "aabb": [
-    -8.3347,
-    8.0461,
-    0.6966,
-    -8.1681,
-    8.1947,
-    0.7412
+    -8.7339,
+    8.0455,
+    0.6959,
+    -8.5686,
+    8.1959,
+    0.7408
    ],
    "room": "dining_room_0_0",
    "support": "dining_table_1/top"

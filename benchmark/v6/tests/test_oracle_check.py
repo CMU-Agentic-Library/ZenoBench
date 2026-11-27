@@ -93,7 +93,19 @@ def test_dependent_decisions_branch_on_what_is_found(tid, vid):
              == start_view(t, b, t["variants"][a]["layout"]["start"]["room"])]
     assert pairs, "no two layouts look the same from the start"
     for a, b in pairs:
-        assert not run(t, b, route(t, a))[0] and not run(t, a, route(t, b))[0], (a, b)
+        assert not run(_best(t, tid, b), b, route(t, a))[0] and not run(_best(t, tid, a), a, route(t, b))[0], (a, b)
+
+
+def _best(t, tid, lid):
+    """The task with ``lid`` judged by its best level when it is levelled (scoring.LAYOUT_TIERS): where a wrong
+    branch still succeeds a level down (11-26, T22: the apple beside the dirty bowls), the branch shows there."""
+    from benchmark.v6.scoring import LAYOUT_TIERS
+    tiers = LAYOUT_TIERS.get((tid, "*"), {}).get(lid)
+    if not tiers or not isinstance(tiers.get("best"), dict):
+        return t
+    t = copy.deepcopy(t)
+    t["variants"][lid]["goal"] = tiers["best"]
+    return t
 
 
 def test_search_looks_only_in_its_room():
@@ -122,7 +134,9 @@ def test_every_vessel_in_the_house_counts(tid, vid, kinds):
     t = TASKS[tid]
     for lid in t["v6_variants"][vid]["layouts"]:
         w = World(t, lid)
-        counted = {n for a in t["variants"][lid]["goal"]["all"] if a[0].startswith("count_on") for n in a[1]}
+        g = t["variants"][lid]["goal"]
+        counted = {n for a in g["all"] + [x for b in g.get("any", []) for x in b] if a[0].startswith("count_on")
+                   for n in a[1]}
         fallback = any(w.obj[n]["asset"] != kinds[0] for n in counted if n in w.obj)   # mugs allowed here?
         vessels = {n for n, o in w.obj.items() if o["asset"] in (kinds if fallback else kinds[:1])}
         assert vessels <= counted, (lid, sorted(vessels - counted))

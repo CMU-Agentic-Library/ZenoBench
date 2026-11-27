@@ -27,10 +27,35 @@ def test_catalog_is_up_to_date():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+def instructions_1124_touches(tid, vid):
+    from benchmark.v6 import instructions_1124 as I
+    p = tid[:3]
+    return p in I.BASE or (p, vid) in I.DESIGN or (p, vid) in I.LAYOUT
+
+
+def test_instructions_1124_keys_exist():
+    """Every rewritten instruction names a real design or layout and gives both languages."""
+    from benchmark.v6 import instructions_1124 as I
+    by = {t["task_id"][:3]: t for t in TASKS.values()}
+    assert set(I.BASE) <= set(by)
+    for (p, d), text in I.DESIGN.items():
+        assert d in by[p]["v6_variants"], (p, d)
+        assert text == "BASE" or (len(text) == 2 and all(text)), (p, d)
+    for (p, lid), text in I.LAYOUT.items():
+        assert lid in by[p]["variants"] and len(text) == 2 and all(text), (p, lid)
+    for p, d in [k for k, v in I.DESIGN.items() if v != "BASE"]:
+        for lid in by[p]["v6_variants"][d]["layouts"]:
+            v = by[p]["variants"][lid]
+            if (p, lid) not in I.LAYOUT:
+                assert (v["instruction"], v["instruction_zh"]) == I.DESIGN[(p, d)], (p, lid)
+
+
 def test_v5_designs_unchanged():
     """A v5 variant keeps its design (conditions, goal, instruction, failures other than the injected action ones);
     where things stand and where the robot starts are the seed's (layout.py)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
+    from benchmark.v6.tests.conftest import pre_loosen
+    PRE = {t["task_id"]: t for t in pre_loosen()["tasks"]}
     for tid, t in TASKS.items():
         if tid not in v5:                               # T21-T30: base tasks of v6's own (new_tasks_v6.py)
             continue
@@ -39,9 +64,12 @@ def test_v5_designs_unchanged():
                 assert vid not in t["variants"]
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
-            # but its hand: ["hand_empty", "right"] became "both" (define_tasks_v6.both_hands_empty, HAND_PLAN 9b)
-            assert both_hands_empty(old.get("goal")) == new.get("goal"), vid
-            if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
+            # before the 11-24 loosening, but its hand: ["hand_empty", "right"] became "both"
+            # (define_tasks_v6.both_hands_empty, HAND_PLAN 9b)
+            assert both_hands_empty(old.get("goal")) == PRE[tid]["variants"][vid].get("goal"), vid
+            if instructions_1124_touches(tid, vid):  # 11-24: rewritten on purpose (instructions_1124.py)
+                pass
+            elif (tid, vid) in INSTR_TO_TASK:       # a form-like instruction: the task's own instead
                 assert "instruction" not in new, vid
             elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose
                 assert old.get("instruction") == new.get("instruction"), vid
@@ -229,7 +257,7 @@ def _t01_suitable(cfg, sup="dining_table_2/top"):
     from benchmark.v6 import layout as L
     boxes = {n: L._box(L._asset_of(cfg["base"], n, {}), m) for n, m in cfg["move"].items()
              if m.get("support") == sup}
-    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.468)}[sup]
+    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.868)}[sup]
 
     def gap(a, b):
         return math.hypot(max(0, max(a[0], b[0]) - min(a[2], b[2])), max(0, max(a[1], b[1]) - min(a[3], b[3])))

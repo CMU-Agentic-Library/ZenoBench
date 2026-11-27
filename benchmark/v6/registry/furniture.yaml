@@ -1,0 +1,23 @@
+# ZenoBench furniture registry (11-24; classification only since 11-25): every furniture type and appliance whose
+# surfaces v6 goals name.  taxonomy: category -> subcategory -> type (the scene's furniture category); a type can
+# be refined per instance with ``instances`` (matched by name prefix, longest first).
+
+types:
+  TableDining: {category: furniture, subcategory: table}
+  SimpleDesk: {category: furniture, subcategory: desk}
+  KitchenSpace: {category: furniture, subcategory: kitchen_counter}
+  counter: {category: furniture, subcategory: kitchen_island}
+  cooktop: {category: appliance, subcategory: stove}
+  TVStand: {category: furniture, subcategory: tv_stand}
+  SimpleBookcase: {category: furniture, subcategory: bookcase}
+  CellShelf: {category: furniture, subcategory: shelf}
+  LargeShelf: {category: furniture, subcategory: shelf}
+  Mattress: {category: furniture, subcategory: bed}
+  cabinet_inside:
+    category: furniture
+    subcategory: cabinet
+    instances:
+      kitchen_cabinet: {category: furniture, subcategory: kitchen_cabinet}
+      breakfast_fridge: {category: appliance, subcategory: fridge}
+      kitchen_microwave: {category: appliance, subcategory: microwave}
+  cabinet_top: {same_as: cabinet_inside}

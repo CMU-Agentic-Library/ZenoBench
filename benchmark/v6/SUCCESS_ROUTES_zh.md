@@ -22,7 +22,6 @@
 - **好（1.0）**：
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-  - 手里空着
 - **不行（0）**：书放在别处（茶几、岛台、台面、地上），或还拿在手里
 
 
@@ -43,22 +42,19 @@
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
 - **次好（0.6）**：
 
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
 - **最不好（0.3）**：
 
   - `paperback_book` 在 `dining_table_2/top` 上
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
 - **不行（0）**：放到另一张没摆早餐的餐桌；为腾地方挪了或碰倒了餐具；放在别处或还拿在手里
 
 
@@ -85,42 +81,36 @@
     - `paperback_book` 在 `dining_table_1/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
     - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
-    - 手里空着
   - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
     - `paperback_book` 在 `dining_table_2/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
 - **次好（0.6）**：
 
   - 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
     - `paperback_book` 在 `dining_table_1/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
-    - 手里空着
   - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
     - `paperback_book` 在 `dining_table_2/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
 - **最不好（0.3）**：
 
   - 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
     - `paperback_book` 在 `dining_table_1/top` 上
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
-    - 手里空着
   - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
     - `paperback_book` 在 `dining_table_2/top` 上
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
 - **不行（0）**：放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里
 
 
@@ -145,17 +135,9 @@
 
 - **好（1.0）**：
 
-  - 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
-    - `paperback_book` 在 `dining_table_2/top` 上
-    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
   - 摆法 `full_a`、`full_a_flat`：
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `paperback_book` 在 `bookcase_1/top` 上
@@ -181,6 +163,12 @@
         - `paperback_book` 在 `bookcase_4/shelf_1` 上
       - 第 12 组：
         - `paperback_book` 在 `bookcase_4/shelf_0` 上
+  - 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
 - **次好（0.6）**：
 
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
@@ -253,25 +241,22 @@
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`mug_dining_cabinet`
     - `paperback_book` 离这些都超过 15 cm：`plate_counter_a`、`plate_counter_b`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
   - 摆法 `mug_1`、`mug_1_flat`：
     - `paperback_book` 在 `dining_table_2/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
     - `paperback_book` 离这些都超过 15 cm：`bowl_side_table`、`plate_counter_b`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
   - 摆法 `mug_3`、`mug_3_flat`：
     - `paperback_book` 在 `dining_table_2/top` 上
     - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
     - `paperback_book` 离这些都超过 15 cm：`plate_counter_b`、`bowl_side_table`
-    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-    - 手里空着
 - **次好（0.6）**：
 
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
@@ -309,8 +294,7 @@
 - **好（1.0）**：
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-  - `book_island`、`book_other` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `book_island`、`book_other` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - `paperback_book` 不在其中任何一处上：`dining_table_2/top`、`dining_table_1/top`
@@ -323,7 +307,6 @@
 - **最不好（0.3）**：
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-  - 手里空着
 - **不行（0）**：餐桌上一本书都没有；还拿在手里
 
 
@@ -336,7 +319,7 @@
 
 ## T02_stack_blocks
 
-> 收拾孩子落在岛台上的积木：把一块木积木叠到另一块上面。
+> 把岛台上的两块木积木叠起来，一块放在另一块上面。
 
 ### clear（对照）
 
@@ -346,7 +329,6 @@
 
 - **好（1.0）**：
 
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
@@ -369,19 +351,9 @@
 
 - **好（1.0）**：
 
-  - 摆法 `tight_tv`、`tight_dining`：
-    - `wooden_block_b`、`oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
-    - `oatmeal` 立着
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `wooden_block_a` 叠在 `floor_block` 上
-      - 第 2 组：
-        - `floor_block` 叠在 `wooden_block_a` 上
   - 摆法 `loose`：
-    - `oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
+    - `oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 10 cm）
     - `oatmeal` 立着
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_a` 叠在 `wooden_block_b` 上
@@ -395,6 +367,14 @@
         - `floor_block` 叠在 `wooden_block_a` 上
       - 第 6 组：
         - `floor_block` 叠在 `wooden_block_b` 上
+  - 摆法 `tight_tv`、`tight_dining`：
+    - `wooden_block_b`、`oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 10 cm）
+    - `oatmeal` 立着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
 - **最不好（0.3）**：
 
   - `oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
@@ -433,7 +413,6 @@
 - **好（1.0）**：
 
   - 摆法 `duck`：
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_b` 叠在 `wooden_block_a` 上
@@ -444,7 +423,6 @@
         - `rubber_duck` 叠在 `wooden_block_a` 上
         - `wooden_block_b` 在 `kitchen_island/top` 上
   - 摆法 `toy_block`：
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_b` 叠在 `wooden_block_a` 上
@@ -510,7 +488,7 @@
 
 **情况**：（11-17 改成换地方的替换）孩子坐在近处餐桌，想看积木塔；三块积木分散在家里（一块开局看不到）→ 找全三块搭塔。搭在哪按位置定档：近处餐桌（孩子那张）好；近处餐桌堆满了就搭到西边餐厅的另一张餐桌，次好；两张餐桌都堆满就只能搭在不是餐桌的台面（如岛台），最不好。离桌边和桌上东西都要 10 cm，桌上东西不能挪
 
-**指令**：孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。
+**指令**：孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。
 
 **成功条件**（D 按摆法：`counter` D = 1、理想物在，`study` D = 1、理想物在，`near_full` D = 1、理想物不在，`both_full` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -730,8 +708,7 @@
 
 - **好（1.0）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
@@ -747,8 +724,7 @@
       - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
 - **最不好（0.3）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 10 cm）
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
@@ -770,7 +746,7 @@
 
 **情况**：（11-17 改成替换）“孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好”：岛台上两块积木，一块在边上不能当底座，旁边一块洗碗海绵（不是玩具）；第三块木积木在关着的矮柜里或家里根本没有，眼前有一个替代玩具 → 先找真的第三块（开柜找、关好），找不到才用替代玩具。按毛病数定档：都对好；替代玩具或底座在边上之一次好；两样都有、用海绵或柜门没关最不好
 
-**指令**：孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。
+**指令**：孩子想要一座三层的积木塔，在岛台上给他搭一座。
 
 **成功条件**（D 按摆法：`in_4` D = 1、理想物在，`in_6` D = 1、理想物在，`gone_toy_block` D = 1、理想物不在，`gone_duck` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -1101,7 +1077,7 @@
 
 ## T03_utensils_one_container
 
-> 烘焙结束了，把擀面杖和勺子一起收进同一个容器里。
+> 烘焙结束了，把擀面杖和勺子一起收进那个宽的储物箱里。
 
 ### large_only（对照）
 
@@ -1111,7 +1087,6 @@
 
 - **好（1.0）**：
 
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `rolling_pin` 在 `wide_storage_bin` 里
@@ -1129,6 +1104,8 @@
 ### small_bin_or_bedroom_bin（Task）
 
 **情况**：（11-17 改：能力不足）岛台上餐具旁边有个小储物箱（22 × 17 cm，里面两块积木），放不下 22 cm 的擀面杖 → 先排除小箱，再看还剩什么容器。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
+
+**指令**：烘焙结束了，把擀面杖和勺子一起收进同一个容器里。
 
 **成功条件**（D 按摆法：`wide_in_bedroom` D = 1、理想物在，`basket_in_bedroom` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -1278,8 +1255,6 @@
 ### no_bin_substitute（Task）
 
 **情况**：（缺失）家里没有储物箱；电视柜上的小箱放不下擀面杖；餐桌上的果篮装着水果 → 排除小箱，不用果篮，去别的房间找替代品。家里没有宽箱，最好的替代（筐或托盘）算好。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
-
-**指令**：烘焙结束了，把擀面杖和勺子一起收进一个容器里。
 
 **成功条件**（D 按摆法：`basket` D = 1、理想物不在，`tray` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -1469,7 +1444,7 @@
 
 ## T04_cup_or_mug_to_cabinet
 
-> 有客人要来喝茶，在靠墙矮柜上的饮品角摆一个玻璃杯。
+> 有客人要来喝茶，在靠墙矮柜上的饮品角立着摆一个玻璃杯。
 
 ### cup_available（对照）
 
@@ -2637,7 +2612,7 @@
 
 **情况**：（缺失）“有两位客人要来喝茶，摆两个玻璃杯，两个别挨着”：岛台上一个玻璃杯，第二个看家里有什么 → 两个杯子按差的那个定档。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**指令**：有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。
+**指令**：有两位客人要来喝茶。在靠墙矮柜上的饮品角立着摆两个玻璃杯，两个别挨着。
 
 **成功条件**（D 按摆法：`glass_in_cabinet` D = 1、理想物在，`mug` D = 1、理想物不在，`kid_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -3164,7 +3139,7 @@
 
 **情况**：（能力不足）“有客人要来，想喝冰柠檬水，在饮品角摆个杯子”：马克杯就在眼前，但装冰饮不合适；玻璃杯或孩子的塑料杯放在 4 号矮柜顶上（11-21：柜子里的杯子技能拿不出来）→ 去矮柜那边找。冰饮杯子：玻璃杯 0、塑料杯 1、马克杯 2；柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**指令**：有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。
+**指令**：有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角立着摆个杯子。
 
 **成功条件**（D 按摆法：`cup_in_4` D = 1、理想物在，`plastic_only` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -3297,7 +3272,6 @@
 - **好（1.0）**：
 
   - `pencil` 在 `desk_1/top` 上
-  - 手里空着
 - **不行（0）**：铅笔放到别处；拿了别的东西当笔；还拿着或掉了
 
 
@@ -3546,7 +3520,7 @@
 
 **情况**：（被占用）“拿一支钢笔过去；书桌上用过的马克杯放回合适的地方”：一只手，两件事在书桌汇合。马克杯放厨房台面 0、岛台或灶台 1、厨房外 2。按毛病数排序，这个摆法里能做到的最好结果算好
 
-**指令**：孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，放回合适的地方。
+**指令**：孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，拿回厨房台面上。
 
 **成功条件**（D 按摆法：`pen_bedroom` D = 1、理想物在，`pen_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -3746,7 +3720,6 @@
 
 - **好（1.0）**：
 
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
@@ -4805,7 +4778,7 @@
 
 ## T07_heat_oatmeal
 
-> 把剩下的燕麦粥热一下当早饭（至少 40 度）。
+> 把那碗剩燕麦粥热一下当早饭，至少热到 40 度，热完把用过的电器关掉。
 
 ### microwave_works（对照）
 
@@ -4920,7 +4893,7 @@
 
 **情况**：两个电器都正常；剩饭装在五种容器之一里，指令只说"把剩饭热一下"，不提示容器 → 按容器的材质选电器：瓷碗、玻璃盒进微波炉（放灶上不算热），金属锅、不锈钢饭盒、铝箔盒上灶台（进微波炉不热）
 
-**指令**：把剩饭热一下当早饭（至少 40 度）。
+**指令**：把陶瓷碗里的剩燕麦粥热一下当早饭，至少热到 40 度，热完把用过的电器关掉。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -5035,7 +5008,7 @@
 
 **情况**：早饭要热两样：一碗燕麦粥（只能微波炉）和一锅剩汤（只能灶台），都要至少 40 度；放着会变凉 → 两个电器同时开：汤锅上灶开火、粥碗进微波炉按启动，等一会儿再都关掉；一样一样热完，先热的那样会凉掉
 
-**指令**：早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。
+**指令**：早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。热完把用过的电器关掉。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -5089,7 +5062,6 @@
 
   - `kitchen_island/top` 擦过
   - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
 - **次好（0.6）**：
 
   - `kitchen_island/top` 擦过
@@ -5185,7 +5157,6 @@
   - 摆法 `duck`：
     - `kitchen_island/top` 擦过
     - `kitchen_sponge` 在 `kitchen_island/top` 上
-    - 手里空着
     - `wooden_block_a` 在 `toy_box` 里
     - `rubber_duck` 在 `toy_box` 里
     - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
@@ -5193,7 +5164,6 @@
   - 摆法 `blocks`：
     - `kitchen_island/top` 擦过
     - `kitchen_sponge` 在 `kitchen_island/top` 上
-    - 手里空着
     - `wooden_block_a` 在 `toy_box` 里
     - `wooden_block_b` 在 `toy_box` 里
     - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
@@ -5265,7 +5235,6 @@
   - `kitchen_island/top` 擦过
   - `kitchen_sponge` 在 `sponge_tray` 里
   - `spare_sponge` 在 `sponge_tray` 里
-  - 手里空着
 - **次好（0.6）**：
 
   - `kitchen_island/top` 擦过
@@ -5303,12 +5272,10 @@
     - `dining_table_2/top` 擦过
     - `kitchen_island/top` 没擦过
     - `kitchen_sponge` 在 `kitchen_island/top` 上
-    - 手里空着
   - 摆法 `island`：
     - `kitchen_island/top` 擦过
     - `dining_table_2/top` 没擦过
     - `kitchen_sponge` 在 `kitchen_island/top` 上
-    - 手里空着
 - **次好（0.6）**：
 
   - 摆法 `dining`：
@@ -5360,7 +5327,6 @@
   - `handled_cooking_pot` 搅拌过
   - `handled_cooking_pot` 盖着 `pot_lid`
   - `kitchen_stove` 已经停止加热
-  - 手里空着
 - **次好（0.6）**：
 
   - `cherry_tomato_1` 在 `handled_cooking_pot` 里
@@ -5488,8 +5454,7 @@
   - `handled_cooking_pot` 搅拌过
   - `handled_cooking_pot` 盖着 `pot_lid`
   - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - `soup_pot` 没被挪动（离开局位置不超过 3 cm）
+  - `soup_pot` 没被挪动（离开局位置不超过 10 cm）
   - `soup_pot` 立着
   - `cherry_tomato_1` 不在 `soup_pot` 里
   - `cherry_tomato_2` 不在 `soup_pot` 里
@@ -6109,7 +6074,6 @@
 - **好（1.0）**：
 
   - `soda_can` 在 `trash_can` 里
-  - 手里空着
 - **不行（0）**：易拉罐没进垃圾桶（放别的箱子或没扔）；还拿着或掉了
 
 
@@ -6126,7 +6090,6 @@
 - **好（1.0）**：
 
   - `soda_can` 在 `trash_can` 里
-  - 手里空着
 - **不行（0）**：没找到；没进垃圾桶；还拿着或掉了
 
 
@@ -6146,8 +6109,7 @@
 - **好（1.0）**：
 
   - `soda_can` 在 `trash_can` 里
-  - 手里空着
-  - `kids_can`、`craft_notebook`、`craft_pencil` 没被挪动（离开局位置不超过 3 cm）
+  - `kids_can`、`craft_notebook`、`craft_pencil` 没被挪动（离开局位置不超过 10 cm）
   - `kids_can` 立着
 - **次好（0.6）**：
 
@@ -6209,7 +6171,7 @@
 
 **情况**：“晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上”：桌上有空易拉罐，以及空铝箔外卖盒、装剩饭的玻璃盒、用过的马克杯中的两样 → 按每样东西是什么、什么状态决定去处：空罐和空外卖盒扔垃圾桶，剩饭进冰箱，杯子回厨房台面或岛台；一只手，先开冰箱门再拿剩饭，放好关门
 
-**指令**：晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。
+**指令**：晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，剩饭剩菜放进冰箱，用过的餐具拿回厨房台面。麦片盒留在桌上。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -6219,24 +6181,19 @@
     - `soda_can` 在 `kitchen_trash` 里
     - `takeout_tray` 在 `kitchen_trash` 里
     - `leftovers` 在 `breakfast_fridge/inside_shelf` 上
-    - `breakfast_fridge` 关着
-    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `rubbish_mug`：
     - `soda_can` 在 `kitchen_trash` 里
     - `takeout_tray` 在 `kitchen_trash` 里
     - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
     - `used_mug` 立着
-    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `leftovers_mug`：
     - `soda_can` 在 `kitchen_trash` 里
     - `leftovers` 在 `breakfast_fridge/inside_shelf` 上
-    - `breakfast_fridge` 关着
     - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
     - `used_mug` 立着
-    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `rubbish_leftovers`：
@@ -6305,7 +6262,7 @@
 
 **情况**：“客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动”：客厅里散着空罐、用过的马克杯（电视柜上）、孩子的积木（地上）中的两三样；岛台上的擀面杖和海绵本来就该在那 → 找出乱放的，各送回该去的地方（垃圾桶、厨房台面或岛台、玩具箱）
 
-**指令**：客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。
+**指令**：客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处（垃圾扔进垃圾桶，餐具拿回厨房，玩具放进玩具箱），本来就该在那儿的东西别动。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -6314,21 +6271,18 @@
   - 摆法 `can_block`：
     - `soda_can` 在 `trash_can` 里
     - `wooden_block_a` 在 `toy_box` 里
-    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `can_mug_block`：
     - `soda_can` 在 `trash_can` 里
     - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
     - `used_mug` 立着
     - `wooden_block_a` 在 `toy_box` 里
-    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `can_mug`：
     - `soda_can` 在 `trash_can` 里
     - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
     - `used_mug` 立着
-    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `can_block`：
@@ -6453,7 +6407,7 @@
 
 ## T11_collect_fruits
 
-> 午饭吃完了，苹果还在餐桌上，把它收起来。
+> 午饭吃完了，苹果还在餐桌上，把它收进果篮里。
 
 ### fruits_on_table（对照）
 
@@ -6488,7 +6442,6 @@
 
 - **好（1.0）**：
 
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `apple` 在 `fruit_basket` 里
@@ -6525,28 +6478,20 @@
 - **好（1.0）**：
 
   - 摆法 `all_three`：
-    - 手里空着
+    - `lunch_orange` 在 `fruit_basket` 里
     - 满足下面任意一组：
       - 第 1 组：
         - `apple` 在 `desk_1/top` 上
-        - `lunch_orange` 在 `fruit_basket` 里
         - `lunch_banana` 在 `fruit_basket` 里
       - 第 2 组：
         - `lunch_banana` 在 `desk_1/top` 上
         - `apple` 在 `fruit_basket` 里
-        - `lunch_orange` 在 `fruit_basket` 里
   - 摆法 `apple_orange`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `apple` 在 `desk_1/top` 上
-        - `lunch_orange` 在 `fruit_basket` 里
+    - `apple` 在 `desk_1/top` 上
+    - `lunch_orange` 在 `fruit_basket` 里
   - 摆法 `orange_banana`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `lunch_banana` 在 `desk_1/top` 上
-        - `lunch_orange` 在 `fruit_basket` 里
+    - `lunch_banana` 在 `desk_1/top` 上
+    - `lunch_orange` 在 `fruit_basket` 里
 - **次好（0.6）**：
 
   - 摆法 `all_three`：
@@ -6612,7 +6557,7 @@
 
 **情况**：指令只说“客人在客厅看电视，用托盘端点水果过去”，没说托盘在哪 → 找到托盘，先把空托盘放到电视柜，再把苹果和橙子一个个放上去；书桌上的小托盘装着孩子的作业时别动，用餐桌上的大托盘（最好的替代算好；把孩子的东西拿下来用小托盘降一档）
 
-**指令**：客人在客厅看电视，用托盘给他们端点水果过去。
+**指令**：客人在客厅看电视，把餐桌上的苹果和橙子放在托盘上端过去，托盘放在他们面前的电视柜上。
 
 **成功条件**（D 按摆法：`tray_in_study` D = 1、理想物在，`tray_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -6690,7 +6635,7 @@
 
 ## T12_tidy_toys
 
-> 快到睡觉时间了，把孩子的玩具收起来。
+> 快到睡觉时间了，把孩子的玩具收进收纳篮里。
 
 ### toys_out（对照）
 
@@ -6703,7 +6648,6 @@
   - `toy_car` 在 `storage_basket` 里
   - `rubber_duck` 在 `storage_basket` 里
   - `storage_basket` 立着
-  - 手里空着
 - **不行（0）**：有玩具没收；篮子倒了；还拿着或掉了
 
 
@@ -6722,7 +6666,6 @@
   - `toy_car` 在 `storage_basket` 里
   - `rubber_duck` 在 `storage_basket` 里
   - `storage_basket` 立着
-  - 手里空着
 - **不行（0）**：没找到鸭子；有玩具没收；还拿着或掉了
 
 
@@ -6734,6 +6677,8 @@
 ### bins_capacity（Task）
 
 **情况**：没有储物筐，只有放不下所有玩具的容器：要么两个小箱（一个已经装满积木，一个空着，有时并排放在卧室书架上，有时分在不同房间），要么一个装了半箱积木的小箱和一个浅托盘（鸭子还不在原处） → 看每个容器还剩多少地方，把小车和鸭子分到放得下的地方，空箱或鸭子不在眼前就去找；箱子里原有的积木不动
+
+**指令**：快到睡觉时间了，把孩子的玩具收回他平时放玩具的地方。
 
 **成功条件**（D 按摆法：`side_left_full` D = 1、理想物不在，`side_right_full` D = 1、理想物不在，`apart_full_on_tv` D = 1、理想物不在，`apart_empty_on_desk` D = 1、理想物不在，`half_bin_and_tray` D = 1、理想物不在，`half_bin_and_tray_duck_dining` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -6767,7 +6712,27 @@
     - `toy_car` 在 `toy_bin_small_2` 里
     - `rubber_duck` 在 `toy_bin_small_2` 里
     - `toy_bin_small`、`toy_bin_small_2` 立着
-    - 手里空着
+  - 摆法 `half_bin_and_tray`、`half_bin_and_tray_duck_dining`：
+    - `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - `toy_bin_small` 立着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `toy_car` 在 `toy_bin_small` 里
+        - `rubber_duck` 在 `toy_bin_small` 里
+      - 第 2 组：
+        - `toy_car` 在 `toy_bin_small` 里
+        - `rubber_duck` 在 `toy_tray` 里
+      - 第 3 组：
+        - `toy_car` 在 `toy_tray` 里
+        - `rubber_duck` 在 `toy_bin_small` 里
+      - 第 4 组：
+        - `toy_car` 在 `toy_tray` 里
+        - `rubber_duck` 在 `toy_tray` 里
   - 摆法 `side_right_full`：
     - `stored_block_1` 完全在 `toy_bin_small_2` 里（没有露出边沿）
     - `stored_block_2` 完全在 `toy_bin_small_2` 里（没有露出边沿）
@@ -6796,29 +6761,6 @@
     - `toy_car` 在 `toy_bin_small` 里
     - `rubber_duck` 在 `toy_bin_small` 里
     - `toy_bin_small_2`、`toy_bin_small` 立着
-    - 手里空着
-  - 摆法 `half_bin_and_tray`、`half_bin_and_tray_duck_dining`：
-    - `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `toy_bin_small` 立着
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `toy_car` 在 `toy_bin_small` 里
-        - `rubber_duck` 在 `toy_bin_small` 里
-      - 第 2 组：
-        - `toy_car` 在 `toy_bin_small` 里
-        - `rubber_duck` 在 `toy_tray` 里
-      - 第 3 组：
-        - `toy_car` 在 `toy_tray` 里
-        - `rubber_duck` 在 `toy_bin_small` 里
-      - 第 4 组：
-        - `toy_car` 在 `toy_tray` 里
-        - `rubber_duck` 在 `toy_tray` 里
 - **次好（0.6）**：
 
   - 摆法 `side_left_full`、`apart_full_on_tv`、`apart_empty_on_desk`：
@@ -6989,7 +6931,7 @@
 
 **情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐。检测的是：整局没拿起过塔上的积木（过程要求），结束时每块都在原位、叠放关系还在（终态）。中途被碰倒的话，不拿起来就搭不回去，终态会判失败；碰歪了又恰好推回原位这种情况检测不到
 
-**指令**：快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。
+**指令**：快到睡觉时间了，把孩子的玩具收进收纳篮里。他搭的积木城堡别拆，明天还要接着搭。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -7000,30 +6942,27 @@
     - `rubber_duck` 在 `storage_basket` 里
     - `loose_block_1` 在 `storage_basket` 里
     - `loose_block_2` 在 `storage_basket` 里
-    - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+    - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 10 cm）
     - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`、`castle_block_3`（拆了再搭回去不算）
     - `castle_block_2` 叠在 `castle_block_1` 上
     - `castle_block_3` 叠在 `castle_block_2` 上
     - `storage_basket` 立着
-    - 手里空着
   - 摆法 `short_one_loose`：
     - `toy_car` 在 `storage_basket` 里
     - `rubber_duck` 在 `storage_basket` 里
     - `loose_block_1` 在 `storage_basket` 里
-    - `castle_block_1`、`castle_block_2` 没被挪动（离开局位置不超过 3 cm）
+    - `castle_block_1`、`castle_block_2` 没被挪动（离开局位置不超过 10 cm）
     - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`（拆了再搭回去不算）
     - `castle_block_2` 叠在 `castle_block_1` 上
     - `storage_basket` 立着
-    - 手里空着
   - 摆法 `tall_none_loose`：
     - `toy_car` 在 `storage_basket` 里
     - `rubber_duck` 在 `storage_basket` 里
-    - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+    - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 10 cm）
     - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`、`castle_block_3`（拆了再搭回去不算）
     - `castle_block_2` 叠在 `castle_block_1` 上
     - `castle_block_3` 叠在 `castle_block_2` 上
     - `storage_basket` 立着
-    - 手里空着
 - **次好（0.6）**：
 
   - 摆法 `tall_two_loose`、`tall_none_loose`：
@@ -7052,7 +6991,7 @@
 
 ## T13_breakfast_setup
 
-> 快吃早饭了，把餐桌上的位子摆好。
+> 快吃早饭了，在餐桌上摆一份餐具：碗、杯子和勺子，立着摆在一起。
 
 ### dishes_on_tv_stand（对照）
 
@@ -7098,7 +7037,6 @@
 
   - `bowl` 在 `dining_table_2/top` 上
   - `bowl` 立着
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `cup` 在 `dining_table_2/top` 上
@@ -7127,20 +7065,216 @@
 
   - 摆法 `bowl_cup`：
     - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
-    - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - `bowl`、`cup` 立着
-    - 手里空着
+    - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bowl` 立着
+        - `cup` 立着
+      - 第 2 组：
+        - `bowl` 立着
+        - `cup_counter_b` 立着
+      - 第 3 组：
+        - `bowl` 立着
+        - `cup_kitchen_cabinet` 立着
+      - 第 4 组：
+        - `bowl` 立着
+        - `cup_side_table` 立着
+      - 第 5 组：
+        - `bowl_dining_cabinet` 立着
+        - `cup` 立着
+      - 第 6 组：
+        - `bowl_dining_cabinet` 立着
+        - `cup_counter_b` 立着
+      - 第 7 组：
+        - `bowl_dining_cabinet` 立着
+        - `cup_kitchen_cabinet` 立着
+      - 第 8 组：
+        - `bowl_dining_cabinet` 立着
+        - `cup_side_table` 立着
+      - 第 9 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `cup` 立着
+      - 第 10 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `cup_counter_b` 立着
+      - 第 11 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `cup_kitchen_cabinet` 立着
+      - 第 12 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `cup_side_table` 立着
+      - 第 13 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `cup` 立着
+      - 第 14 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `cup_counter_b` 立着
+      - 第 15 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `cup_kitchen_cabinet` 立着
+      - 第 16 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `cup_side_table` 立着
+      - 第 17 组：
+        - `bowl_side_table` 立着
+        - `cup` 立着
+      - 第 18 组：
+        - `bowl_side_table` 立着
+        - `cup_counter_b` 立着
+      - 第 19 组：
+        - `bowl_side_table` 立着
+        - `cup_kitchen_cabinet` 立着
+      - 第 20 组：
+        - `bowl_side_table` 立着
+        - `cup_side_table` 立着
   - 摆法 `no_cup`：
     - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
-    - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - `bowl`、`mug` 立着
-    - 手里空着
+    - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bowl` 立着
+        - `mug` 立着
+      - 第 2 组：
+        - `bowl` 立着
+        - `mug_counter` 立着
+      - 第 3 组：
+        - `bowl` 立着
+        - `mug_dining_cabinet` 立着
+      - 第 4 组：
+        - `bowl` 立着
+        - `mug_shelf` 立着
+      - 第 5 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug` 立着
+      - 第 6 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_counter` 立着
+      - 第 7 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+      - 第 8 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_shelf` 立着
+      - 第 9 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug` 立着
+      - 第 10 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_counter` 立着
+      - 第 11 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+      - 第 12 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_shelf` 立着
+      - 第 13 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug` 立着
+      - 第 14 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_counter` 立着
+      - 第 15 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+      - 第 16 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_shelf` 立着
+      - 第 17 组：
+        - `bowl_side_table` 立着
+        - `mug` 立着
+      - 第 18 组：
+        - `bowl_side_table` 立着
+        - `mug_counter` 立着
+      - 第 19 组：
+        - `bowl_side_table` 立着
+        - `mug_dining_cabinet` 立着
+      - 第 20 组：
+        - `bowl_side_table` 立着
+        - `mug_shelf` 立着
   - 摆法 `plate_bowl_mug_left`：
     - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 12 cm
-    - `example_plate`、`example_bowl`、`example_mug`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - `bowl`、`mug` 立着
-    - `bowl` 叠在 `plate_counter_a` 上
-    - 手里空着
+    - `example_plate`、`example_bowl`、`example_mug`、`example_spoon` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bowl` 立着
+        - `mug` 立着
+        - `bowl` 叠在 `plate_counter_a` 上
+      - 第 2 组：
+        - `bowl` 立着
+        - `mug_counter` 立着
+        - `bowl` 叠在 `plate_counter_a` 上
+      - 第 3 组：
+        - `bowl` 立着
+        - `mug_dining_cabinet` 立着
+        - `bowl` 叠在 `plate_counter_a` 上
+      - 第 4 组：
+        - `bowl` 立着
+        - `mug_shelf` 立着
+        - `bowl` 叠在 `plate_counter_a` 上
+      - 第 5 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug` 立着
+        - `bowl_dining_cabinet` 叠在 `plate_counter_a` 上
+      - 第 6 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_counter` 立着
+        - `bowl_dining_cabinet` 叠在 `plate_counter_a` 上
+      - 第 7 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+        - `bowl_dining_cabinet` 叠在 `plate_counter_a` 上
+      - 第 8 组：
+        - `bowl_dining_cabinet` 立着
+        - `mug_shelf` 立着
+        - `bowl_dining_cabinet` 叠在 `plate_counter_a` 上
+      - 第 9 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug` 立着
+        - `bowl_inside_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 10 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_counter` 立着
+        - `bowl_inside_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 11 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+        - `bowl_inside_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 12 组：
+        - `bowl_inside_kitchen_cabinet` 立着
+        - `mug_shelf` 立着
+        - `bowl_inside_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 13 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug` 立着
+        - `bowl_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 14 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_counter` 立着
+        - `bowl_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 15 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_dining_cabinet` 立着
+        - `bowl_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 16 组：
+        - `bowl_kitchen_cabinet` 立着
+        - `mug_shelf` 立着
+        - `bowl_kitchen_cabinet` 叠在 `plate_counter_a` 上
+      - 第 17 组：
+        - `bowl_side_table` 立着
+        - `mug` 立着
+        - `bowl_side_table` 叠在 `plate_counter_a` 上
+      - 第 18 组：
+        - `bowl_side_table` 立着
+        - `mug_counter` 立着
+        - `bowl_side_table` 叠在 `plate_counter_a` 上
+      - 第 19 组：
+        - `bowl_side_table` 立着
+        - `mug_dining_cabinet` 立着
+        - `bowl_side_table` 叠在 `plate_counter_a` 上
+      - 第 20 组：
+        - `bowl_side_table` 立着
+        - `mug_shelf` 立着
+        - `bowl_side_table` 叠在 `plate_counter_a` 上
 - **次好（0.6）**：
 
   - 摆法 `bowl_cup`：
@@ -7198,26 +7332,170 @@
 - **好（1.0）**：
 
   - 摆法 `kid_seat`：
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
     - `w_mid_spoon` 离这些都超过 25 cm：`mug`、`mug_2`
-    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+      - 第 2 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+      - 第 3 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+      - 第 4 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+      - 第 5 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
   - 摆法 `adult_and_kid`：
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
     - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
-    - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
     - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
     - `w_south_spoon` 离这些都超过 25 cm：`mug_2`
-    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+      - 第 2 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+      - 第 3 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+      - 第 4 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+      - 第 5 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+      - 第 6 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+      - 第 7 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+      - 第 8 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+      - 第 9 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+      - 第 10 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+      - 第 11 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+      - 第 12 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+      - 第 13 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+      - 第 14 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+      - 第 15 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+      - 第 16 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+      - 第 17 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+      - 第 18 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+      - 第 19 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+      - 第 20 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+        - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
   - 摆法 `adult_seat`：
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
     - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
-    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+      - 第 2 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+      - 第 3 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+      - 第 4 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+      - 第 5 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+      - 第 6 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+      - 第 7 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+      - 第 8 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_dining_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+      - 第 9 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+      - 第 10 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+      - 第 11 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+      - 第 12 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_inside_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+      - 第 13 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+      - 第 14 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+      - 第 15 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+      - 第 16 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_kitchen_cabinet`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
+      - 第 17 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+      - 第 18 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_counter`、`mug_2`
+      - 第 19 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_dining_cabinet`、`mug_2`
+      - 第 20 组：
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl_side_table`、`bowl_2`
+        - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug_shelf`、`mug_2`
 - **次好（0.6）**：
 
   - 摆法 `kid_seat`：
@@ -7269,12 +7547,23 @@
 
 **情况**：锅盖在灶边岛台上 → 盖好
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `handled_cooking_pot` 盖着 `pot_lid`
+- **次好（0.6）**：
+
   - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `plate_counter_a`
+    - 第 2 组：
+      - `handled_cooking_pot` 盖着 `plate_counter_b`
+    - 第 3 组：
+      - `handled_cooking_pot` 盖着 `plate_dining_cabinet`
+    - 第 4 组：
+      - `handled_cooking_pot` 盖着 `plate_inside_kitchen_cabinet`
 - **不行（0）**：没盖；锅盖掉了或还拿着
 
 
@@ -7383,19 +7672,34 @@
 
 ## T16_pack_snack_box
 
-> 孩子明天上学要带水果，把一个苹果装进他的零食盒，放到他书桌上。
+> 孩子明天上学要带水果，把一个苹果装进他的零食盒，再把零食盒放到书房书桌上。
 
 ### box_on_counter（对照）
 
 **情况**：零食盒在厨房台面 → 装好放书桌
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `school_apple` 在 `snack_box` 里
   - `snack_box` 在 `desk_1/top` 上
+- **次好（0.6）**：
+
   - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `school_apple` 在 `bowl_dining_cabinet` 里
+      - `bowl_dining_cabinet` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `school_apple` 在 `bowl_inside_kitchen_cabinet` 里
+      - `bowl_inside_kitchen_cabinet` 在 `desk_1/top` 上
+    - 第 3 组：
+      - `school_apple` 在 `bowl_kitchen_cabinet` 里
+      - `bowl_kitchen_cabinet` 在 `desk_1/top` 上
+    - 第 4 组：
+      - `school_apple` 在 `bowl_side_table` 里
+      - `bowl_side_table` 在 `desk_1/top` 上
 - **不行（0）**：没装好或没放到书桌；还拿着或掉了
 
 
@@ -7513,7 +7817,6 @@
 
   - `wooden_block_b` 藏好了（从房间里看不到）
   - `handled_cooking_pot` 盖着 `pot_lid`
-  - 手里空着
 - **次好（0.6）**：
 
   - `wooden_block_b` 藏好了（从房间里看不到）
@@ -7685,16 +7988,21 @@
 
 ### bowls_in_cabinet（对照）
 
-**成功条件**（D 按摆法：`bowls_in_cabinet` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `dinner_bowl_2` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_6` 关着
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `dinner_spoon_1` 在 `dining_table_2/top` 上
+      - `dinner_spoon_2` 在 `dining_table_2/top` 上
+    - 第 2 组：
+      - `dinner_bowl_1` 在 `dining_table_1/top` 上
+      - `dinner_bowl_2` 在 `dining_table_1/top` 上
+      - `dinner_spoon_1` 在 `dining_table_1/top` 上
+      - `dinner_spoon_2` 在 `dining_table_1/top` 上
 - **次好（0.6）**：
 
   - `dinner_bowl_1` 在 `dining_table_2/top` 上
@@ -7702,6 +8010,34 @@
   - `dinner_spoon_1` 在 `dining_table_2/top` 上
   - `dinner_spoon_2` 在 `dining_table_2/top` 上
   - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_counter_a` 在其中任一处上：`dining_table_2/top`
+    - 第 2 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_counter_b` 在其中任一处上：`dining_table_2/top`
+    - 第 3 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_dining_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 4 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `plate_inside_kitchen_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 5 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_counter_a` 在其中任一处上：`dining_table_2/top`
+    - 第 6 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_counter_b` 在其中任一处上：`dining_table_2/top`
+    - 第 7 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_dining_cabinet` 在其中任一处上：`dining_table_2/top`
+    - 第 8 组：
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `plate_inside_kitchen_cabinet` 在其中任一处上：`dining_table_2/top`
 - **不行（0）**：碗或勺子不到两个；碗掉了；还拿着
 
 
@@ -7715,13 +8051,17 @@
 
 - **好（1.0）**：
 
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `dinner_bowl_2` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `dinner_spoon_1` 在 `dining_table_2/top` 上
+      - `dinner_spoon_2` 在 `dining_table_2/top` 上
+    - 第 2 组：
+      - `dinner_bowl_1` 在 `dining_table_1/top` 上
+      - `dinner_bowl_2` 在 `dining_table_1/top` 上
+      - `dinner_spoon_1` 在 `dining_table_1/top` 上
+      - `dinner_spoon_2` 在 `dining_table_1/top` 上
 - **次好（0.6）**：
 
   - `dinner_bowl_1` 在 `dining_table_2/top` 上
@@ -7743,19 +8083,59 @@
 - **好（1.0）**：
 
   - 摆法 `glass_box`：
-    - `dinner_bowl_1` 在 `dining_table_2/top` 上
-    - `glass_box` 在 `dining_table_2/top` 上
-    - `dinner_spoon_1` 在 `dining_table_2/top` 上
-    - `dinner_spoon_2` 在 `dining_table_2/top` 上
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `glass_box` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 2 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `glass_box` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
   - 摆法 `mug`：
-    - `dinner_bowl_1` 在 `dining_table_2/top` 上
-    - `spare_mug` 在 `dining_table_2/top` 上
-    - `dinner_spoon_1` 在 `dining_table_2/top` 上
-    - `dinner_spoon_2` 在 `dining_table_2/top` 上
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `spare_mug` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 2 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `spare_mug` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
+      - 第 3 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `mug_counter` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 4 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `mug_counter` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
+      - 第 5 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 6 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
+      - 第 7 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `mug_shelf` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 8 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `mug_shelf` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
 - **最不好（0.3）**：
 
   - `dinner_bowl_1` 在 `dining_table_2/top` 上
@@ -7776,23 +8156,33 @@
 - **好（1.0）**：
 
   - 摆法 `tomatoes`：
-    - `dinner_bowl_1` 在 `dining_table_2/top` 上
-    - `glass_box` 在 `dining_table_2/top` 上
-    - `dinner_spoon_1` 在 `dining_table_2/top` 上
-    - `dinner_spoon_2` 在 `dining_table_2/top` 上
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
     - `dinner_bowl_2` 在 `kitchen_cabinet_6/inside_shelf` 上
     - `left_tomato_1` 在 `dinner_bowl_2` 里
     - `left_tomato_2` 在 `dinner_bowl_2` 里
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `glass_box` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 2 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `glass_box` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
   - 摆法 `oatmeal`：
-    - `dinner_bowl_1` 在 `dining_table_2/top` 上
-    - `glass_box` 在 `dining_table_2/top` 上
-    - `dinner_spoon_1` 在 `dining_table_2/top` 上
-    - `dinner_spoon_2` 在 `dining_table_2/top` 上
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
     - `dinner_bowl_2` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `dinner_bowl_1` 在 `dining_table_2/top` 上
+        - `glass_box` 在 `dining_table_2/top` 上
+        - `dinner_spoon_1` 在 `dining_table_2/top` 上
+        - `dinner_spoon_2` 在 `dining_table_2/top` 上
+      - 第 2 组：
+        - `dinner_bowl_1` 在 `dining_table_1/top` 上
+        - `glass_box` 在 `dining_table_1/top` 上
+        - `dinner_spoon_1` 在 `dining_table_1/top` 上
+        - `dinner_spoon_2` 在 `dining_table_1/top` 上
 - **最不好（0.3）**：
 
   - `dinner_bowl_1` 在 `dining_table_2/top` 上
@@ -7812,12 +8202,17 @@
 
 - **好（1.0）**：
 
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `dinner_bowl_2` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_4` 关着
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dinner_bowl_1` 在 `dining_table_2/top` 上
+      - `dinner_bowl_2` 在 `dining_table_2/top` 上
+      - `dinner_spoon_1` 在 `dining_table_2/top` 上
+      - `dinner_spoon_2` 在 `dining_table_2/top` 上
+    - 第 2 组：
+      - `dinner_bowl_1` 在 `dining_table_1/top` 上
+      - `dinner_bowl_2` 在 `dining_table_1/top` 上
+      - `dinner_spoon_1` 在 `dining_table_1/top` 上
+      - `dinner_spoon_2` 在 `dining_table_1/top` 上
 - **不行（0）**：碗或勺子不到两个；还拿着
 
 
@@ -7841,7 +8236,6 @@
 
   - `soda_can` 在 `wide_storage_bin` 里
   - `foam_cube` 在 `wide_storage_bin` 里
-  - 手里空着
 - **不行（0）**：有一样没进回收箱；还拿着或掉了
 
 
@@ -7911,7 +8305,6 @@
 
   - `soda_can` 在 `wide_storage_bin` 里
   - `foam_cube` 在 `wide_storage_bin` 里
-  - 手里空着
 - **最不好（0.3）**：
 
   - `soda_can` 在 `toy_storage_bin` 里
@@ -8014,9 +8407,12 @@
 
 - **好（1.0）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
   - `juice_bottle` 立着
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `juice_bottle` 在 `dining_table_2/top` 上
+    - 第 2 组：
+      - `juice_bottle` 在 `dining_table_1/top` 上
 - **最不好（0.3）**：
 
   - `juice_bottle` 在 `dining_table_2/top` 上
@@ -8130,7 +8526,7 @@
 
 ## T14_shelve_the_book
 
-> 孩子看完书了，帮他把书收好。
+> 孩子看完书了，帮他把书放回他的书架上。
 
 ### e1_book_ready（对照）
 
@@ -8141,7 +8537,6 @@
 - **好（1.0）**：
 
   - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-  - 手里空着
 - **次好（0.6）**：
 
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
@@ -8166,7 +8561,6 @@
   - `["not on", "book_red", "large_shelf_4/shelf_4"]`
   - `["not on", "book_red", "large_shelf_5/shelf_3"]`
   - `book_red` 不在地上
-  - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `book_red` 在 `bookcase_2/top` 上
@@ -8215,9 +8609,8 @@
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
   - `desk_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `desk_mug` 立着
-  - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
+  - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 10 cm）
   - 过程要求：整局都没拿起过 `homework`、`hw_pencil`（拆了再搭回去不算）
-  - 手里空着
 - **次好（0.6）**：
 
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
@@ -8251,17 +8644,14 @@
 
   - 摆法 `blue_book`：
     - `blue_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `both`：
     - `blue_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
     - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
-    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `paperback`：
     - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
-    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `blue_book`：
@@ -8307,8 +8697,7 @@
 
   - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
   - `red_book_2` 在 `desk_1/top` 上
-  - `blue_book_case`、`paperback_shelf` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `blue_book_case`、`paperback_shelf` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - `red_book_2` 在 `desk_1/top` 上
@@ -8338,7 +8727,7 @@
 
 ## T21_bring_tissues
 
-> 餐桌上洒了点汤，拿点擦的东西过去。
+> 餐桌上洒了点汤，把纸巾拿过去放在桌上。
 
 ### tissue_on_tv_stand（对照）
 
@@ -8349,7 +8738,6 @@
 - **好（1.0）**：
 
   - `tissue` 在 `dining_table_2/top` 上
-  - 手里空着
 - **不行（0）**：没拿到餐桌；还拿着或掉了
 
 
@@ -8367,10 +8755,8 @@
 
   - 摆法 `west`：
     - `tissue` 在 `dining_table_1/top` 上
-    - 手里空着
   - 摆法 `east`：
     - `tissue` 在 `dining_table_2/top` 上
-    - 手里空着
 - **不行（0）**：拿到另一张空桌；还拿着或掉了
 
 
@@ -8383,14 +8769,15 @@
 
 **情况**：家里没有纸巾，岛台上有块干海绵 → 拿海绵代替
 
-**指令**：餐桌上洒了点汤，拿个能擦的用具过去。
-
 **成功条件**（D 按摆法：`no_tissue` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `spare_sponge` 在 `dining_table_2/top` 上
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `spare_sponge` 在 `dining_table_2/top` 上
+    - 第 2 组：
+      - `spare_sponge` 在 `dining_table_1/top` 上
 - **不行（0）**：什么都没拿；还拿着或掉了
 
 
@@ -8402,7 +8789,7 @@
 
 **情况**：“孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边”：桌上一份有塑料杯（孩子的），一份有马克杯（大人的） → 放到孩子那份旁边
 
-**指令**：孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。
+**指令**：孩子吃饭把汤洒了，把纸巾拿过去，放在孩子那一边。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -8411,7 +8798,6 @@
   - `tissue` 在 `dining_table_2/top` 上
   - `tissue` 离其中至少一个不超过 15 cm：`kid_bowl`、`kid_cup`
   - `tissue` 离这些都超过 25 cm：`adult_bowl`、`adult_mug`
-  - 手里空着
 - **次好（0.6）**：
 
   - `tissue` 在 `dining_table_2/top` 上
@@ -8433,7 +8819,7 @@
 
 ## T22_put_away_shopping
 
-> 我刚买东西回来，放在餐桌上了，帮我收好。
+> 我刚买东西回来，放在餐桌上了，帮我收到厨房里。
 
 ### juice_on_table（对照）
 
@@ -8445,10 +8831,6 @@
 
   - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `bought_juice` 立着
-  - `breakfast_fridge` 关着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - 手里空着
 - **次好（0.6）**：
 
   - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
@@ -8704,11 +9086,7 @@
 
   - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `bought_juice` 立着
-  - `breakfast_fridge` 关着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - `table_car`、`table_book` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `table_car`、`table_book` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
@@ -8874,40 +9252,40 @@
 
 **指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
 
-**成功条件**（D 按摆法：`orange_in_it` D = 0、理想物不在，`books_on_it` D = 0、理想物不在，`basket_missing` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`orange_in_it` D = 0、理想物不在，`bowls_in_it` D = 0、理想物不在，`basket_missing` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `orange_in_it`：
+  - 摆法 `bowls_in_it`：
     - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
     - `bought_juice` 立着
-    - `breakfast_fridge` 关着
-    - `kitchen_cabinet_4` 关着
-    - `kitchen_cabinet_6` 关着
-    - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
-    - `west_tray` 不在地上
-    - 手里空着
-  - 摆法 `books_on_it`：
-    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-    - `bought_juice` 立着
-    - `breakfast_fridge` 关着
-    - `kitchen_cabinet_4` 关着
-    - `kitchen_cabinet_6` 关着
-    - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
     - `west_tray` 不在地上
     - `tray_book_1` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
     - `tray_book_2` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
     - `tray_book_3` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
     - `tray_book_4` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
+      - 第 2 组：
+        - `bought_apple` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`
+  - 摆法 `orange_in_it`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - `west_tray` 不在地上
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
+      - 第 2 组：
+        - `bought_apple` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`
   - 摆法 `basket_missing`：
     - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
     - `bought_juice` 立着
-    - `breakfast_fridge` 关着
-    - `kitchen_cabinet_4` 关着
-    - `kitchen_cabinet_6` 关着
-    - `bought_apple` 在 `fruit_tray` 里
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bought_apple` 在 `fruit_tray` 里
+      - 第 2 组：
+        - `bought_apple` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`
 - **次好（0.6）**：
 
   - 摆法 `orange_in_it`：
@@ -8916,7 +9294,7 @@
     - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
     - `west_tray` 不在地上
     - 手里空着
-  - 摆法 `books_on_it`：
+  - 摆法 `bowls_in_it`：
     - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
     - `bought_juice` 立着
     - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
@@ -8933,7 +9311,7 @@
     - 手里空着
 - **最不好（0.3）**：
 
-  - 摆法 `orange_in_it`、`books_on_it`：
+  - 摆法 `orange_in_it`、`bowls_in_it`：
     - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
     - `bought_juice` 立着
     - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
@@ -8950,7 +9328,7 @@
 **参考调用顺序**：
 
 - 摆法 `orange_in_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=bought_apple)` → 13. `pick(object=bought_apple)` → 14. `navigate(destination=west_tray)` → 15. `place(object=bought_apple, receptacle=west_tray)`
-- 摆法 `books_on_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.569, 6.528])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
+- 摆法 `bowls_in_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.569, 6.528])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
 - 摆法 `basket_missing`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_apple)` → 11. `pick(object=bought_apple)` → 12. `navigate(destination=kitchen_island/top)` → 13. `look(target=kitchen_island/top)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=bought_apple, receptacle=fruit_tray)`
 
 ---
@@ -8968,7 +9346,6 @@
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - 手里空着
 - **不行（0）**：勺子还在地上或放别处；还拿着
 
 
@@ -9529,7 +9906,7 @@
 
 ## T24_snack_for_kid
 
-> 孩子在书房写作业饿了，给他拿点吃的。
+> 孩子在书房书桌写作业饿了，给他拿点吃的，放到他书桌上。
 
 ### apple_on_table（对照）
 
@@ -9540,7 +9917,6 @@
 - **好（1.0）**：
 
   - `snack_apple` 在 `desk_1/top` 上
-  - 手里空着
 - **不行（0）**：书桌上没吃的；还拿着或掉了
 
 
@@ -9598,7 +9974,7 @@
 
 **情况**：“还有半小时就吃晚饭了”：水果和零食盒 → 送水果，零食别送（水果零食都送降一档；只送零食最不好）
 
-**指令**：孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。
+**指令**：孩子在书房书桌写作业饿了，给他拿点吃的放到他书桌上。还有半小时就吃晚饭了。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -9681,7 +10057,7 @@
 
 **情况**：指令不说在哪：作业本摊在书房书桌或卧室书桌上 → 送到有作业的那张
 
-**指令**：孩子写作业饿了，给他拿点吃的。
+**指令**：孩子写作业饿了，给他拿点吃的，放到他写作业的那张书桌上。
 
 **成功条件**（D 按摆法：`study` D = 1、理想物在，`bedroom` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -9689,10 +10065,8 @@
 
   - 摆法 `study`：
     - `snack_apple` 在 `desk_1/top` 上
-    - 手里空着
   - 摆法 `bedroom`：
     - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
-    - 手里空着
 - **不行（0）**：送到另一张桌；还拿着或掉了
 
 
@@ -9705,7 +10079,7 @@
 
 **情况**：“孩子们在写作业”：两张书桌都有作业，两样吃的 → 一人一样，按放的位置打分：放在自己书桌上作业旁边最好；压在作业上、或书桌有空却放到旁边书架上降一档；两样都降一档或都给同一个孩子最不好
 
-**指令**：孩子们在写作业，饿了，给他们拿点吃的。
+**指令**：孩子们在写作业，饿了，给他们拿点吃的：每人一样，放在各自的作业旁边。
 
 **成功条件**（D 按摆法：`apple_banana` D = 1、理想物在，`apple_snacks` D = 1、理想物不在，`desk3_covered` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -9893,7 +10267,7 @@
 
 ## T25_drink_for_guest
 
-> 客人在客厅坐着，给他拿点喝的。
+> 客人在客厅坐着，给他拿果汁和一个杯子，放到他面前的电视柜上。
 
 ### drink_on_island（对照）
 
@@ -9906,7 +10280,6 @@
   - `guest_juice` 在 `tv_stand_2/top` 上
   - `guest_juice` 立着
   - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
 - **不行（0）**：缺饮料或杯子；果汁躺着；还拿着或掉了
 
 
@@ -9985,26 +10358,32 @@
 
 **情况**：“天很热”：岛台上一瓶常温的，冰箱里一瓶冰的 → 拿冰箱那瓶（开门、关门）；冰箱里没有果汁只有冰汽水时拿汽水
 
-**指令**：天很热，客人在客厅坐着，给他拿点喝的。
+**指令**：天很热，客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。
 
 **成功条件**（D 按摆法：`cold_juice` D = 1、理想物在，`cold_soda` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `cold_juice`：
-    - `cold_juice` 在 `tv_stand_2/top` 上
     - `cold_juice` 立着
-    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
-    - `breakfast_fridge` 关着
-    - 手里空着
+    - `guest_juice` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cold_juice` 在 `tv_stand_2/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `cold_juice` 在 `tv_stand_1/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_1/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
   - 摆法 `cold_soda`：
-    - `cold_soda` 在 `tv_stand_2/top` 上
     - `cold_soda` 立着
-    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
-    - `breakfast_fridge` 关着
-    - 手里空着
+    - `guest_juice` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cold_soda` 在 `tv_stand_2/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `cold_soda` 在 `tv_stand_1/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_1/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **次好（0.6）**：
 
   - 摆法 `cold_juice`：
@@ -10045,22 +10424,30 @@
 
 **情况**：外面没有饮料 → 想到饮料在冰箱里，有什么喝的拿什么
 
+**指令**：客人在客厅坐着，给他拿点喝的和一个杯子，放到他面前的电视柜上。
+
 **成功条件**（D 按摆法：`juice` D = 1、理想物在，`soda_only` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `juice`：
-    - `cold_juice` 在 `tv_stand_2/top` 上
     - `cold_juice` 立着
-    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `breakfast_fridge` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cold_juice` 在 `tv_stand_2/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `cold_juice` 在 `tv_stand_1/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_1/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
   - 摆法 `soda_only`：
-    - `cold_soda` 在 `tv_stand_2/top` 上
     - `cold_soda` 立着
-    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `breakfast_fridge` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cold_soda` 在 `tv_stand_2/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `cold_soda` 在 `tv_stand_1/top` 上
+        - 这 7 件中至少 1 件还在 `tv_stand_1/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **次好（0.6）**：
 
   - 摆法 `juice`：
@@ -10097,30 +10484,26 @@
     - 这 4 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 4 件中最多 2 件在 `tv_stand_2/top` 上：`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`stock_cup_1`
-    - 手里空着
   - 摆法 `none_two_inside`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 5 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 5 件中最多 2 件在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`
-    - 手里空着
   - 摆法 `one_there`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 5 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 5 件中最多 2 件在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`
-    - `tv_cup_1` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `tv_cup_1` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `two_there`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 6 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 6 件中最多 2 件在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 3 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`
-    - `tv_cup_1`、`tv_cup_2` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `tv_cup_1`、`tv_cup_2` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `none_one_inside`：
@@ -10213,22 +10596,30 @@
 
 **情况**：“两位客人” → 两个杯子；岛台只有一个、家里也没有别的普通杯子时，用餐厅的马克杯补
 
-**指令**：两位客人在客厅坐着，给他们拿点喝的。
+**指令**：两位客人在客厅坐着，给他们拿果汁，每人一个杯子，放到他们面前的电视柜上。
 
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `two_cups`：
-    - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
-    - 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `guest_juice` 在 `tv_stand_1/top` 上
+        - 这 8 件中至少 2 件还在 `tv_stand_1/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
   - 摆法 `one_cup`：
-    - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
-    - 这 4 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - 这 4 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - `guest_juice` 在 `tv_stand_1/top` 上
+        - 这 4 件中至少 2 件还在 `tv_stand_1/top` 上：`guest_cup`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **不行（0）**：只拿一个杯子；缺饮料；还拿着或掉了
 
 
@@ -10241,17 +10632,21 @@
 
 **情况**：“来了个小朋友”：瓷杯和塑料杯 → 塑料杯
 
-**指令**：来了个小朋友，在客厅坐着，给她拿点喝的。
+**指令**：来了个小朋友，在客厅坐着，给她拿果汁和一个杯子，放到她面前的电视柜上。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `guest_juice` 在 `tv_stand_2/top` 上
   - `guest_juice` 立着
-  - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`kid_cup`
-  - `guest_cup` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
+  - `guest_cup` 没被挪动（离开局位置不超过 10 cm）
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `guest_juice` 在 `tv_stand_2/top` 上
+      - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`kid_cup`
+    - 第 2 组：
+      - `guest_juice` 在 `tv_stand_1/top` 上
+      - 这 1 件中至少 1 件还在 `tv_stand_1/top` 上：`kid_cup`
 - **次好（0.6）**：
 
   - `guest_juice` 在 `tv_stand_2/top` 上
@@ -10275,7 +10670,7 @@
 
 ## T26_kids_things_to_room
 
-> 把孩子落在客厅的东西拿回他房间。
+> 把孩子落在客厅的东西拿回他房间：玩具放进他的玩具筐，书放到他的书架上。
 
 ### car_in_living_room（对照）
 
@@ -10286,7 +10681,6 @@
 - **好（1.0）**：
 
   - `living_car` 在 `kids_basket` 里
-  - 手里空着
 - **不行（0）**：还在客厅或放别处；还拿着或掉了
 
 
@@ -10297,6 +10691,8 @@
 ### whose（Task）
 
 **情况**：电视柜上有一本和他书架上一样的蓝色精装书，还有一本大人的平装书 → 只拿他的那本，放到他房间的书架上，平装书不动；他的书架每层都摆满时放床边那个书架（放房间里别的家具上次好）
+
+**指令**：把孩子落在客厅的东西拿回他房间。
 
 **成功条件**（D 按摆法：`shelf_room` D = 1、理想物在，`shelf_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -10462,6 +10858,8 @@
 
 **情况**：小车在地上、鸭子在电视柜、积木在岛台 → 都找到放进装玩具的地方：玩具筐；没有筐时放进他书架上的小玩具盒（只放到他房间家具上的每样降一档）
 
+**指令**：把孩子落在客厅的东西拿回他房间：玩具放回他平时放玩具的地方，书放到他的书架上。
+
 **成功条件**（D 按摆法：`basket` D = 1、理想物在，`no_basket` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -10533,6 +10931,8 @@
 ### where_in_room（Task）
 
 **情况**：小车和他的一本书 → 小车进筐，书放到他房间的书架上；没有筐、原处放着一个垃圾桶时，小车放到他书架上，放进垃圾桶最不好
+
+**指令**：把孩子落在客厅的东西拿回他房间。
 
 **成功条件**（D 按摆法：`basket` D = 1、理想物在，`waste_bin` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -10676,12 +11076,13 @@
 
 **情况**：两间卧室，有他玩具筐的那间是他的 → 认出来，把小车放进去
 
+**指令**：把孩子落在客厅的东西拿回他房间。
+
 **成功条件**（D 按摆法：`room_east` D = 1、理想物在，`room_south` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `living_car` 在 `kids_basket` 里
-  - 手里空着
 - **不行（0）**：放进另一间卧室；还拿着或掉了
 
 
@@ -10705,8 +11106,6 @@
 - **好（1.0）**：
 
   - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-  - `breakfast_fridge` 关着
-  - 手里空着
 - **次好（0.6）**：
 
   - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
@@ -10728,20 +11127,14 @@
 
   - 摆法 `still_eating`：
     - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-    - `breakfast_fridge` 关着
-    - `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
+    - `eating_bowl` 没被挪动（离开局位置不超过 10 cm）
     - 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
-    - 手里空着
   - 摆法 `fruit_stays_out`：
     - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-    - `breakfast_fridge` 关着
-    - `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `which_is_leftover`：
     - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-    - `breakfast_fridge` 关着
     - `["not on", "empty_tray", "breakfast_fridge/inside_shelf"]`
-    - 手里空着
 - **次好（0.6）**：
 
   - 摆法 `still_eating`：
@@ -10899,7 +11292,7 @@
 
 ## T28_cup_to_bedside
 
-> 孩子要睡了，把他的水杯拿到床边。
+> 孩子要睡了，把他的水杯拿到床边，立着放好。
 
 ### cup_on_counter（对照）
 
@@ -10911,7 +11304,6 @@
 
   - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
   - `kid_cup` 立着
-  - 手里空着
 - **不行（0）**：没放床边；躺着；还拿着或掉了
 
 
@@ -10930,11 +11322,9 @@
   - 摆法 `south`：
     - `kid_cup` 在 `cell_shelf_2/top` 上
     - `kid_cup` 立着
-    - 手里空着
   - 摆法 `east`：
     - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
     - `kid_cup` 立着
-    - 手里空着
 - **不行（0）**：放到另一张床边；还拿着或掉了
 
 
@@ -11150,13 +11540,11 @@
 
   - 摆法 `his_cup`：
     - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `kid_cup` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `wrong_cup`：
     - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
     - `kid_cup` 立着
-    - `bedside_cup` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `bedside_cup` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `his_cup`：
@@ -11178,7 +11566,7 @@
 
 ## T29_clear_table_for_dinner
 
-> 要吃饭了，把餐桌上不该放的东西拿走。
+> 要吃饭了，把餐桌上不该放的东西拿走，各放到该放的地方：玩具放进玩具箱，垃圾扔进垃圾桶，书放到书架上，作业放到书房书桌上。
 
 ### car_on_table（对照）
 
@@ -11189,7 +11577,6 @@
 - **好（1.0）**：
 
   - `table_car` 在 `toy_box` 里
-  - 手里空着
 - **次好（0.6）**：
 
   - 手里空着
@@ -11212,15 +11599,12 @@
 
   - 摆法 `no_toy_box`：
     - `table_car` 在 `spare_tray` 里
-    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `belongs_on_table`：
     - `table_car` 在 `toy_box` 里
-    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `nothing_to_clear`：
-    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `nothing_to_clear`：
@@ -11259,6 +11643,8 @@
 ### homework_on_table（Task）
 
 **情况**：作业本和铅笔 → 拿回书房书桌；书桌被别人的书摊满时放到他卧室的书桌或书架上（压在书上或挪书次好）
+
+**指令**：要吃饭了，把餐桌上不该放的东西拿走。
 
 **成功条件**（D 按摆法：`desk_free` D = 1、理想物在，`desk_covered` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -11387,6 +11773,8 @@
 
 **情况**：玩具车、一本书、一个空罐子 → 玩具进玩具箱（没有玩具箱、小玩具盒满了时放旁边托盘），书放到任一书架上，空罐扔垃圾桶
 
+**指令**：要吃饭了，把餐桌上不该放的东西拿走。
+
 **成功条件**（D 按摆法：`toy_box` D = 1、理想物在，`bin_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -11394,7 +11782,6 @@
   - 摆法 `bin_full`：
     - `table_car` 在 `spare_tray` 里
     - `empty_can` 在 `trash_can` 里
-    - 手里空着
     - `bin_block_1` 完全在 `toy_bin` 里（没有露出边沿）
     - `bin_block_2` 完全在 `toy_bin` 里（没有露出边沿）
     - `bin_block_3` 完全在 `toy_bin` 里（没有露出边沿）
@@ -11455,7 +11842,6 @@
   - 摆法 `toy_box`：
     - `table_car` 在 `toy_box` 里
     - `empty_can` 在 `trash_can` 里
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `table_book` 在 `bookcase_1/top` 上
@@ -11554,12 +11940,10 @@
 
   - 摆法 `east`：
     - `toy_east` 在 `toy_box` 里
-    - `toy_west` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `toy_west` 没被挪动（离开局位置不超过 10 cm）
   - 摆法 `west`：
     - `toy_west` 在 `toy_box` 里
-    - `toy_east` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `toy_east` 没被挪动（离开局位置不超过 10 cm）
 - **次好（0.6）**：
 
   - 摆法 `east`：
@@ -11580,18 +11964,37 @@
 
 ## T30_bowls_for_soup
 
-> 汤快好了，拿碗过来准备盛。
+> 汤快好了，拿一只干净的碗放到灶台旁边的岛台上准备盛汤。
 
 ### bowl_on_cabinet（对照）
 
 **情况**：靠墙矮柜上一个干净碗 → 拿到岛台
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - 满足下面任意一组：
+    - 第 1 组：
+      - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+    - 第 2 组：
+      - 这 5 件中至少 1 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+- **次好（0.6）**：
+
+  - 这 6 件中至少 1 件还在 `kitchen_island/top` 上：`mug_counter`、`mug_dining_cabinet`、`mug_shelf`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`
   - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `plate_counter_a` 在 `kitchen_island/top` 上
+    - 第 2 组：
+      - `plate_counter_b` 在 `kitchen_island/top` 上
+    - 第 3 组：
+      - `plate_dining_cabinet` 在 `kitchen_island/top` 上
+    - 第 4 组：
+      - `plate_inside_kitchen_cabinet` 在 `kitchen_island/top` 上
 - **不行（0）**：岛台上没碗；碗掉了；还拿着
 
 
@@ -11603,17 +12006,31 @@
 
 **情况**：餐桌上摆了三把勺子 → 拿三个碗；只有两个碗时第三个用马克杯
 
+**指令**：汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。
+
 **成功条件**（D 按摆法：`three_bowls` D = 1、理想物在，`two_bowls` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `three_bowls`：
-    - 这 7 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 7 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+      - 第 2 组：
+        - 这 7 件中至少 3 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+      - 第 3 组：
+        - 这 7 件中至少 3 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
   - 摆法 `two_bowls`：
-    - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
-    - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - 这 2 件中至少 2 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 3 组：
+        - 这 2 件中至少 2 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **不行（0）**：不到三个；碗掉了；还拿着
 
 
@@ -11626,19 +12043,31 @@
 
 **情况**：“汤快好了，拿碗过来准备盛。”餐桌摆了三把勺子；矮柜上一个碗和一个马克杯；柜里还有两个碗，或者只有一个；家里没有别的碗 → 要三个 → 外面只有一个，打开柜子 → 两个碗：拿三个碗；一个碗：两碗不够，自己想到马克杯也能盛汤（盘子不行），补上马克杯，关门
 
+**指令**：汤快好了，拿几只干净的碗放到灶台旁边的岛台上准备盛汤。
+
 **成功条件**（D 按摆法：`two_inside` D = 1、理想物在，`one_inside` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `two_inside`：
-    - 这 3 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 3 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
+      - 第 2 组：
+        - 这 3 件中至少 3 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
+      - 第 3 组：
+        - 这 3 件中至少 3 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
   - 摆法 `one_inside`：
-    - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
-    - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `kitchen_cabinet_6` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - 这 2 件中至少 2 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `dining_table_1/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 3 组：
+        - 这 2 件中至少 2 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`
+        - 这 9 件中至少 3 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **次好（0.6）**：
 
   - 摆法 `two_inside`：
@@ -11675,13 +12104,17 @@
 - **好（1.0）**：
 
   - 摆法 `bowl_inside`：
-    - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-    - `kitchen_cabinet_4` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+      - 第 2 组：
+        - 这 5 件中至少 1 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
   - 摆法 `mug_inside`：
-    - 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`stored_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - `kitchen_cabinet_4` 关着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`stored_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+      - 第 2 组：
+        - 这 7 件中至少 1 件还在 `dining_table_2/top` 上：`stored_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **次好（0.6）**：
 
   - 摆法 `bowl_inside`：
@@ -11706,8 +12139,11 @@
 
 - **好（1.0）**：
 
-  - 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 第 2 组：
+      - 这 7 件中至少 1 件还在 `dining_table_2/top` 上：`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - **最不好（0.3）**：
 
   - `spare_plate` 在 `kitchen_island/top` 上
@@ -11723,18 +12159,26 @@
 
 **情况**：干净碗旁边放着不能用来盛汤的东西：一个盘子，或者一碗还装着燕麦的碗 → 拿那个干净的空碗，别的不动
 
+**指令**：汤快好了，拿一只碗放到灶台旁边的岛台上准备盛汤。
+
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `clean_one`：
-    - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-    - `full_bowl` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `full_bowl` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+      - 第 2 组：
+        - 这 5 件中至少 1 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
   - 摆法 `bowl_not_plate`：
-    - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-    - `spare_plate` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
+    - `spare_plate` 没被挪动（离开局位置不超过 10 cm）
+    - 满足下面任意一组：
+      - 第 1 组：
+        - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+      - 第 2 组：
+        - 这 5 件中至少 1 件还在 `dining_table_2/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - **次好（0.6）**：
 
   - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`

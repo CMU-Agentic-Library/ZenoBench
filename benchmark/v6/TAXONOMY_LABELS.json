@@ -1,0 +1,4601 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "overhang_ready",
+  "layout": "overhang_ready",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "stationery",
+  "conditions": []
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_a",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_b",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_c",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_a_flat",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_b_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "table_seats",
+  "layout": "table_seats__seats_c_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__near_a",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__near_b",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__far_a",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__far_b",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__near_a_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__near_b_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__far_a_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_table",
+  "layout": "which_table__far_b_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "destination_unnamed",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__seats_b",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__seats_c",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__full_a",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__seats_b_flat",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__seats_c_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "no_room_fallback",
+  "layout": "no_room_fallback__full_a_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "infeasible_fallback",
+   "no_overhang",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_1",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_2",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_3",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_1_flat",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_2_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "reader_seat",
+  "layout": "reader_seat__mug_3_flat",
+  "category": "action_task",
+  "episodes": 1,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "stationery",
+  "conditions": [
+   "no_overhang",
+   "referent_clue",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_book",
+  "layout": "which_book__living",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "item_out_of_view",
+   "referent_clue",
+   "unsuitable_at_hand"
+  ]
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "design": "which_book",
+  "layout": "which_book__bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "item_out_of_view",
+   "referent_clue",
+   "unsuitable_at_hand"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "clear",
+  "layout": "clear",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "crowded_use_another",
+  "layout": "crowded_use_another__tight_tv",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "crowded_use_another",
+  "layout": "crowded_use_another__tight_dining",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "crowded_use_another",
+  "layout": "crowded_use_another__loose",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "third_toy_elsewhere",
+  "layout": "third_toy_elsewhere__duck",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "third_toy_elsewhere",
+  "layout": "third_toy_elsewhere__toy_block",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid",
+  "layout": "tower_for_kid__counter",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid",
+  "layout": "tower_for_kid__study",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid",
+  "layout": "tower_for_kid__near_full",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid",
+  "layout": "tower_for_kid__both_full",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid_duck",
+  "layout": "tower_for_kid_duck__counter",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "item_out_of_view",
+   "missing_piece",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "tower_for_kid_duck",
+  "layout": "tower_for_kid_duck__study",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "item_out_of_view",
+   "missing_piece",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "block_put_away",
+  "layout": "block_put_away__in_4",
+  "category": "action_task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view",
+   "unstable_base"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "block_put_away",
+  "layout": "block_put_away__in_6",
+  "category": "action_task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "clear_obstacle",
+  "basis": "geometry",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view",
+   "unstable_base"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "block_put_away",
+  "layout": "block_put_away__gone_toy_block",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view",
+   "unstable_base"
+  ]
+ },
+ {
+  "task": "T02_stack_blocks",
+  "design": "block_put_away",
+  "layout": "block_put_away__gone_duck",
+  "category": "action_task",
+  "episodes": 2,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "toy",
+  "conditions": [
+   "missing_piece",
+   "not_in_view",
+   "unstable_base"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "large_only",
+  "layout": "large_only",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "cookware",
+  "conditions": []
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "small_bin_or_bedroom_bin",
+  "layout": "small_bin_or_bedroom_bin__wide_in_bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view",
+   "small_container_present"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "small_bin_or_bedroom_bin",
+  "layout": "small_bin_or_bedroom_bin__basket_in_bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "not_in_view",
+   "small_container_present"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "which_bin_by_contents",
+  "layout": "which_bin_by_contents__toys_near",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "cookware",
+  "conditions": [
+   "decoy_destination",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "which_bin_by_contents",
+  "layout": "which_bin_by_contents__kitchen_bin_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "decoy_destination",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "no_bin_substitute",
+  "layout": "no_bin_substitute__basket",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "decoy_destination",
+   "not_in_view",
+   "small_container_present"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "no_bin_substitute",
+  "layout": "no_bin_substitute__tray",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "decoy_destination",
+   "not_in_view",
+   "small_container_present"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "utensils_apart",
+  "layout": "utensils_apart__bin_free",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "cookware",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "utensils_apart",
+  "layout": "utensils_apart__bin_full_tray",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "utensils_apart",
+  "layout": "utensils_apart__bin_full_basket",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "design": "utensils_apart",
+  "layout": "utensils_apart__bin_full_fruit",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "destination_occupied",
+   "item_out_of_view",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "cup_available",
+  "layout": "cup_available",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "no_cup",
+  "layout": "no_cup",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "no_cup",
+  "layout": "no_cup_mug_away",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "no_cup",
+  "layout": "no_cup_mug_away__alt_dining_table_2",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "no_cup",
+  "layout": "no_cup_kid",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "clear_the_drinks_spot",
+  "layout": "clear_the_drinks_spot__spot_dishes",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "destination_occupied",
+   "goal_items_unstated"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "clear_the_drinks_spot",
+  "layout": "clear_the_drinks_spot__spot_kid_toys",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_occupied",
+   "goal_items_unstated"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "two_guests",
+  "layout": "two_guests__glass_in_cabinet",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "two_guests",
+  "layout": "two_guests__mug",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "two_guests",
+  "layout": "two_guests__kid_cup",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "x6_gd_cup_in_cabinets",
+  "layout": "x6_gd_cup_in_cabinets__cup_in_4",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup"
+  ]
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "design": "x6_gd_cup_in_cabinets",
+  "layout": "x6_gd_cup_in_cabinets__plastic_only",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "geometry",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "e1_pencil_asked",
+  "layout": "e1_pencil_asked",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "stationery",
+  "conditions": []
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "no_pen_pencil_away",
+  "layout": "no_pen_pencil_away",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "no_pen_pencil_away",
+  "layout": "no_pen_pencil_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "stationery",
+  "conditions": [
+   "not_in_view",
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "check_desk_first",
+  "layout": "check_desk_first__pen_on_desk",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "leave_in_use",
+  "basis": "context",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_already_met"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "check_desk_first",
+  "layout": "check_desk_first__pencil_on_desk",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_already_met"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "check_desk_first",
+  "layout": "check_desk_first__pen_in_use",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_already_met"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "homework_ready",
+  "layout": "homework_ready__single",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "homework_ready",
+  "layout": "homework_ready__several",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "homework_ready",
+  "layout": "homework_ready__notebook_in_use",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "stationery",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "errand_combined",
+  "layout": "errand_combined__pen_bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "stationery",
+  "conditions": [
+   "errands_combined"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "errand_combined",
+  "layout": "errand_combined__pen_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "stationery",
+  "conditions": [
+   "errands_combined"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "x6_gd_pen_or_pencil_cabinets",
+  "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "no_pen"
+  ]
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "design": "x6_gd_pen_or_pencil_cabinets",
+  "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "stationery",
+  "conditions": [
+   "no_pen"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "free",
+  "layout": "free",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_row",
+  "layout": "display_row__cab_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "toy",
+  "conditions": [
+   "arrangement",
+   "infeasible_fallback"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_row",
+  "layout": "display_row__cab_short",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "furniture",
+  "conditions": [
+   "arrangement",
+   "infeasible_fallback"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_spot_or_tv",
+  "layout": "display_spot_or_tv__front_taken",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_spot_or_tv",
+  "layout": "display_spot_or_tv__front_free",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_spot_or_tv",
+  "layout": "display_spot_or_tv__front_taken_tv_full",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "display_spot_or_tv",
+  "layout": "display_spot_or_tv__front_free_block_away",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "spot_quality"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "seen_from_bed",
+  "layout": "seen_from_bed__boxes_middle",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "infeasible_fallback",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "design": "seen_from_bed",
+  "layout": "seen_from_bed__bookcase_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "infeasible_fallback",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "microwave_works",
+  "layout": "microwave_works",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "microwave_broken",
+  "layout": "microwave_broken",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "microwave_broken"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "microwave_broken",
+  "layout": "broken_oatmeal_away",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "microwave_broken",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "microwave_broken",
+  "layout": "broken_oatmeal_away__alt_dining_table_2",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "microwave_broken",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "microwave_holds_pot",
+  "layout": "microwave_holds_pot",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "appliance_occupied"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "vessel_decides_appliance",
+  "layout": "vessel_decides_appliance__in_ceramic_bowl",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "appliance_compatibility"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "vessel_decides_appliance",
+  "layout": "vessel_decides_appliance__in_glass_box",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "affordance",
+  "object_category": "food_container",
+  "conditions": [
+   "appliance_compatibility"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "vessel_decides_appliance",
+  "layout": "vessel_decides_appliance__in_pot",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "appliance_compatibility"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "vessel_decides_appliance",
+  "layout": "vessel_decides_appliance__in_steel_box",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "appliance_compatibility"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "vessel_decides_appliance",
+  "layout": "vessel_decides_appliance__in_foil_tray",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "appliance",
+  "conditions": [
+   "appliance_compatibility"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "two_portions",
+  "layout": "two_portions__dining",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "appliance_compatibility",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "design": "two_portions",
+  "layout": "two_portions__counter",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "appliance_compatibility",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "sponge_on_island",
+  "layout": "sponge_on_island",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "cleaning",
+  "conditions": []
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "far_sponge_tv",
+  "layout": "far_sponge_tv",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "cleaning",
+  "conditions": [
+   "start_elsewhere",
+   "tool_away_from_surface"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "far_sponge_tv",
+  "layout": "far_sponge_foam_cube",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "cleaning",
+  "conditions": [
+   "unsuitable_at_hand"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "far_sponge_tv",
+  "layout": "far_sponge_spare_only",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cleaning",
+  "conditions": [
+   "missing_piece"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "wipe_and_sort",
+  "layout": "wipe_and_sort__blocks",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "cleaning",
+  "conditions": [
+   "category_rule",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "wipe_and_sort",
+  "layout": "wipe_and_sort__duck",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "cleaning",
+  "conditions": [
+   "category_rule",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "return_sponge_home",
+  "layout": "return_sponge_home__dining",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "cleaning",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "return_sponge_home",
+  "layout": "return_sponge_home__study",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "cleaning",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "return_sponge_home",
+  "layout": "return_sponge_home__far_dining",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "cleaning",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "which_surface",
+  "layout": "which_surface__island",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "cleaning",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T08_wipe_island",
+  "design": "which_surface",
+  "layout": "which_surface__dining",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "cleaning",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "lid_off",
+  "layout": "lid_off",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "lid_on_spoon_away",
+  "layout": "lid_on_spoon_away",
+  "category": "action_task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "lid_on",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "lid_on_spoon_away",
+  "layout": "lid_missing",
+  "category": "action_task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "missing_piece"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "pot_in_use",
+  "layout": "pot_in_use__in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view",
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "pot_in_use",
+  "layout": "pot_in_use__free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "tomato_in_fridge",
+  "layout": "tomato_in_fridge__in_fridge",
+  "category": "action_task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "clear_obstacle",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "closed_fridge",
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "tomato_in_fridge",
+  "layout": "tomato_in_fridge__big_tomato",
+  "category": "action_task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "closed_fridge",
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "x6_gd_tomato_elsewhere",
+  "layout": "x6_gd_tomato_elsewhere__dining",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "x6_gd_tomato_elsewhere",
+  "layout": "x6_gd_tomato_elsewhere__on_plate",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "pot_in_dining_room",
+  "layout": "pot_in_dining_room__pot_away",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T09_tomato_soup",
+  "design": "pot_in_dining_room",
+  "layout": "pot_in_dining_room__spare_pot",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "missing_piece",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "can_on_island",
+  "layout": "can_on_island",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "can_in_dining_room",
+  "layout": "can_in_dining_room",
+  "category": "control",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "can_in_dining_room",
+  "layout": "can_in_dining_room__alt_tv_stand_2",
+  "category": "control",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "keep_kids_can",
+  "layout": "keep_kids_can__kid_desk",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "keep_kids_can",
+  "layout": "keep_kids_can__kid_island",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "trash_moved",
+  "layout": "trash_moved__dining",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "destination_unnamed",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "trash_moved",
+  "layout": "trash_moved__trash_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "destination_unnamed",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "after_dinner_clear",
+  "layout": "after_dinner_clear__rubbish_leftovers",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "disposal_by_state",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "after_dinner_clear",
+  "layout": "after_dinner_clear__leftovers_mug",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "disposal_by_state",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "after_dinner_clear",
+  "layout": "after_dinner_clear__rubbish_mug",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "disposal_by_state",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "guests_coming",
+  "layout": "guests_coming__can_mug_block",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "guests_coming",
+  "layout": "guests_coming__can_block",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "guests_coming",
+  "layout": "guests_coming__can_mug",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "x6_gd_can_put_away",
+  "layout": "x6_gd_can_put_away__in_cabinet",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T10_trash_the_can",
+  "design": "x6_gd_can_put_away",
+  "layout": "x6_gd_can_put_away__fridge_drink",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "fruits_on_table",
+  "layout": "fruits_on_table",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "basket_missing",
+  "layout": "basket_missing",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "container_absent"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "basket_missing",
+  "layout": "basket_gone_bowl_there",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "decoy_destination"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "leave_one_for_kid",
+  "layout": "leave_one_for_kid__apple_orange",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "preference_allocation",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "leave_one_for_kid",
+  "layout": "leave_one_for_kid__orange_banana",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "preference_allocation",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "leave_one_for_kid",
+  "layout": "leave_one_for_kid__all_three",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "preference_allocation",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "fruit_plate_for_guests",
+  "layout": "fruit_plate_for_guests__tray_in_study",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "subgoal_order"
+  ]
+ },
+ {
+  "task": "T11_collect_fruits",
+  "design": "fruit_plate_for_guests",
+  "layout": "fruit_plate_for_guests__tray_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "not_in_view",
+   "subgoal_order"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "toys_out",
+  "layout": "toys_out",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "duck_in_study",
+  "layout": "duck_in_study",
+  "category": "control",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "duck_in_study",
+  "layout": "duck_in_study__alt_dining_table_2",
+  "category": "control",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__side_left_full",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__side_right_full",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__apart_full_on_tv",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__apart_empty_on_desk",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__half_bin_and_tray",
+  "category": "task",
+  "episodes": 1,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "bins_capacity",
+  "layout": "bins_capacity__half_bin_and_tray_duck_dining",
+  "category": "task",
+  "episodes": 1,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "joint_capacity"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "castle_stays",
+  "layout": "castle_stays__tall_two_loose",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "toy",
+  "conditions": [
+   "multi_object_goal",
+   "relational_exception"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "castle_stays",
+  "layout": "castle_stays__short_one_loose",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "toy",
+  "conditions": [
+   "multi_object_goal",
+   "relational_exception"
+  ]
+ },
+ {
+  "task": "T12_tidy_toys",
+  "design": "castle_stays",
+  "layout": "castle_stays__tall_none_loose",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "toy",
+  "conditions": [
+   "multi_object_goal",
+   "relational_exception"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "dishes_on_tv_stand",
+  "layout": "dishes_on_tv_stand",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "no_cup",
+  "layout": "no_cup",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "no_cup"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "copy_the_setting",
+  "layout": "copy_the_setting__bowl_cup",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_by_example"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "copy_the_setting",
+  "layout": "copy_the_setting__plate_bowl_mug_left",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_by_example"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "copy_the_setting",
+  "layout": "copy_the_setting__no_cup",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "goal_by_example"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "finish_the_table",
+  "layout": "finish_the_table__adult_seat",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "rule_induction"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "finish_the_table",
+  "layout": "finish_the_table__kid_seat",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "rule_induction"
+  ]
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "design": "finish_the_table",
+  "layout": "finish_the_table__adult_and_kid",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "rule_induction"
+  ]
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "design": "lid_by_pot",
+  "layout": "lid_by_pot",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "cookware",
+  "conditions": []
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "design": "lid_elsewhere",
+  "layout": "lid_elsewhere__dining",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "design": "lid_elsewhere",
+  "layout": "lid_elsewhere__covering_bowl",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "design": "no_lid",
+  "layout": "no_lid",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "design": "lid_in_use",
+  "layout": "lid_in_use",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "not_in_view",
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "design": "box_on_counter",
+  "layout": "box_on_counter",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "design": "box_in_cabinet",
+  "layout": "box_in_cabinet__in_cabinet",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "item_put_away",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "design": "box_in_cabinet",
+  "layout": "box_in_cabinet__box_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "item_put_away",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "design": "no_box",
+  "layout": "no_box",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "design": "box_in_use",
+  "layout": "box_in_use",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "lid_off",
+  "layout": "lid_off",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "h_task_lid_elsewhere",
+  "layout": "h_task_lid_elsewhere",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "h_task_lid_elsewhere",
+  "layout": "hide_lid_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cookware",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "hide_both",
+  "layout": "hide_both__tv_stand",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "toy",
+  "conditions": [
+   "multi_object_goal",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "hide_both",
+  "layout": "hide_both__two_pots",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "toy",
+  "conditions": [
+   "multi_object_goal",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "hide_somewhere",
+  "layout": "hide_somewhere__pot_ready",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "design": "hide_somewhere",
+  "layout": "hide_somewhere__lid_away",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "bowls_in_cabinet",
+  "layout": "bowls_in_cabinet",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "bowls_apart",
+  "layout": "bowls_apart",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "one_bowl",
+  "layout": "one_bowl__glass_box",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "one_bowl",
+  "layout": "one_bowl__mug",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "bowl_in_use",
+  "layout": "bowl_in_use__tomatoes",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "bowl_in_use",
+  "layout": "bowl_in_use__oatmeal",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "design": "door_stuck",
+  "layout": "door_stuck",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "appliance_failure"
+  ]
+ },
+ {
+  "task": "T19_recycling",
+  "design": "bin_on_bookcase",
+  "layout": "bin_on_bookcase",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T19_recycling",
+  "design": "m_can_in_dining_room",
+  "layout": "m_can_in_dining_room",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T19_recycling",
+  "design": "m_can_in_dining_room",
+  "layout": "can_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T19_recycling",
+  "design": "lookalike_bin",
+  "layout": "lookalike_bin",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "decoy_destination",
+   "item_out_of_view"
+  ]
+ },
+ {
+  "task": "T19_recycling",
+  "design": "lookalike_bin",
+  "layout": "lookalike_bin__alt_tv_stand_2",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "decoy_destination",
+   "item_out_of_view"
+  ]
+ },
+ {
+  "task": "T19_recycling",
+  "design": "x6_gd_can_put_away",
+  "layout": "x6_gd_can_put_away__in_4",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T19_recycling",
+  "design": "x6_gd_can_put_away",
+  "layout": "x6_gd_can_put_away__juice_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "design": "bottle_on_cabinet",
+  "layout": "bottle_on_cabinet",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "design": "m_bottle_on_tv_stand",
+  "layout": "m_bottle_on_tv_stand",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "design": "m_bottle_on_tv_stand",
+  "layout": "bottle_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "design": "x6_gd_bottle_put_away",
+  "layout": "x6_gd_bottle_put_away__on_tv_stand",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "design": "x6_gd_bottle_put_away",
+  "layout": "x6_gd_bottle_put_away__in_bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "e1_book_ready",
+  "layout": "e1_book_ready",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "stationery",
+  "conditions": []
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "within_kids_reach",
+  "layout": "within_kids_reach__set_on_large_shelf_4",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "agent_ability"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "within_kids_reach",
+  "layout": "within_kids_reach__set_on_large_shelf_5",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "agent_ability"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "homework_stays",
+  "layout": "homework_stays",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "category_rule",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "whose_book",
+  "layout": "whose_book__blue_book",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "whose_book",
+  "layout": "whose_book__paperback",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "whose_book",
+  "layout": "whose_book__both",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "next_in_series",
+  "layout": "next_in_series__on_bookcase",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "next_in_series",
+  "layout": "next_in_series__on_other_bookcase",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "design": "next_in_series",
+  "layout": "next_in_series__on_tall_shelf",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "stationery",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "tissue_on_tv_stand",
+  "layout": "tissue_on_tv_stand",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "cleaning",
+  "conditions": []
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "which_table",
+  "layout": "which_table__east",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_unnamed"
+  ]
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "which_table",
+  "layout": "which_table__west",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_unnamed"
+  ]
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "no_tissue",
+  "layout": "no_tissue",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "cleaning",
+  "conditions": [
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "the_kids_side",
+  "layout": "the_kids_side__kid_north",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T21_bring_tissues",
+  "design": "the_kids_side",
+  "layout": "the_kids_side__kid_south",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "juice_on_table",
+  "layout": "juice_on_table",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "by_kind",
+  "layout": "by_kind",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "eat_now",
+  "layout": "eat_now__desk_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "preference_allocation"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "eat_now",
+  "layout": "eat_now__desk_corner",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "not_shopping",
+  "layout": "not_shopping",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "goal_items_unstated"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "two_spots",
+  "layout": "two_spots",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "tray_elsewhere",
+  "layout": "tray_elsewhere__orange_in_it",
+  "category": "action_task",
+  "episodes": 4,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "dependent_decisions",
+   "destination_full",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "tray_elsewhere",
+  "layout": "tray_elsewhere__bowls_in_it",
+  "category": "action_task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "dependent_decisions",
+   "destination_full",
+   "not_in_view"
+  ]
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "design": "tray_elsewhere",
+  "layout": "basket_missing",
+  "category": "action_task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "spoon_on_floor",
+  "layout": "spoon_on_floor",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "by_kind",
+  "layout": "by_kind__toy_box",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "by_kind",
+  "layout": "by_kind__bin_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "belongs_on_floor",
+  "layout": "belongs_on_floor__no_toy_box",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "goal_items_unstated"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "belongs_on_floor",
+  "layout": "belongs_on_floor__bin_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_object",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "goal_items_unstated"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "dropped_out_of_view",
+  "layout": "dropped_out_of_view__counter_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "dropped_out_of_view",
+  "layout": "dropped_out_of_view__no_room_for_bowl",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "furniture",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "only_this_room",
+  "layout": "only_this_room__cabinet_room",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "tableware",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "only_this_room",
+  "layout": "only_this_room__cabinet_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "dropped_in_two_rooms",
+  "layout": "dropped_in_two_rooms__shelf_room",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "design": "dropped_in_two_rooms",
+  "layout": "dropped_in_two_rooms__shelf_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "furniture",
+  "conditions": [
+   "goal_items_unstated",
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "apple_on_table",
+  "layout": "apple_on_table",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "no_apples_for_him",
+  "layout": "no_apples_for_him__apple_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "no_apples_for_him",
+  "layout": "no_apples_for_him__apple_in_use",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "resource_in_use"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "dinner_soon",
+  "layout": "dinner_soon__apple",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "dinner_soon",
+  "layout": "dinner_soon__banana",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "fruit_out_of_view",
+  "layout": "fruit_out_of_view__apple_in_basket",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "fruit_out_of_view",
+  "layout": "fruit_out_of_view__basket_empty",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "where_is_he",
+  "layout": "where_is_he__study",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "where_is_he",
+  "layout": "where_is_he__bedroom",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "two_kids",
+  "layout": "two_kids__apple_banana",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "two_kids",
+  "layout": "two_kids__apple_snacks",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "design": "two_kids",
+  "layout": "two_kids__desk3_covered",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "drink_on_island",
+  "layout": "drink_on_island",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food",
+  "conditions": []
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cup_elsewhere",
+  "layout": "cup_elsewhere__counter_cup",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cup_elsewhere",
+  "layout": "cup_elsewhere__only_mugs",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cup_elsewhere",
+  "layout": "cup_elsewhere__blocks_in_cup",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cold_one",
+  "layout": "cold_one__cold_juice",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cold_one",
+  "layout": "cold_one__cold_soda",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "drink_in_fridge",
+  "layout": "drink_in_fridge__juice",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "drink_in_fridge",
+  "layout": "drink_in_fridge__soda_only",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "food",
+  "conditions": [
+   "not_in_view",
+   "resource_absent",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cups_for_two",
+  "layout": "cups_for_two__one_there",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cups_for_two",
+  "layout": "cups_for_two__none_one_inside",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cups_for_two",
+  "layout": "cups_for_two__none_two_inside",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "cups_for_two",
+  "layout": "cups_for_two__two_there",
+  "category": "task",
+  "episodes": 2,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "not_in_view",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "two_guests",
+  "layout": "two_guests__two_cups",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "two_guests",
+  "layout": "two_guests__one_cup",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "food",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "design": "little_guest",
+  "layout": "little_guest",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "food",
+  "conditions": [
+   "preference_allocation"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "car_in_living_room",
+  "layout": "car_in_living_room",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "whose",
+  "layout": "whose__shelf_room",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "stationery",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "whose",
+  "layout": "whose__shelf_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "scattered",
+  "layout": "scattered__basket",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "toy",
+  "conditions": [
+   "container_absent",
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "scattered",
+  "layout": "scattered__no_basket",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "where_in_room",
+  "layout": "where_in_room__basket",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "container_absent",
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "where_in_room",
+  "layout": "where_in_room__waste_bin",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "container",
+  "conditions": [
+   "container_absent",
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "bear_to_bed",
+  "layout": "bear_to_bed__top_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "bear_to_bed",
+  "layout": "bear_to_bed__top_covered",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "two_bedrooms",
+  "layout": "two_bedrooms__room_east",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "design": "two_bedrooms",
+  "layout": "two_bedrooms__room_south",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "not_in_view",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "rice_on_table",
+  "layout": "rice_on_table",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "food_container",
+  "conditions": []
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "which_is_leftover",
+  "layout": "which_is_leftover",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "food_container",
+  "conditions": [
+   "disposal_by_state"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "which_is_leftover",
+  "layout": "fruit_stays_out",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food_container",
+  "conditions": [
+   "category_rule"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "which_is_leftover",
+  "layout": "still_eating",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food_container",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "two_leftovers",
+  "layout": "two_leftovers__soup_at_seat",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food_container",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "two_leftovers",
+  "layout": "two_leftovers__soup_on_table",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food_container",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "two_leftovers",
+  "layout": "two_leftovers__soup_on_stove",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "food_container",
+  "conditions": [
+   "goal_items_unstated",
+   "multi_object_goal"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "fridge_out_of_view",
+  "layout": "fridge_out_of_view__fridge_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "food_container",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "design": "fridge_out_of_view",
+  "layout": "fridge_out_of_view__fridge_crowded",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "food_container",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "cup_on_counter",
+  "layout": "cup_on_counter",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "which_bed",
+  "layout": "which_bed__east",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "which_bed",
+  "layout": "which_bed__south",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "social",
+  "object_category": "furniture",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "where_his_cup_is",
+  "layout": "where_his_cup_is__on_counter",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "tableware",
+  "conditions": [
+   "dependent_decisions",
+   "item_put_away",
+   "referent_clue",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "where_his_cup_is",
+  "layout": "where_his_cup_is__in_cabinet",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "social",
+  "object_category": "tableware",
+  "conditions": [
+   "dependent_decisions",
+   "item_put_away",
+   "referent_clue",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "where_his_cup_is",
+  "layout": "where_his_cup_is__no_kid_cup",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "dependent_decisions",
+   "item_put_away",
+   "referent_clue",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "cup_out_of_view",
+  "layout": "cup_out_of_view__cup_found",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "cup_out_of_view",
+  "layout": "cup_out_of_view__side_covered",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "not_in_view",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "already_there",
+  "layout": "already_there__his_cup",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "leave_in_use",
+  "basis": "context",
+  "object_category": "tableware",
+  "conditions": [
+   "goal_already_met",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "design": "already_there",
+  "layout": "already_there__wrong_cup",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "tableware",
+  "conditions": [
+   "goal_already_met",
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "car_on_table",
+  "layout": "car_on_table",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "toy",
+  "conditions": []
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "belongs_on_table",
+  "layout": "belongs_on_table",
+  "category": "task",
+  "episodes": 4,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "toy",
+  "conditions": [
+   "category_rule",
+   "container_absent"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "belongs_on_table",
+  "layout": "belongs_on_table__no_toy_box",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "container",
+  "conditions": [
+   "category_rule",
+   "container_absent"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "belongs_on_table",
+  "layout": "nothing_to_clear",
+  "category": "task",
+  "episodes": 3,
+  "substitution_kind": null,
+  "strategy": "leave_in_use",
+  "basis": "context",
+  "object_category": "toy",
+  "conditions": [
+   "goal_already_met"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "homework_on_table",
+  "layout": "homework_on_table__desk_free",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "stationery",
+  "conditions": [
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "homework_on_table",
+  "layout": "homework_on_table__desk_covered",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "several",
+  "layout": "several__toy_box",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "spatial",
+  "object_category": "toy",
+  "conditions": [
+   "category_rule",
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "several",
+  "layout": "several__bin_full",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "能力不足",
+  "strategy": "substitute_place",
+  "basis": "geometry",
+  "object_category": "container",
+  "conditions": [
+   "category_rule",
+   "multi_object_goal",
+   "storage_place"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "which_table",
+  "layout": "which_table__east",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_unnamed"
+  ]
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "design": "which_table",
+  "layout": "which_table__west",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "去处替换",
+  "strategy": "substitute_place",
+  "basis": "spatial",
+  "object_category": "furniture",
+  "conditions": [
+   "destination_unnamed"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowl_on_cabinet",
+  "layout": "bowl_on_cabinet",
+  "category": "control",
+  "episodes": 10,
+  "substitution_kind": null,
+  "strategy": "nominal",
+  "basis": null,
+  "object_category": "tableware",
+  "conditions": []
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "how_many",
+  "layout": "how_many__three_bowls",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "tableware",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "how_many",
+  "layout": "how_many__two_bowls",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "count_from_scene",
+   "multi_object_goal",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowls_in_cabinet",
+  "layout": "bowls_in_cabinet__two_inside",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "infer_goal",
+  "basis": "context",
+  "object_category": "tableware",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "item_put_away",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowls_in_cabinet",
+  "layout": "bowls_in_cabinet__one_inside",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "count_from_scene",
+   "dependent_decisions",
+   "item_put_away",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowl_put_away",
+  "layout": "bowl_put_away__bowl_inside",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": null,
+  "strategy": "search",
+  "basis": "spatial",
+  "object_category": "tableware",
+  "conditions": [
+   "item_put_away",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowl_put_away",
+  "layout": "bowl_put_away__mug_inside",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "item_put_away",
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "no_bowl",
+  "layout": "no_bowl",
+  "category": "task",
+  "episodes": 10,
+  "substitution_kind": "缺失",
+  "strategy": "substitute_object",
+  "basis": "affordance",
+  "object_category": "tableware",
+  "conditions": [
+   "resource_absent"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowl_not_plate",
+  "layout": "bowl_not_plate",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "看着像但不能用",
+  "strategy": "discriminate",
+  "basis": "appearance",
+  "object_category": "tableware",
+  "conditions": [
+   "referent_clue"
+  ]
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "design": "bowl_not_plate",
+  "layout": "clean_one",
+  "category": "task",
+  "episodes": 5,
+  "substitution_kind": "被占用",
+  "strategy": "leave_in_use",
+  "basis": "social",
+  "object_category": "tableware",
+  "conditions": [
+   "referent_clue"
+  ]
+ }
+]

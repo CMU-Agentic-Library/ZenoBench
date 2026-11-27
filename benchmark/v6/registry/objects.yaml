@@ -1,0 +1,60 @@
+# ZenoBench object registry (11-24; classification only since 11-25): the category of every movable asset
+# kind of v6.  taxonomy: category -> subcategory -> type (the asset kind, the key).  Read by object_registry.py
+# and used by taxonomy.py for the object-category axis.
+
+objects:
+  # -- tableware -------------------------------------------------------------------------------------------
+  breakfast_bowl: {category: tableware, subcategory: dish}
+  oatmeal_bowl: {category: tableware, subcategory: dish}
+  breakfast_plate: {category: tableware, subcategory: dish}
+  breakfast_cup: {category: tableware, subcategory: drinkware}
+  breakfast_mug: {category: tableware, subcategory: drinkware}
+  plastic_cup: {category: tableware, subcategory: drinkware}
+  breakfast_spoon: {category: tableware, subcategory: cutlery}
+  # -- cookware --------------------------------------------------------------------------------------------
+  handled_cooking_pot: {category: cookware, subcategory: pot}
+  soup_pot: {category: cookware, subcategory: pot}
+  pot_lid: {category: cookware, subcategory: lid}
+  rolling_pin: {category: cookware, subcategory: utensil}
+  # -- food_container --------------------------------------------------------------------------------------
+  glass_food_container: {category: food_container, subcategory: storage_box}
+  steel_lunch_box: {category: food_container, subcategory: storage_box}
+  foil_takeout_tray: {category: food_container, subcategory: takeout}
+  # -- container -------------------------------------------------------------------------------------------
+  fruit_basket: {category: container, subcategory: basket}
+  storage_basket: {category: container, subcategory: basket}
+  small_storage_bin: {category: container, subcategory: bin}
+  wide_storage_bin: {category: container, subcategory: bin}
+  toy_box: {category: container, subcategory: bin}
+  serving_tray: {category: container, subcategory: tray}
+  shallow_sorting_tray: {category: container, subcategory: tray}
+  trash_can: {category: container, subcategory: waste_bin}
+  big_trash_can: {category: container, subcategory: waste_bin}
+  # -- food ------------------------------------------------------------------------------------------------
+  apple: {category: food, subcategory: fruit}
+  banana: {category: food, subcategory: fruit}
+  orange: {category: food, subcategory: fruit}
+  cherry_tomato: {category: food, subcategory: vegetable}
+  big_tomato: {category: food, subcategory: vegetable}
+  cereal_box: {category: food, subcategory: packaged}
+  snack_carton: {category: food, subcategory: packaged}
+  juice_bottle: {category: food, subcategory: beverage}
+  soda_can: {category: food, subcategory: beverage}
+  # -- stationery ------------------------------------------------------------------------------------------
+  book_red: {category: stationery, subcategory: book}
+  book_green: {category: stationery, subcategory: book}
+  book_blue: {category: stationery, subcategory: book}
+  paperback_book: {category: stationery, subcategory: book}
+  notebook: {category: stationery, subcategory: notebook}
+  pen: {category: stationery, subcategory: writing_tool}
+  pencil: {category: stationery, subcategory: writing_tool}
+  # -- toy -------------------------------------------------------------------------------------------------
+  wooden_block: {category: toy, subcategory: block}
+  toy_block: {category: toy, subcategory: block}
+  foam_cube: {category: toy, subcategory: block}
+  rubber_duck: {category: toy, subcategory: figure}
+  teddy_bear: {category: toy, subcategory: plush}
+  toy_car: {category: toy, subcategory: vehicle}
+  # -- cleaning --------------------------------------------------------------------------------------------
+  kitchen_sponge: {category: cleaning, subcategory: sponge}
+  tissue_box: {category: cleaning, subcategory: tissue}

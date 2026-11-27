@@ -178,8 +178,11 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             from benchmark.planners import load_policy
             pol = load_policy(policy)
             report["stop_reason"] = "budget"     # max_calls reached without the planner ending the episode
-            pol.reset(task_instruction=task["instruction"],
-                      skills=registry.menu(track) if registry is not None else task.get("skill_menu"))
+            menu = registry.menu(track) if registry is not None else task.get("skill_menu")
+            if menu is None:                      # Fixed track: the built-in menu (71 verbs), as the HTTP API
+                from skill_ext import SkillRegistry
+                menu = SkillRegistry.default().menu("fixed")
+            pol.reset(task_instruction=task["instruction"], skills=menu)
             for i in range(max_calls or profile_max_calls(prof, task)):
                 obs = ep.observation("path", f"step{i}")
                 t0 = time.time()
@@ -193,6 +196,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 _, record = ep.call({"contract": act["skill"], "args": act.get("args", {})})
                 log_row({"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": record,
                          "planner_note": act.get("note", ""), "planner_s": planner_s,
+                         "planner_usage": act.get("usage"), "planner_trace": act.get("trace"),
                          "wall_s": round(time.time() - t1, 1), "tick": rig.tick, "state_before": before,
                          "state": state_summary(rig, task), "eval": record.pop("eval")})
         else:
@@ -246,6 +250,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 if expect == "ok" and not ok:
                     report["stopped_at"] = i
                     break
+        if planner == "recovery" and hasattr(pol, "summary"):
+            report["planner_summary"] = pol.summary()       # VLM queries / tokens, incl. the finishing query
         chk = ep.check()
         if injector is not None:
             report["failure_injection"] = injector.summary()     # evaluation only; never shown to a planner

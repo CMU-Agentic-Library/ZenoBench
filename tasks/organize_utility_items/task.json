@@ -1,7 +1,7 @@
 {
  "task": "organize_utility_items",
  "instruction": "Put the tissue box and rolling pin in the shallow sorting tray, shelve the paperback book on the study desk, and place the juice bottle and plastic cup upright on the dining table.",
- "instruction_zh": "\u628a\u7eb8\u5dfe\u76d2\u548c\u64c0\u9762\u6756\u653e\u8fdb\u6d45\u6536\u7eb3\u6258\u76d8\uff0c\u628a\u5e73\u88c5\u4e66\u653e\u5230\u4e66\u623f\u684c\u9762\uff0c\u5e76\u628a\u679c\u6c41\u74f6\u548c\u5851\u6599\u676f\u76f4\u7acb\u653e\u5728\u9910\u684c\u4e0a\u3002",
+ "instruction_zh": "把纸巾盒和擀面杖放进浅收纳托盘，把平装书放到书房桌面，并把果汁瓶和塑料杯直立放在餐桌上。",
  "seed": 0,
  "spec": "task_specs/organize_utility_items.json",
  "scene_usd": "tasks/organize_utility_items/scene.usd",
@@ -30,7 +30,7 @@
    "support": "dining_table_1/top",
    "yaw": -3.1243861495570098,
    "position": [
-    -7.683533077945892,
+    -8.0835,
     6.9923399714206855,
     0.7595
    ]
@@ -60,7 +60,7 @@
    "support": "dining_table_1/top",
    "yaw": -0.08899906526957402,
    "position": [
-    -7.709108480051822,
+    -8.1091,
     8.676475857485894,
     0.7351
    ]

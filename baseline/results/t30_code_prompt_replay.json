@@ -1,0 +1,85 @@
+{
+  "task": "T30_bowls_for_soup",
+  "variant": "bowl_on_cabinet",
+  "seed": 10,
+  "profile": "sticky/benchmark",
+  "task_instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "evaluation": "Single first-observation CodeAsPolicies generation per condition and model; no simulation or task score for replayed programs.",
+  "planner_commit": "7846509008e18acf6a5d84ad33c29c686fb04dcc",
+  "prompt_file": "baseline/code_policy.py",
+  "omitted_from_example_removed": ", for example navigate(destination=\"kitchen_island/top\")",
+  "temperature": 0,
+  "call_budget": 60,
+  "max_output_tokens": 4096,
+  "models": {
+    "internvl3.5-8b": {
+      "revision": "741a7d03020411e666c6109218ab71e08151ef86",
+      "native_exp_id": "T30_bowls_for_soup-7c170da4",
+      "episode_hash": "5a7c09e173fc",
+      "initial_image_sha256": "fd485bc89ab29897813fdf3f80f1c9f5a7d3bfc81d193b22c54f9044315eb244",
+      "original_native_program": "navigate(destination=\"kitchen_cabinet_6/top\")\npick(object=\"breakfast_bowl_5\", hands=\"right\")\nnavigate(destination=\"kitchen_island/top\")\nplace(object=\"breakfast_bowl_5\", receptacle=\"kitchen_island/top\")\n",
+      "replay": {
+        "example_removed": {
+          "system_prompt_sha256": "a95d75094df079958d4151a7c4fbd3165266481bf1c2be99de3a18b5ffd00f7b",
+          "vlm_queries": 1,
+          "input_tokens": 13628,
+          "output_tokens": 139,
+          "program": "navigate(destination=\"kitchen_cabinet_6\")\npick(object=\"breakfast_bowl_5\")\nnavigate(destination=\"kitchen_island\")\n"
+        },
+        "original": {
+          "system_prompt_sha256": "4fe38bbe3837678e697d1f0950bec2fcc2cf29b6c73d1844e314a75f79b7154b",
+          "vlm_queries": 1,
+          "input_tokens": 13639,
+          "output_tokens": 144,
+          "program": "navigate(destination=\"kitchen_cabinet_6/top\")\npick(object=\"breakfast_bowl_5\", hands=\"right\")\nnavigate(destination=\"kitchen_island/top\")\nplace(object=\"breakfast_bowl_5\", receptacle=\"kitchen_island/top\")\n"
+        }
+      }
+    },
+    "qwen3.5-27b": {
+      "revision": "81a287ca484a5e71148f5beb7f367bb5286d70f9",
+      "native_exp_id": "T30_bowls_for_soup-e1ba8022",
+      "episode_hash": "5a7c09e173fc",
+      "initial_image_sha256": "c1574d949c2e1425309662dba353f0f539bd800168d32a5428d8b62c596eb596",
+      "original_native_program": "r = fetch(object=\"breakfast_bowl_5\", receptacle=\"kitchen_island/top\")\nif not r.success:\n    # If fetch fails, try navigating and picking manually\n    r_nav = navigate(destination=\"kitchen_cabinet_6/top\")\n    if r_nav.success:\n        r_pick = pick(object=\"breakfast_bowl_5\")\n        if r_pick.success:\n            r_place = navigate(destination=\"kitchen_island/top\")\n            if r_place.success:\n                place(object=\"breakfast_bowl_5\", receptacle=\"kitchen_island/top\")\n",
+      "replay": {
+        "example_removed": {
+          "system_prompt_sha256": "a95d75094df079958d4151a7c4fbd3165266481bf1c2be99de3a18b5ffd00f7b",
+          "vlm_queries": 1,
+          "input_tokens": 10702,
+          "output_tokens": 257,
+          "program": "# Navigate to the bowl\nr = navigate(destination=\"breakfast_bowl_5\")\nif not r.success:\n    # If navigation fails, try to search for it\n    r = search(object=\"breakfast_bowl_5\")\n    if not r.success:\n        pass  # Cannot find the bowl\n    else:\n        r = navigate(destination=\"breakfast_bowl_5\")\n        if not r.success:\n            pass  # Still cannot navigate\n\n# Pick up the bowl\nif r.success:\n    r = pick(object=\"breakfast_bowl_5\")\n    if not r.success:\n        pass  # Cannot pick the bowl\n    else:\n        # Bring the bowl to the stove\n        r = fetch(object=\"breakfast_bowl_5\", receptacle=\"kitchen_stove\")\n        if not r.success:\n            pass  # Cannot bring the bowl to the stove\n"
+        },
+        "original": {
+          "system_prompt_sha256": "4fe38bbe3837678e697d1f0950bec2fcc2cf29b6c73d1844e314a75f79b7154b",
+          "vlm_queries": 1,
+          "input_tokens": 10713,
+          "output_tokens": 231,
+          "program": "# Navigate to the bowl\nr = navigate(destination=\"breakfast_bowl_5\")\nif not r.success:\n    # If navigation fails, try to search for it\n    r = search(object=\"breakfast_bowl_5\")\n    if not r.success:\n        pass # Cannot find the bowl\n\n# Pick up the bowl\nr = pick(object=\"breakfast_bowl_5\")\nif not r.success:\n    pass # Cannot pick the bowl\n\n# Bring the bowl to the kitchen island for serving\nr = fetch(object=\"breakfast_bowl_5\", receptacle=\"kitchen_island/top\")\nif not r.success:\n    pass # Failed to fetch\n"
+        }
+      }
+    },
+    "qwen3.5-4b": {
+      "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+      "native_exp_id": "T30_bowls_for_soup-07f3cfb2",
+      "episode_hash": "5a7c09e173fc",
+      "initial_image_sha256": "0ee9248d3c4ef3e43406dc41f7725eec88110ef5e7b6ef6a47388c9ba94c5c15",
+      "original_native_program": "navigate(destination=\"kitchen_cabinet_6/top\")\npick(object=\"breakfast_bowl_5\")\nnavigate(destination=\"living_room_0_0\")\npresent(object=\"breakfast_bowl_5\")\n",
+      "replay": {
+        "example_removed": {
+          "system_prompt_sha256": "a95d75094df079958d4151a7c4fbd3165266481bf1c2be99de3a18b5ffd00f7b",
+          "vlm_queries": 1,
+          "input_tokens": 10702,
+          "output_tokens": 130,
+          "program": "navigate(destination=\"breakfast_bowl_5\")\npick(object=\"breakfast_bowl_5\")\nnavigate(destination=\"dining_table_1\")\nplace(object=\"breakfast_bowl_5\", receptacle=\"dining_table_1\")\n"
+        },
+        "original": {
+          "system_prompt_sha256": "4fe38bbe3837678e697d1f0950bec2fcc2cf29b6c73d1844e314a75f79b7154b",
+          "vlm_queries": 1,
+          "input_tokens": 10713,
+          "output_tokens": 109,
+          "program": "navigate(destination=\"kitchen_cabinet_6/top\")\npick(object=\"breakfast_bowl_5\")\nnavigate(destination=\"living_room_0_0\")\npresent(object=\"breakfast_bowl_5\")\n"
+        }
+      }
+    }
+  }
+}

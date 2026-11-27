@@ -163,7 +163,7 @@ KIND = {
     ("T30", "bowl_put_away"): {"bowl_inside": None, "mug_inside": "缺失"},
     ("T30", "no_bowl"): {"*": "缺失"},
     ("T30", "bowl_not_plate"): {"bowl_not_plate": "看着像但不能用", "clean_one": "被占用"},
-    ("T22", "tray_elsewhere"): {"basket_missing": "缺失", "orange_in_it": "缺失", "books_on_it": "被占用"},
+    ("T22", "tray_elsewhere"): {"basket_missing": "缺失", "orange_in_it": "缺失", "bowls_in_it": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

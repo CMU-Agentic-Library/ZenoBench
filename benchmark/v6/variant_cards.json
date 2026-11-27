@@ -21787,7 +21787,7 @@
   "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T22_put_away_shopping/tray_elsewhere__books_on_it": {
+ "T22_put_away_shopping/tray_elsewhere__bowls_in_it": {
   "variant": "tray_elsewhere",
   "category": "action_task",
   "seeds": [
@@ -22044,7 +22044,7 @@
    ]
   },
   "control": "juice_on_table",
-  "oracle_route": "v6_tray_elsewhere__books_on_it",
+  "oracle_route": "v6_tray_elsewhere__bowls_in_it",
   "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
   "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"

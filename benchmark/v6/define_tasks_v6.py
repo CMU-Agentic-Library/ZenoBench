@@ -150,7 +150,7 @@ T01_BOOK_AT = {"living": ("tv_stand_2/top", [7.40, 0.484]),     # overhangs the 
 T01_BOOK_OTHER = {"living": ("bookcase_2/top", [1.00, -0.43]), "bedroom": ("tv_stand_2/top", [7.60, 0.36])}
 # which_table: the other dining table (the west dining room, 16 m from the island); its east edge faces the room
 FAR_DINING = "dining_table_1/top"
-T01_TABLES = {DINING: (T01_TABLE_Y0, T01_TABLE_Y1, 3.839), FAR_DINING: (6.89, 8.83, -7.488)}   # y0, y1, east edge x
+T01_TABLES = {DINING: (T01_TABLE_Y0, T01_TABLE_Y1, 3.839), FAR_DINING: (6.89, 8.83, -7.888)}   # y0, y1, east edge x
 T01_FAR_LAYOUTS = {   # the shorter table: one cereal box; narrow between seats 1 and 2, wide between 2 and 3
     "far_a": ([0.05, "clutter_cereal_a", 0.05, "plate_counter_a", 0.04, "cup_counter_b", NARROW, "bowl_side_table",
                0.04, "cup_side_table", WIDE, "plate_counter_b", 0.04, "mug_dining_cabinet"], 5, "plate_counter_b"),
@@ -161,7 +161,7 @@ T01_FAR_LAYOUTS = {   # the shorter table: one cereal box; narrow between seats 
 # the table nobody eats at: the kid's toys and the storage bin, east-edge slots free, no tableware
 T01_IDLE = {DINING: {"wide_storage_bin": [2.985, 6.6], "clutter_cereal_b": [3.70, 6.0],
                      "wooden_block_a": [3.75, 6.9], "wooden_block_b": [3.62, 7.3]},
-            FAR_DINING: {"wide_storage_bin": [-8.0, 7.9], "wooden_block_a": [-7.6, 7.2], "wooden_block_b": [-7.72, 7.6]}}
+            FAR_DINING: {"wide_storage_bin": [-8.4, 7.9], "wooden_block_a": [-8.0, 7.2], "wooden_block_b": [-8.12, 7.6]}}
 
 
 def T01(t):
@@ -407,22 +407,22 @@ T02_FULL_TABLE = {
 # T02 tower_for_kid both_full (11-17): the west dining room's table piled full too (benchmark/v6/slots.py-style
 # check: no 4 cm base keeps 10 cm from its edge and from these); name -> (asset, x, y, yaw), all added
 T02_FAR_FULL = {
-    "far_wide_storage_bin": ("wide_storage_bin", -7.717, 7.604, 0),
-    "far_clutter_cereal_a": ("cereal_box", -8.014, 7.387, 0),
-    "far_clutter_toy_box": ("toy_box", -8.277, 7.071, 90),
-    "far_clutter_tray": ("serving_tray", -7.707, 7.063, 0),
-    "far_clutter_basket": ("storage_basket", -8.296, 7.618, 0),
-    "far_clutter_fruit_basket": ("fruit_basket", -8.331, 8.1, 0),
-    "far_clutter_bowl": ("breakfast_bowl", -8.018, 7.932, 0),
-    "far_clutter_plate_1": ("breakfast_plate", -7.683, 8.098, 0),
-    "far_clutter_sorting_tray": ("shallow_sorting_tray", -8.342, 8.464, 0),
-    "far_clutter_plate_2": ("breakfast_plate", -8.003, 8.448, 0),
-    "far_clutter_small_bin": ("small_storage_bin", -7.657, 8.449, 0),
-    "far_clutter_cereal_e": ("cereal_box", -7.995, 8.167, 0),
-    "far_extra_0": ("cereal_box", -8.42, 8.69, 0),
-    "far_extra_1": ("notebook", -8.24, 8.69, 0),
-    "far_extra_2": ("book_blue", -8.01, 8.7, 0),
-    "far_extra_3": ("cereal_box", -7.78, 8.73, 90),
+    "far_wide_storage_bin": ("wide_storage_bin", -8.117, 7.604, 0),
+    "far_clutter_cereal_a": ("cereal_box", -8.414, 7.387, 0),
+    "far_clutter_toy_box": ("toy_box", -8.677, 7.071, 90),
+    "far_clutter_tray": ("serving_tray", -8.107, 7.063, 0),
+    "far_clutter_basket": ("storage_basket", -8.696, 7.618, 0),
+    "far_clutter_fruit_basket": ("fruit_basket", -8.731, 8.1, 0),
+    "far_clutter_bowl": ("breakfast_bowl", -8.418, 7.932, 0),
+    "far_clutter_plate_1": ("breakfast_plate", -8.083, 8.098, 0),
+    "far_clutter_sorting_tray": ("shallow_sorting_tray", -8.742, 8.464, 0),
+    "far_clutter_plate_2": ("breakfast_plate", -8.403, 8.448, 0),
+    "far_clutter_small_bin": ("small_storage_bin", -8.057, 8.449, 0),
+    "far_clutter_cereal_e": ("cereal_box", -8.395, 8.167, 0),
+    "far_extra_0": ("cereal_box", -8.82, 8.69, 0),
+    "far_extra_1": ("notebook", -8.64, 8.69, 0),
+    "far_extra_2": ("book_blue", -8.41, 8.7, 0),
+    "far_extra_3": ("cereal_box", -8.18, 8.73, 90),
 }
 
 
@@ -527,7 +527,7 @@ def T02(t):
         if top == "best":
             route = place_route(*r2, *r3, DINING, base_xy)
         elif top == "second":
-            route = place_route(*r2, *r3, FAR_DINING, [-7.64, 7.80], past=(DINING,))
+            route = place_route(*r2, *r3, FAR_DINING, [-8.04, 7.80], past=(DINING,))
         else:                                    # both dining tables full: the island, clear of the bowl and pin
             route = place_route(*r2, *r3, "kitchen_island/top", [7.70, 1.75], past=(DINING, FAR_DINING))
         tk_cases[case] = dict(move=mv, add=add, goal=copy.deepcopy(tiers[top]), watch=[A, B, F, *kept],
@@ -648,9 +648,10 @@ def T02(t):
                                                   "kitchen_0_1"))}),
         "tower_for_kid": dict(
             base="clear", control="clear", conditions=["item_out_of_view", "spot_quality", "destination_occupied"],
-            instruction="The kid wants to look at a block tower on the dining table. Find all three toy blocks in the "
-                        "house and stack them into one tower on the dining table.",
-            instruction_zh="孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+            # 11-24 (user): name the kid's table -- the tiers rank the near table over the west one
+            instruction="The kid wants to look at a block tower on the dining table next to the kitchen. Find all "
+                        "three toy blocks in the house and stack them into one tower there.",
+            instruction_zh="孩子想在厨房旁边那张餐桌上看积木塔。把家里三块积木都找到，在那张餐桌上叠成一座塔。",
             keep_design=[DINING, FAR_DINING],
             factor="which tables can take the tower (seed: the near dining table free -- counter/study, where the "
                    "other two blocks differ; the near one piled full; both dining tables piled full)",
@@ -683,9 +684,9 @@ def T02(t):
                                  route=table_route(B, "living_room_0_1", "rubber_duck", "living_room_0_0"))}),
         "block_put_away": dict(
             base="edge_base", control="clear", conditions=["unstable_base", "not_in_view", "missing_piece"],
-            instruction="The kid wants a three-level block tower; build one for him on the kitchen island. Close any "
-                        "cabinet you open.",
-            instruction_zh="孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。",
+            # 11-24 (user): "close any cabinet you open" dropped -- it told where the third block is
+            instruction="The kid wants a three-level block tower; build one for him on the kitchen island.",
+            instruction_zh="孩子想要一座三层的积木塔，在岛台上给他搭一座。",
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             factor="where the third wooden block is and what stands in for it (seed: in cabinet 4 or 6 with a toy "
                    "block of another make in view; not in the house, a toy block or the rubber duck in view)",
@@ -917,7 +918,10 @@ def T05(t):
         return {name: {**({"asset": asset} if asset else {}), "support": sup, "xy": [x, y], "yaw_deg": yaw}}
 
     def fetch_to(x, sup, hint, flat=False):
-        grab = [nav(x), S("expose", object=x), look(x), pick(x)] if flat else [nav(x), pick(x)]
+        # 11-25 (gt_check homework_ready__several s11): on the low TV stand the exposed notebook was 48 deg below
+        # the head at 0.8 m (outside the frustum); bent forward the head sees it
+        see = [S("bend"), look(x), S("straighten")] if sup == TV else [look(x)]
+        grab = [nav(x), S("expose", object=x)] + see + [pick(x)] if flat else [nav(x), pick(x)]
         return [S("search", object=x, region=REG[sup])] + grab + [nav(DESK), place(x, DESK, hint)]
     desk_x = [-1.2, -0.9, -0.6, -0.3]
     # 11-17 (user): seeds change the substitute -- "in use": the only pen (or pencil, or notebook) lies on what
@@ -1366,12 +1370,20 @@ def T07(t):
             + ([S("expose", object=x), look(x)] if x in FLAT else []) + [pick(x)]
 
     def to_microwave(x, region=None, temp=40, heat=True):
-        return [nav(MW), S("open", articulated=MW), look(ISL)] + grab(x, region) \
+        # 11-25 (gt_check in_ceramic_bowl s11, in_glass_box s15): turning at the microwave to face the island put the
+        # left arm into the wall (17 mm); the base drives to the island before it looks
+        return [nav(MW), S("open", articulated=MW), nav(ISL), look(ISL)] + grab(x, region) \
             + [nav("kitchen_microwave/inside_floor"), place(x, "kitchen_microwave/inside_floor"),
                S("close", articulated=MW)] + ([S("heat", food=x, appliance=MW, temp_c=temp)] if heat else [])
 
+    # 11-26 (gt_check_all vessel in_steel s14, in_foil s13): the burner's centre is out of the bench's reach depth from
+    # both long edges, so hints_in_reach moved it south to (8.40, 1.655); place parked at the stove's south front, came
+    # round its east end along the windows and stopped against them (x2).  Set 7.5 cm north of the centre (on the
+    # burner: 10 + 3 cm), in reach from the north side the robot comes from
+    STOVE_SPOT = [BURNER[0], 1.80]
+
     def to_stove(x, region=None, temp=40, heat=True):
-        return [look(ISL)] + grab(x, region) + [nav("kitchen_stove/top"), place(x, "kitchen_stove/top", BURNER)] \
+        return [look(ISL)] + grab(x, region) + [nav("kitchen_stove/top"), place(x, "kitchen_stove/top", STOVE_SPOT)] \
             + ([S("heat", food=x, appliance=ST, temp_c=temp)] if heat else [])
 
     # vessel_decides_appliance: which container the leftovers are in (seed); the right appliance follows from it
@@ -1473,7 +1485,7 @@ def T08(t):
                              "yaw_deg": 0.0}}
     left = {"dining": (P(DINING, 3.7, 6.3), "dining_room_0_1"),
             "study": (P("desk_1/top", -0.7, -6.0), "living_room_0_1"),
-            "far_dining": (P(FAR_DINING, -7.8, 7.6), "dining_room_0_0")}
+            "far_dining": (P(FAR_DINING, -8.2, 7.6), "dining_room_0_0")}
     home_cases = {c: dict(
         move={X: pose}, add=tray,
         route=[look(ISL), S("search", object=X, region=region), nav(X), pick(X), nav(ISL), S("approach", target=ISL),
@@ -1807,7 +1819,9 @@ def T10(t):
                     S("close", articulated=FRIDGE)],
              # 11-21 (muqingj v6full_1116-1119: a mug set on counter_2 found no reachable spot 3 of 4): the island,
              # a kitchen worktop the goal takes as well
-             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top")]}
+             # 11-25 (gt_check_1125b rubbish_mug s11): without a hint the mug went 7 cm from the north edge and fell
+             # over; a spot 19 cm in from the south edge, clear of the rolling pin and the island's things
+             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top", [7.05, 1.70])]}
     dinner_cases = {}
     for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
                      ("rubbish_mug", (CAN, TRAY, MUG))):
@@ -2146,7 +2160,9 @@ def T13(t):
     examples = {**set_place("e_north", "adult"), **set_place("e_mid", "kid"), **set_place("w_north", "adult")}
     stock = {"bowl_2": {"asset": "breakfast_bowl", **P("tv_stand_2/top", 7.70, 0.34)},
              "mug_2": {"asset": "breakfast_mug", **P("kitchen_counter_2/top", -0.30, 7.70)},
-             "kid_cup": {"asset": "plastic_cup", **P("kitchen_counter_2/top", -0.30, 7.95)}}
+             # 11-25 (gt_check_1125b adult_and_kid s14): on counter_2, under its wall cabinets, every grasp of the
+             # kid's cup failed its trajectory (8 of 8); it waits with the bowls on the TV stand, 17 cm from bowl_2
+             "kid_cup": {"asset": "plastic_cup", **P("tv_stand_2/top", 7.40, 0.34)}}
     finish_cases = {}
     for c, empty in (("adult_seat", {"w_mid": "adult"}), ("kid_seat", {"w_mid": "kid"}),
                      ("adult_and_kid", {"w_mid": "adult", "w_south": "kid"})):
@@ -2233,7 +2249,10 @@ def T14(t):
         reach_cases[c] = dict(
             add={f"set_book_{i + 1}": book("book_red", high, x, y) for i, x in enumerate(xs)},
             watch=[B, "set_book_1", "set_book_2"],
-            route=[look(DESK), S("explore_room", room="bedroom_0_1")] + shelve(B, lower, [xs[0] + 0.5, y]))
+            # 11-25 (gt_check set_on_large_shelf_4 s13): mid-shelf (3.70) the held book hit large_shelf_4 reaching
+            # into the 33 cm level; 20 cm from its east end, as large_shelf_5's spot (12 cm from its end) that works
+            route=[look(DESK), S("explore_room", room="bedroom_0_1")]
+            + shelve(B, lower, [4.10 if "_4" in high else xs[0] + 0.5, y]))
     # stack_them_stably: removed 11-20 (user)
     # homework_stays: tidy the desk; the finished book to the bookcase, the used mug to the kitchen, the homework
     # (an open notebook and a pencil) stays for tomorrow
@@ -2246,7 +2265,9 @@ def T14(t):
                                               place("desk_mug", "kitchen_counter_2/top", [-0.30, 7.60])])
     # whose_book: each book from the desk to the shelf that holds books of its kind: the blue hardcovers stand on
     # the bedroom bookcase, the paperbacks on the living-room shelf
-    KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
+    # 11-25 (GT check, seed 12): into shelf_2 (0.81 m) the arm stopped 14 cm short; shelf_1 (0.46 m) is the height
+    # large_shelf_5/shelf_1 is reached at in within_kids_reach.  The shelved paperbacks move down with it.
+    KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_1"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
     # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
     # 11-22 (v6_sticky_1121, muqingj v6full_1119: "no free edge spot", 2 of 2): the two standing at the top's ends,
@@ -2962,9 +2983,11 @@ def T03_more(t):
                        "bedroom_0_1"),
             "tray": ("serving_tray", {"support": "desk_1/top", "xy": [-0.278, -5.994], "yaw_deg": 0.0},
                      "living_room_0_1")}
-    fruit = {"fruit_basket": {"asset": "fruit_basket", "support": "dining_table_2/top", "xy": [3.2, 7.6], "yaw_deg": 0.0},
-             "apple": {"asset": "apple", "support": None, "z": 0.87, "xy": [3.17, 7.58], "yaw_deg": 0.0},
-             "orange": {"asset": "orange", "support": None, "z": 0.87, "xy": [3.24, 7.63], "yaw_deg": 0.0}}
+    # 11-25 (gt_check_1125b s12): at y 7.6 the seed moved the 30 cm tall basket to the table's middle (45 cm from
+    # every edge) and the spoon's drop found no base pose; 3 cm from the north edge that axis stays (layout EDGE_LOCK_M)
+    fruit = {"fruit_basket": {"asset": "fruit_basket", "support": "dining_table_2/top", "xy": [3.2, 7.80], "yaw_deg": 0.0},
+             "apple": {"asset": "apple", "support": None, "z": 0.87, "xy": [3.17, 7.78], "yaw_deg": 0.0},
+             "orange": {"asset": "orange", "support": None, "z": 0.87, "xy": [3.24, 7.83], "yaw_deg": 0.0}}
     small = small_bin_with_blocks("tv_stand_2/top", (7.3, 0.4))
     sub_cases = {}
     for case, (x, pose, region) in subs.items():
@@ -3512,6 +3535,8 @@ def make_variant(t, fam, spec, case, cspec):
     v["since"] = "v6"
     if spec.get("keep_design"):
         v["keep_design"] = list(spec["keep_design"])     # the seed leaves the design on these supports as it is
+    if spec.get("pin") or cspec.get("pin"):              # (a case may pin its own, 11-26 T15)
+        v["pin"] = list(spec.get("pin", [])) + list(cspec.get("pin", []))  # the seed leaves these where the variant puts them
     if cspec.get("locked_articulated"):                  # 11-17: a door that does not open (a broken one); the sim
         v["locked_articulated"] = list(cspec["locked_articulated"])   # side (open fails) is still to be built
     v["note"] = spec["challenge"]
@@ -3534,6 +3559,15 @@ SPLIT = set()
 # taken from the sibling seed that uses them (scoring.LOOSEN says what each one scores there).  Keyed by (task, layout)
 _SURF = lambda sup, x, y, asset, yaw=0.0: {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}  # noqa: E731
 _ON = lambda x, y, z, asset: {"asset": asset, "support": None, "z": z, "xy": [x, y], "yaw_deg": 0.0}  # noqa: E731
+# 11-25 (ZenoBench-Sub): layouts that say the ideal kind is missing or taken still had the base house's own copies
+# of it (three cups, three bowls), which the loosened goals accepted as same-kind stand-ins: the ideal was in fact
+# free.  Those copies leave the scene, so the layout is a real substitution case (the B side of a pair).
+_BASE_BOWLS = ("bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table", "bowl_inside_kitchen_cabinet")
+ABSENT_CLEAR = {
+    ("T13", "no_cup"): ("cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"),
+    **{("T18", lid): _BASE_BOWLS for lid in ("one_bowl__glass_box", "one_bowl__mug", "bowl_in_use__tomatoes",
+                                             "bowl_in_use__oatmeal")},
+}
 _KID_CUP = {"kid_cup": _SURF("kitchen_counter_2/top", -0.364, 7.709, "plastic_cup")}
 EXTRA_SUBSTITUTES = {
     ("T03", "utensils_apart__bin_free"): {"storage_basket": _ON(0.894, -1.931, 0.001, "storage_basket"),
@@ -3610,7 +3644,12 @@ TASK_TEXT = {
                         "午饭做个番茄汤：把小番茄放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
-    "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
+    # 11-24 (user): say where the toys go -- "put away" alone let a planner move the bin of blocks instead
+    # 11-24 (user): "tidy" read as putting away; say the stacking plainly
+    "T02_stack_blocks": ("Stack the two wooden blocks on the kitchen island, one on top of the other.",
+                         "把岛台上的两块木积木叠起来，一块放在另一块上面。"),
+    "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away in the storage basket.",
+                      "快到睡觉时间了，把孩子的玩具收进收纳篮里。"),
     "T13_breakfast_setup": ("Breakfast is soon. Set the place at the dining table.", "快吃早饭了，把餐桌上的位子摆好。"),
     "T14_shelve_the_book": ("The kid finished reading. Put the book away for him.", "孩子看完书了，帮他把书收好。"),
     "T15_book_face_up": ("A paperback has been lying face down on the kitchen island; its spine is getting bent. "
@@ -3706,6 +3745,11 @@ def build_task(t: dict) -> dict:
             if "remove" in v:
                 v["remove"] = [n for n in v["remove"] if n not in add]
             v["watch"] = sorted(set(v.get("watch") or []) | set(add))
+    for (tid, lid), gone in ABSENT_CLEAR.items():          # 11-25: the ideal kind really absent (ZenoBench-Sub B)
+        if tid == t["task_id"][:3]:
+            v = t["variants"][lid]
+            v["remove"] = sorted(set(v.get("remove", [])) | set(gone))
+            v["watch"] = [n for n in v.get("watch") or [] if n not in gone]
     t["v6_replaced"] = {vid: why for (tid, vid), why in REPLACED.items() if tid == t["task_id"]}
     for (tid, vid), conds in NOT_A_CHALLENGE.items():
         if tid == t["task_id"]:
@@ -3906,7 +3950,8 @@ def gt_sequence_fixes(task: dict) -> list:
     return out
 
 
-def build() -> dict:
+def build(loosen: bool = True) -> dict:
+    """The v6 catalog; ``loosen=False`` stops before the 11-24 loosening (tests compare that stage)."""
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
     new = [t for t, _ in new_base_tasks()]       # T21-T30: base tasks of v6's own, built like the v5 ones
@@ -3964,6 +4009,11 @@ def build() -> dict:
     out = both_hands_empty(out)                  # before the scoring: a tier without a goal of its own takes the variant's
     from benchmark.v6.scoring import attach_scoring
     attach_scoring(out)                          # graded outcomes of the designs reviewed so far (D, tiers)
+    from benchmark.v6.instructions_1124 import apply as instructions_1124
+    instructions_1124(out)                       # 11-24 (user): instructions name what the condition checks
+    if loosen:
+        from benchmark.v6.loosen_1124 import apply as loosen_1124
+        loosen_1124(out)                         # 11-24 (user): object state decides, every fitting reading counts
     from benchmark.v6.scoring import IDEAL_CONFLICTS
     for c in IDEAL_CONFLICTS:
         print("ideal there but the best tier is not the ideal:", *c)

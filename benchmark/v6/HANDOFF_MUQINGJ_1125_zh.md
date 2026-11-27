@@ -1,0 +1,128 @@
+# 11-25 起 GT 路线全量检查：给 muqingj 的技能问题清单
+
+整理：2026-11-25 夜开始，边跑边补。以 `main` 为准（已含你的 remove-handcoded-motion，HAND_PLAN 9a-9j）。
+
+## 1. 在跑什么
+
+- `--profile sticky/gt --jobs 1`，参考路线（scripted planner）。11-25 20:08 起不录像，每个 episode 约 4–5 分钟；两个并行在 zihan 机器上会爆显存（24 GB 卡，11-25 T08 OOM）。
+- 批次 1：`benchmark/v6/batches/gt_check_1125.json`，55 个从没在全量里成功过的布局 → `benchmark/runs/gt_check_1125`。
+- 批次 2：`gt_check_1125b.json`，剩下 118 个没成功过的布局 → `benchmark/runs/gt_check_1125b`。
+- 批次 3：`gt_check_all.json`，其余 1194 个 episode，先每个布局第二个种子，再其余种子 → `benchmark/runs/gt_check_all`。
+- 布局问题我直接改 `define_tasks_v6.py` / `new_tasks_v6.py` 并推到 main；下面只列**技能侧**的。
+
+## 2. 技能侧问题（不是布局能绕开的）
+
+| 任务 / 布局 / 种子 | 失败的步骤 | 报错 | 我的判断 |
+|---|---|---|---|
+| T07 `two_portions__dining` s11 | #5 `place(soup_pot, kitchen_stove/top)` | `place_arrive: no collision-free IK at the set-down pose (out of reach)` | 站位选在了灶台远的一侧，没换另一边再试。 |
+| T08 `wipe_and_sort__duck` s12 | #15 `wipe(kitchen_island/top, kitchen_sponge)` | `wipe_stroke: the arm stopped 0.007 m short of where it was sent` | 前 15 步都成功，只差 7 mm 就判失败，擦拭的到位容差太紧。合进你 11-25 晚的 wipe 改动（76bde0b2 等）后重跑，还是差 6 mm。 |
+| T10 `after_dinner_clear__leftovers_mug` s14 | #16 `place(leftovers, breakfast_fridge/inside_shelf)` | `tuck: its path collides now at 1/243: world left_gripper_right_finger_link 6 mm ... INVALID_START_STATE_WORLD_COLLISION` | 在冰箱里放下后，收臂起点手指已经和冰箱碰上 6 mm，退出失败。T27 `fruit_stays_out` s11 放剩饭进冰箱一样（2 mm，TRAJOPT_FAIL）。 |
+| T22 `tray_elsewhere__books_on_it` s11 | #7 `place(bought_juice, breakfast_fridge/inside_shelf)` | `place_arrive: no collision-free IK at the set-down pose (its solution collides: part:breakfast_fridge head_link 83 mm, torso_link 39 mm)` | 同一个放的点在别的 T22 设计里（nominal、by_kind、two_spots…）都成功；这次站位离冰箱太近，头撞门框。站位应该退后或者换角度再试。 |
+| T23 `by_kind__toy_box` s12 | #7 `place(dropped_spoon, kitchen_island/top)` | `place_arrive: no collision-free straight (no IK along it)` | 勺子放岛台在其他 T23 设计成功很多次；`by_kind__bin_full` 你的三次全量里也是一过两败。直线下放没有 IK 时没换站位。 |
+| T09 `x6_gd_tomato_elsewhere__on_plate` s11 | #26 `pick(pot_lid)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 前 25 步都成功。去锅盖的停车点 [8.415, 1.135] 的路径绕岛台东侧贴墙走，右臂在行驶姿态下撞墙和窗（wall_609/610、WindowFactory_3015），手臂被撞偏（q_err 2.84），底座停在 [9.50, 1.28]，离停车点 1.1 m，navigate 却算到达，接着 pick 就够不着。同样尾段的 `__dining` 三次全量都过。 |
+| T18 `bowl_in_use__tomatoes` s11 | #17 `place(glass_box, dining_table_2/top)` | `place_pull_out: the arm stopped 0.005 m short of where it was sent` | 放下以后抽手差 5 mm 判失败，和 T08 wipe 差 7 mm 是同一类：到位容差太紧。 |
+| T09 `lid_missing` s11 | #16 `cover(handled_cooking_pot, lid_plate)` | `place lid_plate: no free edge spot on rim:handled_cooking_pot` | 盘子当锅盖：11-21 交接第 4 节已记（cover 走捏边放置，在锅沿上找空边），还在。 |
+| T18 `one_bowl__glass_box` s11 | #17 `place(glass_box, dining_table_2/top)` | `tuck: its path collides now at 1/242: world left_gripper_right_finger_link 5 mm ... INVALID_START_STATE_WORLD_COLLISION` | 玻璃盒走 `edge_held_flat`（捏边平放），松手抽手后左手指还贴着盒子（physx 接触 glass_box），收臂起点就碰撞。上面 T18 `bowl_in_use__tomatoes` 抽手差 5 mm 是同一个放置点、同一类：捏边平放的抽手间隙不够。T14 `next_in_series__on_tall_shelf` s11、`next_in_series__on_other_bookcase` s13（开局改好后重跑）放红书到 `bookcase_2/top`、T26 `whose__shelf_full` s11（书转向后重跑）放到 `bookcase_3/top`、T07 `vessel_decides_appliance__in_steel_box` s14 铁饭盒放灶台（`place_landed: no collision-free straight (… object:steel_lunch_box left_gripper_right_finger_link 1 mm)`）也一样（edge_held_flat，左手指贴着刚放下的 book_red 5 mm）。**这是这次检查里最常见的一类。** |
+| T17 `hide_lid_in_use` s11 | #4 `hide(wooden_block_b, handled_cooking_pot, lid=cover_plate)` | `cover_container: place cover_plate: no free edge spot on rim:handled_cooking_pot` | 同 T09 `lid_missing`：盘子当锅盖找锅沿空边。 |
+| T19 `lookalike_bin` s11 | #5 `pick(soda_can)` | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 你的三次全量 s10 都过。这次罐子在餐桌西沿（离边 4 cm），选了左手捏顶，轨迹优化失败；没换手/换站位再试。 |
+| T14 `next_in_series__on_other_bookcase` s13 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.025 m short` | 开局第一次收臂，同 T25 / T27。 |
+| T22 `eat_now__desk_corner` s11 | #5 `pick(bought_juice)` | `carry_in: the arm stopped 0.048 m short` | 果汁在餐桌西沿（离边 7 cm），底座在西南 [2.49, 5.85, 15°]；抓起后收到搬运姿势时 right_arm_link_7 撞桌沿（physx 接触 dining_table_2，leg carry_in）。carry_in 这段没避开桌子。 |
+| T07 `microwave_broken` s11 | #14 `heat(oatmeal, kitchen_stove)`（微波炉那步按设计失败后改用灶台） | `press_reach: the arm stopped 0.540 m short` | 按灶台开关（停车 [8.452, 1.087, 60°]，按钮 [8.77, 1.455]）时右手一路刮东墙 wall_607（physx 接触 10 次，leg press_reach），press 的路径没避开墙。 |
+| T09 `tomato_in_fridge__big_tomato` s11 | #11 `pick(big_tomato)`（冰箱里） | `pick_arrive: no collision-free path to the pose (MotionGenStatus.TRAJOPT_FAIL)` | 冰箱内取物；`tomato_in_fridge__in_fridge` 你三次全量过两次。 |
+| T12 `bins_capacity__apart_full_on_tv` s11 | #10 `place(toy_car, toy_bin_small_2)` | `tuck: its path collides now at 1/113: world right_gripper_left_finger_link 12 mm ... INVALID_START_STATE_WORLD_COLLISION` | 放进小收纳盒后收臂起点手指已卡进 12 mm；和 T10 冰箱、T18 玻璃盒同类：放下后退出的起点在碰撞里，没有先退出来。 |
+| T10 `after_dinner_clear__rubbish_mug` s11（重跑） | #17 `pick(used_mug)` | `pick used_mug: no reachable grasp from any base pose`（round_rim） | 同一布局（两次 annotation 完全相同）第一次跑这步成功，第二次失败：pick 的结果不稳定。 |
+| T19 `x6_gd_can_put_away__juice_full` s11 | #17 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.333 m short`（27 tick 内，无 physx 接触） | 停车点算到 [1.684, -0.435, 195°]，但 drop 第一段 tuck 在导航停下的位置 [2.259, -0.428, 180°]（右侧 0.43 m 是墙）就没收回来，底座还没开往停车点。`__in_4` 你三次全量过两次。 |
+| T03 `no_bin_substitute__tray` s11 | #15 `place(breakfast_spoon, serving_tray)` | `place breakfast_spoon: no free spot in serving_tray` | 前一步擀面杖（22 cm）放进 42×36 cm 托盘时落在正中、斜 45°，占满了托盘，勺子没处放。放进开口容器时应靠一边、顺容器长边放（place 没有朝向参数，托盘随种子移动，bench 给不了跟着托盘走的放置点）。 |
+| T07 `vessel_decides_appliance__in_pot` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.499 m short` | 开局第一次收臂，同 T25 / T27 / T14。 |
+| T12 `bins_capacity__half_bin_and_tray` s17 | #9 `place(toy_car, toy_tray)` | `no spot of 4 on in:toy_tray reachable`（60 次构建：`its solution collides: object:toy_tray right_gripper_link 47 mm`） | 托盘 27×20 cm、边高 5.5 cm，在 `bookcase_2/top` 上；车往里放时手爪下到托盘边以下撞边。容器内放置的落点/手爪朝向没避开容器壁。 |
+| T13 `finish_the_table__kid_seat` s11 | #11 `place(kid_cup, dining_table_2/top)` | `place_reach: no collision-free path to the pose (carry tilt held: TRAJOPT_FAIL (no feasible seed))` | 端杯子保持水平的约束下轨迹优化没有可行种子（只构建了 2 次）；放置点在餐桌西沿 11 cm。 |
+| T07 `vessel_decides_appliance__in_pot` s16（开局改好后重跑）、T10 `after_dinner_clear__rubbish_mug` s11（第三次跑） | #7 `place(soup_pot, kitchen_stove/top)` / #15 `drop(takeout_tray, kitchen_trash)` | `PRECONDITION_FAILED: holding(hand=any, object=…) is false (slip 0.009 m / 0.004 m, fingers [0.0, 0.0])` | sticky 焊着、滑动很小，但 holding 看手指读数判成没拿着；同 11-21 交接第 4 节的铅笔。holding 检查在 sticky 时应信焊接。 |
+| T27 `two_leftovers__soup_on_table` s16（开局改好后重跑） | #9 `pick(leftover_soup)` | `tuck: the arm stopped 0.008 m short` | 左手拿着剩饭（9c 以后两只手都用），右手拿汤后收臂，左手爪碰餐桌（physx：left_gripper_link–dining_table_2，leg tuck / drive_base）。另一只手拿着东西时的收臂没避开桌子。 |
+| T23 `dropped_out_of_view__no_room_for_bowl` s13 | #7 `place(dropped_bowl, kitchen_island/top)` | `place_reach: no collision-free path to the pose (carry: tilts 0.37 rad, 0.30 allowed)`（14 次构建） | 端碗伸到岛台放置点（离南沿 16 cm）时倾斜超限。 |
+| T29 `homework_on_table__desk_covered` s12 | #3 `pick(hw_notebook)`（推到桌边） | `slide_push: the arm stopped 0.006 m short`（T27 `fridge_out_of_view__fridge_free` s11 推剩饭也一样，差 7 mm） | 差 6 mm 判失败，和 T08 wipe 7 mm、T18 抽手 5 mm 同类：到位容差太紧。 |
+| T29 `several__bin_full` s13 | #5 `navigate(toy_bin)`（拿着东西） | `no base path to any of 37 stand-off poses (even the column's inscribed circle cannot get there)` | 机器人在 [7.17, 4.07, 24°]，37 个站位 reachable 0；前一步导航成功开到这里，像是开进了出不来的角落（拿着东西时占地更大）。 |
+| T10 `trash_moved__trash_full` s13 | #7 `explore_room(living_room_0_0)`（拿着罐子） | `explore living_room_0_0: coverage 0.24` | explore_result 只有 1 个视角（home_0，原地），其余视点都没去；机器人在 [10.11, 1.09, 124°]（东边靠墙）。`trash_moved__dining` 你三次全量过两次。 |
+| T07 `vessel_decides_appliance__in_ceramic_bowl` s11 | #2 `look(kitchen_island/top)` | `face kitchen_island/top: the goal pose collides in the arrival posture (left_arm_link_3 in World/mesh 17 mm)` | 开微波炉后在 [4.457, 1.691, 75°] 原地转身看岛台，转到的朝向左臂碰墙体；look 没换个位置再转。`in_glass_box` s15 同样。bench 已改路线：开完微波炉先开到岛台再看。 |
+| T09 `pot_in_dining_room__pot_away` s11 | #12 `sweep([cherry_tomato_1, cherry_tomato_2], 0.12)` | `tuck: its path collides now at 121/200: world left_gripper_left_finger_link 0 mm; … TRAJOPT_FAIL` | 扫完后收臂中途擦到东西，重建也失败。 |
+| T15 `lid_elsewhere__dining` s11（同 T09 `x6_gd_tomato_elsewhere__on_plate` s11） | #8 `cover(handled_cooking_pot, pot_lid)` | `place_arrive: no collision-free IK at the set-down pose (out of reach)`（anchor off 1.13 m） | 去灶台前停车点 [8.41, 1.175] 的路上，head_link / right_arm_link_5 撞上 `WindowFactory_3015`（窗户），底座停在 [9.51, 1.41]。**这扇窗户的碰撞体在场景里，但不在 annotation.json 的 obstacles 里**（grep 0 次），底座规划看不到它。两个 episode 都是这样。 |
+| T19 `m_can_in_dining_room` s11 | #8 `navigate(wide_storage_bin)`（拿着罐子） | `carry_in: the arm stopped 0.814 m short` | 停在 `bookcase_2` 东侧 [1.846, -0.429, 180°]，右侧 0.43 m 是墙。和 T19 `juice_full`（[2.259, -0.428] tuck 差 0.333 m）、T26 熊（bench 已绕开）是同一处：**靠墙站时 tuck / carry_in 的手臂扫动撞墙，扫动没做碰撞检查**。这只收纳箱（BEDROOM_BIN）被 T19、T03 很多设计共用、多数能过，bench 没挪它。11-26 重跑：第一次 drop 在 [1.639, -0.428] 过了，第二趟拿方块回来停在 [2.262, -0.428, 180°]，drop 第一段 tuck 差 0.347 m（同 `juice_full`）。 |
+| T02 `tower_for_kid__counter` s12 | #11 `stack(wooden_block_b, wooden_block_a)` | `tuck: the arm is not where the segment starts; … TRAJOPT_FAIL` | 叠完积木收臂时手臂不在段起点，重建失败。 |
+| T04 `two_guests__glass_in_cabinet` s12 | #3 `pick(cup_counter_b)`（岛台，离北沿 8 cm） | `pick_arrive: no collision-free path to the pose (TRAJOPT_FAIL)` | `two_guests__mug` 你三次全量都过；轨迹优化偶发失败，没换站位。 |
+| T07 `vessel_decides_appliance__in_ceramic_bowl` s11（路线改好后重跑） | #8 `close(kitchen_microwave)` | `press kitchen_microwave/door_button: no base pose reaches the button (… built 12, no_path 11)` | 碗放进微波炉后，按门按钮的 12 个站位里 11 个开不过去；机器人在 [4.827, 1.894, -165°]。 |
+| T07 `vessel_decides_appliance__in_glass_box` s15（路线改好后重跑） | #9 `place(glass_food_container, kitchen_microwave/inside_floor)` | `no spot of 1 on kitchen_microwave/inside_floor reachable (21 goals; out_of_reach 21 …)` | 捏边平拿的玻璃饭盒放进微波炉腔体，21 个目标全部 out_of_reach。 |
+| **T01 往餐桌放平装书（捏边平放到桌沿），25 次过 15 次** | `place(paperback_book, dining_table_2/top 或 dining_table_1/top)` | `place_reach: the arm stopped 0.096–0.200 m short`（拿着的书撞桌沿 `held:paperback_book–dining_table_2`）；`tuck: … left_gripper_right_finger_link 3–6 mm`；`no spot … reachable (carry tilt held: TRAJOPT_FAIL)` | 失败的种子：seats_b s13、reader_seat__mug_2_flat s15、no_room_fallback__seats_b_flat s17、which_table__near_a_flat s19、near_b_flat s17、far_b s18、which_book__bedroom s12、which_book__living s13。左右手失败率一样（左 6/16、右 3/8）。放置点离桌沿 3.5 cm（让书伸出桌边）时，伸手阶段书刮桌沿、抽手时手指贴书。 |
+| T08 `which_surface__dining` s12 | #7 `wipe(dining_table_2/top, kitchen_sponge)` | `INTERNAL_ERROR: KeyError: 'touch dining_table_2: neither an object, an articulated part, a button nor static furniture'` | 擦餐桌直接报错：9g 以后 wipe 走 touch，touch 不认 `dining_table_2`（擦岛台能过）。 |
+| T13 `finish_the_table__adult_seat` s12、T14 `homework_stays` s11 | `pick(mug)`（`bookcase_2/top`）/ `pick(desk_mug)` | `pick_reach: the arm stopped 0.461 / 0.510 m short` | 右手爪张开时碰 `bookcase_2` 背后的墙 wall_273；左臂伸手时碰墙 wall_768。bench 已让能站的边离墙 ≥0.5 m（dc76c1c6），手臂扫墙本身仍是技能侧。 |
+| 判成没拿着（又 4 次） | T25 `cup_elsewhere__only_mugs` s11、`cups_for_two__none_two_inside` s13（放电视柜）；T01 `which_table__far_b_flat` s13；T12 `duck_in_study__alt_dining_table_2` s11 | `holding(hand=any, …) is false (slip 0.002–0.026 m, fingers [0.0, 0.0])` | 同上面 holding 那一行。 |
+| 冰箱里放下后收臂（又 3 次） | T27 `two_leftovers__soup_on_stove` s11、`which_is_leftover` s12、`fruit_stays_out` s11 | `tuck: … finger 2–5 mm` / `no collision-free IK at the set-down pose` | 同 T10 冰箱那一行。 |
+| 冰箱里放（挤） | T27 `fridge_out_of_view__fridge_crowded` s12：#8 `place(leftover_rice, breakfast_fridge/inside_shelf)` | `place_clear: finger into leftover_rice 15 mm` / `no spot … reachable`（TRAJOPT） | 手进挤满的冰箱层后退不出来。bench 试过换放置点，没用，已撤回。同 T10 冰箱那一行。 |
+| 其他（各一次） | T30 `how_many__three_bowls` s13 放岛台后收臂 1 mm；T09 `pot_in_use__in_use` s11 放锅后收臂 1 mm；T14 `within_kids_reach__set_on_large_shelf_5` s11 放第二层差 0.133 m；T15 `no_lid` s11 推盘子找不到站位；T18 `door_stuck` s11 拿碗无抓取；T23 `by_kind__bin_full` s11 勺子放岛台；T03 `no_bin_substitute__basket` s12 去擀面杖无全身路径；T07 `microwave_broken` s12 燕麦放微波炉够不着；T08 `far_sponge_spare_only` s17 wipe 差 6 mm；T09 `pot_in_dining_room__spare_pot` s12 拿备用锅无抓取；T15 `lid_in_use` s11 推盘子差 9 mm；T17 `hide_lid_in_use` s12 盘子当锅盖 | | |
+| **`bookcase_2` 东侧靠墙站位（第 5 次）** | T13 `finish_the_table__adult_seat` s12 重跑：#11 `pick(mug)` | `pick_reach: the arm stopped 0.249 m short` | 机器人在 [1.674, -0.356, -165°]，北边的墙只有 0.36 m。bench 的生成器已经只把东西放到能从正面（南侧）够到的地方（dc76c1c6），但 navigate 从东边过来时还是挑东侧最近的站位。`bookcase_2/top` 被 15 个任务用到，bench 没法都挪走。**建议：navigate / 各技能的停车点也排除离墙 < 0.5 m 的站位**（和 bench 的 `WALL_STAND_M` 一样），T26、T19 ×3、T13 ×2 都是这一处。11-26 又一例（不是书柜）：T23 `belongs_on_floor__no_toy_box` s11 拿着积木 `explore_room(living_room_0_0)` 的观察点选在 [6.908, 4.072]，离带窗的墙（y≈3.86）0.2 m，接着 `navigate(tv_stand_2/top)` 的 `carry_in: the arm stopped 0.443 m short`。explore 的观察点同样要离墙。 |
+| 窗户碰撞体不在 annotation 里（第 3 次） | T17 `hide_both__two_pots` s12：#7 `uncover(handled_cooking_pot)` | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 底座 [9.528, 1.397]，右臂 link_3 碰 `WindowFactory_3015` 和 wall_606–609。同上面 T15 / T09 那一行。 |
+| T01 捏边平放（再 1 次） | T01 `reader_seat__mug_1` s16 重跑（开局收臂已过）：#7 `place(paperback_book, dining_table_2/top)` | `tuck: its path collides now at 1/223: left_gripper_right_finger_link 4 mm … INVALID_START_STATE_WORLD_COLLISION` | 同上面 T01 那一行：抽手后手指贴着书。 |
+| 搬运中滑落；放玩具箱伸手停住 | T29 `which_table__west` s11（挪桌后两次；之前同种子 3 次都过） | 第 1 次 `left_carry: toy_west slipped out of the left hand while carrying it`（#6）；第 2 次 `drop_reach: the arm stopped 0.306 m short`（#8 `place(toy_west, toy_box)`，底座 [4.76, 0.358, 0°]，无接触记录） | 两次原因不同，玩具箱位置没变。 |
+| 从托盘里拿碗，收进搬运姿态差几毫米 | T22 `tray_elsewhere__bowls_in_it` s11（一只碗，碗离托盘沿 ≥3 cm）；两只碗时 s12 差 13 mm、s11 没有可达抓取 | `carry_in: the arm stopped 0.005 m short of where it was sent`（#12 `pick(tray_bowl_1)`） | 碗抓起来了，往回收时停住；托盘沿高 6.3 cm，怀疑抬升不够、碗擦到托盘沿。bench 已把两只碗减成一只、靠机器人一侧。同一局 s12 拿果汁 `pick_arrive: TRAJOPT_FAIL`（同位置 s11 能拿）。 |
+| **判成没拿着：T25 马克杯放电视柜（又 2 次，同一停车点）** | T25 `cups_for_two__none_one_inside` s14（#18）、`two_guests__one_cup` s11（#14）：`place(mug_shelf, tv_stand_2/top)` | `PRECONDITION_FAILED: holding(hand=any, object=mug_shelf) is false (slip 0.008 / 0.015 m, fingers [0.0, 0.0])` | 都在 [6.381, 1.014, -30°] 放杯子前判成没拿着，物体只滑了 1–2 cm、手指读数 0。加上前面 T25 两次，这个动作已 4 次；原因：捏杯沿（`round_rim`）夹的是薄杯壁，`holding` 要求两指间距和 > 4 mm（`predicates.py:360`），搬运中读数到 0 就判没拿着，杯子其实只滑了 1–2 cm。bench 试过改成捏杯柄（`pick(mug_shelf, grasp="handle")`），3 次都报 `pick mug_shelf: no pinch grasp annotated`——`assets.json` 里 `breakfast_mug` 有 `handle_pinch`，技能不认，已退回捏杯沿。 |
+| T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
+| T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
+| `bookcase_2` 东侧靠墙 drop（第 3 次） | T19 `lookalike_bin__alt_tv_stand_2` s13：#10 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.394 m short` | 同样停在 [2.262, -0.428, 180°]，同 `juice_full` / `m_can_in_dining_room` 那两行。同一停车点也过了 3 次。 |
+| 其他（11-26 晚，各一次） | T07 `broken_oatmeal_away` s13 燕麦放灶台（底座 [7.374, 2.429]，`no collision-free IK at the set-down pose`；同一站位 T07 `in_pot` s16、T09 `pot_in_use` s11 也失败过，错误不同）；T09 `lid_missing` s12 拿 `lid_plate` 无抓取；T10 `rubbish_leftovers` s12 拿外卖盒 carry_in 差 0.186 m；T16 `box_full` s14 碗放 `desk_1` 落下时直线碰撞 | | |
+| 盘子盖锅：放下时手指和手里的盘子相撞（2 次，同一步） | T15 `no_lid` s11、`lid_elsewhere__covering_bowl` s12（盘子固定后重跑，拿盘子都过了）：`cover(handled_cooking_pot, plate_counter_a)` | `place_landed: no collision-free straight (it collides at 0/19: object:plate_counter_a left_gripper_left_finger_link 5 / 12 mm)` | 底座 [7.573, 2.562, -45°]。直线段的碰撞检查把夹着的盘子和自己的手指算成相撞（应排除被抓物体和夹爪）。T15 `lid_in_use` s11 同一步是 `slide_push` 差 9 mm。 |
+| `bookcase_2` 东侧靠墙（又 1 次） | T26 `scattered__no_basket` s14：#7 `place(living_car, kids_toy_bin)` | `drop_reach: the arm stopped 0.589 m short` | 底座 [1.662, -0.369, -105°]，同上面 `bookcase_2` 东侧那几行。 |
+| 其他（11-26 晚） | T27 `two_leftovers__soup_at_seat` s13 拿剩饭后收臂 `TRAJOPT_FAIL`（底座 [4.173, 7.037]） | | |
+| **`desk_1` 西北角站位**（6 次里 3 次失败） | T05 `homework_ready__single` s12、`homework_ready__several` s13；T16 `box_in_cabinet__box_full` s14 | `place_pull_out: its path collides` / `left_carry_in: the arm stopped 0.088 m short` / `place_landed: no collision-free straight` | 从西边过来时停在 [-1.857, -5.359, -30°] 或 [-2.117, -5.209, -30°]（书桌西北角，靠墙），左手放。同样的放置点从东边 [0.425, -6.017, 180°] 放，19 次全过。navigate 按来路挑最近的边，bench 没法指定。 |
+| 灶台南侧停车，绕东头沿窗户开过去被卡（pick） | T09 `x6_gd_tomato_elsewhere__on_plate` s14：#26 `pick(pot_lid)`（锅盖在左灶上的锅上） | `pick_arrive: no collision-free IK at the straight's start (out of reach)` | 停车点选在灶台南面（正面），从北边绕东头开过去，右臂一路碰 `WindowFactory_3015_spawn_asset_0` 和 wall_605–609，底座停在 [9.502, 1.279]。窗户已经在 annotation 的 obstacles 里了，但 drive_base 只查底盘，不查伸出去的手臂。place 往灶台上放的路线 bench 已改成放到北侧（见第 3 节）。**heat 按灶台电源按钮（按钮朝南）也一样**：T07 `in_foil_tray` s13 重跑（放到北侧已成功）后 `heat` 从 [8.185, 2.395] 去南面，又沿窗户被卡在 [9.484, 1.128]，`press_reach: the arm stopped 0.479 m short`；11-25 `microwave_broken` s11（[8.829, 2.378] 出发）、`two_portions` s11 的 press 也是。从北边出发、绕岛台南侧过去的都成功了（8 次以上）。**建议：drive_base 规划时把伸出的手臂也算进去，或灶台东侧窄道（灶台 x 8.86 到窗 x 9.689）不走。** T07 `in_steel_box` s14 重跑：放下时 `place_landed: collides at 0/19: object:steel_lunch_box … finger`，同 T15 盘子那一行（夹着的东西和自己手指算相撞）。 |
+| 其他（11-26 晚） | T13 `finish_the_table__kid_seat` s13 杯子放 `dining_table_2` 无站位（`no spot of 4 … reachable`）；T18 `bowl_in_use__oatmeal` s13 饭盒放 `dining_table_2` 后收臂起点就碰撞（`INVALID_START_STATE_WORLD_COLLISION`，手指 8 mm）；T19 `x6_gd_can_put_away__juice_full` s14 又是 [2.259, -0.428] drop 收臂差 0.332 m（第 4 次） | | |
+
+## 3. 已经在 bench 侧改掉的
+
+- T07 往灶台上放（`to_stove`：vessel 的 pot / steel / foil、two_portions）：放置点从燃烧器中心改到偏北 7.5 cm [8.41, 1.80]（仍在燃烧器上，判定 10 + 3 cm）。原来 `hints_in_reach` 把 steel / foil 的点挪到南沿 (8.40, 1.655)，place 停到灶台南面，沿窗户绕过去被卡（2 次）。`hints_in_reach` 不再挪燃烧器上的点。重跑：foil s13 放到北侧成功（之后 heat 绕窗户被卡，见第 2 节），steel s14 放下时手指碰饭盒（技能侧）。
+- T15 三个用盘子当锅盖的设计：`plate_counter_a` 固定在 (-0.44, 8.42)（种子挪到 y 7.79 / 7.91 时推不动，2 次）。重跑两次都拿到了盘子；盖锅失败见第 2 节。`define_tasks_v6` 支持 case 级 `pin`。
+- T30 `how_many__three_bowls`：三只碗挨太近，中间那只没有抓取 → 两只放 6 号柜相隔 30 cm，第三只放 4 号柜顶（570f15b5）。
+- T26 `bear_to_bed__top_covered` s14：书柜背后 22 cm 是墙，放的点离墙近，停车选了侧面，空着的右臂一路贴墙，place 差 26 cm → 三条放 `bookcase_2/top` 的路线放的点挪到离前沿 12 cm（9f615579），s14 重跑成功。
+- T03 `utensils_apart__bin_full_fruit` s12：30 cm 高的果篮被种子挪到餐桌中间（离每条边 45 cm），丢勺子找不到站位 → 果篮贴北边放（离边 3 cm，种子不再往里挪，d6365bbd），s12 重跑成功。
+- 种子之间太像（用户 11-25）：地上的东西在房间里挪、太像的种子重抽（f0a5f938，`layout.py` 的 `draw_distinct`）。同一设计的种子没有太像的了；6 个设计的东西在柜子里或角落里，只有开局不同。
+- T13 `finish_the_table__adult_and_kid` s14：儿童杯在 `kitchen_counter_2`（吊柜下）8 次抓取轨迹全失败 → 挪到电视柜和碗放一起（3cebde7d），s14 重跑成功。
+- T10 `after_dinner_clear`：杯子放岛台不给放置点时技能放到离北沿 7 cm 倒了 → 路线给放置点 [7.05, 1.70]（208d9ecb）。
+- T23 地上的东西互相至少隔 0.3 m（bd8c2302），`belongs_on_floor__bin_full` s12 重跑成功。
+- T22 `tray_elsewhere`：苹果放进浅托盘顶部高出托盘边 2.3 cm，`fully_inside` 判不过 → 改为 `inside`（同 T11 的苹果进托盘）。
+- 生成器：路线要往里放东西的容器也必须够得着；能站人的边必须开得过去（`drive_cells.json`），T22 托盘不再被抽到餐桌西沿（2cf8f967）。
+- T28 `cup_out_of_view__side_covered`：杯子放 `desk_1/top` 的放置点改到桌子南边 [-0.35, -6.20]（北边离墙 0.2 m 已不能站；原点被生成器挪到桌东头，s11 三次够不着）。重跑 best。
+- holding 判定：手指读 0 时容许滑移从 2 cm 放到 3 cm（T28 塑料杯 23 mm，仍在手里）。
+- T28 `which_bed__south`：杯子放 `cell_shelf_2` 的放置点从书架北端挪到中段（离西墙的角远一点）。
+- T05 `homework_ready__several`：本子在矮电视柜上，expose 后机器人 0.8 m 处看它在视野下方 48°，look 失败 → 电视柜上的扁平物品 look 前后加 bend / straighten。
+- 开局第一次收臂失败（T25、T27、T14、T07、T10，开局都离墙 0.40–0.51 m）→ 生成器的开局离墙和家具至少 0.6 m（3160 个开局全部满足）。这几行留在第 2 节备查：收臂时手臂扫到墙本身仍是技能侧的事。
+- T26 `whose`：图画书横放时宽 14 cm，朝外伸出最多 5.495 cm < 捏边要的 5.5 cm，没有可推的边 → 和 `scattered` 一样转 90° 长边朝外。
+- T14 `within_kids_reach__set_on_large_shelf_4`：书架中段放第二层时拿着的书撞书架 → 放置点挪到离东头 20 cm（同 large_shelf_5 能过的位置），s13 重跑成功。
+- T30 `bowl_put_away__bowl_inside`：碗在 4 号柜里面（上方有柜顶板，捏碗沿进不去，违反 11-19 的限制）→ 照 11-21 `mug_inside` 的先例放到 4 号柜顶。
+- T30 `bowl_inside` 改到柜顶后 s12 重跑成功。
+- 开局离墙：能满足的房间里 0.85 m（0.66 m 时 T06 s17、T01 s16 第一次收臂还是碰墙，e5f1abcd）。
+- 能站的边离墙 ≥0.5 m（dc76c1c6）：`bookcase_2` 侧边靠墙那段不再算，种子把东西摆到能从正面够到的地方。
+- T07 微波炉路线开完门先开到岛台再看（1a821a32）。
+- **窗户补进 annotation（11-26）**：墙线在 26 扇窗户处都断开，窗户碰撞体往房间里凸 0.1–0.45 m（转角凸窗），规划看不到 → 每扇窗户按墙（0–2.4 m）加进 obstacles，`tools/annotate_scene.py` 以后也会自动加。上面 T15 / T09 / T17 撞 `WindowFactory_3015` 那几行应由此解决，待重跑确认。
+- **捏杯柄修好了（11-26，用户让我改的技能代码）**：HAND_PLAN 9j 把杯柄抓改成 `pick_job(kinds=("handle_pinch",))`，但 `zeno_skills/annotations.py` 的 `grasp_poses()` 没有 `handle_pinch` 分支，所有杯柄抓都报 `no pinch grasp annotated`。补了这个分支（按 9j 前 `PickCupHandlePolicy` 的算法：标注的 center / approach / close_dir 用物体完整旋转转到世界系），只在明确要 `handle_pinch` 时才生成，其余调用不变（马克杯默认候选仍 36 个）。T25 拿 `mug_shelf` 改用杯柄抓、杯子转 180°（杯柄朝机器人那侧），绕开捏薄杯壁被判没拿着；`two_guests__one_cup` s11、`only_mugs` s14、`none_one_inside` s14 三个都过、都是最好一档。捏杯沿判没拿着本身（`holding` 的 4 mm 阈值）仍是技能侧问题，模型用默认抓法还会遇到。
+- **两处技能小修（11-26，用户让我直接改并推送）**：
+  - `zeno_skills/motion.py` `_entity()`：Infinigen 家具的碰撞体 prim 用的是工厂名（`TableDiningFactory_…_collision`），annotation 用简称（`annotations/furniture_names.json`），`touch_owner` 找不到 `dining_table_2`，擦餐桌必报 `KeyError`（T08 `which_surface__dining` s12）。现在按同一份映射把工厂名翻成简称（`_furniture_short_names()`）。仿真里 T08 s12 的 wipe 不再报错，但接着 `wipe dining_table_2/top: no base pose reaches any of 8 free strips`（32 goals，built 39 全失败）——和擦岛台那次一样是规划问题，留给你。
+  - `zeno_skills/predicates.py` `holding`：手指读数 ≤ 4 mm（`HELD_SHUT_FINGERS`）时不再直接判没拿着，物体离手的距离变化 ≤ 2 cm（`HELD_SHUT_SLIP`）仍算拿着；> 5 cm（`HELD_SLIP_MAX`）照旧判掉了。捏薄杯沿挤紧后读数 0 的情况（T25 四次）不再误判。回放验证：T25 s11 捏杯沿拿 `mug_shelf` 搬到电视柜，place 前 `holding` 为真，放下成功。抓空的 pick 本身会报失败、不会走到这个判定。
+  - 顺带：`episode/episode.py` 给名字报错附候选写法时在没有 rig 的测试里会抛错（`test_env_service`），已修；562 个测试全过。
+- **kitchen_0_0 进得去了（11-26）**：唯一入口被 `dining_table_1` 卡成 0.44 m，桌子往西挪 0.4 m。
+- **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成一只脏碗（两只太挤，手指插不进），先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
+- T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
+
+## 4. s10 全量：你的 ba9bad00 + main ae0e3289（11-26 晚，zihan 机器）
+
+本地分支 `s10-muqingj-1126` = main ae0e3289 合并 `remove-handcoded-motion` ba9bad00（无冲突，tests 566 过；没推送）。151 个 episode 取自 `benchmark/v6/batches/category_*.json` 的 seed 10（和 order_s11.py 同样的选法），sticky/gt，无视频，一次一个。结果在 zihan 机器 `benchmark/runs/s10_muqingj_1126`。
+
+**107 / 151 = 70.9%。** v6full_1125（s10，11-24 的旧 tasks.json）是 125 / 151；两次布局全变了（config_hash 0 个相同），不能逐个比。参考：main 代码在新布局上跑别的种子（gt_check_all）约 68%。
+
+失败按原因归类（44 个）：
+
+| 类别 | 个数 | episode | 说明 |
+|---|---|---|---|
+| **`idle_hang`（新）** | 5 | T07 `in_foil_tray`（heat）、T15 `lid_by_pot`（对照组，pick）、T18 `bowl_in_use__oatmeal`、`bowls_apart`、`bowls_in_cabinet`（对照组） | ba9bad00 的空闲手臂运行时垂下：`idle_hang: no collision-free trajectory to the joint goal (TRAJOPT_FAIL)` / `the planned trajectory collides as run checks it` / `the arm stopped 0.406 m short`。main 的 gt_check_all / gt_rerun 里 0 次。**两个对照组因此失败。** |
+| `bookcase_2` 东侧靠墙（y≈-0.43） | 7 | T03 `utensils_apart__bin_free`、T05 `errand_combined__pen_in_use`、T11 `basket_gone_bowl_there`、T19 `can_in_use` / `lookalike_bin__alt_tv_stand_2` / `x6_gd_can_put_away__in_4`、T26 `whose__shelf_room` | 全是 tuck / drop 收臂差 0.18–0.59 m，底座 [1.67–2.30, -0.43]。同第 2 节那几行，仍是最大的一类。 |
+| 微波炉里放 | 2 | T07 `microwave_works`（**对照组**）、`broken_oatmeal_away_hard_search_stove` | `no spot of 4 on kitchen_microwave/inside_floor`：`set-down length: still touching 0.06 m along the exit` ×5、`tuck TRAJOPT` ×1。新布局下微波炉放置 9 次失败 6 次（gt_check_all s12 / s17、gt_rerun glass s15 也是）。 |
+| 夹着的东西和手指算相撞 / 盖锅 | 3 | T15 `covering_bowl`（cover）、`lid_in_use`（slide_push 差 11 mm）、T09 `tomato_in_fridge__in_fridge`（cover 无 IK） | 同第 2 节。 |
+| 无抓取 / 无站位 | 8 | T07 `two_portions__counter`（汤锅）、T10 `in_cabinet`（罐子）、T15 `no_lid`（盘子，[-0.937, 7.56]；main 重跑同一盘子拿到了）、T16 `box_in_use`（碗）、T11 `tray_in_use`（托盘无空位）、T13 `no_cup_alternative_mug`、T23 `shelf_room`（岛台）、T09 `spare_pot`（推番茄） | |
+| 靠墙 / 窗户的观察点、停车 | 4 | T10 `guests_coming__can_mug_block`（look 在 [9.602, 0.871]）、T23 `no_toy_box`（[6.871, 4.073] carry_in 差 0.772）、T29 `belongs_on_table`（toy_box 无路）、T26 `waste_bin` | |
+| 其他各一次 | 15 | T08 `wipe_and_sort__blocks`、T09 `lid_on_spoon_away`、`pot_in_use`、`x6_gd_tomato_elsewhere__dining`（navigate 搜索上限）、T10 `trash_moved__dining`、T13 `copy_the_setting`（stack 后不在支撑上）、T14 ×2、T17 ×2、T25 `one_cup`、T27 `which_is_leftover`、T28 `which_bed__east`、T29 `which_table__west` | |
