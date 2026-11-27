@@ -3529,8 +3529,8 @@ def make_variant(t, fam, spec, case, cspec):
     v["since"] = "v6"
     if spec.get("keep_design"):
         v["keep_design"] = list(spec["keep_design"])     # the seed leaves the design on these supports as it is
-    if spec.get("pin"):
-        v["pin"] = list(spec["pin"])                     # the seed leaves these objects where the variant puts them
+    if spec.get("pin") or cspec.get("pin"):              # (a case may pin its own, 11-26 T15)
+        v["pin"] = list(spec.get("pin", [])) + list(cspec.get("pin", []))  # the seed leaves these where the variant puts them
     if cspec.get("locked_articulated"):                  # 11-17: a door that does not open (a broken one); the sim
         v["locked_articulated"] = list(cspec["locked_articulated"])   # side (open fails) is still to be built
     v["note"] = spec["challenge"]

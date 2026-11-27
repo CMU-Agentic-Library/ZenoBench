@@ -138588,6 +138588,9 @@
       "plate_counter_b"
      ],
      "since": "v6",
+     "pin": [
+      "plate_counter_a"
+     ],
      "note": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
      "v6": {
       "family": "lid_elsewhere",
@@ -138618,51 +138621,9 @@
          -0.66,
          1.4
         ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.564,
-         8.2959,
-         -0.316,
-         8.5441
-        ],
-        "dy": [
-         -1.31,
-         0.88
-        ],
-        "pick": [
-         "plate_counter_a"
-        ],
-        "search": [
-         "plate_counter_a"
-        ]
        }
       ],
       "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ],
        "dining_table_2/top": [
         [
          3.0905,
@@ -138710,24 +138671,6 @@
          5.495,
          2.788,
          3.839,
-         0.2
-        ]
-       ],
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.095,
          0.2
         ]
        ]
@@ -138905,6 +138848,9 @@
       "plate_counter_b"
      ],
      "since": "v6",
+     "pin": [
+      "plate_counter_a"
+     ],
      "note": "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
      "v6": {
       "family": "no_lid",
@@ -138918,28 +138864,6 @@
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.564,
-         8.2959,
-         -0.316,
-         8.5441
-        ],
-        "dy": [
-         -1.31,
-         0.88
-        ],
-        "pick": [
-         "plate_counter_a"
-        ],
-        "search": [
-         "plate_counter_a"
-        ]
-       },
        {
         "names": [
          "cover_book"
@@ -138961,47 +138885,8 @@
         ]
        }
       ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ]
-      },
+      "static": {},
       "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.095,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
@@ -139208,6 +139093,9 @@
       "plate_counter_b"
      ],
      "since": "v6",
+     "pin": [
+      "plate_counter_a"
+     ],
      "note": "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
      "v6": {
       "family": "lid_in_use",
@@ -139220,72 +139108,9 @@
       "derived_from": "bare"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.564,
-         8.2959,
-         -0.316,
-         8.5441
-        ],
-        "dy": [
-         -1.31,
-         0.88
-        ],
-        "pick": [
-         "plate_counter_a"
-        ],
-        "search": [
-         "plate_counter_a"
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ]
-      },
-      "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.095,
-         0.2
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
+      "reach": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [

@@ -65,9 +65,13 @@
 | **判成没拿着：T25 马克杯放电视柜（又 2 次，同一停车点）** | T25 `cups_for_two__none_one_inside` s14（#18）、`two_guests__one_cup` s11（#14）：`place(mug_shelf, tv_stand_2/top)` | `PRECONDITION_FAILED: holding(hand=any, object=mug_shelf) is false (slip 0.008 / 0.015 m, fingers [0.0, 0.0])` | 都在 [6.381, 1.014, -30°] 放杯子前判成没拿着，物体只滑了 1–2 cm、手指读数 0。加上前面 T25 两次，这个动作已 4 次；原因：捏杯沿（`round_rim`）夹的是薄杯壁，`holding` 要求两指间距和 > 4 mm（`predicates.py:360`），搬运中读数到 0 就判没拿着，杯子其实只滑了 1–2 cm。bench 试过改成捏杯柄（`pick(mug_shelf, grasp="handle")`），3 次都报 `pick mug_shelf: no pinch grasp annotated`——`assets.json` 里 `breakfast_mug` 有 `handle_pinch`，技能不认，已退回捏杯沿。 |
 | T27 `two_leftovers__soup_on_table` s16 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.172 m short` | 开局站在墙角，第一次收臂碰墙。跟 11-16 记的“zihan 机器第一次收臂”一类；开局生成器按用户 11-17 的规定不动。 |
 | T25 `cups_for_two__none_one_inside` s11 | #0 `navigate` 的第一次 tuck | `tuck: the arm stopped 0.356 m short`（开局 [-4.47, -3.88, -135°]） | 同上一行，开局靠墙角的第一次收臂。 |
+| `bookcase_2` 东侧靠墙 drop（第 3 次） | T19 `lookalike_bin__alt_tv_stand_2` s13：#10 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.394 m short` | 同样停在 [2.262, -0.428, 180°]，同 `juice_full` / `m_can_in_dining_room` 那两行。同一停车点也过了 3 次。 |
+| 其他（11-26 晚，各一次） | T07 `broken_oatmeal_away` s13 燕麦放灶台（底座 [7.374, 2.429]，`no collision-free IK at the set-down pose`；同一站位 T07 `in_pot` s16、T09 `pot_in_use` s11 也失败过，错误不同）；T09 `lid_missing` s12 拿 `lid_plate` 无抓取；T10 `rubbish_leftovers` s12 拿外卖盒 carry_in 差 0.186 m；T16 `box_full` s14 碗放 `desk_1` 落下时直线碰撞 | | |
+| 盘子盖锅：放下时手指和手里的盘子相撞（2 次，同一步） | T15 `no_lid` s11、`lid_elsewhere__covering_bowl` s12（盘子固定后重跑，拿盘子都过了）：`cover(handled_cooking_pot, plate_counter_a)` | `place_landed: no collision-free straight (it collides at 0/19: object:plate_counter_a left_gripper_left_finger_link 5 / 12 mm)` | 底座 [7.573, 2.562, -45°]。直线段的碰撞检查把夹着的盘子和自己的手指算成相撞（应排除被抓物体和夹爪）。T15 `lid_in_use` s11 同一步是 `slide_push` 差 9 mm。 |
 
 ## 3. 已经在 bench 侧改掉的
 
+- T15 三个用盘子当锅盖的设计：`plate_counter_a` 固定在 (-0.44, 8.42)（种子挪到 y 7.79 / 7.91 时推不动，2 次）。重跑两次都拿到了盘子；盖锅失败见第 2 节。`define_tasks_v6` 支持 case 级 `pin`。
 - T30 `how_many__three_bowls`：三只碗挨太近，中间那只没有抓取 → 两只放 6 号柜相隔 30 cm，第三只放 4 号柜顶（570f15b5）。
 - T26 `bear_to_bed__top_covered` s14：书柜背后 22 cm 是墙，放的点离墙近，停车选了侧面，空着的右臂一路贴墙，place 差 26 cm → 三条放 `bookcase_2/top` 的路线放的点挪到离前沿 12 cm（9f615579），s14 重跑成功。
 - T03 `utensils_apart__bin_full_fruit` s12：30 cm 高的果篮被种子挪到餐桌中间（离每条边 45 cm），丢勺子找不到站位 → 果篮贴北边放（离边 3 cm，种子不再往里挪，d6365bbd），s12 重跑成功。

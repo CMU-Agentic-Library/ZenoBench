@@ -1603,6 +1603,8 @@ def t15():
     STEW = "stew_pot"
     # 11-21 (v6_sticky_1121 lid_in_use: the plate's slide to the edge under counter_2's wall cabinets found no path):
     # the plate T15 takes stands 4 cm over the counter's west edge, taken by that edge without a slide
+    # 11-26 (gt_check_all no_lid s11, covering_bowl s12): the seed drew it to y 7.79 / 7.91 and its push found no
+    # base pose, twice; the plate stays where it was set (pin)
     PLATE_EDGE = {PLATES[0]: P(COUNTER, -0.44, 8.42)}
     fams = {
         # 11-17 (user): the seed changes what the lid is doing -- left free on the dining table (find it, ideal), or
@@ -1620,7 +1622,7 @@ def t15():
              "covering_bowl": dict(
                  add={"covered_bowl": on("oatmeal_bowl", T2, 3.70, 6.30),
                       "bowl_spoon": on("breakfast_spoon", T2, 3.70, 6.52)},
-                 move={LID: {"support": None, "z": 0.94, "xy": [3.70, 6.30], "yaw_deg": 0.0}, **PLATE_EDGE},
+                 move={LID: {"support": None, "z": 0.94, "xy": [3.70, 6.30], "yaw_deg": 0.0}, **PLATE_EDGE}, pin=[PLATES[0]],
                  goal={"any": by_plate["any"], "all": [["near_start", LID, 0.03], ["near_start", "covered_bowl", 0.03],
                                                        H]},
                  watch=[POT, LID, "covered_bowl", *PLATES],
@@ -1632,14 +1634,14 @@ def t15():
             "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
             "the lid does not exist: a plate wider than the pot's rim covers it as well (moderate); the book is no "
             "cover for food (bad)",
-            {"": dict(remove=[LID], add={"cover_book": on("book_blue", ISL, 8.05, 1.80)}, move=dict(PLATE_EDGE), goal=by_plate,
+            {"": dict(remove=[LID], add={"cover_book": on("book_blue", ISL, 8.05, 1.80)}, move=dict(PLATE_EDGE), pin=[PLATES[0]], goal=by_plate,
                       watch=[POT, "cover_book", *PLATES], route=plate_route)}),
         "lid_in_use": fam(
             "lid_by_pot", ["resource_in_use", "not_in_view"], "the layout only",
             "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
             "the lid is in use on the stew: leave it there and cover the soup with a plate instead",
             {"": dict(add={STEW: on("soup_pot", STOVE, 8.70, 1.725)},
-                      move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}, **PLATE_EDGE},
+                      move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}, **PLATE_EDGE}, pin=[PLATES[0]],
                       goal={"any": by_plate["any"], "all": [["covered", STEW, LID], ["upright", STEW], H]},
                       watch=[POT, STEW, LID, *PLATES], route=plate_route)}),
     }
