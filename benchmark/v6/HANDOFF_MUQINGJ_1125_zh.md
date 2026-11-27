@@ -68,6 +68,8 @@
 | `bookcase_2` 东侧靠墙 drop（第 3 次） | T19 `lookalike_bin__alt_tv_stand_2` s13：#10 `drop(soda_can, wide_storage_bin)` | `tuck: the arm stopped 0.394 m short` | 同样停在 [2.262, -0.428, 180°]，同 `juice_full` / `m_can_in_dining_room` 那两行。同一停车点也过了 3 次。 |
 | 其他（11-26 晚，各一次） | T07 `broken_oatmeal_away` s13 燕麦放灶台（底座 [7.374, 2.429]，`no collision-free IK at the set-down pose`；同一站位 T07 `in_pot` s16、T09 `pot_in_use` s11 也失败过，错误不同）；T09 `lid_missing` s12 拿 `lid_plate` 无抓取；T10 `rubbish_leftovers` s12 拿外卖盒 carry_in 差 0.186 m；T16 `box_full` s14 碗放 `desk_1` 落下时直线碰撞 | | |
 | 盘子盖锅：放下时手指和手里的盘子相撞（2 次，同一步） | T15 `no_lid` s11、`lid_elsewhere__covering_bowl` s12（盘子固定后重跑，拿盘子都过了）：`cover(handled_cooking_pot, plate_counter_a)` | `place_landed: no collision-free straight (it collides at 0/19: object:plate_counter_a left_gripper_left_finger_link 5 / 12 mm)` | 底座 [7.573, 2.562, -45°]。直线段的碰撞检查把夹着的盘子和自己的手指算成相撞（应排除被抓物体和夹爪）。T15 `lid_in_use` s11 同一步是 `slide_push` 差 9 mm。 |
+| `bookcase_2` 东侧靠墙（又 1 次） | T26 `scattered__no_basket` s14：#7 `place(living_car, kids_toy_bin)` | `drop_reach: the arm stopped 0.589 m short` | 底座 [1.662, -0.369, -105°]，同上面 `bookcase_2` 东侧那几行。 |
+| 其他（11-26 晚） | T27 `two_leftovers__soup_at_seat` s13 拿剩饭后收臂 `TRAJOPT_FAIL`（底座 [4.173, 7.037]） | | |
 
 ## 3. 已经在 bench 侧改掉的
 
