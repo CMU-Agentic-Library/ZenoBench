@@ -254,3 +254,17 @@ def test_the_empty_other_arm_hangs_when_the_plan_fails_on_it(monkeypatch):
                                                             "left": Hand(0.0, SimpleNamespace(name="cup"))})
     plan, pre = PS.build_idle(kins, problem, s, 0, None)
     assert isinstance(plan, Failure) and pre == ()
+
+
+def test_the_idle_arm_runs_the_search_leg_while_it_holds_and_plans_only_when_it_does_not(monkeypatch):
+    # s10 T03 / T18 bowls_apart 11-27: made again where the search's leg held, the planner failed on the same
+    # start and goal every time -- the leg is kept as run keeps any segment, made again only when it fails holds
+    from zeno_skills import motion_skills as MS
+    from zeno_skills import primitives as P
+    seg = SimpleNamespace(q_end=np.zeros(9), spec="spec", name="idle_hang")
+    made = []
+    monkeypatch.setattr(P, "free_leg", lambda kin, st, spec, goal, name: made.append(name) or "made now")
+    monkeypatch.setattr(P, "holds", lambda kin, st, s: None)
+    assert MS.idle_leg("kin", "state", seg) is seg and made == []
+    monkeypatch.setattr(P, "holds", lambda kin, st, s: "its path collides now")
+    assert MS.idle_leg("kin", "state", seg) == "made now" and made == ["idle_hang"]

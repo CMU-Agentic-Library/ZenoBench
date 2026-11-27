@@ -142,6 +142,16 @@ def _head_straight(rig, skill):
     rig.log("head_straight", skill=skill.name, was=[round(v, 3) for v in was])
 
 
+def idle_leg(kin, state, seg):
+    """The idle arm's leg out of the way (park_search.build_idle's ``pre``) as it runs from ``state``: the
+    search's own while it holds there (primitives.holds, run's check), else one made from ``state`` to the
+    same posture (free_leg) -- a Failure where none is."""
+    from .primitives import Joint, free_leg, holds
+    if holds(kin, state, seg) is None:
+        return seg
+    return free_leg(kin, state, seg.spec, Joint(seg.q_end), seg.name)
+
+
 def run_skill(rig, skill, args):
     """Run ``skill`` (Skill) with ``args`` on ``rig`` (see the module docstring)."""
     from .rig import SkillFailure
@@ -192,11 +202,13 @@ def run_skill(rig, skill, args):
                 found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan, pre=pre)
         for seg in found.pre:
             # the empty other arm out of the way first, to where the plan assumes it (park_search.build_idle):
-            # the posture decided in the search, its trajectory made now from the State read here (docs rule 8:
-            # a path made at the park search hit the stove 4 mm once the robot stood there, T09 lid 11-26)
-            from .primitives import Joint, free_leg
-            kin = rig.arm_kin(seg.info.get("side", "right"))
-            leg = free_leg(kin, observe(rig), seg.spec, Joint(seg.q_end), seg.name)
+            # the search's trajectory while it holds in the State read here, as run keeps any segment (holds),
+            # else one made now from that State (docs rule 8: a path made at the park search hit the stove 4 mm
+            # once the robot stood there, T09 lid 11-26).  Made again where it holds, the planner failed on the
+            # same start and goal it had solved -- every time (s10 T03 / T18 bowls_apart 11-27, idlehang_1127)
+            leg = idle_leg(rig.arm_kin(seg.info.get("side", "right")), observe(rig), seg)
+            rig.log("idle_leg", target=seg.name, side=seg.info.get("side", "right"),
+                    kept=leg is seg, why=None if not isinstance(leg, Failure) else leg.why)
             if isinstance(leg, Failure):
                 raise SkillFailure(f"{skill.name}: {seg.name}: {leg.why}")
             run(rig, Plan((leg,)), None, {})
