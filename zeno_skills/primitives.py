@@ -377,7 +377,8 @@ def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
                 if not (kin.segment_free(end, q1) and not (spec.hold_tilt and tips_over(kin, end, q1))):
                     return Failure("the tilt-held trajectory ends off the joint goal", name)
                 qs = list(qs) + [q1]
-            return Segment(name, spec, q0, tuple(via(q0, qs)), target=("q", q1), info={"how": "planned"})
+            return _as_run_checks(kin, state, Segment(name, spec, q0, tuple(via(q0, qs)), target=("q", q1),
+                                                      info={"how": "planned"}))
         p, R = np.asarray(goal.p, float), np.asarray(goal.R, float)
         qs, ok = kin.cart_path(q0, p, R, step=step)
         if ok:
@@ -400,7 +401,20 @@ def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
             how = status
         if qs is None:
             return Failure(f"no collision-free path to the pose ({status})", name)
-        return Segment(name, spec, q0, tuple(via(q0, qs)), target=("pose", p, R), info={"how": how})
+        return _as_run_checks(kin, state, Segment(name, spec, q0, tuple(via(q0, qs)), target=("pose", p, R),
+                                                  info={"how": how}))
+
+
+def _as_run_checks(kin, state, seg):
+    """A planner's trajectory as run checks it before running it (holds: free_path on the waypoints, the
+    State's world, the segment's Spec) -- a Failure where that check fails, so the plan is never one its own
+    execution refuses (s11 T09 11-26: an arm's planned move to hang was refused by run at once, 1 mm in)."""
+    if free_path(kin, state, seg.spec, [seg.q_from] + list(seg.qs)):
+        return seg
+    with query(kin, state, seg.spec):
+        at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
+        what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"
+    return Failure("the planned trajectory collides as run checks it" + (what or " (between waypoints)"), seg.name)
 
 
 def straight(kin, state, spec, p, R, name, step=0.003, q_from=None):

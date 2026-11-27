@@ -221,6 +221,11 @@ def _edge_goals(rig, name, s, relations, hint, st, held=None):
     # on rim:handled_cooking_pot", 3/3, while the pot under the rim counted as an obstacle)
     top = s.get("category") in ("object_top", "rim")
     skip = {name, str(s["name"]).split(":", 1)[1]} if top else {name}
+    if s.get("category") == "rim":
+        # what is in the container lies under its rim, not in the lid's way (T09 lid_missing 11-26: the two
+        # tomatoes in the pot ruled out every edge spot)
+        under = str(s["name"]).split(":", 1)[1]
+        skip |= {o for o in rig.ann.objects if o not in skip and rig.geo.inside(o, under, st)[0]}
     edges = [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))] if top else _open_edges(rig, s)
     open_dirs = [tuple(np.round(d, 3)) for d in edges]
     # the overhang: at least the fingertip past the edge (LEAVE_GAP, nor less than EDGE_MIN_OVERHANG), at most the

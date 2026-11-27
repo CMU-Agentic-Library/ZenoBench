@@ -160,6 +160,14 @@ def run_skill(rig, skill, args):
         # settles its carry posture).  At the current pose the arm stays as it stands (no drive)
         hand = job.problem.hand
         travel, goes = posture(rig, skill.travel, hand), posture(rig, skill.arrive, hand)
+        if getattr(rig, "left_kin", None) is not None:
+            # both arms as navigate drives and arrives (skill_plans.travel_chain: each empty arm folded, a loaded
+            # one as it is, the body as 4.1 has it) -- whichever hand a goal works with, not the arms of
+            # problem.hand alone (s11 T17 11-26: a left pick assumed its arm still hanging from the last
+            # skill, navigate folded it, the plan 1.27 rad off at its first anchor)
+            from .skill_plans import travel_chain
+            chain = dict(travel_chain(rig.kin, rig.left_kin, observe(rig)))
+            travel, goes = chain["fold"], chain["arrive"]
         problem = replace(job.problem, travel=travel,
                           arrive=lambda x, y, yaw: _posture_now(rig) if _at_park(rig, x, y, yaw) else goes)
         kins = {"right": rig.kin, **({"left": rig.left_kin} if getattr(rig, "left_kin", None) is not None else {})}
@@ -182,9 +190,16 @@ def run_skill(rig, skill, args):
                 run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
             else:
                 found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan, pre=pre)
-        if found.pre:
-            # the empty other arm out of the way first, where the plan assumes it (park_search.build_idle)
-            run(rig, Plan(tuple(found.pre)), None, {})
+        for seg in found.pre:
+            # the empty other arm out of the way first, to where the plan assumes it (park_search.build_idle):
+            # the posture decided in the search, its trajectory made now from the State read here (docs rule 8:
+            # a path made at the park search hit the stove 4 mm once the robot stood there, T09 lid 11-26)
+            from .primitives import Joint, free_leg
+            kin = rig.arm_kin(seg.info.get("side", "right"))
+            leg = free_leg(kin, observe(rig), seg.spec, Joint(seg.q_end), seg.name)
+            if isinstance(leg, Failure):
+                raise SkillFailure(f"{skill.name}: {seg.name}: {leg.why}")
+            run(rig, Plan((leg,)), None, {})
     from .run import run_clear
     from .skill_plans import plan_clear
     plan, build, hooks = job.ready(found)

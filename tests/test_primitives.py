@@ -63,6 +63,9 @@ class FakeKin:
     def path_free(self, qs):
         return all(self.free(q) for q in qs)
 
+    def explain(self, q):
+        return "world wall" if not self.free(q) else "self collision or joint limits"
+
     def path_free_only(self, qs, names):
         return True
 
@@ -144,19 +147,26 @@ def test_a_pose_goal_goes_straight_when_it_can_else_to_its_solution():
     seg = P.free_leg(FakeKin(), _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3)), "to")
     assert seg.info["how"] == "straight"
     hint = _q(0.1, 0, 0)
-    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, seg_free=False, plan=([hint], None))
+    # a wall the straight meets and a planner's trajectory goes round (y 0.1)
+    wall, round_ = (lambda p: 0.04 < p[0] < 0.06 and abs(p[1]) < 0.05), [_q(0, 0.1, 0), _q(0.1, 0.1, 0)]
+    kin = FakeKin(wall=wall, seg_free=False, plan=(round_ + [hint], None))
     seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "to")
     assert seg.info["how"] == "joint" and ("plan", False) in kin.calls
     assert not any(c[0] == "plan_to" for c in kin.calls)
     # no solution: the planner to the pose
-    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan_to=([_q(0.1, 0, 0)], "pose"))
+    kin = FakeKin(wall=wall, plan_to=(round_ + [_q(0.1, 0, 0)], "pose"))
     seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3)), "to")
     assert seg.info["how"] == "pose" and kin.calls[-1] == ("plan_to", False, None)
+    # a planner's trajectory run would refuse (through the wall between its waypoints): no plan
+    kin = FakeKin(wall=wall, seg_free=False, plan=([hint], None))
+    seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "to")
+    assert isinstance(seg, Failure) and "as run checks it" in seg.why
 
 
 def test_a_load_with_a_goal_solution_is_planned_to_it_with_the_tilt_held():
     hint = _q(0.1, 0, 0)
-    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, seg_free=False, plan=([hint], None))
+    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06 and abs(p[1]) < 0.05, seg_free=False,
+                  plan=([_q(0, 0.1, 0), _q(0.1, 0.1, 0), hint], None))
     seg = P.free_leg(kin, _state(), Spec(hold_tilt=True), P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "carry")
     assert seg.info["how"] == "planned (tilt held)" and ("plan", True) in kin.calls
     assert not any(c[0] == "plan_to" for c in kin.calls)
