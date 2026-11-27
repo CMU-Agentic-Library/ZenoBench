@@ -108,3 +108,21 @@
 - **kitchen_0_0 进得去了（11-26）**：唯一入口被 `dining_table_1` 卡成 0.44 m，桌子往西挪 0.4 m。
 - **T22 `tray_elsewhere__books_on_it` → `bowls_in_it`（11-26，用户定）**：托盘里平放的书拿不起来（捏厚度要有一边伸出支撑面），换成一只脏碗（两只太挤，手指插不进），先收到 kitchen_counter_1 再放苹果；苹果和脏碗一起算低一档。
 - T14 `whose_book`：大人书架从 `large_shelf_2/shelf_2`（0.81 m，place 差 14 cm）改到 `shelf_1`（17a867e5），s12 重跑成功。
+
+## 4. s10 全量：你的 ba9bad00 + main ae0e3289（11-26 晚，zihan 机器）
+
+本地分支 `s10-muqingj-1126` = main ae0e3289 合并 `remove-handcoded-motion` ba9bad00（无冲突，tests 566 过；没推送）。151 个 episode 取自 `benchmark/v6/batches/category_*.json` 的 seed 10（和 order_s11.py 同样的选法），sticky/gt，无视频，一次一个。结果在 zihan 机器 `benchmark/runs/s10_muqingj_1126`。
+
+**107 / 151 = 70.9%。** v6full_1125（s10，11-24 的旧 tasks.json）是 125 / 151；两次布局全变了（config_hash 0 个相同），不能逐个比。参考：main 代码在新布局上跑别的种子（gt_check_all）约 68%。
+
+失败按原因归类（44 个）：
+
+| 类别 | 个数 | episode | 说明 |
+|---|---|---|---|
+| **`idle_hang`（新）** | 5 | T07 `in_foil_tray`（heat）、T15 `lid_by_pot`（对照组，pick）、T18 `bowl_in_use__oatmeal`、`bowls_apart`、`bowls_in_cabinet`（对照组） | ba9bad00 的空闲手臂运行时垂下：`idle_hang: no collision-free trajectory to the joint goal (TRAJOPT_FAIL)` / `the planned trajectory collides as run checks it` / `the arm stopped 0.406 m short`。main 的 gt_check_all / gt_rerun 里 0 次。**两个对照组因此失败。** |
+| `bookcase_2` 东侧靠墙（y≈-0.43） | 7 | T03 `utensils_apart__bin_free`、T05 `errand_combined__pen_in_use`、T11 `basket_gone_bowl_there`、T19 `can_in_use` / `lookalike_bin__alt_tv_stand_2` / `x6_gd_can_put_away__in_4`、T26 `whose__shelf_room` | 全是 tuck / drop 收臂差 0.18–0.59 m，底座 [1.67–2.30, -0.43]。同第 2 节那几行，仍是最大的一类。 |
+| 微波炉里放 | 2 | T07 `microwave_works`（**对照组**）、`broken_oatmeal_away_hard_search_stove` | `no spot of 4 on kitchen_microwave/inside_floor`：`set-down length: still touching 0.06 m along the exit` ×5、`tuck TRAJOPT` ×1。新布局下微波炉放置 9 次失败 6 次（gt_check_all s12 / s17、gt_rerun glass s15 也是）。 |
+| 夹着的东西和手指算相撞 / 盖锅 | 3 | T15 `covering_bowl`（cover）、`lid_in_use`（slide_push 差 11 mm）、T09 `tomato_in_fridge__in_fridge`（cover 无 IK） | 同第 2 节。 |
+| 无抓取 / 无站位 | 8 | T07 `two_portions__counter`（汤锅）、T10 `in_cabinet`（罐子）、T15 `no_lid`（盘子，[-0.937, 7.56]；main 重跑同一盘子拿到了）、T16 `box_in_use`（碗）、T11 `tray_in_use`（托盘无空位）、T13 `no_cup_alternative_mug`、T23 `shelf_room`（岛台）、T09 `spare_pot`（推番茄） | |
+| 靠墙 / 窗户的观察点、停车 | 4 | T10 `guests_coming__can_mug_block`（look 在 [9.602, 0.871]）、T23 `no_toy_box`（[6.871, 4.073] carry_in 差 0.772）、T29 `belongs_on_table`（toy_box 无路）、T26 `waste_bin` | |
+| 其他各一次 | 15 | T08 `wipe_and_sort__blocks`、T09 `lid_on_spoon_away`、`pot_in_use`、`x6_gd_tomato_elsewhere__dining`（navigate 搜索上限）、T10 `trash_moved__dining`、T13 `copy_the_setting`（stack 后不在支撑上）、T14 ×2、T17 ×2、T25 `one_cup`、T27 `which_is_leftover`、T28 `which_bed__east`、T29 `which_table__west` | |
