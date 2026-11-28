@@ -213775,15 +213775,9 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "explore_room",
        "args": {
-        "destination": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "trash_can"
+        "room": "living_room_0_0"
        }
       },
       {
@@ -213914,15 +213908,9 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "explore_room",
        "args": {
-        "destination": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "trash_can"
+        "room": "living_room_0_0"
        }
       },
       {

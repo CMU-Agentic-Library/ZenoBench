@@ -1365,12 +1365,11 @@ def t29():
     TC, BOX = "table_car", "toy_box"
     # 11-27 route fix: the car carried through explore_room(living_room_0_0) -- its viewpoint by the windowed wall
     # (y 4.07, 0.2 m off it) -- and then navigate failed 9 of 22 (no base path / carry_in short); the toy box, the
-    # tray and the toy bin are all by tv_stand_2, so go there and look instead; likewise the trash can south of the
-    # stove (9.05, 1.82) is seen from the corridor's east end, south of the stove -- explore_room's viewpoint there,
-    # (8.0-8.4, 1.0), saw it in T10 -- so: tv_stand_2 (the corridor), then the stove (its nearest stand-off from the
-    # corridor), look.  Not explore with the can in hand (viewpoint by the windowed wall), not the stove straight
-    # from the dining table (parks north of the island, view blocked 2 of 2), not tv_stand_2 alone (its west
-    # stand-off, the stove in between, 2 of 2)
+    # tray and the toy bin are all by tv_stand_2, so go there and look instead; likewise the trash can
+    # east of the stove (9.05, 1.82) is behind the stove from every stand-off navigate gives (north of the island; tv_stand_2's
+    # west end; the stove's south side, 7.50 / 1.15 -- each 2 of 2 blocked): explore_room(living_room_0_0) finds
+    # it (T10 12 of 12), but started from the corridor (nav(TV)) -- from the dining room its viewpoint is by the
+    # windowed wall (y 4.07) and the next navigate is stuck
     to_box = [nav(TC), pick(TC), nav(TV), look(BOX), nav(BOX), place(TC, BOX)]
     tb = {BOX: floor("toy_box", 5.70, 0.80)}
     ctl = {"note": "the kid's toy car on the dining table; his toy box in the living room",
@@ -1445,7 +1444,7 @@ def t29():
                              watch=[TC, "table_book", "empty_can"],
                              goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
                                    "any": [[["on", "table_book", s]] for s in shelves]},
-                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav(TV), nav("kitchen_stove/top"), look("trash_can"), nav("trash_can"),
+                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav(TV), S("explore_room", room="living_room_0_0"), nav("trash_can"),
                                                                  S("drop", object="empty_can", container="trash_can")]
                              + fetch("table_book", "bookcase_2/top", [1.00, -0.43])),
              "bin_full": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
@@ -1457,7 +1456,7 @@ def t29():
                                     "any": [[["on", "table_book", s]] for s in shelves]},
                               route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
                                      nav("toy_bin"), S("measure", object="toy_bin"), nav(TRAY29), place(TC, TRAY29)]
-                              + [nav("empty_can"), pick("empty_can"), nav(TV), nav("kitchen_stove/top"), look("trash_can"), nav("trash_can"),
+                              + [nav("empty_can"), pick("empty_can"), nav(TV), S("explore_room", room="living_room_0_0"), nav("trash_can"),
                                  S("drop", object="empty_can", container="trash_can")]
                               + fetch("table_book", "bookcase_2/top", [1.00, -0.43]))}),
         "nothing_to_clear": fam(
