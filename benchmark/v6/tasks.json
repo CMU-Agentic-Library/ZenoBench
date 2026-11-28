@@ -213405,9 +213405,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213452,9 +213458,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213501,9 +213513,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -213714,9 +213732,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213742,6 +213766,12 @@
        "skill": "pick",
        "args": {
         "object": "empty_can"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -213817,9 +213847,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -213851,6 +213887,12 @@
        "skill": "pick",
        "args": {
         "object": "empty_can"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {

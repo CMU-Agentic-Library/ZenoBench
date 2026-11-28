@@ -1363,12 +1363,16 @@ def t28():
 # ================================================================== T29 clear the dining table for the meal
 def t29():
     TC, BOX = "table_car", "toy_box"
+    # 11-27 route fix: the car carried through explore_room(living_room_0_0) -- its viewpoint by the windowed wall
+    # (y 4.07, 0.2 m off it) -- and then navigate failed 9 of 22 (no base path / carry_in short); the toy box, the
+    # tray and the toy bin are all by tv_stand_2, so go there and look instead
+    to_box = [nav(TC), pick(TC), nav(TV), look(BOX), nav(BOX), place(TC, BOX)]
     tb = {BOX: floor("toy_box", 5.70, 0.80)}
     ctl = {"note": "the kid's toy car on the dining table; his toy box in the living room",
            "add": {TC: on("toy_car", T2, 3.30, 6.70), **tb}}
     t = base_task("T29_clear_table_for_dinner", "ZB-T29", "Dinner is about to start. Take away what doesn't belong "
                   "on the dining table.", "要吃饭了，把餐桌上不该放的东西拿走。", "car_on_table", ctl,
-                  {"all": [["inside", TC, BOX], H]}, [look(T2)] + into(TC, BOX), [TC, BOX],
+                  {"all": [["inside", TC, BOX], H]}, [look(T2)] + to_box, [TC, BOX],
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     setting = {"set_bowl": on("breakfast_bowl", T2, 3.30, 7.30), "set_spoon": on("breakfast_spoon", T2, 3.30, 7.49)}
     keep = [["near_start", "set_bowl", 0.03], ["near_start", "set_spoon", 0.03]]
@@ -1401,11 +1405,11 @@ def t29():
             "the toy car, and a bowl and a spoon set for the meal; the toy box in the living room, or none",
             "what is set for the meal stays; only the toy goes -- into the toy box, or the tray when there is none",
             {"": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tb, **setting}, watch=[TC, "set_bowl", "set_spoon"],
-                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + into(TC, BOX)),
+                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + to_box),
              "no_toy_box": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tray29, **setting},
                                 watch=[TC, "set_bowl", "set_spoon", TRAY29],
                                 goal={"all": [["inside", TC, TRAY29]] + keep + [H]},
-                                route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
+                                route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
                                        nav(TRAY29), place(TC, TRAY29)])}),
         "homework_on_table": fam(
             "car_on_table", ["storage_place", "multi_object_goal"],
@@ -1436,7 +1440,7 @@ def t29():
                              watch=[TC, "table_book", "empty_can"],
                              goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
                                    "any": [[["on", "table_book", s]] for s in shelves]},
-                             route=[look(T2)] + into(TC, BOX) + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
                                                                  S("drop", object="empty_can", container="trash_can")]
                              + fetch("table_book", "bookcase_2/top", [1.00, -0.43])),
              "bin_full": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
@@ -1446,7 +1450,7 @@ def t29():
                               goal={"all": [["inside", TC, TRAY29], ["inside", "empty_can", "trash_can"], H]
                                     + [["fully_inside", f"bin_block_{i}", "toy_bin"] for i in range(1, 25)],
                                     "any": [[["on", "table_book", s]] for s in shelves]},
-                              route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
+                              route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
                                      nav("toy_bin"), S("measure", object="toy_bin"), place(TC, TRAY29)]
                               + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
                                  S("drop", object="empty_can", container="trash_can")]
