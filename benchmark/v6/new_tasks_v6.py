@@ -422,6 +422,8 @@ def shelf_books(levels):
 # places worked, from its west side (via the cup there) 1 of 3, every failure the carry tilt (TRAJOPT_FAIL).  The goal
 # takes any kitchen worktop; the reference takes it to the island, where the spoons of dropped_out_of_view went (4 of 4)
 CTR_W = [-0.10, 7.60]            # the cup of only_this_room (worked from the cabinet side)
+# 11-27: from the island's west end (navigate's park coming from the dining room) the floor-picked spoon failed its
+# carry tilt at x 7.2, 7.4 and 8.06 alike (skill side, handoff); from the south 7.40 passes
 ISL_SPOT = [7.40, 1.62]
 
 
@@ -573,16 +575,21 @@ def t23():
             "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is "
             "covered with dishes (no room; or only room for small things)",
             "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
-            {"counter_full": dict(add={SP: floor("breakfast_spoon", 1.05, 7.50, 30.0), **dishes_a},
+            # 11-27: by a cabinet door no shift within 0.6 m fits -- the dropped thing goes anywhere in the dining
+            # room (3 m), or every seed had it in the same nook; 0.4 m from furniture (counter_full s11: the spoon
+            # 0.28 m from cell_shelf_4 had no grasp from any base pose, twice)
+            {"counter_full": dict(add={SP: floor("breakfast_spoon", 1.05, 7.50, 30.0), **dishes_a}, floor_shift=3.0, floor_clear=0.4,
                                   remove=counter_base, watch=[SP, *dishes_a],
                                   goal={"all": [["on_any", SP, OTHER_TOPS], H]},
                                   route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")]
-                                  + fetch(SP, ISL, [7.40, 1.62])),
-             "no_room_for_bowl": dict(add={PL: floor("breakfast_bowl", 1.10, 7.50), **dishes_b},
+                                  + fetch(SP, ISL, ISL_SPOT)),
+             "no_room_for_bowl": dict(add={PL: floor("breakfast_bowl", 1.10, 7.50), **dishes_b}, floor_shift=3.0, floor_clear=0.4,
                                      remove=counter_base + ["handled_cooking_pot", "pot_lid"], watch=[PL, *dishes_b],
                                        goal={"all": [["on_any", PL, OTHER_TOPS], H]},
                                        route=[look(COUNTER), S("search", object=PL, region="dining_room_0_1")]
-                                       + fetch(PL, ISL, [7.40, 1.70]))}),
+                                       # 11-27 (GT check, 2 of 2 at 7.40): reaching there the bowl tilted 0.37 rad
+                                       # (0.30 allowed); 8.06 is where T30's bowls go down (4 of 4)
+                                       + fetch(PL, ISL, [8.06, 1.70]))}),
         "only_this_room": fam(
             "spoon_on_floor", ["referent_clue", "storage_place"],
             "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
@@ -1544,9 +1551,10 @@ def t30():
                       route=[look(top6)] + fetch(B1, ISL, [8.05, 1.75]))}),
         "bowl_put_away": fam(
             "bowl_on_cabinet", ["item_put_away", "resource_absent"],
-            "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
-            "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
-            "look in the cabinet, take a bowl -- or the mug, which holds soup, not the plate -- close the door",
+            "what the low cabinet holds on its top (seed: a bowl; or, no bowl in the house, a plate and a mug)",
+            "no bowl out by the soup; the low cabinet's top holds the clean bowl, or only a plate and a mug",
+            "look at the low cabinet, take a bowl -- or the mug, which holds soup, not the plate -- the cabinet stays "
+            "closed",
             # 11-25 (gt_check s12: no reachable grasp of the bowl inside, the cabinet's top a board 30 cm over it --
             # rim-pinched things never go under a board, muqingj 11-19): on cabinet 4's top as mug_inside (11-21)
             {"bowl_inside": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/top", 1.40, 0.42)},
@@ -1604,8 +1612,11 @@ def t15():
     # 11-21 (v6_sticky_1121 lid_in_use: the plate's slide to the edge under counter_2's wall cabinets found no path):
     # the plate T15 takes stands 4 cm over the counter's west edge, taken by that edge without a slide
     # 11-26 (gt_check_all no_lid s11, covering_bowl s12): the seed drew it to y 7.79 / 7.91 and its push found no
-    # base pose, twice; the plate stays where it was set (pin)
+    # base pose, twice
+    # 11-27: the pin left lid_in_use with nothing a seed moves; the plate moves again, north of y 8.2 only (8.42-8.85
+    # passed; the y 7.79 / 7.91 pushes failed)
     PLATE_EDGE = {PLATES[0]: P(COUNTER, -0.44, 8.42)}
+    PLATE_ZONE = {COUNTER: (-0.60, 8.20, -0.36, 9.05)}
     fams = {
         # 11-17 (user): the seed changes what the lid is doing -- left free on the dining table (find it, ideal), or
         # there but covering someone's unfinished bowl of oatmeal (a spoon beside it): leave it, cover with a plate
@@ -1622,7 +1633,7 @@ def t15():
              "covering_bowl": dict(
                  add={"covered_bowl": on("oatmeal_bowl", T2, 3.70, 6.30),
                       "bowl_spoon": on("breakfast_spoon", T2, 3.70, 6.52)},
-                 move={LID: {"support": None, "z": 0.94, "xy": [3.70, 6.30], "yaw_deg": 0.0}, **PLATE_EDGE}, pin=[PLATES[0]],
+                 move={LID: {"support": None, "z": 0.94, "xy": [3.70, 6.30], "yaw_deg": 0.0}, **PLATE_EDGE}, pick_zone=PLATE_ZONE,
                  goal={"any": by_plate["any"], "all": [["near_start", LID, 0.03], ["near_start", "covered_bowl", 0.03],
                                                        H]},
                  watch=[POT, LID, "covered_bowl", *PLATES],
@@ -1634,14 +1645,14 @@ def t15():
             "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
             "the lid does not exist: a plate wider than the pot's rim covers it as well (moderate); the book is no "
             "cover for food (bad)",
-            {"": dict(remove=[LID], add={"cover_book": on("book_blue", ISL, 8.05, 1.80)}, move=dict(PLATE_EDGE), pin=[PLATES[0]], goal=by_plate,
+            {"": dict(remove=[LID], add={"cover_book": on("book_blue", ISL, 8.05, 1.80)}, move=dict(PLATE_EDGE), pick_zone=PLATE_ZONE, goal=by_plate,
                       watch=[POT, "cover_book", *PLATES], route=plate_route)}),
         "lid_in_use": fam(
             "lid_by_pot", ["resource_in_use", "not_in_view"], "the layout only",
             "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
             "the lid is in use on the stew: leave it there and cover the soup with a plate instead",
             {"": dict(add={STEW: on("soup_pot", STOVE, 8.70, 1.725)},
-                      move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}, **PLATE_EDGE}, pin=[PLATES[0]],
+                      move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}, **PLATE_EDGE}, pick_zone=PLATE_ZONE,
                       goal={"any": by_plate["any"], "all": [["covered", STEW, LID], ["upright", STEW], H]},
                       watch=[POT, STEW, LID, *PLATES], route=plate_route)}),
     }

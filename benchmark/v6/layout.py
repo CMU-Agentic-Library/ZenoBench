@@ -736,13 +736,17 @@ def layout_spec(task, vid, registry, control=None):
         g = sorted(g + [r for r in riders if any(_overlap(boxes[r], boxes[x]) for x in g)])
         B = _union([boxes[n] for n in g])
         room = room_of(base, ((B[0] + B[2]) / 2, (B[1] + B[3]) / 2))
+        # 11-27: a design may let its floor things go further (T23's dropped thing in a nook by a cabinet door: no
+        # shift within 0.6 m fits, every seed kept it there)
+        fs = float(v.get("floor_shift", FLOOR_SHIFT_M))
         if room:
             pk = sorted(set(g) & picked)
             sk = sorted(set(g) & searched)
             hints = sorted({tuple(st["args"]["hint_xy"]) for st in steps if st["args"].get("hint_xy")})
             clusters.append({"names": g, "support": "floor", "room": room, "box": [round(x, 4) for x in B],
                              **({"hints": [list(h) for h in hints]} if hints else {}),
-                             "dx": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M], "dy": [-FLOOR_SHIFT_M, FLOOR_SHIFT_M],
+                             "dx": [-fs, fs], "dy": [-fs, fs],
+                             **({"clear": float(v["floor_clear"])} if v.get("floor_clear") else {}),
                              **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
     # what stands on those supports and does not move: base-scene objects, other task objects, reserved places
     in_cluster = {n for c in clusters for n in c["names"]}
@@ -772,8 +776,11 @@ def layout_spec(task, vid, registry, control=None):
     look = [steps[0]["args"]["target"]] if steps and steps[0]["skill"] == "look" else []
     reach = {c["support"]: reach_edges(base, c["support"]) for c in clusters
              if c["support"].endswith("/top") and reach_edges(base, c["support"])}
-    return {"clusters": clusters, "static": static, "reach": reach,
-            "start": {"room": room_of(base, s0[:2]), "hide": sorted(set(hide)), "look": look}}
+    out = {"clusters": clusters, "static": static, "reach": reach,
+           "start": {"room": room_of(base, s0[:2]), "hide": sorted(set(hide)), "look": look}}
+    if v.get("pick_zone"):                  # 11-27: a design's own zone on a support, narrower than PICK_ZONE's
+        out["zone"] = {k: list(z) for k, z in v["pick_zone"].items()}
+    return out
 
 
 # ----------------------------------------------------------------- draw (episode time)
@@ -891,7 +898,7 @@ def _draw_floor(cfg, c, spec, current, i, rng):
         for b in bs:
             if any(room_of(base, (x, y)) != c["room"] for x in (b[0], b[2]) for y in (b[1], b[3])):
                 return False
-            if any(_overlap(b, list(o), FLOOR_OBST_CLEAR_M) for o in obst) or \
+            if any(_overlap(b, list(o), c.get("clear", FLOOR_OBST_CLEAR_M)) for o in obst) or \
                     any(_overlap(b, o, FLOOR_GAP_M) for o in others) or \
                     any(_box_dist(b, h) < DOOR_CLEAR_M for h in hinges):
                 return False
@@ -995,7 +1002,7 @@ def apply_layout(cfg, spec, rng):
             if any(sh(m)[0] < S[0] + ROLL_EDGE_M or sh(m)[1] < S[1] + ROLL_EDGE_M or sh(m)[2] > S[2] - ROLL_EDGE_M
                    or sh(m)[3] > S[3] - ROLL_EDGE_M for m in rolling):
                 return False
-            zone = PICK_ZONE.get(c["support"])
+            zone = (spec.get("zone") or {}).get(c["support"]) or PICK_ZONE.get(c["support"])
             # x: the centre (a plate over the west edge sticks out); y: the whole thing (11-22 v6_sticky_1121 T13 s10: a
             # plate centred at 9.04 reached 9.16, under the wall cabinet's north end: its slide collided)
             if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= sh(m)[1]

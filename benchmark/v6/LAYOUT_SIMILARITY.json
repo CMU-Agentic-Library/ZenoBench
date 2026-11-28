@@ -842,7 +842,7 @@
  {
   "task": "T09_tomato_soup",
   "variant": "x6_gd_tomato_elsewhere__on_plate",
-  "clusters": 3,
+  "clusters": 2,
   "objects_move": true,
   "alike_pairs": []
  },
@@ -1584,14 +1584,14 @@
  {
   "task": "T22_put_away_shopping",
   "variant": "tray_elsewhere__orange_in_it",
-  "clusters": 3,
+  "clusters": 1,
   "objects_move": true,
   "alike_pairs": []
  },
  {
   "task": "T22_put_away_shopping",
   "variant": "tray_elsewhere__bowls_in_it",
-  "clusters": 3,
+  "clusters": 1,
   "objects_move": true,
   "alike_pairs": []
  },
@@ -1634,14 +1634,14 @@
   "task": "T23_pick_up_dropped",
   "variant": "dropped_out_of_view__counter_full",
   "clusters": 1,
-  "objects_move": false,
+  "objects_move": true,
   "alike_pairs": []
  },
  {
   "task": "T23_pick_up_dropped",
   "variant": "dropped_out_of_view__no_room_for_bowl",
   "clusters": 1,
-  "objects_move": false,
+  "objects_move": true,
   "alike_pairs": []
  },
  {
@@ -1738,21 +1738,21 @@
  {
   "task": "T24_snack_for_kid",
   "variant": "two_kids__apple_banana",
-  "clusters": 4,
+  "clusters": 3,
   "objects_move": true,
   "alike_pairs": []
  },
  {
   "task": "T24_snack_for_kid",
   "variant": "two_kids__apple_snacks",
-  "clusters": 4,
+  "clusters": 3,
   "objects_move": true,
   "alike_pairs": []
  },
  {
   "task": "T24_snack_for_kid",
   "variant": "two_kids__desk3_covered",
-  "clusters": 3,
+  "clusters": 2,
   "objects_move": true,
   "alike_pairs": []
  },

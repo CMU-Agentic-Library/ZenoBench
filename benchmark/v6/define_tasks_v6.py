@@ -1651,8 +1651,10 @@ def T09(t):
     # x6_gd_tomato_elsewhere on_plate (11-17, user): the second tomato lies on someone's lunch plate at the dining
     # table (in use); a spare one is in the fridge (the stand-in); the plate's tomato taken is the worst
     PLATE, LSPOON = "lunch_plate", "lunch_spoon"
+    # 11-27 (GT check s11, s14: the lid on the stove's right burner, picked from by the windows, out of reach): the
+    # lid on the island by the tomatoes, as tomato_in_fridge (11-21)
     plate_case = dict(
-        move={TOMATOES[1]: {"support": None, "z": 0.858, "xy": [3.62, 6.55], "yaw_deg": 0.0}},
+        move={TOMATOES[1]: {"support": None, "z": 0.858, "xy": [3.62, 6.55], "yaw_deg": 0.0}, LID: lid_isl},
         add={PLATE: {"asset": "breakfast_plate", **P(DINING, 3.62, 6.55)},
              LSPOON: {"asset": "breakfast_spoon", **P(DINING, 3.62, 6.76)},
              F3: {"asset": "cherry_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.90, 3.14], "yaw_deg": 0.0}},
@@ -2164,7 +2166,9 @@ def T13(t):
              # kid's cup failed its trajectory (8 of 8); it waits with the bowls on the TV stand, 17 cm from bowl_2
              "kid_cup": {"asset": "plastic_cup", **P("tv_stand_2/top", 7.40, 0.34)}}
     finish_cases = {}
-    for c, empty in (("adult_seat", {"w_mid": "adult"}), ("kid_seat", {"w_mid": "kid"}),
+    # 11-27 (GT check kid_seat s11, s13: the kid's cup between the bowl and the toy car at w_mid found no place
+    # spot, 0 of 2): the kid's empty place is w_south, as in adult_and_kid (its cup there 2 of 2)
+    for c, empty in (("adult_seat", {"w_mid": "adult"}), ("kid_seat", {"w_south": "kid"}),
                      ("adult_and_kid", {"w_mid": "adult", "w_south": "kid"})):
         add = {**examples, **stock}
         goal, route, bowls, mugs = [], [look(TABLE)], [BOWL, "bowl_2"], [MUG, "mug_2"]
@@ -2999,7 +3003,9 @@ def T03_more(t):
             watch=[pin, spoon, "small_storage_bin", *SMALL_BIN_BLOCKS, x, "fruit_basket", "apple", "orange"],
             route=[look("kitchen_island/top"), S("measure", object=pin),
                    look("tv_stand_2/top"), S("measure", object="small_storage_bin"),
-                   S("search", object=x, region=region), nav(x), look(x)] + put_both(x, drop_spoon=(x != "serving_tray")))
+                   S("search", object=x, region=region), nav(x), look(x)] + put_both(x))
+    # 11-27 (GT check tray s11, s15; v6_binfull 1116/1117 4 of 4): the spoon set down in the serving tray beside the
+    # pin found no free spot every time; dropped in beside it, as into the spare tray (which passes)
 
     # 11-17 (user): the substitute is moderate (no bin in the house: the best a seed offers); the small bin (pin
     # slanted) and the fruit basket are bad; moving the blocks or the fruit costs a level
@@ -3537,6 +3543,12 @@ def make_variant(t, fam, spec, case, cspec):
         v["keep_design"] = list(spec["keep_design"])     # the seed leaves the design on these supports as it is
     if spec.get("pin") or cspec.get("pin"):              # (a case may pin its own, 11-26 T15)
         v["pin"] = list(spec.get("pin", [])) + list(cspec.get("pin", []))  # the seed leaves these where the variant puts them
+    if cspec.get("floor_shift"):                         # 11-27 T23: how far the seed may move its floor things
+        v["floor_shift"] = float(cspec["floor_shift"])
+    if cspec.get("floor_clear"):                         # 11-27 T23: and how far from furniture they keep
+        v["floor_clear"] = float(cspec["floor_clear"])
+    if cspec.get("pick_zone"):                           # 11-27 T15: where on a support the seed may draw what the
+        v["pick_zone"] = dict(cspec["pick_zone"])        # route picks (narrower than layout.PICK_ZONE)
     if cspec.get("locked_articulated"):                  # 11-17: a door that does not open (a broken one); the sim
         v["locked_articulated"] = list(cspec["locked_articulated"])   # side (open fails) is still to be built
     v["note"] = spec["challenge"]
