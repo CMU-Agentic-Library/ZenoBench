@@ -213771,7 +213771,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_stove/top"
+        "destination": "tv_stand_2/top"
        }
       },
       {
@@ -213904,7 +213904,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_stove/top"
+        "destination": "tv_stand_2/top"
        }
       },
       {
