@@ -425,6 +425,10 @@ CTR_W = [-0.10, 7.60]            # the cup of only_this_room (worked from the ca
 # 11-27: from the island's west end (navigate's park coming from the dining room) the floor-picked spoon failed its
 # carry tilt at x 7.2, 7.4 and 8.06 alike (skill side, handoff); from the south 7.40 passes
 ISL_SPOT = [7.40, 1.62]
+# 11-27 route fix: navigate parks at the stand-off nearest to where the robot is, so from the dining room it is the
+# west end (0 of 7 there) -- first to tv_stand_2, right south of the island with the wall behind it: its stand-off
+# is the corridor between the two (y ~1.1), and from there the island's nearest stand-off is its south side (13 of 14)
+TO_ISL = [nav(TV), nav(ISL)]
 
 
 def t23():
@@ -437,10 +441,10 @@ def t23():
     sgoal = [["on_any", SP, WORKTOPS]]                                         # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
-                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)], [SP],
+                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)], [SP],
                   start=START)
     spoon = {SP: floor("breakfast_spoon", *DROP_XY, 30.0)}
-    back = [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)]
+    back = [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)]
     LT = LAYOUT_TIERS.setdefault(("T23", "*"), {})
     BLK, BIN, TRAY = "dropped_block", "toy_bin", "spare_tray"
     BIN_AT, TRAY_AT = (7.30, 0.36), (7.80, 0.36)
@@ -582,7 +586,7 @@ def t23():
                                   remove=counter_base, watch=[SP, *dishes_a],
                                   goal={"all": [["on_any", SP, OTHER_TOPS], H]},
                                   route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")]
-                                  + fetch(SP, ISL, ISL_SPOT)),
+                                  + [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)]),
              "no_room_for_bowl": dict(add={PL: floor("breakfast_bowl", 1.10, 7.50), **dishes_b}, floor_shift=3.0, floor_clear=0.4,
                                      remove=counter_base + ["handled_cooking_pot", "pot_lid"], watch=[PL, *dishes_b],
                                        goal={"all": [["on_any", PL, OTHER_TOPS], H]},
