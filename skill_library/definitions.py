@@ -445,6 +445,12 @@ skill("pick", "object", "Pick an object",
                note="Pinch it from above; the pick lowers the torso and leans over the item itself, from a base "
                     "park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the "
                     "parallel gripper cannot get a pad under or across them."),
+          Path("round_rim", [W("object", "grasp_types", "contains", "rim_pinch")],
+               [St("policy_011", "$object", hand="$hands")],
+               requires=[P("grasp_clearance", object="$object")],
+               note="Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing. A plate too, "
+                    "pinched at its outer rim from above: before sliding it to an edge (flat_edge), and the hold "
+                    "a plate laid on a pot as a lid needs (cover)."),
           Path("flat_overhang_ready", [W("object", "flat", "truthy"), W("object", "edge_ready", "truthy")],
                [St("policy_013", "$object", hand="$hands")], requires=[P("edge_overhang", object="$object")],
                note="The overhang already exists (e.g. after expose): pinch it directly."),
@@ -454,10 +460,6 @@ skill("pick", "object", "Pick an object",
                     "expose the overhang exists already and pick takes flat_overhang_ready."),
           Path("rect_rim", [W("object", "grasp_types", "contains", "rim_pinch_rect")],
                [St("policy_012", "$object", hand="$hands")]),
-          Path("round_rim", [W("object", "grasp_types", "contains", "rim_pinch")],
-               [St("policy_011", "$object", hand="$hands")],
-               requires=[P("grasp_clearance", object="$object")],
-               note="Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing."),
           Path("handle", [W("object", "grasp_types", "contains", "handle_pinch"),
                           W("object", "handle_collider", "truthy")],
                [St("policy_055", "$object", hand="$hands")]),

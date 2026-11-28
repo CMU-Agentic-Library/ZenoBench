@@ -108,6 +108,17 @@ GRIPPER_GAP = 0.080          # Zeno Malo pinch gripper: 2 x 0.04 m
 # the overhang; the planner's fingertip reaches 2.4 cm past the TCP, so a side overhanging its
 # support by about 5.4 cm (EDGE_MIN_OVERHANG 5.5 cm, what expose pushes to) leaves the lower pad clear
 THICKNESS_PINCH_DEPTH = 0.025
+# a plate's rim pinch (plate_rim_pinch): from above and outside, the pads closing across its outer rim -- the
+# upper pad on the rim's top, the lower on its outer edge, neither under the plate.  Laid on a pot as a lid
+# (cover) a plate overhangs the pot's rim by under a centimetre (breakfast_plate 12.4 cm on handled_cooking_pot
+# 11.5 cm): a thickness pinch's lower pad, 2.5 cm under the plate, sits in the pot's rim (T15 / T09 / T17,
+# 11-27).  Values from a 2-D sweep of the plate's section against the planner's finger (finger_model_box) with
+# the hand opened 2 cm: on a pot rim and on a counter both pads clear at these tilts and no other
+# (/data/zenobench/platerim_1127/rimgrip.py)
+PLATE_RIM_TILTS = [0.5, 0.4, 0.6]   # rad: the approach from the vertical, outward (annotations.grasp_poses)
+PLATE_RIM_OUT = 0.0015              # m: the TCP this far outside the plate's edge...
+PLATE_RIM_ABOVE = 0.010             # ...and this far above its rim's top (a negative rim-pinch depth)
+PLATE_RIM_OPEN = 0.02               # m: each finger's opening before it closes
 PINCH_MAX = 0.068            # leave >= 6 mm clearance per side
 CROWN = 0.05                 # crown pinch: top slab the pads straddle
 
@@ -330,6 +341,22 @@ def rim_pinch_depth(kind, rim_height, tilts, pre_open):
     return round(max(depth, 0.5 * PAD_HALF_WIDTH), 4)
 
 
+def plate_rim_pinch(mesh):
+    """A plate's rim pinch (PLATE_RIM_*): a rim_pinch at its edge's radius plus PLATE_RIM_OUT, its TCP
+    PLATE_RIM_ABOVE above the rim's top (the highest point within 1 cm of the edge)."""
+    b = mesh.bounds
+    v = mesh.vertices
+    c0 = (b[0, :2] + b[1, :2]) / 2
+    r = np.hypot(v[:, 0] - c0[0], v[:, 1] - c0[1])
+    edge = float(r.max())
+    top = float(v[r > edge - 0.01, 2].max() - b[0, 2])
+    return {"type": "rim_pinch", "radius": round(edge + PLATE_RIM_OUT, 4), "rim_height": round(top, 4),
+            "depth": -PLATE_RIM_ABOVE, "azimuths_deg": list(range(0, 360, 30)), "tilts": list(PLATE_RIM_TILTS),
+            "pre_open": PLATE_RIM_OPEN,
+            "note": "a plate's outer rim from above and outside: upper pad on the rim's top, lower on its outer edge, "
+                    "none under the plate (it covers a pot whose rim it overhangs by under 1 cm)"}
+
+
 def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     """Grasp primitives in the object frame (origin = bbox centre of the
     bottom face, z up).  Consumed by zeno_skills.annotations.grasp_poses."""
@@ -457,6 +484,8 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
         out.append({"type": "thickness_pinch", "depth": THICKNESS_PINCH_DEPTH,
                     "pre_open": float(min(0.04, ext[2] / 2 + 0.012)),
                     "note": "pads above and below, from outside a side; the side must overhang its support"})
+    if "plate" in SPECS.get(name, (None, None, ()))[2]:
+        out.append(plate_rim_pinch(mesh))
     if name == "breakfast_mug":
         # Collision OBJ is rotated +90 deg about X by the URDF.  Its handle
         # protrudes in object -Y at mid-height, separate from the rim contact.

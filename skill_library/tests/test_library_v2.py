@@ -148,3 +148,10 @@ def test_planner_is_deterministic_across_hash_seeds():
     outs = {subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, check=True,
                            env={**__import__("os").environ, "PYTHONHASHSEED": seed}).stdout for seed in ("0", "5")}
     assert len(outs) == 1
+
+
+def test_pick_takes_a_rim_pinch_before_sliding_a_flat_object_to_an_edge():
+    # a plate has both (11-27): pinched at its outer rim from above, it can be laid on a pot as a lid
+    pick = next(s for s in load_skills().values() if s["verb"] == "pick")
+    paths = [p["path_id"] for p in pick["policy_paths"]]
+    assert paths.index("round_rim") < paths.index("flat_overhang_ready") < paths.index("flat_edge")

@@ -29,14 +29,14 @@ Requires holding(hand=any, object=$lid); base_near(place=$container); uncovered(
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=any, object=$lid)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$lid)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
 ## Postconditions (verified on live GT state)
 
 - `covered(container=$container, lid=$lid)` — The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt). GT: object_pose, container_profile.
-- `not holding(hand=any, object=$lid)` — Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `not holding(hand=any, object=$lid)` — Must be false: The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 

@@ -161,8 +161,27 @@ class FlipFlatPolicy(AtomicPolicy):
         return run_skill(self.rig, SKILLS["flip"], {"name": name})
 
 
+def lid_seat(asset, rim_radius):
+    """How far above its lowest point a lid laid centred on a round rim of ``rim_radius`` rests on it: the
+    lowest point of its collider (the convex pieces, physics.collision_hulls, else its one hull) at or
+    outside the rim's inner edge (CONTAINER_WALL in from rim_radius), above the lid's bottom.  A pot lid
+    rests on its lowest ring (0.6 mm); a plate's foot hangs inside the pot, its rim rests on the pot's
+    2 cm higher (breakfast_plate on handled_cooking_pot) -- set down by its foot at the rim's height it
+    had no set-down at all.  0 without a collider."""
+    from ..physics import CONTAINER_WALL, collision_hulls
+    pieces = collision_hulls(asset["name"])
+    pts = np.vstack([np.asarray(p["points"], float) for p in pieces]) if pieces else \
+        np.asarray(asset.get("collider_hull") or np.zeros((0, 3)), float)
+    if not len(pts):
+        return 0.0
+    q = pts - np.asarray(asset["origin_to_bottom_center"], float)
+    out = np.hypot(q[:, 0], q[:, 1]) >= float(rim_radius) - CONTAINER_WALL
+    return max(0.0, float(q[out, 2].min()) - float(q[:, 2].min())) if out.any() else 0.0
+
+
 class CoverWithLidPolicy(AtomicPolicy):
-    """Set a held lid centred on a container's rim plane."""
+    """Set a held lid centred on a container's rim plane: its lowest point the lid's seat (lid_seat) below the
+    rim, so it is set down resting on the rim."""
 
     def execute(self, lid, container):
         rig = self.rig
@@ -172,8 +191,10 @@ class CoverWithLidPolicy(AtomicPolicy):
             raise SkillFailure(f"cover: {container} is not a container")
         st = rig.state()
         cb = np.asarray(rig.geo.bottom(container, st), float)
-        rim = float(cb[2] + ca["rim_height"])
+        seat = lid_seat(rig.ann.asset_of(rig.ann.objects[lid]), ca["rim_radius"]) if ca.get("rim_radius") else 0.0
+        rim = float(cb[2] + ca["rim_height"]) - seat
         fp = rig.geo.footprint(container, st)
+        rig.log("cover_seat", lid=lid, container=container, seat_m=round(seat, 4))
         with virtual_support(rig, f"rim:{container}", rim, fp, category="rim"):
             skills.place(rig, lid, f"rim:{container}", (float(cb[0]), float(cb[1])))
         ok, why = lid_on(rig, container, lid, rig.state())

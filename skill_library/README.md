@@ -101,7 +101,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_014` | **explore_room** room | `explore_room(room)` | viewpoints | `room_explored` |
 | `skill_015` | **point** target | `point(target)` | front, turn_and_point | `pointing_at`, `hand_empty` |
 | `skill_016` | **present** object | `present(object)` | front_of_head | `presenting`, `holding` |
-| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | inside_cabinet_or_fridge, handle_requested, pinch_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
+| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | inside_cabinet_or_fridge, handle_requested, pinch_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, round_rim, flat_overhang_ready, flat_edge, rect_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
 | `skill_018` | **place** object | `place(object, receptacle, hint_xy?, near?, pass_by?)` | microwave, cabinet_or_fridge_shelf, container, on_the_move, edge_held_flat, stove_burner, surface | `holding` + `in_appliance`, `inside`, `on`, `on_burner` |
 | `skill_019` | **drop** object | `drop(object, container)` | above_opening | `inside`, `holding` |
 | `skill_020` | **stack** object | `stack(object, base)` | top_face | `on_top_of`, `holding` |

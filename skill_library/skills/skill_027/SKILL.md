@@ -33,7 +33,7 @@ Requires hand_empty(hand=left); base_near(place=$object).
 ## Postconditions (verified on live GT state)
 
 - `steadied(object=$object)` — The left gripper pinches the object while it still rests on its support. GT: left_gripper_state, object_pose.
-- `holding(hand=left, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=left, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 

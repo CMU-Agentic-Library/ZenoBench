@@ -28,14 +28,14 @@ Requires holding(hand=any, object=$object); base_near(place=$base); top_clear(ob
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$base)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `top_clear(object=$base)` — No other object rests on the object's top face. GT: object_pose, asset_annotation.
 
 ## Postconditions (verified on live GT state)
 
 - `on_top_of(object=$object, base=$base)` — Object rests on the base object's top face: bottom within 2 cm of it, centre over its footprint. GT: object_pose, asset_annotation.
-- `not holding(hand=any, object=$object)` — Must be false: The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `not holding(hand=any, object=$object)` — Must be false: The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 

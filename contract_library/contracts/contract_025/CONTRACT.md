@@ -14,8 +14,8 @@ Paired SkillNode: `skill_017` (`pick-object`).
 - [path two_hand_box] `hand_empty(hand=left)` — GT: gripper_state
 - [path two_hand_flat] `hand_empty(hand=left)` — GT: gripper_state
 - [path floor_top] `on_floor(object=$object)` — GT: object_pose, asset_annotation
-- [path flat_overhang_ready] `edge_overhang(object=$object)` — GT: object_pose, asset_annotation, support_annotation
 - [path round_rim] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
+- [path flat_overhang_ready] `edge_overhang(object=$object)` — GT: object_pose, asset_annotation, support_annotation
 - [path top_pinch] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 
 ## Verifier
@@ -33,10 +33,10 @@ Paired SkillNode: `skill_017` (`pick-object`).
 - `two_hand_box` when args.hands == 'both' and object.wide_box: `policy_057($object)`
 - `two_hand_flat` when args.hands == 'both' and object.flat: `policy_045($object)` -> `policy_056($object)`
 - `floor_top` when object.on_floor and 'top_pinch' in object.grasp_types: `policy_010($object, hand=$hands)`
+- `round_rim` when 'rim_pinch' in object.grasp_types: `policy_011($object, hand=$hands)`
 - `flat_overhang_ready` when object.flat and object.edge_ready: `policy_013($object, hand=$hands)`
 - `flat_edge` when object.flat: `policy_045($object)` -> `policy_013($object, hand=$hands)`
 - `rect_rim` when 'rim_pinch_rect' in object.grasp_types: `policy_012($object, hand=$hands)`
-- `round_rim` when 'rim_pinch' in object.grasp_types: `policy_011($object, hand=$hands)`
 - `handle` when 'handle_pinch' in object.grasp_types and object.handle_collider: `policy_055($object, hand=$hands)`
 - `top_pinch` when 'top_pinch' in object.grasp_types: `policy_010($object, hand=$hands)`
 - `annotation_dispatch` when object.grasp_types: `policy_061($object, hand=$hands)`

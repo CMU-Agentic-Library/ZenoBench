@@ -74,7 +74,7 @@
  },
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet', 'microwave_cavity']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
+  "summary": "Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet', 'microwave_cavity']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
  },
  "preconditions": [
   {
@@ -116,7 +116,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
    "kind": "fluent",
    "gt_sources": [
     "gripper_state",
@@ -138,7 +138,7 @@
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",
@@ -157,7 +157,7 @@
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",
@@ -176,7 +176,7 @@
      "object": "$object"
     },
     "negated": false,
-    "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+    "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
     "kind": "fluent",
     "gt_sources": [
      "gripper_state",
@@ -345,7 +345,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -395,7 +395,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp.",
+     "meaning": "The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched).",
      "kind": "fluent",
      "gt_sources": [
       "gripper_state",
@@ -447,6 +447,37 @@
     "policy_010"
    ],
    "note": "Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
+  },
+  {
+   "path_id": "round_rim",
+   "when": [
+    "'rim_pinch' in object.grasp_types"
+   ],
+   "extra_preconditions": [
+    {
+     "predicate": "grasp_clearance(object=$object)",
+     "name": "grasp_clearance",
+     "args": {
+      "object": "$object"
+     },
+     "negated": false,
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
+     "kind": "fluent",
+     "gt_sources": [
+      "object_pose",
+      "asset_annotation"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false"
+    }
+   ],
+   "extra_postconditions": [],
+   "chain": [
+    "policy_011($object, hand=$hands)"
+   ],
+   "policies": [
+    "policy_011"
+   ],
+   "note": "Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing. A plate too, pinched at its outer rim from above: before sliding it to an edge (flat_edge), and the hold a plate laid on a pot as a lid needs (cover)."
   },
   {
    "path_id": "flat_overhang_ready",
@@ -512,37 +543,6 @@
     "policy_012"
    ],
    "note": ""
-  },
-  {
-   "path_id": "round_rim",
-   "when": [
-    "'rim_pinch' in object.grasp_types"
-   ],
-   "extra_preconditions": [
-    {
-     "predicate": "grasp_clearance(object=$object)",
-     "name": "grasp_clearance",
-     "args": {
-      "object": "$object"
-     },
-     "negated": false,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "asset_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false"
-    }
-   ],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_011($object, hand=$hands)"
-   ],
-   "policies": [
-    "policy_011"
-   ],
-   "note": "Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing."
   },
   {
    "path_id": "handle",

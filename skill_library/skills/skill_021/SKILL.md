@@ -29,7 +29,7 @@ Requires holding(hand=$hand, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=$hand, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=$hand, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 

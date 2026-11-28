@@ -31,12 +31,12 @@ Requires holding(hand=any, object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Postconditions (verified on live GT state)
 
 - `held_above(object=$object, height_m=$height_m)` — Held object's bottom (either hand) at or above the given world height (2 cm tolerance). GT: object_pose, gripper_state.
-- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 

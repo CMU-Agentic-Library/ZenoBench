@@ -27,6 +27,33 @@
     "depth": 0.025,
     "pre_open": 0.028250112806053433,
     "note": "pads above and below, from outside a side; the side must overhang its support"
+   },
+   {
+    "type": "rim_pinch",
+    "radius": 0.1267,
+    "rim_height": 0.0325,
+    "depth": -0.01,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.4,
+     0.6
+    ],
+    "pre_open": 0.02,
+    "note": "a plate's outer rim from above and outside: upper pad on the rim's top, lower on its outer edge, none under the plate (it covers a pot whose rim it overhangs by under 1 cm)"
    }
   ],
   "usd": "usd/assets/breakfast_plate.usd",

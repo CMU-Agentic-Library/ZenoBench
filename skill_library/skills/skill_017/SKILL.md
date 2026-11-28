@@ -33,7 +33,7 @@ The robot must hold an object for any later hand action.
 
 ## Applicability
 
-Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet', 'microwave_cavity']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
+Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet', 'microwave_cavity']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -42,7 +42,7 @@ Requires hand_empty(hand=any); base_near(place=$object). Depending on the bound 
 
 ## Postconditions (verified on live GT state)
 
-- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$object)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
@@ -99,6 +99,12 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - extra precondition `on_floor(object=$object)`
 - Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them.
 
+### `round_rim` — when 'rim_pinch' in object.grasp_types
+
+1. `policy_011($object, hand=$hands)`
+- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
+- Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing. A plate too, pinched at its outer rim from above: before sliding it to an edge (flat_edge), and the hold a plate laid on a pot as a lid needs (cover).
+
 ### `flat_overhang_ready` — when object.flat and object.edge_ready
 
 1. `policy_013($object, hand=$hands)`
@@ -114,12 +120,6 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `rect_rim` — when 'rim_pinch_rect' in object.grasp_types
 
 1. `policy_012($object, hand=$hands)`
-
-### `round_rim` — when 'rim_pinch' in object.grasp_types
-
-1. `policy_011($object, hand=$hands)`
-- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
-- Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing.
 
 ### `handle` — when 'handle_pinch' in object.grasp_types and object.handle_collider
 

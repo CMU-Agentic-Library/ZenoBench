@@ -3,7 +3,9 @@ privileged observation) needs to operate every asset.
 
 annotations/assets.json  (per asset type, object frame; tools/prepare_assets.py)
     tags, mass, size, origin_to_bottom_center, container profile, grasps:
-      rim_pinch        round container: pinch the wall at the rim (azimuth, tilt)
+      rim_pinch        round container: pinch the wall at the rim (azimuth, tilt); a plate: its outer rim
+                       from above and outside, the TCP above the rim's top (a negative depth), no pad
+                       under the plate (tools/prepare_assets.plate_rim_pinch)
       rim_pinch_rect   rectangular container rim
       top_pinch        vertical approach, fingers across the narrowest width
       side_pinch       from the side (side_pinch_rot): a tall round object (every 30 degrees,

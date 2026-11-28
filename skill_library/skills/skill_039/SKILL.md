@@ -32,7 +32,7 @@ Requires holding(hand=any, object=$source); base_near(place=$target); uncovered(
 
 ## Preconditions (checked on live GT state before moving)
 
-- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 - `base_near(place=$target)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 - `uncovered(container=$target)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 - `not container_empty(container=$source)` — Must be false: No annotated object is inside the container. GT: object_pose, container_profile.
@@ -40,7 +40,7 @@ Requires holding(hand=any, object=$source); base_near(place=$target); uncovered(
 ## Postconditions (verified on live GT state)
 
 - `poured_into(source=$source, target=$target)` — At least half of the items that were inside the source are now inside the target. GT: object_pose (before/after), container_profile.
-- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=any, object=$source)` — The object is in the given gripper (any: in either): TCP-to-body distance unchanged since the grasp, and the fingers not shut unless it has kept within 3 cm (a thin rim pinched). GT: gripper_state, finger_joints, object_pose, arm_fk.
 
 ## Verifier
 
