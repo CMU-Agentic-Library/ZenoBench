@@ -425,6 +425,10 @@ CTR_W = [-0.10, 7.60]            # the cup of only_this_room (worked from the ca
 # 11-27: from the island's west end (navigate's park coming from the dining room) the floor-picked spoon failed its
 # carry tilt at x 7.2, 7.4 and 8.06 alike (skill side, handoff); from the south 7.40 passes
 ISL_SPOT = [7.40, 1.62]
+# 11-27 route fix: navigate parks at the stand-off nearest to where the robot is, so from the dining room it is the
+# west end (0 of 7 there) -- first to tv_stand_2, right south of the island with the wall behind it: its stand-off
+# is the corridor between the two (y ~1.1), and from there the island's nearest stand-off is its south side (13 of 14)
+TO_ISL = [nav(TV), nav(ISL)]
 
 
 def t23():
@@ -437,10 +441,10 @@ def t23():
     sgoal = [["on_any", SP, WORKTOPS]]                                         # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
-                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)], [SP],
+                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)], [SP],
                   start=START)
     spoon = {SP: floor("breakfast_spoon", *DROP_XY, 30.0)}
-    back = [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)]
+    back = [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)]
     LT = LAYOUT_TIERS.setdefault(("T23", "*"), {})
     BLK, BIN, TRAY = "dropped_block", "toy_bin", "spare_tray"
     BIN_AT, TRAY_AT = (7.30, 0.36), (7.80, 0.36)
@@ -582,7 +586,7 @@ def t23():
                                   remove=counter_base, watch=[SP, *dishes_a],
                                   goal={"all": [["on_any", SP, OTHER_TOPS], H]},
                                   route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")]
-                                  + fetch(SP, ISL, ISL_SPOT)),
+                                  + [nav(SP), pick(SP)] + TO_ISL + [place(SP, ISL, ISL_SPOT)]),
              "no_room_for_bowl": dict(add={PL: floor("breakfast_bowl", 1.10, 7.50), **dishes_b}, floor_shift=3.0, floor_clear=0.4,
                                      remove=counter_base + ["handled_cooking_pot", "pot_lid"], watch=[PL, *dishes_b],
                                        goal={"all": [["on_any", PL, OTHER_TOPS], H]},
@@ -1359,12 +1363,20 @@ def t28():
 # ================================================================== T29 clear the dining table for the meal
 def t29():
     TC, BOX = "table_car", "toy_box"
+    # 11-27 route fix: the car carried through explore_room(living_room_0_0) -- its viewpoint by the windowed wall
+    # (y 4.07, 0.2 m off it) -- and then navigate failed 9 of 22 (no base path / carry_in short); the toy box, the
+    # tray and the toy bin are all by tv_stand_2, so go there and look instead; likewise the trash can
+    # east of the stove (9.05, 1.82) is behind the stove from every stand-off navigate gives (north of the island; tv_stand_2's
+    # west end; the stove's south side, 7.50 / 1.15 -- each 2 of 2 blocked): explore_room(living_room_0_0) finds
+    # it (T10 12 of 12), but started from the corridor (nav(TV)) -- from the dining room its viewpoint is by the
+    # windowed wall (y 4.07) and the next navigate is stuck
+    to_box = [nav(TC), pick(TC), nav(TV), look(BOX), nav(BOX), place(TC, BOX)]
     tb = {BOX: floor("toy_box", 5.70, 0.80)}
     ctl = {"note": "the kid's toy car on the dining table; his toy box in the living room",
            "add": {TC: on("toy_car", T2, 3.30, 6.70), **tb}}
     t = base_task("T29_clear_table_for_dinner", "ZB-T29", "Dinner is about to start. Take away what doesn't belong "
                   "on the dining table.", "要吃饭了，把餐桌上不该放的东西拿走。", "car_on_table", ctl,
-                  {"all": [["inside", TC, BOX], H]}, [look(T2)] + into(TC, BOX), [TC, BOX],
+                  {"all": [["inside", TC, BOX], H]}, [look(T2)] + to_box, [TC, BOX],
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     setting = {"set_bowl": on("breakfast_bowl", T2, 3.30, 7.30), "set_spoon": on("breakfast_spoon", T2, 3.30, 7.49)}
     keep = [["near_start", "set_bowl", 0.03], ["near_start", "set_spoon", 0.03]]
@@ -1397,11 +1409,11 @@ def t29():
             "the toy car, and a bowl and a spoon set for the meal; the toy box in the living room, or none",
             "what is set for the meal stays; only the toy goes -- into the toy box, or the tray when there is none",
             {"": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tb, **setting}, watch=[TC, "set_bowl", "set_spoon"],
-                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + into(TC, BOX)),
+                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + to_box),
              "no_toy_box": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tray29, **setting},
                                 watch=[TC, "set_bowl", "set_spoon", TRAY29],
                                 goal={"all": [["inside", TC, TRAY29]] + keep + [H]},
-                                route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
+                                route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
                                        nav(TRAY29), place(TC, TRAY29)])}),
         "homework_on_table": fam(
             "car_on_table", ["storage_place", "multi_object_goal"],
@@ -1432,7 +1444,7 @@ def t29():
                              watch=[TC, "table_book", "empty_can"],
                              goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
                                    "any": [[["on", "table_book", s]] for s in shelves]},
-                             route=[look(T2)] + into(TC, BOX) + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav(TV), S("explore_room", room="living_room_0_0"), nav("trash_can"),
                                                                  S("drop", object="empty_can", container="trash_can")]
                              + fetch("table_book", "bookcase_2/top", [1.00, -0.43])),
              "bin_full": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
@@ -1442,9 +1454,9 @@ def t29():
                               goal={"all": [["inside", TC, TRAY29], ["inside", "empty_can", "trash_can"], H]
                                     + [["fully_inside", f"bin_block_{i}", "toy_bin"] for i in range(1, 25)],
                                     "any": [[["on", "table_book", s]] for s in shelves]},
-                              route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
-                                     nav("toy_bin"), S("measure", object="toy_bin"), place(TC, TRAY29)]
-                              + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                              route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
+                                     nav("toy_bin"), S("measure", object="toy_bin"), nav(TRAY29), place(TC, TRAY29)]
+                              + [nav("empty_can"), pick("empty_can"), nav(TV), S("explore_room", room="living_room_0_0"), nav("trash_can"),
                                  S("drop", object="empty_can", container="trash_can")]
                               + fetch("table_book", "bookcase_2/top", [1.00, -0.43]))}),
         "nothing_to_clear": fam(

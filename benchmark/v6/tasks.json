@@ -176944,6 +176944,12 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -176996,6 +177002,12 @@
        "skill": "pick",
        "args": {
         "object": "dropped_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
        }
       },
       {
@@ -177092,6 +177104,12 @@
        "skill": "pick",
        "args": {
         "object": "dropped_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
        }
       },
       {
@@ -177339,6 +177357,12 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -177569,6 +177593,12 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -177664,6 +177694,12 @@
        "skill": "pick",
        "args": {
         "object": "dropped_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
        }
       },
       {
@@ -213369,9 +213405,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213416,9 +213458,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213465,9 +213513,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -213678,9 +213732,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_box"
        }
       },
       {
@@ -213706,6 +213766,18 @@
        "skill": "pick",
        "args": {
         "object": "empty_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -213781,9 +213853,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -213796,6 +213874,12 @@
        "skill": "measure",
        "args": {
         "object": "toy_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
        }
       },
       {
@@ -213815,6 +213899,18 @@
        "skill": "pick",
        "args": {
         "object": "empty_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
