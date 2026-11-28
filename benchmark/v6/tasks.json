@@ -213775,6 +213775,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "trash_can"
@@ -213905,6 +213911,12 @@
        "skill": "navigate",
        "args": {
         "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
        }
       },
       {
