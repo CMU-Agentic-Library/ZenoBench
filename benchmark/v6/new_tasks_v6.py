@@ -1365,7 +1365,8 @@ def t29():
     TC, BOX = "table_car", "toy_box"
     # 11-27 route fix: the car carried through explore_room(living_room_0_0) -- its viewpoint by the windowed wall
     # (y 4.07, 0.2 m off it) -- and then navigate failed 9 of 22 (no base path / carry_in short); the toy box, the
-    # tray and the toy bin are all by tv_stand_2, so go there and look instead
+    # tray and the toy bin are all by tv_stand_2, so go there and look instead; likewise the trash can south of the
+    # stove is found from the stove (as T10), not by exploring with the can in hand
     to_box = [nav(TC), pick(TC), nav(TV), look(BOX), nav(BOX), place(TC, BOX)]
     tb = {BOX: floor("toy_box", 5.70, 0.80)}
     ctl = {"note": "the kid's toy car on the dining table; his toy box in the living room",
@@ -1440,7 +1441,7 @@ def t29():
                              watch=[TC, "table_book", "empty_can"],
                              goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
                                    "any": [[["on", "table_book", s]] for s in shelves]},
-                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                             route=[look(T2)] + to_box + [nav("empty_can"), pick("empty_can"), nav("kitchen_stove/top"), look("trash_can"), nav("trash_can"),
                                                                  S("drop", object="empty_can", container="trash_can")]
                              + fetch("table_book", "bookcase_2/top", [1.00, -0.43])),
              "bin_full": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
@@ -1451,8 +1452,8 @@ def t29():
                                     + [["fully_inside", f"bin_block_{i}", "toy_bin"] for i in range(1, 25)],
                                     "any": [[["on", "table_book", s]] for s in shelves]},
                               route=[look(T2), nav(TC), pick(TC), nav(TV), look(TV),
-                                     nav("toy_bin"), S("measure", object="toy_bin"), place(TC, TRAY29)]
-                              + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                                     nav("toy_bin"), S("measure", object="toy_bin"), nav(TRAY29), place(TC, TRAY29)]
+                              + [nav("empty_can"), pick("empty_can"), nav("kitchen_stove/top"), look("trash_can"), nav("trash_can"),
                                  S("drop", object="empty_can", container="trash_can")]
                               + fetch("table_book", "bookcase_2/top", [1.00, -0.43]))}),
         "nothing_to_clear": fam(

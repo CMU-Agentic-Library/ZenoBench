@@ -213769,9 +213769,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "trash_can"
        }
       },
       {
@@ -213871,6 +213877,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "table_car",
@@ -213890,9 +213902,15 @@
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "living_room_0_0"
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "trash_can"
        }
       },
       {
